@@ -101,28 +101,21 @@ namespace Pulsar4X.Datablobs
         }
 
         /// <summary>
-        /// Use this to move to an entity that has an orbitDB
+        /// 
         /// </summary>
         /// <param name="targetPositiondb"></param>
         /// <param name="offsetPosition">normaly you want to move to a position next to the entity, this is
         /// a position relative to the entity you're wanting to move to</param>
         public WarpMovingDB(Entity thisEntity, Entity targetEntity, Vector3 offsetPosition)
         {
-            if(!targetEntity.HasDataBlob<OrbitDB>())
-                throw new NotImplementedException("Currently we can only predict the movement of stable orbits - target must have an orbitDB");
-            (Vector3 position, DateTime atDateTime) targetIntercept = WarpMath.GetInterceptPosition
-            (
-                thisEntity,
-                targetEntity.GetDataBlob<OrbitDB>(),
-                thisEntity.StarSysDateTime
-            );
+            EntryDateTime = thisEntity.Manager.ManagerSubpulses.StarSysDateTime;
+            var targetIntercept = WarpMath.GetInterceptPosition(thisEntity, targetEntity, EntryDateTime, offsetPosition);
 
             var startState = thisEntity.GetAbsoluteState();
             ExitPointAbsolute = targetIntercept.position + offsetPosition;
             EntryPointAbsolute = startState.pos;
-            EntryDateTime = thisEntity.Manager.ManagerSubpulses.StarSysDateTime;
             ExitPointrelative = offsetPosition;
-            PredictedExitTime = targetIntercept.atDateTime;
+            PredictedExitTime = targetIntercept.etiDateTime;
             SavedNewtonionVector = startState.Velocity;
             TargetEntity = targetEntity;
             TargetPositionDB = targetEntity.GetDataBlob<PositionDB>();

@@ -48,6 +48,42 @@ public static class WarpMath
         public double T;
     }
     
+    public static (Vector3 position, DateTime etiDateTime) GetInterceptPosition(Entity mover, Entity target, DateTime atDateTime, Vector3 offsetPosition = new Vector3())
+    {
+        var moverPos = (Vector3)MoveStateProcessor.GetAbsoluteFuturePosition(mover, atDateTime);
+        var tgtPos = (Vector3)MoveStateProcessor.GetAbsoluteFuturePosition(target, atDateTime);
+        var exitPos = tgtPos + offsetPosition;
+        double spd_m = mover.GetDataBlob<WarpAbilityDB>().MaxSpeed;
+        
+        var tgtMoveType = target.GetDataBlob<PositionDB>().MoveType;
+        switch (tgtMoveType)
+        {
+            case PositionDB.MoveTypes.None:
+            {
+                var distance = (exitPos - moverPos).Length();
+                var intercept = ((Vector3)moverPos, atDateTime + TimeSpan.FromSeconds(distance / spd_m));
+                return intercept;
+                break;
+            }
+            case PositionDB.MoveTypes.Orbit:
+            {
+                var intercept = WarpMath.GetInterceptPosition_m(moverPos, spd_m, target.GetDataBlob<OrbitDB>(), atDateTime, offsetPosition);
+                return intercept;
+                break;
+            }
+            //For the following cases, we need to know if the target is an object which is owned by the same empire and we know what it's doing,
+            //or if that info is unknown and how do we try predict? 
+            case PositionDB.MoveTypes.NewtonSimple:
+                throw new NotImplementedException("not implemented");
+            case PositionDB.MoveTypes.NewtonComplex:
+                throw new NotImplementedException("not implemented");
+            case PositionDB.MoveTypes.Warp:
+                throw new NotImplementedException("not implemented");
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+    
     /// <summary>
     /// Calculates a cartisian position for an intercept for a ship and an target's orbit using warp.
     /// </summary>

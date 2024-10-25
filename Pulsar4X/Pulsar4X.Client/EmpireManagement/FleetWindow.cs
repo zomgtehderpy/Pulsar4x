@@ -590,7 +590,8 @@ namespace Pulsar4X.SDL2UI
                             {
                                 if(jpSurveyableDB.OwningEntity != null)
                                 {
-                                    var order = MoveFleetTowardsTargetOrder.CreateCommand(SelectedFleet, jpSurveyableDB.OwningEntity);
+                                    //var order = MoveFleetTowardsTargetOrder.CreateCommand(SelectedFleet, jpSurveyableDB.OwningEntity);
+                                    var order = WarpFleetTowardsTargetOrder.CreateCommand(SelectedFleet, jpSurveyableDB.OwningEntity);
                                     _uiState.Game.OrderHandler.HandleOrder(order);
 
                                     var order2 = JPSurveyOrder.CreateCommand(_uiState.Faction.Id, SelectedFleet, jpSurveyableDB.OwningEntity);

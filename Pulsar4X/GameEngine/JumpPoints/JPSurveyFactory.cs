@@ -63,13 +63,14 @@ namespace Pulsar4X.Engine
             var posDB = new PositionDB(x, y, 0);
             posDB.MoveType = PositionDB.MoveTypes.None;
             var nameDB = new NameDB($"Gravitational Anomaly #{nameNumber}");
+            var massdb = MassVolumeDB.NewFromMassAndRadius_m(1, 1);
             //for testing purposes
             // var sensorProfileDB = new SensorProfileDB();
             // sensorProfileDB.EmittedEMSpectra.Add(new Sensors.EMWaveForm(0, 500, 1000), 1E9);
             // sensorProfileDB.Reflectivity = 0;
             var visibleByDefaultDB = new VisibleByDefaultDB();
 
-            var protoEntity = new ProtoEntity(new List<BaseDataBlob>() { surveyDB, posDB, nameDB, visibleByDefaultDB });
+            var protoEntity = new ProtoEntity(new List<BaseDataBlob>() { surveyDB, posDB, nameDB, massdb, visibleByDefaultDB });
 
             return protoEntity;
         }

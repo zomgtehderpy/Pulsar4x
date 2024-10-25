@@ -261,8 +261,7 @@ namespace Pulsar4X.Extensions
         
         public static double GetSOI_m(this Entity entity)
         {
-            var orbitDB = entity.GetDataBlob<OrbitDB>();
-            if (orbitDB.Parent != null) //if we're not the parent star
+            if(entity.TryGetDatablob<OrbitDB>(out var orbitDB) && orbitDB.Parent != null) //if we're not the parent star
             {
                 var semiMajAxis = orbitDB.SemiMajorAxis;
 

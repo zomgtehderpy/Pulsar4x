@@ -102,24 +102,9 @@ namespace Pulsar4X.Engine.Orders
 
             return (cmd, null);
         }
-        public static WarpMoveCommand  CreateCommand(Entity orderEntity, Entity targetEntity, DateTime transitStartDatetime)
+        public static WarpMoveCommand CreateCommand(Entity orderEntity, Entity targetEntity, DateTime transitStartDatetime, Vector3 targetOffsetPos_m = new Vector3())
         {
-            var sgp = GeneralMath.StandardGravitationalParameter(targetEntity.GetDataBlob<MassVolumeDB>().MassTotal + orderEntity.GetDataBlob<MassVolumeDB>().MassTotal);
-            (Vector3, DateTime) datetimeArrive;
-            var pos = MoveStateProcessor.GetAbsoluteFuturePosition(orderEntity, transitStartDatetime);
-            var speed = orderEntity.GetDataBlob<WarpAbilityDB>().MaxSpeed;
-            var targetOffsetPos_m = new Vector3(0, 0, 0);
-            if (targetEntity.TryGetDatablob<OrbitDB>(out var odb))
-            {
-                targetOffsetPos_m.X = OrbitMath.LowOrbitRadius(targetEntity);
-                datetimeArrive = WarpMath.GetInterceptPosition(orderEntity, odb, transitStartDatetime, targetOffsetPos_m);
-            }
-            else
-            {
-                var dposAbs = MoveStateProcessor.GetAbsoluteFuturePosition(targetEntity, transitStartDatetime);
-                var distance = (dposAbs - pos).Length();
-                datetimeArrive = ((Vector3)dposAbs, transitStartDatetime + TimeSpan.FromSeconds(distance / speed));
-            }
+            var datetimeArrive = WarpMath.GetInterceptPosition(orderEntity, targetEntity, transitStartDatetime, targetOffsetPos_m);
 
             var cmd = new WarpMoveCommand()
             {
@@ -136,6 +121,7 @@ namespace Pulsar4X.Engine.Orders
             }
             else
             {
+                var sgp = GeneralMath.StandardGravitationalParameter(targetEntity.GetDataBlob<MassVolumeDB>().MassTotal + orderEntity.GetDataBlob<MassVolumeDB>().MassTotal);
                 cmd.MoveTypeAtDestination = PositionDB.MoveTypes.Orbit;
                 cmd.OrbitAtDestination = OrbitMath.FromPosition(targetOffsetPos_m, sgp, datetimeArrive.Item2);;
             }
