@@ -436,7 +436,7 @@ namespace Pulsar4X.Engine
             if(entity == null) throw new NullReferenceException("orbitDB.OwningEntity cannot be null");
 
             var sgp = orbitDB.GravitationalParameter_m3S2;
-            var state = entity.GetRelativeState();
+            var state = MoveMath.GetRelativeState(entity);
             var epoch = entity.StarSysDateTime;
             return KeplerFromPositionAndVelocity(sgp, state.pos, state.Velocity, epoch);
 

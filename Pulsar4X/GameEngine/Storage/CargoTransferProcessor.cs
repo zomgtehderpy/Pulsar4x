@@ -182,8 +182,8 @@ namespace Pulsar4X.Engine
                 parentMass = parent.GetDataBlob<MassVolumeDB>().MassDry;
                 sgp = GeneralMath.StandardGravitationalParameter(parentMass);
 
-                (Vector3 pos, Vector3 Velocity) state1 = entity1.GetRelativeState();
-                (Vector3 pos, Vector3 Velocity) state2 = entity2.GetRelativeState();
+                (Vector3 pos, Vector3 Velocity) state1 = MoveMath.GetRelativeState(entity1);
+                (Vector3 pos, Vector3 Velocity) state2 = MoveMath.GetRelativeState(entity2);
                 r1 = state1.pos.Length();
                 r2 = state2.pos.Length();
             }

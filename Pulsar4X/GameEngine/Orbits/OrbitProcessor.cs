@@ -168,7 +168,7 @@ namespace Pulsar4X.Engine
             var grandparent = parent.GetSOIParentEntity();
             var newParent = grandparent == null ? parent : grandparent;
 
-            var vel = entity.GetAbsoluteState().Velocity;
+            var vel = MoveMath.GetAbsoluteFutureVelocity(entity, atDateTime);
             
             entity.GetDataBlob<PositionDB>().SetParent(newParent);
             var rpos = MoveMath.GetRelativeFuturePosition(entity, atDateTime);

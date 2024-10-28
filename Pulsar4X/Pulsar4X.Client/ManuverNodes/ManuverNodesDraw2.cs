@@ -42,7 +42,7 @@ public class ManuverNodesDraw2 : IDrawData
         {
             var startState = OrbitalMath.GetStateVectors(manuver.StartKepler, manuver.StartDateTime);
             var endState = OrbitalMath.GetStateVectors(manuver.EndKepler, manuver.EndDateTime);
-            var worldPos = manuver.StartSOIParent.GetAbsoluteState().pos;
+            var worldPos = manuver.StartSOIParent.GetDataBlob<PositionDB>().AbsolutePosition;
             switch (manuver.TypeOfManuver)
             {
                 case Manuver.ManuverType.Warp:

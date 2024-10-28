@@ -305,8 +305,8 @@ namespace Pulsar4X.Engine.Orders
             var dvToUse = halfDV - dvUsed;
             if(dvToUse > 0)
             {
-                (Vector3 Position, Vector3 Velocity) curOurRalState = _entityCommanding.GetRelativeState();
-                (Vector3 Position, Vector3 Velocity) curTgtRalState = _targetEntity.GetRelativeState();
+                (Vector3 Position, Vector3 Velocity) curOurRalState = MoveMath.GetRelativeState(_entityCommanding);
+                (Vector3 Position, Vector3 Velocity) curTgtRalState = MoveMath.GetRelativeState(_targetEntity);
                 var dvRemaining = _newtonAbilityDB.DeltaV;
 
                 var tgtVelocity = MoveMath.GetAbsoluteFutureVelocity(_targetEntity, atDateTime);
@@ -526,8 +526,8 @@ namespace Pulsar4X.Engine.Orders
             var dvToUse = halfDV - dvUsed;
             if(dvToUse > 0)
             {
-                (Vector3 pos, Vector3 Velocity) curOurRalState = _entityCommanding.GetRelativeState();
-                (Vector3 pos, Vector3 Velocity) curTgtRalState = _targetEntity.GetRelativeState();
+                (Vector3 pos, Vector3 Velocity) curOurRalState = MoveMath.GetRelativeState(_entityCommanding);
+                (Vector3 pos, Vector3 Velocity) curTgtRalState = MoveMath.GetRelativeState(_targetEntity);
                 var dvRemaining = _newtonAbilityDB.DeltaV;
 
 

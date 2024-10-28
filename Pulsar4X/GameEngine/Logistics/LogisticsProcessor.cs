@@ -334,7 +334,7 @@ public static class LogisticsCycle
                     var myMass = ship.GetDataBlob<MassVolumeDB>().MassTotal;
                     var at = ship.StarSysDateTime;
                     var pos = ship.GetDataBlob<PositionDB>().RelativePosition;
-                    var state = ship.GetRelativeState();
+                    var state = MoveMath.GetRelativeState(ship);
                     var curstate = new ManuverState()
                     {
                         At = at,
@@ -350,7 +350,7 @@ public static class LogisticsCycle
 
                     var smass = sourceSOIParent.GetDataBlob<MassVolumeDB>().MassTotal;
                     var sgp = GeneralMath.StandardGravitationalParameter(curstate.Mass + smass);
-                    var sstate = currentSOIParent.GetRelativeFutureState(curstate.At);
+                    var sstate = MoveMath.GetRelativeFutureState(currentSOIParent,curstate.At);
                     var dvd = CargoTransferProcessor.CalcDVDifference_m(sgp, (curstate.Position, curstate.Velocity), sstate);
                     var svs = source.GetDataBlob<VolumeStorageDB>();
                     var mvs = ship.GetDataBlob<VolumeStorageDB>();

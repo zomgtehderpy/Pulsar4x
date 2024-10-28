@@ -25,10 +25,10 @@ public class WeaponUtils
         return vectorToTarget.Length() / weaponVelocity;
     }
 
-    public static (Vector3 pos, double seconds) PredictTargetPositionAndTime((Vector3 pos, Vector3 Velocity) ourState, DateTime atTime, Entity targetEntity, double weaponVelocity)
+    public static (Vector3 pos, double seconds) PredictTargetPositionAndTime(Vector3 ourPos, DateTime atTime, Entity targetEntity, double weaponVelocity)
     {
-        var targetState = targetEntity.GetAbsoluteState();
-        var vectorToTarget = ourState.pos - targetState.pos;
+        var tgtPos = targetEntity.GetDataBlob<PositionDB>().AbsolutePosition;
+        var vectorToTarget = ourPos - tgtPos;
         var timeToTarget = TimeToTarget(vectorToTarget, weaponVelocity);
         var futureDate = atTime + TimeSpan.FromSeconds(timeToTarget);
         var futurePosition = (Vector3)MoveMath.GetAbsoluteFuturePosition(targetEntity, futureDate);

@@ -1036,7 +1036,7 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
             if(soiParent == null || _currentKE == null)
                 throw new NullReferenceException();
 
-            var parentState = soiParent.GetRelativeState();
+            var parentState = MoveMath.GetRelativeState(soiParent);
             var parentAngle = Math.Atan2(parentState.pos.Y, parentState.pos.X);
 
             double orbitalPeriod = orbitDB.OrbitalPeriod.TotalSeconds;

@@ -54,8 +54,9 @@ public class BeamWeaponProcessor : IHotloopProcessor
         switch(beamInfo.BeamState)
         {
             case BeamInfoDB.BeamStates.Fired:
-                var targetState = beamInfo.TargetEntity.GetAbsoluteState();
-                var vectorToTarget = state.AbsolutePosition - targetState.pos;
+                
+                var tgtPos = beamInfo.TargetEntity.GetDataBlob<PositionDB>().AbsolutePosition;
+                var vectorToTarget = state.AbsolutePosition - tgtPos;
                 var timeToTarget = WeaponUtils.TimeToTarget(vectorToTarget, beamInfo.VelocityVector.Length());
 
                 // we don't really need this, visuals are close enough for most things
@@ -198,10 +199,9 @@ public class BeamWeaponProcessor : IHotloopProcessor
     public static void FireBeamWeapon(Entity launchingEntity, Entity targetEntity, bool hitsTarget, double energy, double wavelen, double beamVelocity, double beamLenInSeconds)
     {
         var nowTime = launchingEntity.StarSysDateTime;
-        var ourState = launchingEntity.GetAbsoluteState();
-        var targetFuturePosTime =WeaponUtils.PredictTargetPositionAndTime(ourState, nowTime, targetEntity, beamVelocity);
-
-        var ourAbsPos = (Vector3)MoveMath.GetAbsoluteFuturePosition(launchingEntity,nowTime);
+        var ourAbsPos = launchingEntity.GetDataBlob<PositionDB>().AbsolutePosition;
+        var targetFuturePosTime =WeaponUtils.PredictTargetPositionAndTime(ourAbsPos, nowTime, targetEntity, beamVelocity);
+        
         var normVector = Vector3.Normalise(targetFuturePosTime.pos - ourAbsPos);
         var absVector =  normVector * beamVelocity;
         var startPos = (PositionDB)launchingEntity.GetDataBlob<PositionDB>().Clone();

@@ -86,7 +86,7 @@ namespace Pulsar4X.Datablobs
         {
             ExitPointAbsolute = targetPosition_m;
 
-            var startState = thisEntity.GetAbsoluteState();
+            var startState = MoveMath.GetAbsoluteState(thisEntity);
             ExitPointAbsolute = targetPosition_m;
             EntryPointAbsolute = startState.pos;
             EntryDateTime = thisEntity.Manager.ManagerSubpulses.StarSysDateTime;
@@ -111,7 +111,7 @@ namespace Pulsar4X.Datablobs
             EntryDateTime = thisEntity.Manager.ManagerSubpulses.StarSysDateTime;
             var targetIntercept = WarpMath.GetInterceptPosition(thisEntity, targetEntity, EntryDateTime, offsetPosition);
 
-            var startState = thisEntity.GetAbsoluteState();
+            var startState = MoveMath.GetAbsoluteState(thisEntity);
             ExitPointAbsolute = targetIntercept.position + offsetPosition;
             EntryPointAbsolute = startState.pos;
             ExitPointrelative = offsetPosition;

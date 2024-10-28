@@ -292,7 +292,7 @@ namespace Pulsar4X.SDL2UI
                 _trueAnom, 
                 _keplerElements.AoP); //OrbitProcessor.InstantaneousOrbitalVelocityVector_AU(_keplerElements, systemDateTime);
             */
-            var state = _entity.GetRelativeState();
+            var state = MoveMath.GetRelativeState(_entity);
             var pos_m = state.pos;
             var vel_m = state.Velocity;
             var ecvec = OrbitMath.EccentricityVector(_sgp, pos_m, (Vector3)vel_m);
@@ -746,7 +746,7 @@ namespace Pulsar4X.SDL2UI
             };
             ElementItems.Add(_bodyPosItem);
 
-            var state = _entity.GetRelativeState();
+            var state = MoveMath.GetRelativeState(_entity);
             var pos_m = state.pos;
             var vel_m = state.Velocity;
 
@@ -1270,7 +1270,7 @@ namespace Pulsar4X.SDL2UI
             _headingItemRel2.NameString = "Heading (rel2)";
             ElementItems.Add(_headingItemRel2);
 
-            var absVel = _entity.GetAbsoluteState().Velocity;
+            var absVel = MoveMath.GetAbsoluteFutureVelocity(_entity, _entity.StarSysDateTime);
             _headingItemAbs = new HeadingElement(
                 _keplerElements, 
                 _sgp, 
@@ -1327,7 +1327,7 @@ namespace Pulsar4X.SDL2UI
                 _trueAnom, 
                 _keplerElements.AoP);
             */
-            var state = _entity.GetRelativeState();
+            var state = MoveMath.GetRelativeState(_entity);
             var pos_m = state.pos;
             var vel_m = state.Velocity;
 
@@ -1480,7 +1480,7 @@ namespace Pulsar4X.SDL2UI
             var vel2 = OrbitalMath.HackVelocityVector(_keplerElements, systemDateTime);
             _headingItemRel2?.Update( vel2);
 
-            var absVel = _entity.GetAbsoluteState().Velocity;
+            var absVel = MoveMath.GetAbsoluteFutureVelocity(_entity, systemDateTime);
             _headingItemAbs?.Update( absVel);
 
             _velvecItem?.Update(vel_m);

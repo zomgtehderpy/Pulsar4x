@@ -19,7 +19,7 @@ namespace Pulsar4X.Engine
         /// <returns>3 manuvers, 0: soi escape, 1:1st hohmman manuver 2: 2nd hohmman manuver</returns>
         public static (Vector3 deltaV, double timeInSeconds)[] InterPlanetaryHohmann(Entity currentParent, Entity targetParent, Entity manuverEntity)
         {
-            var meState = manuverEntity.GetRelativeState();
+            var meState = MoveMath.GetRelativeState(manuverEntity);
             var meOdb = manuverEntity.GetDataBlob<OrbitDB>();
             var meMass = manuverEntity.GetDataBlob<MassVolumeDB>().MassTotal;
             var meSMA = meOdb.SemiMajorAxis;

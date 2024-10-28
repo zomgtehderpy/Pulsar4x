@@ -218,7 +218,7 @@ namespace Pulsar4X.SDL2UI
                             (Vector3 position, Vector3 Velocity) relativeState;
                             try
                             {
-                                relativeState = SelectedEntity.GetRelativeState();
+                                relativeState = MoveMath.GetRelativeState(SelectedEntity);
                             }
                             catch (Exception)
                             {
@@ -369,7 +369,7 @@ namespace Pulsar4X.SDL2UI
 
 
 
-                                var relativeState = SelectedEntity.GetRelativeState();
+                                var relativeState = MoveMath.GetRelativeState(SelectedEntity);
                                 //var globalvec = OrbitMath.OrbitToGlobalVector(relativeState.Velocity, orbitDB.LongitudeOfAscendingNode, orbitDB.Inclination);
                                 var progradeVec = new Vector3(0, 100, 0);
                                 //var thrustvec = OrbitMath.OrbitToGlobalVector(progradeVec, pos, relativeState.Velocity);
