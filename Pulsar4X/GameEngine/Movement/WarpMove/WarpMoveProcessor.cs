@@ -130,22 +130,15 @@ namespace Pulsar4X.Engine
 
                 if (distanceToTargetMt <= distanceToMove) // moving would overtake target, just go directly to target
                 {
-                    var powerDB = entity.GetDataBlob<EnergyGenAbilityDB>();
                     moveDB._parentEnitity = moveDB.TargetEntity;
                     moveDB._position = (Vector2)moveDB.ExitPointrelative;
-                    entity.RemoveDataBlob<WarpMovingDB>();
-
-
-                    if (_gameSettings.StrictNewtonion)
-                        SetOrbitHereFullNewt(entity, moveDB, toDateTime);
+                    var destinationMoveType = moveDB.TargetEntity.GetDataBlob<PositionDB>().MoveType;
+                    
+                    //if our destination is a non moving object eg a grav anomaly or jump point.
+                    if(destinationMoveType == PositionDB.MoveTypes.None)
+                        moveDB.CurrentNonNewtonionVectorMS = Vector3.Zero;
                     else
-                        SetOrbitHereNoNewt(entity, moveDB, toDateTime);
-
-                    powerDB.AddDemand(warpDB.BubbleCollapseCost, entity.StarSysDateTime);
-                    powerDB.AddDemand(-warpDB.BubbleSustainCost, entity.StarSysDateTime);
-                    powerDB.AddDemand(-warpDB.BubbleCollapseCost, entity.StarSysDateTime + TimeSpan.FromSeconds(1));
-
-
+                        EndWarpMove(entity, warpDB, moveDB, toDateTime);
                 }
                 else
                 {
@@ -197,6 +190,61 @@ namespace Pulsar4X.Engine
 
             return canStart;
         }
+
+
+        static void EndWarpMove(Entity entity, WarpAbilityDB warpDB, WarpMovingDB moveDB,  DateTime toDateTime)
+        {
+            var powerDB = entity.GetDataBlob<EnergyGenAbilityDB>();
+
+            
+            
+            powerDB.AddDemand(warpDB.BubbleCollapseCost, entity.StarSysDateTime);
+            powerDB.AddDemand(-warpDB.BubbleSustainCost, entity.StarSysDateTime);
+            powerDB.AddDemand(-warpDB.BubbleCollapseCost, entity.StarSysDateTime + TimeSpan.FromSeconds(1));
+
+            var destinationMoveType = moveDB.TargetEntity.GetDataBlob<PositionDB>().MoveType;
+
+            switch (destinationMoveType)
+            {
+                case PositionDB.MoveTypes.None:
+                {
+                    //if our destination is a non moving object eg a grav anomaly or jump point.
+                    //this case should be handled prior to this.
+                    throw new Exception("shouldn't get here");
+                    break;
+                }
+                case PositionDB.MoveTypes.Orbit:
+                {
+                    entity.RemoveDataBlob<WarpMovingDB>();
+                    if (_gameSettings.StrictNewtonion)
+                        SetOrbitHereFullNewt(entity, moveDB, toDateTime);
+                    else
+                        SetOrbitHereNoNewt(entity, moveDB, toDateTime);
+                    break;
+                }
+                case PositionDB.MoveTypes.NewtonSimple:
+                {
+                    throw new NotImplementedException();
+                    break;
+                }
+                case PositionDB.MoveTypes.NewtonComplex:
+                {
+                    throw new NotImplementedException();
+                    break;
+                }
+                case PositionDB.MoveTypes.Warp:
+                {
+                    var targetSpeed = moveDB.TargetEntity.GetDataBlob<WarpMovingDB>().CurrentNonNewtonionVectorMS;
+                    var newspeed = Math.Min(targetSpeed.Length(), warpDB.MaxSpeed);
+                    moveDB.CurrentNonNewtonionVectorMS = Vector3.Normalise(targetSpeed) * newspeed;
+                    break;
+                }
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
+        }
+        
         
         /// <summary>
         /// Sets a circular orbit without newtonion movement or fuel use.
