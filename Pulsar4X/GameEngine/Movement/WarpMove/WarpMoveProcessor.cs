@@ -133,7 +133,7 @@ namespace Pulsar4X.Engine
                     moveDB._parentEnitity = moveDB.TargetEntity;
                     moveDB._position = (Vector2)moveDB.ExitPointrelative;
                     var destinationMoveType = moveDB.TargetEntity.GetDataBlob<PositionDB>().MoveType;
-                    
+                    moveDB.IsAtTarget = true;
                     //if our destination is a non moving object eg a grav anomaly or jump point.
                     if(destinationMoveType == PositionDB.MoveTypes.None)
                         moveDB.CurrentNonNewtonionVectorMS = Vector3.Zero;
