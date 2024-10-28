@@ -170,14 +170,14 @@ namespace Pulsar4X.Engine.Orders
             {
                  var parent = _entityCommanding.GetSOIParentEntity();
                  if(parent == null) throw new NullReferenceException("parent cannot be null");
-                 var currentVel = _entityCommanding.GetRelativeFutureVelocity(atDateTime);
+                 var currentVel = MoveMath.GetRelativeFutureVelocity(_entityCommanding, atDateTime);
 
                 var parentMass = _entityCommanding.GetSOIParentEntity().GetDataBlob<MassVolumeDB>().MassTotal;
                 var myMass = _entityCommanding.GetDataBlob<MassVolumeDB>().MassTotal;
                 var sgp = GeneralMath.StandardGravitationalParameter(myMass + parentMass);
 
-                var futurePosition = (Vector3)MoveStateProcessor.GetRelativeFuturePosition(_entityCommanding, _vectorDateTime);
-                var futureVector = _entityCommanding.GetRelativeFutureVelocity(_vectorDateTime);
+                var futurePosition = (Vector3)MoveMath.GetRelativeFuturePosition(_entityCommanding, _vectorDateTime);
+                var futureVector = MoveMath.GetRelativeFutureVelocity(_entityCommanding, _vectorDateTime);
                 var pralitiveDV = OrbitalMath.ProgradeToStateVector(sgp, OrbitrelativeDeltaV, futurePosition, futureVector);
 
 
@@ -287,7 +287,7 @@ namespace Pulsar4X.Engine.Orders
                 _totalFuel = _newtonAbilityDB.TotalFuel_kg;
                 var soiParentEntity = _entityCommanding.GetSOIParentEntity();
                 _soiParentMass = soiParentEntity.GetDataBlob<MassVolumeDB>().MassDry;
-                var currentVel = _entityCommanding.GetRelativeFutureVelocity(atDateTime);
+                var currentVel = MoveMath.GetRelativeFutureVelocity(_entityCommanding, atDateTime);
                 if (_entityCommanding.HasDataBlob<NewtonMoveDB>())
                 {
                     _newtonMovedb = _entityCommanding.GetDataBlob<NewtonMoveDB>();
@@ -309,7 +309,7 @@ namespace Pulsar4X.Engine.Orders
                 (Vector3 Position, Vector3 Velocity) curTgtRalState = _targetEntity.GetRelativeState();
                 var dvRemaining = _newtonAbilityDB.DeltaV;
 
-                var tgtVelocity = _targetEntity.GetAbsoluteFutureVelocity(atDateTime);
+                var tgtVelocity = MoveMath.GetAbsoluteFutureVelocity(_targetEntity, atDateTime);
                 //calculate the differencecs in velocity vectors.
                 Vector3 leadToTgt = (curTgtRalState.Velocity - curOurRalState.Velocity);
 
@@ -362,7 +362,7 @@ namespace Pulsar4X.Engine.Orders
                     timespanToIntercept = TimeSpan.FromSeconds(newttt);
                 }
                 DateTime futureDate = atDateTime + timespanToIntercept;
-                var futurePosition = (Vector3)MoveStateProcessor.GetRelativeFuturePosition(_targetEntity, futureDate);
+                var futurePosition = (Vector3)MoveMath.GetRelativeFuturePosition(_targetEntity, futureDate);
 
                 tgtBearing = futurePosition - ourState.Position;
                 distanceToTgt = (tgtBearing).Length();
@@ -507,7 +507,7 @@ namespace Pulsar4X.Engine.Orders
                 _totalFuel = _newtonAbilityDB.TotalFuel_kg;
                 var soiParentEntity = _entityCommanding.GetSOIParentEntity();
                 _soiParentMass = soiParentEntity.GetDataBlob<MassVolumeDB>().MassDry;
-                var currentVel = _entityCommanding.GetRelativeFutureVelocity(atDateTime);
+                var currentVel = MoveMath.GetRelativeFutureVelocity(_entityCommanding, atDateTime);
                 if(_entityCommanding.HasDataBlob<OrbitDB>())
                 _entityCommanding.RemoveDataBlob<OrbitDB>();
                 if(_entityCommanding.HasDataBlob<OrbitUpdateOftenDB>())
@@ -575,7 +575,7 @@ namespace Pulsar4X.Engine.Orders
                     timespanToIntercept = TimeSpan.FromSeconds(timeToIntecept);
                 }
                 DateTime futureDate = atDateTime + timespanToIntercept;
-                var futurePosition = (Vector3)MoveStateProcessor.GetRelativeFuturePosition(_targetEntity, futureDate);
+                var futurePosition = (Vector3)MoveMath.GetRelativeFuturePosition(_targetEntity, futureDate);
 
                 tgtBearing = futurePosition - ourState.Position;
                 distanceToTgt = (tgtBearing).Length();

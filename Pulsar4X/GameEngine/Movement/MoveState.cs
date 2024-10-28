@@ -73,78 +73,84 @@ public class PositionDB : TreeHierarchyDB, IPosition
     public double SGP { get; internal set; }
 
 
-        /// <summary>
-        /// Initialized
-        /// .
-        /// </summary>
-        /// <param name="x">X value.</param>
-        /// <param name="y">Y value.</param>
-        /// <param name="z">Z value.</param>
-        public PositionDB(double x, double y, double z, Entity? parent = null) : base(parent)
+    /// <summary>
+    /// Initialized
+    /// .
+    /// </summary>
+    /// <param name="x">X value.</param>
+    /// <param name="y">Y value.</param>
+    /// <param name="z">Z value.</param>
+    public PositionDB(double x, double y, double z, Entity? parent = null) : base(parent)
+    {
+        AbsolutePosition = new Vector3(x, y, z);
+        SetParent(parent);
+        //SystemGuid = systemGuid;
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="relativePos_m"></param>
+    /// <param name="systemGuid"></param>
+    /// <param name="parent"></param>
+    public PositionDB(Vector3 relativePos, Entity? parent = null) : base(parent)
+    {
+        SetParent(parent); 
+        RelativePosition = relativePos;
+
+    }
+
+    public PositionDB(Entity? parent = null) : base(parent)
+    {
+        Vector3? parentPos = (ParentDB as PositionDB)?.AbsolutePosition;
+        AbsolutePosition = parentPos ?? Vector3.Zero;
+    }
+
+    public PositionDB(PositionDB positionDB)
+        : base(positionDB.Parent)
+    {
+        RelativePosition = positionDB.RelativePosition;
+
+    }
+
+    public override object Clone()
+    {
+        return new PositionDB(this);
+    }
+
+    //[UsedImplicitly]
+
+    /// <summary>
+    /// changes the positions relative to
+    /// Can be null.
+    /// </summary>
+    /// <param name="newParent"></param>
+    internal override void SetParent(Entity? newParent)
+    {
+        if (newParent != null && !newParent.HasDataBlob<PositionDB>())
+            throw new Exception("newParent must have a PositionDB");
+        var oldParent = ParentDB;
+        
+        
+        Vector3 currentAbsolute = this.AbsolutePosition;
+        Vector3 newRelative;
+        if (newParent == null)
         {
-            AbsolutePosition = new Vector3(x, y, z);
-            SetParent(parent);
-            //SystemGuid = systemGuid;
+            newRelative = currentAbsolute;
+            SGP = double.PositiveInfinity;
         }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="relativePos_m"></param>
-        /// <param name="systemGuid"></param>
-        /// <param name="parent"></param>
-        public PositionDB(Vector3 relativePos, Entity? parent = null) : base(parent)
+        else
         {
-            SetParent(parent); 
-            RelativePosition = relativePos;
-   
+            newRelative = currentAbsolute - newParent.GetDataBlob<PositionDB>().AbsolutePosition;
+            var mass = newParent.GetDataBlob<MassVolumeDB>().MassTotal;
+            if(OwningEntity != null)
+                mass += _owningEntity_.GetDataBlob<MassVolumeDB>().MassTotal;
+            SGP = GeneralMath.StandardGravitationalParameter(mass);
         }
-
-        public PositionDB(Entity? parent = null) : base(parent)
-        {
-            Vector3? parentPos = (ParentDB as PositionDB)?.AbsolutePosition;
-            AbsolutePosition = parentPos ?? Vector3.Zero;
-        }
-
-        public PositionDB(PositionDB positionDB)
-            : base(positionDB.Parent)
-        {
-            RelativePosition = positionDB.RelativePosition;
-
-        }
-
-        public override object Clone()
-        {
-            return new PositionDB(this);
-        }
-
-        //[UsedImplicitly]
-
-        /// <summary>
-        /// changes the positions relative to
-        /// Can be null.
-        /// </summary>
-        /// <param name="newParent"></param>
-        internal override void SetParent(Entity? newParent)
-        {
-            if (newParent != null && !newParent.HasDataBlob<PositionDB>())
-                throw new Exception("newParent must have a PositionDB");
-            var oldParent = ParentDB;
-            
-            
-            Vector3 currentAbsolute = this.AbsolutePosition;
-            Vector3 newRelative;
-            if (newParent == null)
-            {
-                newRelative = currentAbsolute;
-            }
-            else
-            {
-                newRelative = currentAbsolute - newParent.GetDataBlob<PositionDB>().AbsolutePosition;
-            }
-            base.SetParent(newParent);
-            RelativePosition = newRelative;
-        }
+        base.SetParent(newParent);
+        RelativePosition = newRelative;
+        
+    }
 }
 
 public class MoveStateProcessor : IInstanceProcessor
@@ -360,121 +366,4 @@ public class MoveStateProcessor : IInstanceProcessor
                 throw new ArgumentOutOfRangeException();
         }
     }
-
-    public static Vector2 GetRelativeFuturePosition(Entity entity, DateTime atDateTime)
-    {
-        PositionDB position = entity.GetDataBlob<PositionDB>();
-        Vector2 pos = new Vector2(0,0);
-        switch (position.MoveType)
-        {
-            case PositionDB.MoveTypes.None:
-            {
-                pos = position.RelativePosition2;
-                break;
-            }
-            case PositionDB.MoveTypes.Orbit:
-            {
-                if(entity.TryGetDatablob<OrbitDB>(out var orbitDB))
-                {
-                    pos = (Vector2)OrbitMath.GetPosition(orbitDB, OrbitMath.GetTrueAnomaly(orbitDB, atDateTime));
-                }
-                else if (entity.TryGetDatablob<OrbitUpdateOftenDB>(out var orbitDB2))
-                {
-                    pos = (Vector2)OrbitMath.GetPosition(orbitDB2, OrbitMath.GetTrueAnomaly(orbitDB2, atDateTime));
-                }
-            }
-                break;
-            case PositionDB.MoveTypes.NewtonSimple:
-            {
-                pos = (Vector2)NewtonSimpleProcessor.GetRelativeState(entity, atDateTime).pos;
-            }
-                break;
-
-            case PositionDB.MoveTypes.NewtonComplex:
-            {
-                var db = entity.GetDataBlob<NewtonMoveDB>();
-                pos = (Vector2)NewtonionMovementProcessor.GetRelativeState(entity, db, atDateTime).pos;
-            }
-                break;
-            case PositionDB.MoveTypes.Warp:
-            {
-                var db = entity.GetDataBlob<WarpMovingDB>();
-                if (atDateTime < db.PredictedExitTime)
-                {
-                    var t = (atDateTime - db.LastProcessDateTime).TotalSeconds;
-                    pos = db._position + (Vector2)(db.CurrentNonNewtonionVectorMS * t);
-                }
-                else
-                {
-                    var endOrbit = db.TargetEndpointOrbit;
-                    pos = (Vector2)OrbitMath.GetPosition(endOrbit, atDateTime);
-                }
-            }
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-        return pos;
-    }
-
-    public static Vector2 GetAbsoluteFuturePosition(Entity entity, DateTime atDateTime)
-    {
-        PositionDB position = entity.GetDataBlob<PositionDB>();
-        Vector2 pos = new Vector2(0,0);
-        switch (position.MoveType)
-        {
-            case PositionDB.MoveTypes.None:
-            {
-                pos = position.AbsolutePosition2;
-                break;
-            }
-            case PositionDB.MoveTypes.Orbit:
-            {
-                if(entity.TryGetDatablob<OrbitDB>(out var orbitDB))
-                {
-                    pos = (Vector2)OrbitMath.GetAbsolutePosition(orbitDB, atDateTime);
-                }
-                else if (entity.TryGetDatablob<OrbitUpdateOftenDB>(out var orbitDB2))
-                {
-                    pos = (Vector2)OrbitMath.GetAbsolutePosition(orbitDB2, atDateTime);
-                }
-            }
-                break;
-            case PositionDB.MoveTypes.NewtonSimple:
-            {
-                pos = (Vector2)NewtonSimpleProcessor.GetAbsoluteState(entity, atDateTime).pos;
-            }
-                break;
-
-            case PositionDB.MoveTypes.NewtonComplex:
-            {
-                var db = entity.GetDataBlob<NewtonMoveDB>();
-                pos = (Vector2)NewtonionMovementProcessor.GetAbsoluteState(entity, db, atDateTime).pos;
-            }
-                break;
-            case PositionDB.MoveTypes.Warp:
-            {
-                var db = entity.GetDataBlob<WarpMovingDB>();
-                if (atDateTime < db.PredictedExitTime)
-                {
-                    var t = (atDateTime - db.LastProcessDateTime).TotalSeconds;
-                    pos = db._position + (Vector2)(db.CurrentNonNewtonionVectorMS * t);
-                }
-                else
-                {
-                    var endOrbit = db.TargetEndpointOrbit;
-                    var rpos = (Vector2)OrbitalMath.GetPosition(endOrbit, atDateTime);
-                    var ppos = GetAbsoluteFuturePosition(db.TargetEntity, atDateTime);
-                    pos = ppos + rpos;
-                }
-            }
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-        return pos;
-    }
 }
-    
-    
-    

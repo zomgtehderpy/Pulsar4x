@@ -133,7 +133,7 @@ namespace Pulsar4X.Engine
             var withinSOIOf = new List<Entity>();
             foreach (var orbit in orbits)
             {
-                var subOrbit = orbit.FindSOIForOrbit(AbsolutePosition);
+                var subOrbit = OrbitMath.FindSOIForOrbit(orbit, AbsolutePosition);
                 if(subOrbit != null && subOrbit.OwningEntity != null)
                     withinSOIOf.Add(subOrbit.OwningEntity);
             }
@@ -171,7 +171,7 @@ namespace Pulsar4X.Engine
             var vel = entity.GetAbsoluteState().Velocity;
             
             entity.GetDataBlob<PositionDB>().SetParent(newParent);
-            var rpos = MoveStateProcessor.GetRelativeFuturePosition(entity, atDateTime);
+            var rpos = MoveMath.GetRelativeFuturePosition(entity, atDateTime);
             var myMass = entity.GetDataBlob<MassVolumeDB>().MassTotal;
             var gpMass = newParent.GetDataBlob<MassVolumeDB>().MassTotal;
             var neworbit = OrbitDB.FromVector(newParent, myMass, gpMass, (Vector3)rpos, vel, atDateTime);

@@ -108,8 +108,8 @@ public class NewtonSimpleProcessor : IHotloopProcessor
         
         if (posdb.Parent != null)
         {
-            pos += MoveStateProcessor.GetAbsoluteFuturePosition(posdb.Parent,atDateTime);
-            vel += posdb.Parent.GetAbsoluteFutureVelocity(atDateTime);
+            pos += MoveMath.GetAbsoluteFuturePosition(posdb.Parent,atDateTime);
+            vel += MoveMath.GetAbsoluteFutureVelocity(posdb.Parent, atDateTime);
         }
         return (pos, vel);
     }

@@ -1058,8 +1058,8 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
             double mySMA = _currentKE.Value.SemiMajorAxis;
             //double escapeSMA = 
             var manuverDateTime = _atDatetime + TimeSpan.FromSeconds(secondsToManuver);
-            var manuverPos = MoveStateProcessor.GetRelativeFuturePosition(_orderEntity,manuverDateTime);
-            var manuverVel = _orderEntity.GetRelativeFutureVelocity(manuverDateTime);
+            var manuverPos = MoveMath.GetRelativeFuturePosition(_orderEntity,manuverDateTime);
+            var manuverVel = MoveMath.GetRelativeFutureVelocity(_orderEntity, manuverDateTime);
             var soi = soiParent.GetDataBlob<OrbitDB>().SOI_m;
             var manuver = OrbitalMath.Hohmann2(_sgp, manuverPos.Length(), soi)[0];
 

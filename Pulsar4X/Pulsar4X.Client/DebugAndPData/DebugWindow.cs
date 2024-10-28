@@ -279,15 +279,15 @@ namespace Pulsar4X.SDL2UI
                                     orbitDB = SelectedEntity.GetDataBlob<OrbitUpdateOftenDB>();
                                 //if (_uiState.CurrentSystemDateTime != lastDate)
                                 //{
-                                pos = orbitDB.GetAbsolutePosition_AU(_uiState.PrimarySystemDateTime);
+                                pos = OrbitMath.GetAbsolutePosition(orbitDB,_uiState.PrimarySystemDateTime);
                                 truAnomoly = orbitDB.GetTrueAnomaly(_uiState.PrimarySystemDateTime);
                                 //lastDate = _uiState.PrimarySystemDateTime;
                                 //}
 
 
-                                ImGui.Text("x: " + pos.X);
-                                ImGui.Text("y: " + pos.Y);
-                                ImGui.Text("z: " + pos.Z);
+                                ImGui.Text("x: " + Stringify.Distance(pos.X));
+                                ImGui.Text("y: " + Stringify.Distance(pos.Y));
+                                ImGui.Text("z: " + Stringify.Distance(pos.Z));
 
                                 ImGui.Text("MeanMotion: " + Angle.ToDegrees(orbitDB.MeanMotion) + " in Deg/s");
                                 ImGui.Text("MeanVelocity: " + Stringify.Velocity(orbitDB.MeanOrbitalVelocityInm()));

@@ -236,7 +236,7 @@ namespace Pulsar4X.Engine
                 return rootPos;
             }
             
-            return rootPos + orbit.GetPosition(ta);
+            return rootPos + GetPosition(orbit, ta);
 
         }
 
@@ -256,7 +256,7 @@ namespace Pulsar4X.Engine
         /// <param name="atDateTime">At date time.</param>
         public static Vector3 InstantaneousOrbitalVelocityVector_m(OrbitDB orbit, DateTime atDateTime)
         {
-            var position = orbit.GetPosition(atDateTime);
+            var position = GetPosition(orbit, atDateTime);
             var sma = orbit.SemiMajorAxis;
             if (orbit.GravitationalParameter_m3S2 == 0 || sma == 0)
                 return new Vector3(); //so we're not returning NaN;
@@ -411,7 +411,23 @@ namespace Pulsar4X.Engine
             return GetSOI(orbit.SemiMajorAxis, orbit._myMass, orbit._parentMass);
         }
         
-        
+        public static OrbitDB FindSOIForOrbit(OrbitDB orbit, Vector3 AbsolutePosition)
+        {
+            var soi = orbit.SOI_m;
+            var pos = orbit.OwningEntity.GetDataBlob<PositionDB>();
+            if (AbsolutePosition.GetDistanceTo_m(pos) < soi)
+            {
+                foreach (OrbitDB? subOrbit in orbit.ChildrenDBs)
+                {
+                    if(subOrbit == null) continue;
+                    var suborbitb = FindSOIForOrbit(subOrbit, AbsolutePosition);
+                    if (suborbitb != null)
+                        return suborbitb;
+                }
+            }
+
+            return null;
+        }
         
         public static KeplerElements KeplerFromOrbitDB(OrbitDB orbitDB)
         {

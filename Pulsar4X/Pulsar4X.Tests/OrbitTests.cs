@@ -549,7 +549,7 @@ namespace Pulsar4X.Tests
 
             var intercept_m = WarpMath.GetInterceptPosition_m(currentPos_m, nonNewtSpeed_m, targetOrbit ,currentDateTime);
 
-            var futurePos1_m = targetOrbit.GetAbsolutePosition_m(intercept_m.Item2);
+            var futurePos1_m = OrbitMath.GetAbsolutePosition(targetOrbit ,intercept_m.Item2);
 
             var futurePos2_m =  intercept_m.Item1;
 

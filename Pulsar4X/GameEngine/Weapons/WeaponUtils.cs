@@ -31,14 +31,14 @@ public class WeaponUtils
         var vectorToTarget = ourState.pos - targetState.pos;
         var timeToTarget = TimeToTarget(vectorToTarget, weaponVelocity);
         var futureDate = atTime + TimeSpan.FromSeconds(timeToTarget);
-        var futurePosition = (Vector3)MoveStateProcessor.GetAbsoluteFuturePosition(targetEntity, futureDate);
+        var futurePosition = (Vector3)MoveMath.GetAbsoluteFuturePosition(targetEntity, futureDate);
         return (futurePosition, timeToTarget);
     }
 
     public static (Vector3 pos, double seconds) PredictTargetPositionAndTime(double timeToTarget, DateTime atTime, Entity targetEntity)
     {
         var futureDate = atTime + TimeSpan.FromSeconds(timeToTarget);
-        var futurePosition = (Vector3)MoveStateProcessor.GetAbsoluteFuturePosition(targetEntity, futureDate);
+        var futurePosition = (Vector3)MoveMath.GetAbsoluteFuturePosition(targetEntity, futureDate);
         return (futurePosition, timeToTarget);
     }
 
@@ -80,7 +80,7 @@ public class WeaponUtils
                 timespanToIntercept = TimeSpan.FromSeconds(newttt);
             }
             DateTime futureDate = atDateTime + timespanToIntercept;
-            var futurePosition = (Vector3)MoveStateProcessor.GetRelativeFuturePosition(targetEntity, futureDate);
+            var futurePosition = (Vector3)MoveMath.GetRelativeFuturePosition(targetEntity, futureDate);
 
             tgtBearing = futurePosition - ourState.pos;
             distanceToTgt = (tgtBearing).Length();

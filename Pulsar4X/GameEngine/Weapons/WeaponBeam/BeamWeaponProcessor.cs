@@ -201,7 +201,7 @@ public class BeamWeaponProcessor : IHotloopProcessor
         var ourState = launchingEntity.GetAbsoluteState();
         var targetFuturePosTime =WeaponUtils.PredictTargetPositionAndTime(ourState, nowTime, targetEntity, beamVelocity);
 
-        var ourAbsPos = (Vector3)MoveStateProcessor.GetAbsoluteFuturePosition(launchingEntity,nowTime);
+        var ourAbsPos = (Vector3)MoveMath.GetAbsoluteFuturePosition(launchingEntity,nowTime);
         var normVector = Vector3.Normalise(targetFuturePosTime.pos - ourAbsPos);
         var absVector =  normVector * beamVelocity;
         var startPos = (PositionDB)launchingEntity.GetDataBlob<PositionDB>().Clone();

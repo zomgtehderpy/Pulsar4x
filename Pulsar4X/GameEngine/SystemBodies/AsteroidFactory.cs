@@ -47,7 +47,7 @@ namespace Pulsar4X.Engine
             planetInfo.SupportsPopulations = false;
             planetInfo.BodyType = BodyType.Asteroid;
 
-            Vector3 targetPos = target.GetDataBlob<OrbitDB>().GetAbsolutePosition_m(collisionDate);
+            Vector3 targetPos = OrbitMath.GetAbsolutePosition(target.GetDataBlob<OrbitDB>(), collisionDate);
             TimeSpan timeToCollision = collisionDate - starSys.Game.TimePulse.GameGlobalDateTime;
 
 
@@ -57,7 +57,7 @@ namespace Pulsar4X.Engine
 
             OrbitDB orbit = OrbitDB.FromVector(parent, myMass, parentMass, targetPos, velocity, collisionDate);
 
-            var currentpos = orbit.GetAbsolutePosition_m(starSys.Game.TimePulse.GameGlobalDateTime);
+            var currentpos = OrbitMath.GetAbsolutePosition(orbit, starSys.Game.TimePulse.GameGlobalDateTime);
             var posDB = new PositionDB(currentpos, parent);
 
 

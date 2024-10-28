@@ -33,7 +33,7 @@ namespace Pulsar4X.Engine
                 }
                 case Manuver.ManuverType.NewtonThrust:
                 {
-                    var currentVel = entity.GetRelativeFutureVelocity(atDateTime);
+                    var currentVel = MoveMath.GetRelativeFutureVelocity(entity, atDateTime);
                     
                     var parentMass = entity.GetSOIParentEntity().GetDataBlob<MassVolumeDB>().MassTotal;
                     var myMass = entity.GetDataBlob<MassVolumeDB>().MassTotal;

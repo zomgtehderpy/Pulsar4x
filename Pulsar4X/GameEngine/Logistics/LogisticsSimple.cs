@@ -152,7 +152,7 @@ namespace Pulsar4X.Engine.Logistics
                 At = targetIntercept.atDateTime,
                 Mass = shipMass,
                 Position = targetIntercept.position,
-                Velocity = target.GetRelativeFutureVelocity(targetIntercept.atDateTime)
+                Velocity = MoveMath.GetRelativeFutureVelocity(target, targetIntercept.atDateTime)
             };
 
             return (mstate, fuelUse);

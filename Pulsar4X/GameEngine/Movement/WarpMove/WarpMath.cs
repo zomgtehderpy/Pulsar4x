@@ -50,8 +50,8 @@ public static class WarpMath
     
     public static (Vector3 position, DateTime etiDateTime) GetInterceptPosition(Entity mover, Entity target, DateTime atDateTime, Vector3 offsetPosition = new Vector3())
     {
-        var moverPos = (Vector3)MoveStateProcessor.GetAbsoluteFuturePosition(mover, atDateTime);
-        var tgtPos = (Vector3)MoveStateProcessor.GetAbsoluteFuturePosition(target, atDateTime);
+        var moverPos = (Vector3)MoveMath.GetAbsoluteFuturePosition(mover, atDateTime);
+        var tgtPos = (Vector3)MoveMath.GetAbsoluteFuturePosition(target, atDateTime);
         var exitPos = tgtPos + offsetPosition;
         double spd_m = mover.GetDataBlob<WarpAbilityDB>().MaxSpeed;
         
@@ -93,7 +93,7 @@ public static class WarpMath
     /// <param name="atDateTime">Datetime of transit start</param>
     public static (Vector3 position, DateTime etiDateTime) GetInterceptPosition(Entity mover, OrbitDB targetOrbit, DateTime atDateTime, Vector3 offsetPosition = new Vector3())
     {
-        var moverPos = (Vector3)MoveStateProcessor.GetAbsoluteFuturePosition(mover, atDateTime);
+        var moverPos = (Vector3)MoveMath.GetAbsoluteFuturePosition(mover, atDateTime);
         double spd_m = mover.GetDataBlob<WarpAbilityDB>().MaxSpeed;
         return WarpMath.GetInterceptPosition_m(moverPos, spd_m, targetOrbit, atDateTime, offsetPosition);
     }
@@ -130,7 +130,7 @@ public static class WarpMath
 
         for (t=0; t< pl.T; t+=dt)
         {
-            p = targetOrbit.GetAbsolutePosition_m(atDateTime + TimeSpan.FromSeconds(t));  //pl.position(sim_t + t);                     // try time t
+            p = OrbitMath.GetAbsolutePosition(targetOrbit, atDateTime + TimeSpan.FromSeconds(t));  //pl.position(sim_t + t);                     // try time t
             p += offsetPosition;
             tt = (p - pos).Length() / speed;  //length(p - pos) / speed;
             a0 = tt - t; if (a0 < 0.0) continue;              // ignore overshoots
@@ -147,7 +147,7 @@ public static class WarpMath
         for (i = 0; i < 10; i++)                               // recursive increase of accuracy
             for (a1 = -1.0, t = tim - dt, T = tim + dt, dt *= 0.1; t < T; t += dt)
             {
-                p = targetOrbit.GetAbsolutePosition_m(atDateTime + TimeSpan.FromSeconds(t));  //p = pl.position(sim_t + t);                     // try time t
+                p = OrbitMath.GetAbsolutePosition(targetOrbit, atDateTime + TimeSpan.FromSeconds(t));  //p = pl.position(sim_t + t);                     // try time t
                 p += offsetPosition;
                 tt = (p - pos).Length() / speed;  //tt = length(p - pos) / speed;
                 a0 = tt - t; if (a0 < 0.0) continue;              // ignore overshoots
@@ -161,7 +161,7 @@ public static class WarpMath
                 }   // remember best option
             }
         // direction
-        p = targetOrbit.GetAbsolutePosition_m(atDateTime + TimeSpan.FromSeconds(tim));//pl.position(sim_t + tim);
+        p = OrbitMath.GetAbsolutePosition(targetOrbit, atDateTime + TimeSpan.FromSeconds(tim));//pl.position(sim_t + tim);
         p += offsetPosition;
         //dir = normalize(p - pos);
         return (p, atDateTime + TimeSpan.FromSeconds(tim));

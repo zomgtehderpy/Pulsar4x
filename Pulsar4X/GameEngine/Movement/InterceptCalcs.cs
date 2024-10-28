@@ -103,11 +103,11 @@ namespace Pulsar4X.Engine
             //PositionDB moverPosition = mover.GetDataBlob<PositionDB>();
 
             OrbitDB moverOrbit = mover.GetDataBlob<OrbitDB>();
-            Vector3 moverPos = moverOrbit.GetAbsolutePosition_m(atDateTime);
+            Vector3 moverPos = OrbitMath.GetAbsolutePosition(moverOrbit, atDateTime);
 
             //PropulsionAbilityDB moverPropulsion = mover.GetDataBlob<PropulsionAbilityDB>();
 
-            Vector3 targetPos = targetOrbit.GetAbsolutePosition_m(atDateTime);
+            Vector3 targetPos = OrbitMath.GetAbsolutePosition(targetOrbit, atDateTime);
 
             int speed = 25000;//moverPropulsion.MaximumSpeed * 100; //299792458;
 
@@ -118,7 +118,7 @@ namespace Pulsar4X.Engine
             DateTime edi = atDateTime;
             DateTime edi_prev = atDateTime;
 
-            Vector3 predictedPos = targetOrbit.GetAbsolutePosition_m(edi_prev);
+            Vector3 predictedPos = OrbitMath.GetAbsolutePosition(targetOrbit, edi_prev);
             double distance = (predictedPos - moverPos).Length();
             eti = TimeSpan.FromSeconds(distance / speed);
 
@@ -134,7 +134,7 @@ namespace Pulsar4X.Engine
                     eti_prev = eti;
                     edi_prev = edi;
 
-                    predictedPos = targetOrbit.GetAbsolutePosition_m(edi_prev);
+                    predictedPos = OrbitMath.GetAbsolutePosition(targetOrbit, edi_prev);
 
                     distance = (predictedPos - moverPos).Length();
                     eti = TimeSpan.FromSeconds(distance / speed);

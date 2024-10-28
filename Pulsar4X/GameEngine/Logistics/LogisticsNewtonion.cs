@@ -78,7 +78,7 @@ namespace Pulsar4X.Engine.Logistics
                 // double TotalSeconds = 0;
                 
                 var time = shippingEntity.StarSysDateTime;
-                var pos = MoveStateProcessor.GetRelativeFuturePosition(shippingEntity,time);
+                var pos = MoveMath.GetRelativeFuturePosition(shippingEntity,time);
                 List<(double deltav, double secTillNextManuver)> dvandTimes = new List<(double deltav, double secTillNextManuver)>();
                 double totalTimeInSeconds = 0;
                 for (int k = 0; k < i; k++)
