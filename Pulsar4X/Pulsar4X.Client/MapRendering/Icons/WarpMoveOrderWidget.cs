@@ -52,7 +52,7 @@ namespace Pulsar4X.SDL2UI
             _movingEntityCurrentOrbit = _movingEntity.GetDataBlob<OrbitDB>();
             _transitLeaveDateTime = _currentDateTime;
 
-            _parentPositionDB = _movingEntity.GetSOIParentPositionDB();
+            _parentPositionDB = MoveMath.GetSOIParentPositionDB(_movingEntity);
             _departIcon = TransitIcon.CreateDepartIcon(_parentPositionDB);
             OnPhysicsUpdate();
         }

@@ -65,7 +65,7 @@ namespace Pulsar4X.SDL2UI
         {
         }
 
-        public NewtonSimpleIcon(EntityState entityState, NewtonSimpleMoveDB newtonSimpleMoveDB, List<List<UserOrbitSettings>> settings) : base(entityState.Entity.GetSOIParentPositionDB())
+        public NewtonSimpleIcon(EntityState entityState, NewtonSimpleMoveDB newtonSimpleMoveDB, List<List<UserOrbitSettings>> settings) : base(MoveMath.GetSOIParentPositionDB(entityState.Entity))
         {
             entityState.OrbitIcon = this;
             BodyType = entityState.BodyType;

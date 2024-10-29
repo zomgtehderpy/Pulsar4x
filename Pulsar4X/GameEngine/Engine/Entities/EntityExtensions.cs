@@ -32,12 +32,7 @@ namespace Pulsar4X.Extensions
                 return entity.GetDataBlob<NameDB>().GetName(factionID);
             return "Unknown";
         }
-
-        public static PositionDB? GetSOIParentPositionDB(this Entity entity)
-        {
-            return (PositionDB?)entity.GetDataBlob<PositionDB>().ParentDB;
-        }
-
+        
 
         /// <summary>
         /// Gets the Sphere of influence parent (the entity this object is orbiting) for a given entity.
@@ -54,15 +49,6 @@ namespace Pulsar4X.Extensions
             return positionDB.Parent;
         }
         
-        /// <summary>
-        /// For more efficent, get and store a reference to PositionDB.
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        public static Vector3 GetAbsolutePosition(this Entity entity)
-        {
-            return entity.GetDataBlob<PositionDB>().AbsolutePosition;
-        }
         
         public static double GetSOI_m(this Entity entity)
         {

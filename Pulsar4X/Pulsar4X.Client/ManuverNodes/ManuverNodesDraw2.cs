@@ -95,7 +95,7 @@ public class ManuverNodesDraw2 : IDrawData
         }
         if (_drawPoints.Length != _points.Count + 1)
             _drawPoints = new SDL.SDL_Point[_points.Count + 1];
-        _bodyAbsPos = (Vector2)_db.OwningEntity.GetAbsolutePosition();
+        _bodyAbsPos = (Vector2)MoveMath.GetAbsolutePosition(_db.OwningEntity);
     }
 
     double RadiusFromFocal(KeplerElements ke, double theta)
@@ -135,7 +135,7 @@ public class ManuverNodesDraw2 : IDrawData
     {
         if (_drawPoints.Length != _points.Count + 1)
             _drawPoints = new SDL.SDL_Point[_points.Count + 1];
-        _bodyAbsPos = (Vector2)_db.OwningEntity.GetAbsolutePosition();
+        _bodyAbsPos = (Vector2)MoveMath.GetAbsolutePosition(_db.OwningEntity);
     }
 
     public void Draw(IntPtr rendererPtr, Camera camera)

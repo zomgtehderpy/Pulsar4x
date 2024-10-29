@@ -206,7 +206,7 @@ namespace Pulsar4X.SDL2UI
 
         private Entity _entity;
 
-        public OrbitalDebugWidget(EntityState entityState) : base(entityState.Entity.GetSOIParentPositionDB())
+        public OrbitalDebugWidget(EntityState entityState) : base(MoveMath.GetSOIParentPositionDB(entityState.Entity))
         {
             _entity = entityState.Entity;
             _bodyPosition = _entity.GetDataBlob<PositionDB>();
@@ -223,7 +223,7 @@ namespace Pulsar4X.SDL2UI
                 var myMass = _entity.GetDataBlob<MassVolumeDB>().MassDry;
                 _sgp = GeneralMath.StandardGravitationalParameter(myMass + parentMass);
                 parentname = parentEntity.GetOwnersName();
-                parentPos = parentEntity.GetAbsolutePosition();
+                parentPos = _positionDB.AbsolutePosition;
             }
 
             EntityGuid = entityState.Entity.Id;
@@ -750,7 +750,7 @@ namespace Pulsar4X.SDL2UI
             var pos_m = state.pos;
             var vel_m = state.Velocity;
 
-            var posA_m = _entity.GetAbsolutePosition();
+            var posA_m = MoveMath.GetAbsolutePosition(_entity);
             _bodyPosFromState = new ElementItem()
             {
                 NameString = "Object RelativePosition (P) - from State",
@@ -1361,7 +1361,7 @@ namespace Pulsar4X.SDL2UI
 
             _bodyPosItem.Shape.StartPoint = _bodyPosPnt_m;
 
-            var posA_m = _entity.GetAbsolutePosition();
+            var posA_m = MoveMath.GetAbsolutePosition(_entity);
 
             if(_bodyPosFromState == null || _bodyPosFromState.Shape == null)
                 throw new NullReferenceException();

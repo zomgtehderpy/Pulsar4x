@@ -77,7 +77,9 @@ namespace Pulsar4X.Datablobs
 
         public float ToHitChance(Entity launchingEntity, Entity tgtEntity)
         {
-            double range = Math.Abs((launchingEntity.GetAbsolutePosition() - tgtEntity.GetAbsolutePosition()).Length());
+            var launchPos = MoveMath.GetAbsolutePosition(launchingEntity);
+            var tgtPos = MoveMath.GetAbsolutePosition(tgtEntity);
+            double range = Math.Abs((launchPos - tgtPos).Length());
 
             //var ttt = BeamWeapnProcessor.TimeToTarget(range, launchingEntity.))
             //tempory timetotarget

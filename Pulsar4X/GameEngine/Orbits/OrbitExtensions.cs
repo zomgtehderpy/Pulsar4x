@@ -36,19 +36,7 @@ namespace Pulsar4X.Extensions
         {
             return OrbitMath.GetTrueAnomaly(orbit, time);
         }
-
-        /// <summary>
-        /// this allows us to re-use the array, rather than re-creating it each time.
-        /// ThreadStatic ensures that we have a different array for each thread which avoids thread problems.
-        /// however it only initialises once, so we're checking if it's null.
-        /// this whole thing should help unnessisary memory allocation which means less garbage collection.
-        /// </summary>
-        private const int numIterations = 1000;
-        [ThreadStatic]
-        private static double[] e = new double[numIterations];
-
-
-
+        
 
         /// <summary>
         /// Parent relative velocity vector.

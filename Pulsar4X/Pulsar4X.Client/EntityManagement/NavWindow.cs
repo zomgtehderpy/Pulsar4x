@@ -131,7 +131,7 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
 
             _uiState.SelectedSysMapRender?.SelectedEntityExtras.Add(_manuverLines);
 
-            var soiParentPosition = _orderEntity.GetSOIParentPositionDB();
+            var soiParentPosition = MoveMath.GetSOIParentPositionDB(_orderEntity);
             if(soiParentPosition == null)
                 throw new NullReferenceException();
             _manuverLines.RootSequence.ParentPosition = soiParentPosition;
@@ -235,7 +235,7 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
 
         internal override void Display()
         {
-            var soiParentPosition = _orderEntity.GetSOIParentPositionDB();
+            var soiParentPosition = MoveMath.GetSOIParentPositionDB(_orderEntity);
             if (!IsActive || soiParentPosition == null)
                 return;
             ImGui.SetNextWindowSize(new Vector2(600f, 400f), ImGuiCond.FirstUseEver);

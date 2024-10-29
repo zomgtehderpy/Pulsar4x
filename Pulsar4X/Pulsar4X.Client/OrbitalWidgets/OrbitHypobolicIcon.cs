@@ -57,7 +57,7 @@ namespace Pulsar4X.SDL2UI
 
         double IKepler.LinearEccent => _ke.LinearEccentricity;
         
-        public OrbitHypobolicIcon(EntityState entityState, List<List<UserOrbitSettings>> settings) : base(entityState.Entity.GetSOIParentPositionDB())
+        public OrbitHypobolicIcon(EntityState entityState, List<List<UserOrbitSettings>> settings) : base(MoveMath.GetSOIParentPositionDB(entityState.Entity))
         {
             entityState.OrbitIcon = this;
             BodyType = entityState.BodyType;
