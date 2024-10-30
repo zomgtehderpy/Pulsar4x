@@ -116,17 +116,11 @@ namespace Pulsar4X.Engine
                 double deltaT = (toDateTime - dateTimeFrom).TotalSeconds;
 
                 Vector3 targetPosMt = moveDB.ExitPointAbsolute;
-
-                var deltaVecToTargetMt = moveDB._position - (Vector2)targetPosMt;
-
+                
                 var newPositionMt = moveDB._position + (Vector2)currentVelocityMS * deltaT;
-
-                var distanceToTargetMt = deltaVecToTargetMt.Length();
-
-                var positionDelta = moveDB._position - newPositionMt;
-
-                double distanceToMove = positionDelta.Length();
-
+                
+                double distanceToMove = ( moveDB._position - newPositionMt).Length();
+                double distanceToTargetMt = (moveDB._position - (Vector2)targetPosMt).Length();
 
                 if (distanceToTargetMt <= distanceToMove) // moving would overtake target, just go directly to target
                 {
@@ -152,17 +146,20 @@ namespace Pulsar4X.Engine
         
         public static bool StartNonNewtTranslation(Entity entity)
         {
-            var moveDB = entity.GetDataBlob<WarpMovingDB>();
+            
             var warpDB = entity.GetDataBlob<WarpAbilityDB>();
             var positionDB = entity.GetDataBlob<PositionDB>();
             var maxSpeedMS = warpDB.MaxSpeed;
             var powerDB = entity.GetDataBlob<EnergyGenAbilityDB>();
             EnergyGenProcessor.EnergyGen(entity, entity.StarSysDateTime);
             positionDB.SetParent(positionDB.Root);
+
+            Vector3 currentPositionMt = positionDB.AbsolutePosition;
+            
+            
+            var moveDB = entity.GetDataBlob<WarpMovingDB>();
             moveDB._position = (Vector2)positionDB.AbsolutePosition;
             Vector3 targetPosMt = moveDB.ExitPointAbsolute;
-            Vector3 currentPositionMt = positionDB.AbsolutePosition;
-
             Vector3 postionDelta = currentPositionMt - targetPosMt;
             double totalDistance = postionDelta.Length();
 
@@ -173,11 +170,13 @@ namespace Pulsar4X.Engine
             bool canStart = false;
             if (creationCost <= estored)
             {
-
+                var startState = MoveMath.GetAbsoluteState(entity);
                 var currentVelocityMS = Vector3.Normalise(targetPosMt - currentPositionMt) * maxSpeedMS;
-                warpDB.CurrentVectorMS = currentVelocityMS;
+                var speed = currentVelocityMS.Length();
                 moveDB.CurrentNonNewtonionVectorMS = currentVelocityMS;
-                moveDB.LastProcessDateTime = entity.Manager.ManagerSubpulses.StarSysDateTime;
+                moveDB.LastProcessDateTime = entity.StarSysDateTime;
+                moveDB.SavedNewtonionVector = startState.Velocity;
+                moveDB.EntryPointAbsolute = startState.pos;
 
                 //estore = (estore.stored - creationCost, estore.maxStore);
                 powerDB.AddDemand(creationCost, entity.StarSysDateTime);

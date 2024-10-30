@@ -14,8 +14,7 @@ namespace Pulsar4X.Datablobs
         public double BubbleCreationCost { get; internal set; }
         public double BubbleSustainCost { get; internal set; }
         public double BubbleCollapseCost { get; internal set; }
-
-        public Vector3 CurrentVectorMS { get; internal set; }
+        
 
         public WarpAbilityDB()
         {
@@ -29,7 +28,6 @@ namespace Pulsar4X.Datablobs
             BubbleCreationCost = db.BubbleCreationCost;
             BubbleSustainCost = db.BubbleSustainCost;
             BubbleCollapseCost = db.BubbleCollapseCost;
-            CurrentVectorMS = db.CurrentVectorMS;
         }
 
         public override object Clone()

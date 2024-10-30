@@ -436,17 +436,13 @@ namespace Pulsar4X.SDL2UI
                                 WarpAbilityDB warpDB = SelectedEntity.GetDataBlob<WarpAbilityDB>();
 
                                 ImGui.Text("Max Speed: " + warpDB.MaxSpeed);
-                                ImGui.Text("CurrentVector: " + warpDB.CurrentVectorMS);
-                                ImGui.Text("Current Speed: " + warpDB.CurrentVectorMS.Length());
-
-
                                 //ImGui.Text("Energy type: " + warpDB.EnergyType);
                                 ImGui.Text(SelectedEntity.GetFactionOwner.GetDataBlob<FactionInfoDB>().Data.CargoGoods.GetMaterial(warpDB.EnergyType).Name);
 
                                 ImGui.Text("Creation Cost: " + warpDB.BubbleCreationCost.ToString());
                                 ImGui.Text("Sustain Cost: " + warpDB.BubbleSustainCost.ToString());
                                 ImGui.Text("Collapse Cost: " + warpDB.BubbleCollapseCost.ToString());
-
+                                
                             }
 
 
@@ -491,6 +487,9 @@ namespace Pulsar4X.SDL2UI
                                 ImGui.Text("Y:" + Stringify.Distance(db.ExitPointrelative.Y));
                                 ImGui.Text("Z:" + Stringify.Distance(db.ExitPointrelative.Z));
 
+                                ImGui.Text("CurrentVector: " + db.CurrentNonNewtonionVectorMS);
+                                ImGui.Text("Current Speed: " + db.CurrentNonNewtonionVectorMS.Length());
+                                ImGui.Text("NewtonionVector " + db.SavedNewtonionVector);
 
                                 ImGui.Text("EDA " + db.PredictedExitTime.ToString());
                                 double distance = Distance.DistanceBetween(db.EntryPointAbsolute, db.ExitPointAbsolute);

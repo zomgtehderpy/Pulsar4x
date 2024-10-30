@@ -234,6 +234,7 @@ namespace Pulsar4X.Engine.Orders
                 var shipCommand = WarpMoveCommand.CreateCommand(ship, Target, atDateTime);
 
                 _shipCommands.Add(shipCommand);
+                ship.Manager.Game.OrderHandler.HandleOrder(shipCommand);
             }
             IsRunning = true;
         }
