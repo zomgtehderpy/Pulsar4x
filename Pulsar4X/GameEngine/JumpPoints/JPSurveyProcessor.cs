@@ -5,6 +5,7 @@ using Pulsar4X.Events;
 using Pulsar4X.Extensions;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Messaging;
+using Pulsar4X.Orbital;
 
 namespace Pulsar4X.Engine;
 
@@ -49,7 +50,9 @@ public class JPSurveyProcessor : IInstanceProcessor
 
         if(entity.TryGetDatablob<JPSurveyAbilityDB>(out var jpSurveyAbilityDB))
         {
-            totalSurveyPoints += jpSurveyAbilityDB.Speed;
+            var distance =  MoveMath.GetDistanceBetween(entity, Target);
+            if(distance < 100000)
+                totalSurveyPoints += jpSurveyAbilityDB.Speed;
         }
 
         if(entity.TryGetDatablob<FleetDB>(out var fleetDB))

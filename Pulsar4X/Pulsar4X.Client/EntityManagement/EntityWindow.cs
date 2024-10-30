@@ -233,7 +233,13 @@ namespace Pulsar4X.SDL2UI
                     ImGui.NewLine();
                     ImGui.TextWrapped("Order a fleet equipped with a gravitational surveyor to survey this location. A successful survey may reveal a Jump Point to another system.");
                     ImGui.NewLine();
-                    ImGui.TextWrapped("Survey Points Required: " + jPSurveyableDB.PointsRequired);
+                    
+                    var factionID = _uiState.Faction.Id;
+                    var remainingPoints = jPSurveyableDB.PointsRequired;
+                    if( jPSurveyableDB.SurveyPointsRemaining.ContainsKey(factionID))
+                        remainingPoints = jPSurveyableDB.SurveyPointsRemaining[factionID];
+                    
+                    ImGui.TextWrapped("Survey Points Required: " + remainingPoints + "/" + jPSurveyableDB.PointsRequired);
                 }
 
                 ImGui.Columns(1);
