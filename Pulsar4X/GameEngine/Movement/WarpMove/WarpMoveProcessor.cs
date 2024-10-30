@@ -158,6 +158,8 @@ namespace Pulsar4X.Engine
             
             
             var moveDB = entity.GetDataBlob<WarpMovingDB>();
+            var tgt = moveDB.TargetEntity.GetDataBlob<PositionDB>();
+            var tgtpos = tgt.AbsolutePosition;
             moveDB._position = (Vector2)positionDB.AbsolutePosition;
             Vector3 targetPosMt = moveDB.ExitPointAbsolute;
             Vector3 postionDelta = currentPositionMt - targetPosMt;

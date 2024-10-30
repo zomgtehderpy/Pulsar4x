@@ -61,7 +61,7 @@ public static class WarpMath
             case PositionDB.MoveTypes.None:
             {
                 var distance = (exitPos - moverPos).Length();
-                var intercept = ((Vector3)moverPos, atDateTime + TimeSpan.FromSeconds(distance / spd_m));
+                var intercept = ((Vector3)exitPos, atDateTime + TimeSpan.FromSeconds(distance / spd_m));
                 return intercept;
                 break;
             }
