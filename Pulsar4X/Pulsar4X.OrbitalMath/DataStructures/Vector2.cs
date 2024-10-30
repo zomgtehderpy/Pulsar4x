@@ -322,8 +322,56 @@ namespace Pulsar4X.Orbital
         {
             get
             {
-                return $"({X},{Y})";
+                string strx = Distance(X);
+                string stry = Distance(Y);
+                string strmag = Distance(Length());
+                return $"(X:{strx},Y:{stry}), Magnitude: {strmag})";
             }
+        }
+        private static string Distance(double length_m,  string format = "0.###")
+        {
+
+            string stringDistance = "0 m";
+            double abslen = Math.Abs(length_m);
+            double len;
+            if (abslen > 1.0e12)
+            {
+                len = length_m * 1.0e-12;
+                stringDistance = len.ToString(format) + " GKm";
+            }
+            else if (abslen > 1.0e9)
+            {
+                len = length_m * 1.0e-9;
+                stringDistance = len.ToString(format) + " MKm";
+            }
+            else if (abslen > 1.0e6)
+            {
+                len = length_m * 1.0e-6;
+                stringDistance = len.ToString(format) + " KKm";
+            }
+            else if (abslen > 1.0e3)
+            {
+                len = length_m * 0.001;
+                stringDistance = len.ToString(format) + " Km";
+            }
+
+            else if (abslen > 0.1)
+            {
+                stringDistance = length_m.ToString(format) + " m";
+            }
+            else if (abslen > 0.001)
+            {
+                len = length_m * 100;
+                stringDistance = len.ToString(format + "cm");
+            }
+
+            else
+            {
+                len = length_m * 1000;
+                stringDistance = len.ToString(format + "mm");
+            }
+
+            return stringDistance;
         }
 
     }
