@@ -616,7 +616,7 @@ namespace Pulsar4X.SDL2UI
                             {
                                 if(jumpGateDB.OwningEntity != null)
                                 {
-                                    var order = MoveFleetTowardsTargetOrder.CreateCommand(SelectedFleet, jumpGateDB.OwningEntity);
+                                    var order = WarpFleetTowardsTargetOrder.CreateCommand(SelectedFleet, jumpGateDB.OwningEntity);
                                     _uiState.Game.OrderHandler.HandleOrder(order);
 
                                     JumpOrder.CreateAndExecute(_uiState.Game, _uiState.Faction, SelectedFleet, jumpGateDB);
