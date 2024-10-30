@@ -339,5 +339,11 @@ public static class MoveMath
     {
         return (PositionDB?)entity.GetDataBlob<PositionDB>().ParentDB;
     }
-        
+
+    public static double GetDistanceBetween(Entity a, Entity b)
+    {
+        var dba = a.GetDataBlob<PositionDB>();
+        var dbb = b.GetDataBlob<PositionDB>();
+        return (dba.AbsolutePosition - dbb.AbsolutePosition).Length();
+    }
 }
