@@ -28,7 +28,7 @@ namespace Pulsar4X.Engine.Orders
             get
             {
                 string targetName = _targetEntity.GetDataBlob<NameDB>().GetName(_factionEntity);
-                return "Warp to + " + Stringify.Distance(TargetOffsetPosition_m.Length()) + " from " + targetName;
+                return "Warp to + " + Stringify.Distance(EndpointRelitivePosition.Length()) + " from " + targetName;
             }
         }
 
@@ -43,19 +43,19 @@ namespace Pulsar4X.Engine.Orders
 
         [JsonIgnore]
         Entity _factionEntity;
-        WarpMovingDB _db;
+        WarpMovingDB _warpingDB;
 
 
         Entity _entityCommanding;
         internal override Entity EntityCommanding { get { return _entityCommanding; } }
 
-        public Vector3 TargetOffsetPosition_m { get; set; }
         public DateTime TransitStartDateTime;
-        public Vector3 ExpendDeltaV;
+        public Vector3 EndpointRelitivePosition { get; set; }
+        public Vector3 EndpointTargetExpendDeltaV;
         /// <summary>
         /// the orbit we want to be in at the target.
         /// </summary>
-        public KeplerElements OrbitAtDestination;
+        public KeplerElements EndpointTargetOrbit;
         public PositionDB.MoveTypes MoveTypeAtDestination;
 
         /// <summary>
@@ -77,9 +77,9 @@ namespace Pulsar4X.Engine.Orders
                 EntityCommandingGuid = orderEntity.Id,
                 CreatedDate = orderEntity.Manager.ManagerSubpulses.StarSysDateTime,
                 TargetEntityGuid = targetEntity.Id,
-                TargetOffsetPosition_m = targetOffsetPos_m,
+                EndpointRelitivePosition = targetOffsetPos_m,
                 TransitStartDateTime = transitStartDatetime,
-                ExpendDeltaV = expendDeltaV,
+                EndpointTargetExpendDeltaV = expendDeltaV,
             };
 
             orderEntity.Manager.Game.OrderHandler.HandleOrder(cmd);
@@ -102,9 +102,9 @@ namespace Pulsar4X.Engine.Orders
 
             return (cmd, null);
         }
-        public static WarpMoveCommand CreateCommand(Entity orderEntity, Entity targetEntity, DateTime transitStartDatetime, Vector3 targetOffsetPos_m = new Vector3())
+        public static WarpMoveCommand CreateCommand(Entity orderEntity, Entity targetEntity, DateTime transitStartDatetime, Vector3 endpointRelativePos = new Vector3())
         {
-            var datetimeArrive = WarpMath.GetInterceptPosition(orderEntity, targetEntity, transitStartDatetime, targetOffsetPos_m);
+            var datetimeArrive = WarpMath.GetInterceptPosition(orderEntity, targetEntity, transitStartDatetime, endpointRelativePos);
 
             var cmd = new WarpMoveCommand()
             {
@@ -112,7 +112,7 @@ namespace Pulsar4X.Engine.Orders
                 EntityCommandingGuid = orderEntity.Id,
                 CreatedDate = orderEntity.Manager.ManagerSubpulses.StarSysDateTime,
                 TargetEntityGuid = targetEntity.Id,
-                TargetOffsetPosition_m = targetOffsetPos_m,
+                EndpointRelitivePosition = endpointRelativePos,
                 TransitStartDateTime = transitStartDatetime,
             };
             if (targetEntity.GetDataBlob<PositionDB>().MoveType == PositionDB.MoveTypes.None)
@@ -123,7 +123,7 @@ namespace Pulsar4X.Engine.Orders
             {
                 var sgp = GeneralMath.StandardGravitationalParameter(targetEntity.GetDataBlob<MassVolumeDB>().MassTotal + orderEntity.GetDataBlob<MassVolumeDB>().MassTotal);
                 cmd.MoveTypeAtDestination = PositionDB.MoveTypes.Orbit;
-                cmd.OrbitAtDestination = OrbitMath.FromPosition(targetOffsetPos_m, sgp, datetimeArrive.Item2);;
+                cmd.EndpointTargetOrbit = OrbitMath.KeplerCircularFromPosition(sgp, endpointRelativePos, datetimeArrive.Item2);;
             }
 
             orderEntity.Manager.Game.OrderHandler.HandleOrder(cmd);
@@ -131,6 +131,39 @@ namespace Pulsar4X.Engine.Orders
 
             return cmd;
         }
+        
+        public static WarpMoveCommand CreateCommand(Entity orderEntity, Entity targetEntity, DateTime transitStartDatetime, KeplerElements insertonTargetOrbit, Vector3 exitPointRelative)
+        {
+            var targetOffsetPos_m = exitPointRelative;
+            var datetimeArrive = WarpMath.GetInterceptPosition(orderEntity, targetEntity, transitStartDatetime, targetOffsetPos_m);
+
+            var cmd = new WarpMoveCommand()
+            {
+                RequestingFactionGuid = orderEntity.FactionOwnerID,
+                EntityCommandingGuid = orderEntity.Id,
+                CreatedDate = orderEntity.Manager.ManagerSubpulses.StarSysDateTime,
+                TargetEntityGuid = targetEntity.Id,
+                EndpointRelitivePosition = targetOffsetPos_m,
+                EndpointTargetOrbit = insertonTargetOrbit,
+                TransitStartDateTime = transitStartDatetime,
+            };
+            if (targetEntity.GetDataBlob<PositionDB>().MoveType == PositionDB.MoveTypes.None)
+            {
+                cmd.MoveTypeAtDestination = PositionDB.MoveTypes.None;
+            }
+            else
+            {
+                var sgp = GeneralMath.StandardGravitationalParameter(targetEntity.GetDataBlob<MassVolumeDB>().MassTotal + orderEntity.GetDataBlob<MassVolumeDB>().MassTotal);
+                cmd.MoveTypeAtDestination = PositionDB.MoveTypes.Orbit;
+                cmd.EndpointTargetOrbit = OrbitMath.KeplerCircularFromPosition(sgp, targetOffsetPos_m, datetimeArrive.Item2);;
+            }
+
+            orderEntity.Manager.Game.OrderHandler.HandleOrder(cmd);
+
+
+            return cmd;
+        }
+        
         internal override bool IsValidCommand(Game game)
         {
             if (CommandHelpers.IsCommandValid(game.GlobalManager, RequestingFactionGuid, EntityCommandingGuid, out _factionEntity, out _entityCommanding))
@@ -157,26 +190,27 @@ namespace Pulsar4X.Engine.Orders
                 if (creationCost > estored)
                     return;
 
-                _db = new WarpMovingDB(_entityCommanding, _targetEntity, TargetOffsetPosition_m);
-                _db.ExpendDeltaV = ExpendDeltaV;
+                _warpingDB = new WarpMovingDB(_entityCommanding, _targetEntity, EndpointRelitivePosition);
+                _warpingDB.EndpointTargetOrbit = EndpointTargetOrbit;
+                _warpingDB.EndpointTargetExpendDeltaV = EndpointTargetExpendDeltaV;
 
-                EntityCommanding.SetDataBlob(_db);
+                EntityCommanding.SetDataBlob(_warpingDB);
 
                 WarpMoveProcessor.StartNonNewtTranslation(EntityCommanding);
                 IsRunning = true;
 
                 //debug code:
-                double distance = (_db.EntryPointAbsolute - _db.ExitPointAbsolute).Length();
+                double distance = (_warpingDB.EntryPointAbsolute - _warpingDB.ExitPointAbsolute).Length();
                 double time = distance / _entityCommanding.GetDataBlob<WarpAbilityDB>().MaxSpeed;
-                //Assert.AreEqual((_db.PredictedExitTime - _db.EntryDateTime).TotalSeconds, time, 1.0e-10);
+                //Assert.AreEqual((_warpingDB.PredictedExitTime - _warpingDB.EntryDateTime).TotalSeconds, time, 1.0e-10);
 
             }
         }
 
         public override bool IsFinished()
         {
-            if(_db != null)
-                return _db.IsAtTarget;
+            if(_warpingDB != null)
+                return _warpingDB.IsAtTarget;
             return false;
         }
 

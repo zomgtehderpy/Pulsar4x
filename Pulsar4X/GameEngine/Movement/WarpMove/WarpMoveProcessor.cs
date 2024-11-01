@@ -218,7 +218,7 @@ namespace Pulsar4X.Engine
                 {
                     entity.RemoveDataBlob<WarpMovingDB>();
                     if (_gameSettings.StrictNewtonion)
-                        SetOrbitHereFullNewt(entity, moveDB, toDateTime);
+                        SetOrbitHereSimpleNewt(entity, moveDB, toDateTime);
                     else
                         SetOrbitHereNoNewt(entity, moveDB, toDateTime);
                     break;
@@ -284,8 +284,20 @@ namespace Pulsar4X.Engine
 
         }
 
-        static void SetOrbitHereSimpleNewt(Entity entity)
+        static void SetOrbitHereSimpleNewt(Entity entity, WarpMovingDB moveDB, DateTime atDateTime)
         {
+            var newOrbit = moveDB.EndpointTargetOrbit;
+            var mass = moveDB.TargetEntity.GetDataBlob<MassVolumeDB>().MassTotal;
+            mass += entity.GetDataBlob<MassVolumeDB>().MassTotal;
+            var sgp = GeneralMath.StandardGravitationalParameter(mass);
+            var state = MoveMath.GetAbsoluteState(entity);
+            var currentOrbit = OrbitMath.KeplerFromPositionAndVelocity(sgp, state.pos, state.Velocity, atDateTime);
+            
+            var target = moveDB.TargetEntity;
+            NewtonSimpleMoveDB newtMove = new NewtonSimpleMoveDB(target, currentOrbit, newOrbit, atDateTime);
+            entity.SetDataBlob(newtMove);
+            NewtonSimpleProcessor.ProcessEntity(entity, atDateTime);
+
         }
 
         /// <summary>
@@ -328,13 +340,13 @@ namespace Pulsar4X.Engine
             var mass = entity.GetDataBlob<MassVolumeDB>().MassTotal;
             
             /*
-            if (moveDB.ExpendDeltaV.Length() != 0)
+            if (moveDB.EndpointTargetExpendDeltaV.Length() != 0)
             {
-                double fuelBurned = OrbitMath.TsiolkovskyFuelUse(mass, exhaustVelocity, moveDB.ExpendDeltaV.Length());
+                double fuelBurned = OrbitMath.TsiolkovskyFuelUse(mass, exhaustVelocity, moveDB.EndpointTargetExpendDeltaV.Length());
                 double secondsBurn = fuelBurned / burnRate;
                 var manuverNodeTime = entity.StarSysDateTime + TimeSpan.FromSeconds(secondsBurn * 0.5);
                 
-                NewtonThrustCommand.CreateCommand(entity.FactionOwnerID, entity, manuverNodeTime, moveDB.ExpendDeltaV, secondsBurn);
+                NewtonThrustCommand.CreateCommand(entity.FactionOwnerID, entity, manuverNodeTime, moveDB.EndpointTargetExpendDeltaV, secondsBurn);
             }
             else if (moveDB.AutoCirculariseAfterWarp)
             {

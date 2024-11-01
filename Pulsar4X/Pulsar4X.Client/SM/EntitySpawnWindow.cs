@@ -73,7 +73,7 @@
 //             _parentMass = _parentObect.GetDataBlob<MassVolumeDB>().MassDry;
 //             _parentSOI = _parentObect.GetSOI_m();
 //             _sgp = GeneralMath.StandardGravitationalParameter(_objMass + _parentMass);
-//             _ke = OrbitalMath.FromPosition(new Vector3(10000, 0, 0), _sgp, date);
+//             _ke = OrbitalMath.KeplerCircularFromPosition(new Vector3(10000, 0, 0), _sgp, date);
             
 //             _soiIcon = new Icon(_parentObect.GetDataBlob<PositionDB>());
 //             Shape soishape = new Shape();

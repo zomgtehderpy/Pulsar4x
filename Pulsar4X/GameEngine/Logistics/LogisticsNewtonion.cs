@@ -86,7 +86,7 @@ namespace Pulsar4X.Engine.Logistics
                     var nextParent = shipparents[k];
                     var bodyMass = nextParent.GetDataBlob<MassVolumeDB>().MassTotal;
                     var sgp = GeneralMath.StandardGravitationalParameter(shipMass + bodyMass);
-                    //var ke = OrbitMath.FromPosition(pos, sgp, time);
+                    //var ke = OrbitMath.KeplerCircularFromPosition(pos, sgp, time);
                     //var r1 = ke.SemiMajorAxis; //is this right? feel like it's not, but then is current position right
                     var r1 = pos.Length(); //or is this one right?
                     var r2 = nextParent.GetSOI_m();
@@ -102,7 +102,7 @@ namespace Pulsar4X.Engine.Logistics
                     var nextParent = soiTargetParents[k];
                     var bodyMass = nextParent.GetDataBlob<MassVolumeDB>().MassTotal;
                     var sgp = GeneralMath.StandardGravitationalParameter(shipMass + bodyMass);
-                    //var ke = OrbitMath.FromPosition(pos, sgp, time);
+                    //var ke = OrbitMath.KeplerCircularFromPosition(pos, sgp, time);
                     //var r1 = ke.SemiMajorAxis; //is this right? feel like it's not, but then is current position right
                     var r1 = pos.Length(); //or is this one right?
                     var r2 = nextParent.GetSOI_m();

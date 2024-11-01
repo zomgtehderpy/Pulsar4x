@@ -97,13 +97,12 @@ namespace Pulsar4X.Orbital
         /// <summary>
         /// returns a boring circular orbit. 
         /// </summary>
+        /// <param name="sgp">standardGravParam</param>
         /// <param name="relativePosition"></param>
-        /// <param name="sgp"></param>
         /// <param name="epoch"></param>
         /// <returns>a circular orbit</returns>
-        public static KeplerElements FromPosition(Vector3 relativePosition, double sgp, DateTime epoch)
+        public static KeplerElements KeplerCircularFromPosition(double sgp, Vector3 relativePosition, DateTime epoch)
         {
-
             var ralpos = relativePosition;
             var r = ralpos.Length();
             var i = Math.Atan2(ralpos.Z, r);

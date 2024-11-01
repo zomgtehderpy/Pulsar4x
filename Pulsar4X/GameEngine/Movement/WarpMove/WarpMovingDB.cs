@@ -46,13 +46,13 @@ namespace Pulsar4X.Datablobs
 
         internal Vector2 _position;
         internal Entity _parentEnitity;
-        public KeplerElements TargetEndpointOrbit { get; internal set; }
+        public KeplerElements EndpointTargetOrbit { get; internal set; }
         
         /// <summary>
         /// Newtonion Vector to burn once warp is complete.
         /// </summary>
         [JsonProperty]
-        internal Vector3 ExpendDeltaV { get; set; }
+        internal Vector3 EndpointTargetExpendDeltaV { get; set; }
 
         /// <summary>
         /// when true, will attempt a newton circularization burn after warp, if ExpendDelaV is 0
@@ -129,7 +129,8 @@ namespace Pulsar4X.Datablobs
             EntryPointAbsolute = db.EntryPointAbsolute;
             ExitPointAbsolute = db.ExitPointAbsolute;
             CurrentNonNewtonionVectorMS = db.CurrentNonNewtonionVectorMS;
-            ExpendDeltaV = db.ExpendDeltaV;
+            EndpointTargetOrbit = db.EndpointTargetOrbit;
+            EndpointTargetExpendDeltaV = db.EndpointTargetExpendDeltaV;
             IsAtTarget = db.IsAtTarget;
             TargetEntity = db.TargetEntity;
 

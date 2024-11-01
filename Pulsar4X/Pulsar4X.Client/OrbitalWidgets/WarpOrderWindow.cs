@@ -26,8 +26,7 @@ namespace Pulsar4X.SDL2UI
         float _radialDV;
         private bool _strictNewtonMode = true;
         Orbital.Vector3 _deltaV_MS; 
-
-        KeplerElements _ke_m;
+        
         double _apoapsis_m;
         double _periapsis_m;
         double _targetRadiusAU;
@@ -85,7 +84,9 @@ namespace Pulsar4X.SDL2UI
         Action[,] fsm;
 
         private Vector3 _targetInsertionPoint_m { get; set; }
-
+        private KeplerElements _endpointInsertionOrbit { get; set; }
+        private KeplerElements _endpointTargetOrbit { get; set; }
+        
         private Vector3 _targetInsertionPoint_AU
         {
             get { return Distance.MToAU(_targetInsertionPoint_m); }
@@ -257,18 +258,15 @@ namespace Pulsar4X.SDL2UI
             CurrentState = States.NeedsActioning;
         }
 
-        void ActionCmd() 
+        void ActionCmd()
         {
 
             WarpMoveCommand.CreateCommand(
-                _uiState.Faction.GetDataBlob<FactionInfoDB>().Data.CargoGoods,
-                _uiState.Faction.Id,
-                OrderingEntityState.Entity,
-                TargetEntity.Entity,
-                _targetInsertionPoint_m,
-                _departureDateTime,
-                _deltaV_MS,
-                _massOrderingEntity);
+                OrderingEntityState.Entity, 
+                TargetEntity.Entity, 
+                _departureDateTime, 
+                _endpointTargetOrbit, 
+                _targetInsertionPoint_m);
             
             CloseWindow();
         }
@@ -380,13 +378,13 @@ namespace Pulsar4X.SDL2UI
                                         //var velAU = OrbitProcessor.PreciseOrbitalVector(sgpCBAU, ralPosCBAU, smaCurrOrbtAU);
 
 
-                                        _ke_m = OrbitMath.KeplerFromPositionAndVelocity(_stdGravParamTargetBody_m, _targetInsertionPoint_m, _insertionOrbitalVelocity_m, _departureDateTime);
+                                        _endpointTargetOrbit = OrbitMath.KeplerFromPositionAndVelocity(_stdGravParamTargetBody_m, _targetInsertionPoint_m, _insertionOrbitalVelocity_m, _departureDateTime);
 
 
-                                        _orbitWidget.SetParametersFromKeplerElements(_ke_m, _targetInsertionPoint_m);
-                                        _apoapsis_m = _ke_m.Apoapsis;
-                                        _periapsis_m = _ke_m.Periapsis;
-                                        Eccentricity = _ke_m.Eccentricity;
+                                        _orbitWidget.SetParametersFromKeplerElements(_endpointTargetOrbit, _targetInsertionPoint_m);
+                                        _apoapsis_m = _endpointTargetOrbit.Apoapsis;
+                                        _periapsis_m = _endpointTargetOrbit.Periapsis;
+                                        Eccentricity = _endpointTargetOrbit.Eccentricity;
                                     }
                                     else
                                     {
@@ -396,11 +394,11 @@ namespace Pulsar4X.SDL2UI
                                         _targetInsertionPoint_m = (mouseWorldPos - GetTargetPosition()); //relative to the target body
 
                                         _moveWidget.SetArrivalPosition(_targetInsertionPoint_m);
-                                        _ke_m = OrbitMath.FromPosition(_targetInsertionPoint_m, _stdGravParamCurrentBody, _departureDateTime);
-                                        _orbitWidget.SetParametersFromKeplerElements(_ke_m, _targetInsertionPoint_m);
-                                        _apoapsis_m = _ke_m.Apoapsis;
-                                        _periapsis_m = _ke_m.Periapsis;
-                                        Eccentricity = _ke_m.Eccentricity;
+                                        _endpointTargetOrbit = OrbitMath.KeplerCircularFromPosition(_stdGravParamCurrentBody, _targetInsertionPoint_m, _departureDateTime);
+                                        _orbitWidget.SetParametersFromKeplerElements(_endpointTargetOrbit, _targetInsertionPoint_m);
+                                        _apoapsis_m = _endpointTargetOrbit.Apoapsis;
+                                        _periapsis_m = _endpointTargetOrbit.Periapsis;
+                                        Eccentricity = _endpointTargetOrbit.Eccentricity;
 
                                     }
 
@@ -416,21 +414,21 @@ namespace Pulsar4X.SDL2UI
                                             if (_newtonUI.Display())
                                                 InsertionCalcs();
                                         }
+                                        
+                                        _endpointTargetOrbit = OrbitMath.KeplerFromPositionAndVelocity(_stdGravParamTargetBody_m, _targetInsertionPoint_m, _insertionOrbitalVelocity_m, _departureDateTime);
 
-                                        _ke_m = OrbitMath.KeplerFromPositionAndVelocity(_stdGravParamTargetBody_m, _targetInsertionPoint_m, _insertionOrbitalVelocity_m, _departureDateTime);
-
-                                        _orbitWidget.SetParametersFromKeplerElements(_ke_m, _targetInsertionPoint_m);
-                                        _apoapsis_m = _ke_m.Apoapsis;
-                                        _periapsis_m = _ke_m.Periapsis;
-                                        Eccentricity = _ke_m.Eccentricity;
+                                        _orbitWidget.SetParametersFromKeplerElements(_endpointTargetOrbit, _targetInsertionPoint_m);
+                                        _apoapsis_m = _endpointTargetOrbit.Apoapsis;
+                                        _periapsis_m = _endpointTargetOrbit.Periapsis;
+                                        Eccentricity = _endpointTargetOrbit.Eccentricity;
                                     }
                                     else
                                     {
-                                        _ke_m = OrbitMath.FromPosition(_targetInsertionPoint_m, _stdGravParamCurrentBody, _departureDateTime);
-                                        _orbitWidget.SetParametersFromKeplerElements(_ke_m, _targetInsertionPoint_m);
-                                        _apoapsis_m = _ke_m.Apoapsis;
-                                        _periapsis_m = _ke_m.Periapsis;
-                                        Eccentricity = _ke_m.Eccentricity;
+                                        _endpointTargetOrbit = OrbitMath.KeplerCircularFromPosition(_stdGravParamCurrentBody, _targetInsertionPoint_m, _departureDateTime);
+                                        _orbitWidget.SetParametersFromKeplerElements(_endpointTargetOrbit, _targetInsertionPoint_m);
+                                        _apoapsis_m = _endpointTargetOrbit.Apoapsis;
+                                        _periapsis_m = _endpointTargetOrbit.Periapsis;
+                                        Eccentricity = _endpointTargetOrbit.Eccentricity;
                                     }
 
                                     break;
@@ -505,15 +503,15 @@ namespace Pulsar4X.SDL2UI
                         
                         ImGui.Text("LoAN: ");
                         ImGui.SameLine();
-                        ImGui.Text(_ke_m.LoAN.ToString("g3"));
+                        ImGui.Text(_endpointTargetOrbit.LoAN.ToString("g3"));
 
                         ImGui.Text("AoP: ");
                         ImGui.SameLine();
-                        ImGui.Text(_ke_m.AoP.ToString("g3"));
+                        ImGui.Text(_endpointTargetOrbit.AoP.ToString("g3"));
 
                         ImGui.Text("LoP Angle: ");
                         ImGui.SameLine();
-                        ImGui.Text((_ke_m.LoAN + _ke_m.AoP).ToString("g3") + " radians or " + Angle.ToDegrees(_ke_m.LoAN + _ke_m.AoP).ToString("F") + " deg ");
+                        ImGui.Text((_endpointTargetOrbit.LoAN + _endpointTargetOrbit.AoP).ToString("g3") + " radians or " + Angle.ToDegrees(_endpointTargetOrbit.LoAN + _endpointTargetOrbit.AoP).ToString("F") + " deg ");
 
                         if (_orbitWidget != null)
                             ImGui.Text("Is Retrograde " + _orbitWidget.IsRetrogradeOrbit.ToString());
@@ -590,7 +588,8 @@ namespace Pulsar4X.SDL2UI
             _insertionOrbitalSpeed_m = _insertionOrbitalVelocity_m.Length();
             _insertionAngle = Math.Atan2(_insertionOrbitalVelocity_m.Y, _insertionOrbitalVelocity_m.X);
             _moveWidget.SetArivalProgradeAngle(_insertionAngle);
-
+            _endpointInsertionOrbit = OrbitMath.KeplerFromPositionAndVelocity(_stdGravParamTargetBody_m, _targetInsertionPoint_m, _insertionOrbitalVelocity_m, targetIntercept.eti);
+            _endpointTargetOrbit = OrbitMath.KeplerCircularFromPosition(_stdGravParamTargetBody_m, _targetInsertionPoint_m, targetIntercept.eti);
             /*
             var sgpCBAU = UniversalConstants.Science.GravitationalConstant * (_massCurrentBody + _massOrderingEntity) / 3.347928976e33;// (149597870700 * 149597870700 * 149597870700);
             var ralPosCBAU = OrderingEntity.Entity.GetDataBlob<PositionDB>().RelativePosition_AU;

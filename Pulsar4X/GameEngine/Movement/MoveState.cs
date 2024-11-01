@@ -302,7 +302,7 @@ public class MoveStateProcessor : IInstanceProcessor
         stateDB.MoveType = PositionDB.MoveTypes.Warp;
         
         stateDB.SetParent(warpdb._parentEnitity);
-        stateDB.GetKeplerElements = warpdb.TargetEndpointOrbit;
+        stateDB.GetKeplerElements = warpdb.EndpointTargetOrbit;
         stateDB.SGP = stateDB.GetKeplerElements.StandardGravParameter;
         stateDB.RelativePosition2 = warpdb._position;
         stateDB.Velocity = (Vector2)warpdb.CurrentNonNewtonionVectorMS;
