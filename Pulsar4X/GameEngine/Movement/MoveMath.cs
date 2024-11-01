@@ -134,16 +134,19 @@ public static class MoveMath
                 }
                 else
                 {
-                    var endOrbit = db.TargetEndpointOrbit;
+                    var endOrbit = db.EndpointTargetOrbit;
                     var rpos = (Vector2)OrbitalMath.GetPosition(endOrbit, atDateTime);
-                    var ppos = GetAbsoluteFuturePosition(db.TargetEntity, atDateTime);
-                    pos = ppos + rpos;
+                    pos = GetAbsoluteFuturePosition(db.TargetEntity, atDateTime);
+                    if (rpos.X is not double.NaN)
+                        pos += rpos;
                 }
+
             }
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
+
         return pos;
     }
 
@@ -192,7 +195,7 @@ public static class MoveMath
                 }
                 else
                 {
-                    var endOrbit = db.TargetEndpointOrbit;
+                    var endOrbit = db.EndpointTargetOrbit;
                     pos = (Vector2)OrbitMath.GetPosition(endOrbit, atDateTime);
                 }
             }
