@@ -79,7 +79,8 @@ public class NewtonSimpleProcessor : IHotloopProcessor
             //TODO: handle longer "burns" over several turns.
             
             //set entity to new orbit.
-            OrbitDB newOrbit = OrbitDB.FromKeplerElements(entity, massdb.MassTotal, targetOrbit, toDateTime);
+            
+            OrbitDB newOrbit = OrbitDB.FromKeplerElements(newtonSimplelMoveDB.SOIParent, massdb.MassTotal, targetOrbit, toDateTime);
             entity.SetDataBlob(newOrbit);
 
             //remove fuel

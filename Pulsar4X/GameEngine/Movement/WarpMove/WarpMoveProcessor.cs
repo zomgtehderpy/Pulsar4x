@@ -172,14 +172,12 @@ namespace Pulsar4X.Engine
             bool canStart = false;
             if (creationCost <= estored)
             {
-                var startState = MoveMath.GetAbsoluteState(entity);
+
                 var currentVelocityMS = Vector3.Normalise(targetPosMt - currentPositionMt) * maxSpeedMS;
                 var speed = currentVelocityMS.Length();
                 moveDB.CurrentNonNewtonionVectorMS = currentVelocityMS;
                 moveDB.LastProcessDateTime = entity.StarSysDateTime;
-                moveDB.SavedNewtonionVector = startState.Velocity;
-                moveDB.EntryPointAbsolute = startState.pos;
-
+                
                 //estore = (estore.stored - creationCost, estore.maxStore);
                 powerDB.AddDemand(creationCost, entity.StarSysDateTime);
                 powerDB.AddDemand(-creationCost, entity.StarSysDateTime + TimeSpan.FromSeconds(1));
@@ -290,8 +288,8 @@ namespace Pulsar4X.Engine
             var mass = moveDB.TargetEntity.GetDataBlob<MassVolumeDB>().MassTotal;
             mass += entity.GetDataBlob<MassVolumeDB>().MassTotal;
             var sgp = GeneralMath.StandardGravitationalParameter(mass);
-            var state = MoveMath.GetAbsoluteState(entity);
-            var currentOrbit = OrbitMath.KeplerFromPositionAndVelocity(sgp, state.pos, state.Velocity, atDateTime);
+            
+            var currentOrbit = OrbitMath.KeplerFromPositionAndVelocity(sgp, moveDB.ExitPointrelative, moveDB.SavedNewtonionVector, atDateTime);
             
             var target = moveDB.TargetEntity;
             NewtonSimpleMoveDB newtMove = new NewtonSimpleMoveDB(target, currentOrbit, newOrbit, atDateTime);

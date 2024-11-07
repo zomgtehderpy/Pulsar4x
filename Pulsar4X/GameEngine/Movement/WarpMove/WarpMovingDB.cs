@@ -87,12 +87,13 @@ namespace Pulsar4X.Datablobs
             ExitPointAbsolute = targetPosition_m;
 
             var startState = MoveMath.GetAbsoluteState(thisEntity);
+            
             ExitPointAbsolute = targetPosition_m;
             EntryPointAbsolute = startState.pos;
             EntryDateTime = thisEntity.Manager.ManagerSubpulses.StarSysDateTime;
             ExitPointrelative = Vector3.Zero;
             //PredictedExitTime = targetIntercept.atDateTime;
-            SavedNewtonionVector = startState.Velocity;
+            SavedNewtonionVector = MoveMath.GetRelativeState(thisEntity).Velocity; //TODO: this needs to check GameSettings.UseRelativeVelocity
             TargetEntity = null;
 
             Heading_Radians = (float)Vector3.AngleBetween(startState.pos, ExitPointAbsolute);
@@ -116,7 +117,7 @@ namespace Pulsar4X.Datablobs
             EntryPointAbsolute = startState.pos;
             ExitPointrelative = offsetPosition;
             PredictedExitTime = targetIntercept.etiDateTime;
-            SavedNewtonionVector = startState.Velocity;
+            SavedNewtonionVector = MoveMath.GetRelativeState(thisEntity).Velocity; //TODO: this needs to check GameSettings.UseRelativeVelocity
             TargetEntity = targetEntity;
             TargetPositionDB = targetEntity.GetDataBlob<PositionDB>();
             Heading_Radians = (float)Vector3.AngleBetween(startState.pos, ExitPointAbsolute);

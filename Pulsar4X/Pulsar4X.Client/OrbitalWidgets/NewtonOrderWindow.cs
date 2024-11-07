@@ -1,4 +1,5 @@
 ﻿using System;
+using Antlr.Runtime;
 using ImGuiNET;
 using Pulsar4X.Engine;
 using Pulsar4X.Datablobs;
@@ -247,6 +248,78 @@ namespace Pulsar4X.SDL2UI
                 changes = true;
             }
             if (ImGui.SliderFloat("Radial DV", ref _radialDV, -maxradialDV, maxradialDV))
+            {
+                Calcs();
+                changes = true;
+            }
+            
+            ImGui.Text("Fuel to burn:" + Stringify.Mass(_fuelToBurn));
+            ImGui.Text("Burn time: " + (int)(_fuelToBurn / _fuelRate) +" s");
+            ImGui.Text("DeltaV: " + Stringify.Distance(DeltaV.Length())+ "/s of " + Stringify.Distance(_maxDV) + "/s");
+            ImGui.Text("Eccentricity: " + Eccentricity.ToString("g3"));
+            return changes;
+        }
+
+        private void Calcs()
+        {
+            var rmtx = Matrix.IDRotate(DepartureAngle);
+            Vector2 dv = rmtx.TransformD(_radialDV, _progradeDV);
+            DeltaV = new Vector3(dv.X, dv.Y, 0);
+            _fuelToBurn = OrbitMath.TsiolkovskyFuelUse(_curmass, _exhastVelocity, DeltaV.Length());
+        }
+
+    }
+    
+    public class NewtonionRadialOrderUI
+    {
+
+        double _fuelToBurn = double.NaN;
+        public Vector3 DeltaV { get; set; } = Vector3.Zero;
+        
+        float _progradeDV;
+        float _radialDV;
+        
+        double _maxDV;
+        private double _exhastVelocity = double.NaN;
+        private double _fuelRate = double.NaN;
+        private double _wetMass;
+        private double _dryMass;
+        private double _curmass;
+        
+        private float _minRad;
+        private float _rad;
+        public float Radius
+        {
+            get { return _rad;} set {_rad = value;} 
+        }
+        private float _maxRad;
+        
+        public double DepartureAngle { get; set; }
+        public double Eccentricity { get; set; }
+
+        public NewtonionRadialOrderUI(NewtonThrustAbilityDB newtonAbility, double currentMass, float minRad, float maxRad)
+        {
+            _exhastVelocity = newtonAbility.ExhaustVelocity;
+            _fuelRate = newtonAbility.FuelBurnRate;
+            _maxDV = newtonAbility.DeltaV;
+            _curmass = currentMass;
+            _minRad = minRad;
+            _maxRad = maxRad;
+            _rad = _minRad;
+        }
+
+        public bool Display()
+        {
+            bool changes = false;
+            float maxprogradeDV = (float)(_maxDV - Math.Abs(_radialDV));
+            //float maxradialDV = (float)(_maxDV - Math.Abs(_progradeDV));
+                        
+            if (ImGui.SliderFloat("Prograde DV", ref _progradeDV, -maxprogradeDV, maxprogradeDV))
+            {
+                Calcs();
+                changes = true;
+            }
+            if (ImGui.SliderFloat("Radius", ref _rad, _minRad, _maxRad))
             {
                 Calcs();
                 changes = true;

@@ -52,10 +52,12 @@ namespace Pulsar4X.Orbital
             {
                 p = semiMajorAxis * (1 - eccentricity * eccentricity);
             }
-            else //parabola, currently forcing this to be a hyperbola. 
+            else //parabola, currently forcing this to be a hyperbola. TODO: look at handling parabola properly. will likely need tests written.
             {
                 p = angularSpeed * angularSpeed / standardGravParam;
                 eccentricity += 1.0E-15;
+                if (semiMajorAxis < 0)
+                    semiMajorAxis *= -1;//ensure semimajor axis is 0.
             }
 
             double semiMinorAxis = EllipseMath.SemiMinorAxis(semiMajorAxis, eccentricity);
@@ -120,6 +122,43 @@ namespace Pulsar4X.Orbital
                 LoAN = 0,
                 AoP = 0,
                 MeanMotion = Math.Sqrt(sgp / Math.Pow(r, 3)),
+                MeanAnomalyAtEpoch = m0,
+                TrueAnomalyAtEpoch = m0,
+                AnomalyAtEpoch = m0,
+                Period = 2 * Math.PI * Math.Sqrt(Math.Pow(r, 3) / sgp),
+                Epoch = epoch,
+                StandardGravParameter = sgp,
+            };
+
+            return orbit;
+        }
+
+        public static KeplerElements KeplerCircularFromVelocity(double sgp, Vector3 velocityVector, DateTime epoch)
+        {
+            
+            //MeanMotion = Math.Sqrt(sgp / Math.Pow(r, 3)),
+            var perpVec = Vector2.Normalise(new Vector2(velocityVector.Y * -1, velocityVector.X));
+            
+            var speed = velocityVector.Length();
+            var r = Math.Cbrt(sgp / Math.Pow(speed, 2));  
+            var ralpos = (Vector3)perpVec * r;
+            
+            var i = Math.Atan2(ralpos.Z, r);
+            var m0 = Math.Atan2(ralpos.Y, ralpos.X);
+            
+            
+            var orbit = new KeplerElements()
+            {
+                SemiMajorAxis = r,
+                SemiMinorAxis = r,
+                Apoapsis = r,
+                Periapsis = r,
+                LinearEccentricity = 0,
+                Eccentricity = 0,
+                Inclination = i,
+                LoAN = 0,
+                AoP = 0,
+                MeanMotion = speed,
                 MeanAnomalyAtEpoch = m0,
                 TrueAnomalyAtEpoch = m0,
                 AnomalyAtEpoch = m0,
@@ -801,7 +840,6 @@ namespace Pulsar4X.Orbital
                 var hyperbolicMeanAnomaly = secondsFromEpoch * hyperbolcMeanMotion;
                 TryGetHyperbolicAnomaly(e, hyperbolicMeanAnomaly, out double hyperbolicAnomalyF);
                 trueAnomaly = TrueAnomalyFromHyperbolicAnomaly(e, hyperbolicAnomalyF);
-
             }
 
             double angleToObj = trueAnomaly + ke.AoP;

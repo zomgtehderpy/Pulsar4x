@@ -236,6 +236,8 @@ public class MoveStateProcessor : IInstanceProcessor
     }
     public static void ProcessForType(NewtonSimpleMoveDB movedb, DateTime atDateTime)
     {
+        if (movedb.OwningEntity is null)
+            return;
         if(!movedb.OwningEntity.TryGetDatablob(out PositionDB stateDB))
         {
             stateDB = new PositionDB(movedb.SOIParent);
