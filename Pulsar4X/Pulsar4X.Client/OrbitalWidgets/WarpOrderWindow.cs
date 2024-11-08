@@ -42,13 +42,10 @@ namespace Pulsar4X.SDL2UI
 
         DateTime _departureDateTime;
 
-        double _departureOrbitalSpeed_m { get { return _departureOrbitalVelocity_m.Length(); }}
-
-        Vector3 _departureOrbitalVelocity_m = Orbital.Vector3.NaN;
-        double _departureAngle {get{return Math.Atan2(_departureOrbitalVelocity_m.Y, _departureOrbitalVelocity_m.X);}}
-
-
-        //(Vector4, TimeSpan) _intercept;
+        private (Vector3 pos, Vector3 vel) _departureState;
+        double _departureOrbitalSpeed_m { get { return _departureState.vel.Length(); }}
+        double _departureProgradeAngle {get{return Math.Atan2(_departureState.vel.Y, _departureState.vel.X);}}
+        
 
         double _massOrderingEntity = double.NaN;
         double _massTargetBody = double.NaN;
@@ -58,9 +55,6 @@ namespace Pulsar4X.SDL2UI
 
 
         private NewtonionRadialOrderUI _newtonUI;
-
-        
-        
         
         string _displayText;
         string _tooltipText = "";
@@ -76,6 +70,7 @@ namespace Pulsar4X.SDL2UI
 
         private OrbitDB _targetEntityOrbitDB;
         private (Vector3 position, DateTime eti) _targetIntercept;
+        private Vector3 _perpVec; 
         private Vector3 _endpointInsertionPoint_m { get; set; } = new Vector3();
 
         Vector3 _endpointInitalVelocity_m = Vector3.NaN;
@@ -163,26 +158,10 @@ namespace Pulsar4X.SDL2UI
         void EntitySelected() 
         { 
             OrderingEntityState = _uiState.LastClickedEntity;
-
-            if (OrderingEntityState.Entity.HasDataBlob<OrbitDB>())
-            {
-                _massCurrentBody = OrderingEntityState.Entity.GetSOIParentEntity().GetDataBlob<MassVolumeDB>().MassDry;
-            }
-            else
-            {
-                var foo =  OrderingEntityState.Entity.GetDataBlob<NewtonMoveDB>();
-                if(foo == null)
-                {
-
-                }
-                else
-                {
-                    _massCurrentBody = foo.ParentMass;
-                }
-                
-            }
-
-            //else if(OrderingEntity.Entity.HasDataBlob<newton>())
+            PositionDB pdb = OrderingEntityState.Entity.GetDataBlob<PositionDB>();
+            
+            _massCurrentBody = pdb.Parent.GetDataBlob<MassVolumeDB>().MassTotal;
+            
             CurrentState = States.NeedsTarget;
             
             _massOrderingEntity = OrderingEntityState.Entity.GetDataBlob<MassVolumeDB>().MassTotal;
@@ -193,15 +172,7 @@ namespace Pulsar4X.SDL2UI
                 _uiState.SelectedSysMapRender.UIWidgets.Add(nameof(_moveWidget), _moveWidget);
             }
             DepartureCalcs();
-
-
-
-            //debug code:
-            //var sgpCur = _orderEntityOrbit.GravitationalParameterAU;
-            //var relativeVel1 = OrbitProcessor.InstantaneousOrbitalVelocityVector_AU(_orderEntityOrbit, _departureDateTime);
-            //var ralPosCBAU = OrderingEntityState.Entity.GetDataBlob<PositionDB>().RelativePosition_AU;
-            //var smaCurrOrbtAU = _orderEntityOrbit.SemiMajorAxisAU;
-            //var relativeVel2 = OrbitMath.PreciseOrbitalVelocityVector(_stdGravParamCurrentBody, ralPosCBAU, smaCurrOrbtAU, _orderEntityOrbit.Eccentricity, _orderEntityOrbit.LongitudeOfAscendingNode + _orderEntityOrbit.ArgumentOfPeriapsis); 
+            
         }
 
 
@@ -213,24 +184,24 @@ namespace Pulsar4X.SDL2UI
             _uiState.Camera.PinToEntity(TargetEntity.Entity);
             _targetRadiusAU = TargetEntity.Entity.GetDataBlob<MassVolumeDB>().RadiusInAU;
             _targetRadius_m = TargetEntity.Entity.GetDataBlob<MassVolumeDB>().RadiusInM;
-            Vector3 insertionVector = OrbitProcessor.GetOrbitalInsertionVector(_departureOrbitalVelocity_m, _targetEntityOrbitDB, _targetIntercept.eti);
+            Vector3 insertionVector = OrbitProcessor.GetOrbitalInsertionVector(_departureState.vel, _targetEntityOrbitDB, _targetIntercept.eti);
             _endpointInitalVelocity_m = insertionVector;
             _apMax = TargetEntity.Entity.GetSOI_m();
             var soiAU = TargetEntity.Entity.GetSOI_AU();
             float soiViewUnits = _uiState.Camera.ViewDistance(soiAU);
 
-
+            
             _massTargetBody = TargetEntity.Entity.GetDataBlob<MassVolumeDB>().MassDry;
             _stdGravParamTargetBody_m = GeneralMath.StandardGravitationalParameter(_massOrderingEntity + _massTargetBody);
+            
+                        
             if (OrderingEntityState.Entity.HasDataBlob<NewtonThrustAbilityDB>())
             {
                 var db = OrderingEntityState.Entity.GetDataBlob<NewtonThrustAbilityDB>();
                 _newtonUI = new NewtonionRadialOrderUI(db, _massOrderingEntity, (float)_peMin, (float)_apMax);
+                _newtonUI.ProgradeAngle = _departureProgradeAngle;
             }
             
-            InitialPlacement();
-            InsertionCalcs();
-
 
             Vector2 viewPortSize = _uiState.Camera.ViewPortSize;
             float windowLen = (float)Math.Min(viewPortSize.X, viewPortSize.Y);
@@ -240,7 +211,8 @@ namespace Pulsar4X.SDL2UI
                 var soilenwanted = windowLen * 0.375;
                 _uiState.Camera.ZoomLevel = (float)(soilenwanted / soiAU) ; 
             }
-
+            
+            
             _endpointInitalOrbitWidget = new OrbitOrderWidget(TargetEntity.Entity);
             if (_endpointInitalOrbitWidget != null)
             {
@@ -250,7 +222,7 @@ namespace Pulsar4X.SDL2UI
             {
                 _uiState.SelectedSysMapRender.UIWidgets.Add(nameof(_endpointInitalOrbitWidget)+"initOrbit", _endpointInitalOrbitWidget);
             }
-            _endpointInitalOrbitWidget.SetParametersFromKeplerElements(_endpointInitialOrbit, _endpointInsertionPoint_m);
+            //_endpointInitalOrbitWidget.SetParametersFromKeplerElements(_endpointInitialOrbit, _endpointInsertionPoint_m);
             _endpointInitalOrbitWidget.Red = 100;
             
             _endpointTargetOrbitWidget = new OrbitOrderWidget(TargetEntity.Entity);
@@ -262,13 +234,14 @@ namespace Pulsar4X.SDL2UI
             {
                 _uiState.SelectedSysMapRender.UIWidgets.Add(nameof(_endpointTargetOrbitWidget)+"tgtOrbit", _endpointTargetOrbitWidget);
             }
-            _endpointTargetOrbitWidget.SetParametersFromKeplerElements(_endpointTargetOrbit, _endpointInsertionPoint_m);
+            //_endpointTargetOrbitWidget.SetParametersFromKeplerElements(_endpointTargetOrbit, _endpointInsertionPoint_m);
 
 
             OrderingEntityState.DebugOrbitOrder = _endpointTargetOrbitWidget;
             _moveWidget.SetArrivalTarget(TargetEntity.Entity);
-
-
+            InitialPlacement();
+            InsertionCalcs();  
+            
             _tooltipText = "Select Insertion Point";
             CurrentState = States.NeedsInsertionPoint;
         }
@@ -352,200 +325,181 @@ namespace Pulsar4X.SDL2UI
 
         internal override void Display()
         {
-            if (IsActive)
+            if (!IsActive)
+                return;
+            
+            var size = new System.Numerics.Vector2(200, 100);
+            var pos = new System.Numerics.Vector2(_uiState.MainWinSize.X / 2 - size.X / 2, _uiState.MainWinSize.Y / 2 - size.Y / 2);
+
+            ImGui.SetNextWindowSize(size, ImGuiCond.FirstUseEver);
+            ImGui.SetNextWindowPos(pos, ImGuiCond.FirstUseEver);
+
+            if (ImGui.Begin(_displayText, ref IsActive, _flags))
             {
-                var size = new System.Numerics.Vector2(200, 100);
-                var pos = new System.Numerics.Vector2(_uiState.MainWinSize.X / 2 - size.X / 2, _uiState.MainWinSize.Y / 2 - size.Y / 2);
-
-                ImGui.SetNextWindowSize(size, ImGuiCond.FirstUseEver);
-                ImGui.SetNextWindowPos(pos, ImGuiCond.FirstUseEver);
-
-                if (ImGui.Begin(_displayText, ref IsActive, _flags))
+                //put calcs that needs refreshing each frame in here. (ie calculations from mouse cursor position)
+                if (_endpointTargetOrbitWidget != null)
                 {
-                    //put calcs that needs refreshing each frame in here. (ie calculations from mouse cursor position)
-                    if (_endpointTargetOrbitWidget != null)
+                    switch (CurrentState)
                     {
+                        case States.NeedsEntity:
 
-                        switch (CurrentState)
-                        {
-                            case States.NeedsEntity:
+                            break;
+                        case States.NeedsTarget:
+                            {
 
-                                break;
-                            case States.NeedsTarget:
+                            }
+
+                            break;
+                        case States.NeedsInsertionPoint:
+                            {
+
+                                if (_strictNewtonMode)
                                 {
+                                    if (_newtonUI != null)
+                                    {
+                                        if (_newtonUI.Display())
+                                            InsertionCalcs();
+                                    }
+                                    CurrentState = States.NeedsActioning;
 
+                                }
+                                else
+                                {
+                                    var mousePos = ImGui.GetMousePos();
+
+                                    var mouseWorldPos = _uiState.Camera.MouseWorldCoordinate_m();
+                                    _endpointInsertionPoint_m = (mouseWorldPos - GetTargetAbsPosition()); //relative to the target body
+
+                                    _moveWidget.SetArrivalPosition(_endpointInsertionPoint_m);
+                                    _endpointTargetOrbit = OrbitMath.KeplerFromPositionAndVelocity(_stdGravParamTargetBody_m, _endpointInsertionPoint_m, _endpointInitalVelocity_m, _departureDateTime);
+                                    _endpointTargetOrbitWidget.SetParametersFromKeplerElements(_endpointTargetOrbit, _endpointInsertionPoint_m);
                                 }
 
                                 break;
-                            case States.NeedsInsertionPoint:
+                            }   
+
+                        case States.NeedsActioning:
+                            {
+                                if (_strictNewtonMode && _newtonUI != null)
                                 {
-
-                                    if (_strictNewtonMode)
-                                    {
-                                        if (_newtonUI != null)
-                                        {
-                                            if (_newtonUI.Display())
-                                                InsertionCalcs();
-                                        }
-                                        CurrentState = States.NeedsActioning;
-
-
-
-                                    }
-                                    else
-                                    {
-                                        var mousePos = ImGui.GetMousePos();
-
-                                        var mouseWorldPos = _uiState.Camera.MouseWorldCoordinate_m();
-                                        _endpointInsertionPoint_m = (mouseWorldPos - GetTargetAbsPosition()); //relative to the target body
-
-                                        _moveWidget.SetArrivalPosition(_endpointInsertionPoint_m);
-                                        _endpointTargetOrbit = OrbitMath.KeplerFromPositionAndVelocity(_stdGravParamTargetBody_m, _endpointInsertionPoint_m, _endpointInitalVelocity_m, _departureDateTime);
-                                        _endpointTargetOrbitWidget.SetParametersFromKeplerElements(_endpointTargetOrbit, _endpointInsertionPoint_m);
-                                    }
-
-                                    break;
-                                }   
-
-                            case States.NeedsActioning:
-                                {
-                                    if (_strictNewtonMode)
-                                    {
-                                        if (_newtonUI != null)
-                                        {
-                                            if (_newtonUI.Display())
-                                                InsertionCalcs();
-                                        }
-                                        
-                                        var r = _newtonUI.Radius;
-                                        Vector3 perpVec = Vector3.Normalise(new Vector3(_departureOrbitalVelocity_m.Y * -1, _departureOrbitalVelocity_m.X, 0));
-                                        _endpointInsertionPoint_m = (perpVec * r); //relative to the target body
-
-                                        _moveWidget.SetArrivalPosition(_endpointInsertionPoint_m);
-                                        _endpointTargetVelocity_m = _endpointInitalVelocity_m + _newtonUI.DeltaV;
-                                        _endpointTargetOrbit = OrbitMath.KeplerFromPositionAndVelocity(_stdGravParamTargetBody_m, _endpointInsertionPoint_m, _endpointTargetVelocity_m, _departureDateTime);
-                                        _endpointTargetOrbitWidget.SetParametersFromKeplerElements(_endpointTargetOrbit, _endpointInsertionPoint_m);
-                                        _newtonUI.Eccentricity = _endpointTargetOrbit.Eccentricity;
-
-                                    }
-                                    else
-                                    {
-                                        _endpointTargetOrbit = OrbitMath.KeplerCircularFromPosition(_stdGravParamCurrentBody, _endpointInsertionPoint_m, _departureDateTime);
-                                        _endpointTargetOrbitWidget.SetParametersFromKeplerElements(_endpointTargetOrbit, _endpointInsertionPoint_m);
-                                    }
-
-                                    break;
+                                    if (_newtonUI.Display())
+                                        InsertionCalcs();
                                 }
-                            default:
+                                else
+                                {
+                                    _endpointTargetOrbit = OrbitMath.KeplerCircularFromPosition(_stdGravParamCurrentBody, _endpointInsertionPoint_m, _departureDateTime);
+                                    _endpointTargetOrbitWidget.SetParametersFromKeplerElements(_endpointTargetOrbit, _endpointInsertionPoint_m);
+                                }
+
                                 break;
-                        }
+                            }
+                        default:
+                            break;
                     }
+                }
 
 
-                    ImGui.SetTooltip(_tooltipText);
-                    ImGui.Text("Target: ");
-                    if (TargetEntity != null)
-                    {
-                        ImGui.SameLine();
-                        ImGui.Text(TargetEntity.Name);
-                    }
+                ImGui.SetTooltip(_tooltipText);
+                ImGui.Text("Target: ");
+                if (TargetEntity != null)
+                {
+                    ImGui.SameLine();
+                    ImGui.Text(TargetEntity.Name);
+                }
+                
+                //ImGui.Text("Eccentricity: " + _eccentricity.ToString("g3"));
+                
+                if (ImGui.CollapsingHeader("Orbit Data"))
+                {
                     
-                    //ImGui.Text("Eccentricity: " + _eccentricity.ToString("g3"));
+                    ImGui.Text("InsertionSpeed: ");
+                    //ImGui.SameLine();
+                    ImGui.Text("Initial: "+Stringify.Distance(_endpointInitalSpeed_m) + "/s");
+                    ImGui.Text("Target: " + Stringify.Distance(_endpointTargetSpeed_m) + "/s");    
                     
-                    if (ImGui.CollapsingHeader("Orbit Data"))
-                    {
+                    ImGui.Text("Eccentricity: ");
+                    //ImGui.SameLine();
+                    ImGui.Text("Initial: "+Stringify.Number(_endpointInitialOrbit.Eccentricity));
+                    ImGui.Text("Target: "+Stringify.Number(_endpointTargetOrbit.Eccentricity));                   
+                    
+                    
+                    ImGui.Text("Apoapsis: ");
+                    ImGui.SameLine();
+                    ImGui.Text(Stringify.Distance(_endpointTargetOrbit.Apoapsis) + " (Alt: " + Stringify.Distance(_apAlt) + ")");
 
-                        ImGui.Text("Apoapsis: ");
-                        ImGui.SameLine();
-                        ImGui.Text(Stringify.Distance(_endpointTargetOrbit.Apoapsis) + " (Alt: " + Stringify.Distance(_apAlt) + ")");
+                    ImGui.Text("Periapsis: ");
+                    ImGui.SameLine();
+                    ImGui.Text(Stringify.Distance(_endpointTargetOrbit.Periapsis) + " (Alt: " + Stringify.Distance(_peAlt) + ")");
+                    
+                    ImGui.Text("DepartureSpeed: ");
+                    //ImGui.SameLine();
+                    ImGui.Text( Stringify.Distance( _departureOrbitalSpeed_m) + "/s");
 
-                        ImGui.Text("Periapsis: ");
-                        ImGui.SameLine();
-                        ImGui.Text(Stringify.Distance(_endpointTargetOrbit.Periapsis) + " (Alt: " + Stringify.Distance(_peAlt) + ")");
-                        
-                        ImGui.Text("Eccentricity: ");
-                        //ImGui.SameLine();
-                        ImGui.Text("Initial: "+Stringify.Number(_endpointInitialOrbit.Eccentricity));
-                        ImGui.Text("Target: "+Stringify.Number(_endpointTargetOrbit.Eccentricity));
-                        
-                        ImGui.Text("DepartureSpeed: ");
-                        //ImGui.SameLine();
-                        ImGui.Text( Stringify.Distance( _departureOrbitalSpeed_m) + "/s");
+                    ImGui.Text("Departure Vector: ");
+                    //ImGui.SameLine();
+                    ImGui.Text("X: " + Stringify.Distance(_departureState.vel.X)+ "/s");
+                    ImGui.Text("Y: " + Stringify.Distance(_departureState.vel.Y)+ "/s");
+                    
+                    ImGui.Text("Departure Angle: ");
+                    ImGui.SameLine();
+                    ImGui.Text(_departureProgradeAngle.ToString("g3") + " radians or " + Angle.ToDegrees(_departureProgradeAngle).ToString("F") + " deg ");
 
-                        ImGui.Text("InsertionSpeed: ");
-                        //ImGui.SameLine();
-                        ImGui.Text(Stringify.Distance(_endpointInitalSpeed_m) + "/s");
-                        ImGui.Text(Stringify.Distance(_endpointTargetSpeed_m) + "/s");
+                    /*
+                    var pc = OrbitProcessor.InstantaneousOrbitalVelocityPolarCoordinate(_orderEntityOrbit, _departureDateTime);
 
-
-
-                        ImGui.Text("Departure Vector: ");
-                        //ImGui.SameLine();
-                        ImGui.Text("X: " + Stringify.Distance(_departureOrbitalVelocity_m.X)+ "/s");
-                        ImGui.Text("Y: " + Stringify.Distance(_departureOrbitalVelocity_m.Y)+ "/s");
-                        ImGui.Text("Z: " + Stringify.Distance(_departureOrbitalVelocity_m.Z)+ "/s");
-
-
-                        ImGui.Text("Departure Angle: ");
-                        ImGui.SameLine();
-                        ImGui.Text(_departureAngle.ToString("g3") + " radians or " + Angle.ToDegrees(_departureAngle).ToString("F") + " deg ");
-
-                        /*
-                        var pc = OrbitProcessor.InstantaneousOrbitalVelocityPolarCoordinate(_orderEntityOrbit, _departureDateTime);
-
-                        ImGui.Text("Departure Polar Coordinates: ");
-                        ImGui.Text(pc.Item1.ToString() + " AU or " + Distance.AuToMt(pc.Item1).ToString("F") + " m/s");
-                        ImGui.Text(pc.Item2.ToString("g3") + " radians or " + Angle.ToDegrees(pc.Item2).ToString("F") + " deg ");
-                        ;
+                    ImGui.Text("Departure Polar Coordinates: ");
+                    ImGui.Text(pc.Item1.ToString() + " AU or " + Distance.AuToMt(pc.Item1).ToString("F") + " m/s");
+                    ImGui.Text(pc.Item2.ToString("g3") + " radians or " + Angle.ToDegrees(pc.Item2).ToString("F") + " deg ");
+                    ;
 */
 
-                        ImGui.Text("Insertion Vector: ");
-                        ImGui.Text("X: " + Stringify.Distance(_endpointInitalVelocity_m.X)+ "/s");
-                        ImGui.Text("Y: " + Stringify.Distance(_endpointInitalVelocity_m.Y)+ "/s");
-                        ImGui.Text("Z: " + Stringify.Distance(_endpointInitalVelocity_m.Z)+ "/s");
+                    ImGui.Text("Insertion Vector: ");
+                    ImGui.Text("X: " + Stringify.Distance(_endpointInitalVelocity_m.X)+ "/s");
+                    ImGui.Text("Y: " + Stringify.Distance(_endpointInitalVelocity_m.Y)+ "/s");
+                    ImGui.Text("Z: " + Stringify.Distance(_endpointInitalVelocity_m.Z)+ "/s");
 
-                        ImGui.Text("Insertion RelativePosition: ");
-                        ImGui.Text("X: " + Stringify.Distance(_endpointInsertionPoint_m.X));
-                        ImGui.Text("Y: " + Stringify.Distance(_endpointInsertionPoint_m.Y));
-                        ImGui.Text("Z: " + Stringify.Distance(_endpointInsertionPoint_m.Z));
-                        
-                        ImGui.Text("LoAN: ");
-                        ImGui.SameLine();
-                        ImGui.Text(_endpointTargetOrbit.LoAN.ToString("g3"));
+                    ImGui.Text("Insertion RelativePosition: ");
+                    ImGui.Text("X: " + Stringify.Distance(_endpointInsertionPoint_m.X));
+                    ImGui.Text("Y: " + Stringify.Distance(_endpointInsertionPoint_m.Y));
+                    ImGui.Text("Z: " + Stringify.Distance(_endpointInsertionPoint_m.Z));
+                    
+                    ImGui.Text("LoAN: ");
+                    ImGui.SameLine();
+                    ImGui.Text(_endpointTargetOrbit.LoAN.ToString("g3"));
 
-                        ImGui.Text("AoP: ");
-                        ImGui.SameLine();
-                        ImGui.Text(_endpointTargetOrbit.AoP.ToString("g3"));
+                    ImGui.Text("AoP: ");
+                    ImGui.SameLine();
+                    ImGui.Text(_endpointTargetOrbit.AoP.ToString("g3"));
 
-                        ImGui.Text("LoP Angle: ");
-                        ImGui.SameLine();
-                        ImGui.Text((_endpointTargetOrbit.LoAN + _endpointTargetOrbit.AoP).ToString("g3") + " radians or " + Angle.ToDegrees(_endpointTargetOrbit.LoAN + _endpointTargetOrbit.AoP).ToString("F") + " deg ");
+                    ImGui.Text("LoP Angle: ");
+                    ImGui.SameLine();
+                    ImGui.Text((_endpointTargetOrbit.LoAN + _endpointTargetOrbit.AoP).ToString("g3") + " radians or " + Angle.ToDegrees(_endpointTargetOrbit.LoAN + _endpointTargetOrbit.AoP).ToString("F") + " deg ");
 
-                        if (_endpointTargetOrbitWidget != null)
-                            ImGui.Text("Is Retrograde " + _endpointTargetOrbitWidget.IsRetrogradeOrbit.ToString());
+                    if (_endpointTargetOrbitWidget != null)
+                        ImGui.Text("Is Retrograde " + _endpointTargetOrbitWidget.IsRetrogradeOrbit.ToString());
 
-                    }
-
-                    //if (CurrentState != States.NeedsActioning) //use alpha on the button if it's not useable. 
-                    //ImGui.PushStyleVar(ImGuiStyleVar.Alpha, ImGui.GetStyle().Alpha * 0.5f);
-                    if (ImGui.Button("Action Order") && CurrentState == States.NeedsActioning) //only do suff if clicked if it's usable.
-                    {
-                        fsm[(byte)CurrentState, (byte)Events.ClickedAction].Invoke();
-                        //ImGui.PopStyleVar();
-                    }
-                
-                    if (_smMode)
-                    {
-                        ImGui.SameLine();
-                        if (ImGui.Button("Add OrbitDB"))
-                        {
-                            ActionAddDB();
-                        }
-                    }
-
-                    ImGui.End();
                 }
+
+                //if (CurrentState != States.NeedsActioning) //use alpha on the button if it's not useable. 
+                //ImGui.PushStyleVar(ImGuiStyleVar.Alpha, ImGui.GetStyle().Alpha * 0.5f);
+                if (ImGui.Button("Action Order") && CurrentState == States.NeedsActioning) //only do suff if clicked if it's usable.
+                {
+                    fsm[(byte)CurrentState, (byte)Events.ClickedAction].Invoke();
+                    //ImGui.PopStyleVar();
+                }
+            
+                if (_smMode)
+                {
+                    ImGui.SameLine();
+                    if (ImGui.Button("Add OrbitDB"))
+                    {
+                        ActionAddDB();
+                    }
+                }
+
+                ImGui.End();
             }
+            
         }
 
         #endregion
@@ -570,46 +524,77 @@ namespace Pulsar4X.SDL2UI
 
             
             if(_uiState.Game.Settings.UseRelativeVelocity)
-                _departureOrbitalVelocity_m = MoveMath.GetRelativeFutureVelocity(OrderingEntityState.Entity, _departureDateTime);
+            {
+                _departureState = MoveMath.GetRelativeFutureState(OrderingEntityState.Entity, _departureDateTime);
+            }
             else
-                _departureOrbitalVelocity_m = MoveMath.GetAbsoluteFutureVelocity(OrderingEntityState.Entity, _departureDateTime);
+                _departureState = MoveMath.GetAbsoluteState(OrderingEntityState.Entity, _departureDateTime);
             
-            _moveWidget.SetDepartureProgradeAngle(_departureAngle);
-            if (_newtonUI != null)
-                _newtonUI.DepartureAngle = _departureAngle;
+            _moveWidget.SetDepartureProgradeAngle(_departureProgradeAngle);
+            
+            
+            _perpVec = Vector3.Normalise(new Vector3(_departureState.vel.Y * -1, _departureState.vel.X, 0));
+            var rangeToTarget = (_targetIntercept.position - _departureState.pos).Length();
+            var rangeToVec = (_targetIntercept.position - (_departureState.pos + _perpVec)).Length();
+            if(rangeToTarget > rangeToVec)
+                _perpVec = new Vector3(_perpVec.X * -1, _perpVec.Y * -1, 0);
         }
 
         void InsertionCalcs()
         {
             
-            _endpointInitialOrbit = OrbitMath.KeplerFromPositionAndVelocity(_stdGravParamTargetBody_m, _endpointInsertionPoint_m, _endpointInitalVelocity_m, _targetIntercept.eti);
             _moveWidget.SetArivalProgradeAngle(_endpointInitalAngle);
+            
+            
+            _endpointInsertionPoint_m = (_perpVec * _newtonUI.Radius);
+
+            _moveWidget.SetArrivalPosition(_endpointInsertionPoint_m);
+            _endpointTargetVelocity_m = _endpointInitalVelocity_m + _newtonUI.DeltaV;
+            _endpointTargetOrbit = OrbitMath.KeplerFromPositionAndVelocity(_stdGravParamTargetBody_m, _endpointInsertionPoint_m, _endpointTargetVelocity_m, _departureDateTime);
+            _endpointTargetOrbitWidget.SetParametersFromKeplerElements(_endpointTargetOrbit, _endpointInsertionPoint_m);
+            _newtonUI.Eccentricity = (float)_endpointTargetOrbit.Eccentricity;
         }
 
         void InitialPlacement()
         {
-            //(Vector3 position, DateTime eti) targetIntercept = WarpMath.GetInterceptPosition(OrderingEntityState.Entity, TargetEntity.Entity.GetDataBlob<OrbitDB>(), _departureDateTime);
-            var perpVec = Vector2.Normalise(new Vector2(_departureOrbitalVelocity_m.Y * -1, _departureOrbitalVelocity_m.X));
+            
             var lowOrbitRadius = OrbitMath.LowOrbitRadius(TargetEntity.Entity);
-            var lowOrbitPos = (Vector3)perpVec * lowOrbitRadius;
+            var lowOrbitPos = _perpVec * lowOrbitRadius;
             var lowOrbit = OrbitMath.KeplerCircularFromPosition(_stdGravParamTargetBody_m, lowOrbitPos, _targetIntercept.eti);
             var lowOrbitState = OrbitMath.GetStateVectors(lowOrbit, _targetIntercept.eti);
             var velDif = _endpointInitalVelocity_m.Length() - lowOrbitState.velocity.Length();
+
+            
             
             var circularOrbit = OrbitMath.KeplerCircularFromVelocity(_stdGravParamTargetBody_m, _endpointInitalVelocity_m, _targetIntercept.eti);
             var circOrbitState = OrbitMath.GetStateVectors(circularOrbit, _targetIntercept.eti);
-            var posDif = circOrbitState.position.Length() - _endpointInsertionPoint_m.Length();
+            var veldif2 = _endpointInitalVelocity_m.Length() - circOrbitState.velocity.Length();
+            //var posDif = circOrbitState.position.Length() - _endpointInsertionPoint_m.Length();
+            
 
             if (velDif < _maxDV)
             {
                 _endpointTargetOrbit = lowOrbit;
                 _endpointTargetVelocity_m = (Vector3)lowOrbitState.velocity;
+                _newtonUI.Radius = (float)lowOrbitState.position.Length();
+                _newtonUI.SetDeltaV((Vector3)lowOrbitState.velocity - _endpointInitalVelocity_m);
+                _newtonUI.Eccentricity = (float)_endpointTargetOrbit.Eccentricity;
             }
             else
             {                
                 _endpointTargetOrbit = circularOrbit;
                 _endpointTargetVelocity_m = (Vector3)circOrbitState.velocity;
+                _newtonUI.Radius = (float)circOrbitState.position.Length();
+                _newtonUI.SetDeltaV((Vector3)circOrbitState.velocity - _endpointInitalVelocity_m);
+                _newtonUI.Eccentricity = (float)_endpointTargetOrbit.Eccentricity;
             }
+            
+            _endpointInsertionPoint_m = (_perpVec * _newtonUI.Radius); //relative to the target body
+            _endpointTargetOrbitWidget.SetParametersFromKeplerElements(_endpointTargetOrbit, _endpointInsertionPoint_m);
+            //_newtonUI.Eccentricity = (float)_endpointTargetOrbit.Eccentricity;
+            _endpointInitialOrbit = OrbitMath.KeplerFromPositionAndVelocity(_stdGravParamTargetBody_m, _endpointInsertionPoint_m, _endpointInitalVelocity_m, _targetIntercept.eti);
+            _endpointInitalOrbitWidget.SetParametersFromKeplerElements(_endpointInitialOrbit, _endpointInsertionPoint_m);
+            
         }
 
 

@@ -276,7 +276,14 @@ public static class MoveMath
         }
     }
 
-    public static (Vector3 pos, Vector3 Velocity) GetAbsoluteState(Entity entity)
+    public static (Vector3 pos, Vector3 velocity) GetAbsoluteState(Entity entity, DateTime atDateTime)
+    {
+        var pos = (Vector3)GetAbsoluteFuturePosition(entity, atDateTime);
+        var vel = GetAbsoluteFutureVelocity(entity, atDateTime);
+        return (pos, vel);
+    }
+
+    public static (Vector3 pos, Vector3 velocity) GetAbsoluteState(Entity entity)
     {
         var posdb = entity.GetDataBlob<PositionDB>();
         var pos = posdb.AbsolutePosition;

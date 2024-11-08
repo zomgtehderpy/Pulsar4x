@@ -274,7 +274,12 @@ namespace Pulsar4X.SDL2UI
     {
 
         double _fuelToBurn = double.NaN;
-        public Vector3 DeltaV { get; set; } = Vector3.Zero;
+
+        public Vector3 DeltaV
+        {
+            get; 
+            private set;
+        } = Vector3.Zero;
         
         float _progradeDV;
         float _radialDV;
@@ -293,9 +298,18 @@ namespace Pulsar4X.SDL2UI
             get { return _rad;} set {_rad = value;} 
         }
         private float _maxRad;
+        private Vector2 _vector = new Vector2(0, 1);
         
-        public double DepartureAngle { get; set; }
-        public double Eccentricity { get; set; }
+        public double ProgradeAngle
+        {
+            get; set;
+        }
+        private float _eccentricity;
+        public float Eccentricity
+        {
+            get => _eccentricity;
+            set => _eccentricity = value;
+        }
 
         public NewtonionRadialOrderUI(NewtonThrustAbilityDB newtonAbility, double currentMass, float minRad, float maxRad)
         {
@@ -324,18 +338,41 @@ namespace Pulsar4X.SDL2UI
                 Calcs();
                 changes = true;
             }
+
+            /*
+            float maxE = 1;
+            if (ImGui.SliderFloat("Eccentricity", ref _eccentricity, 0, maxE))
+            {
+                Calcs();
+                changes = true;
+            }*/
             
             ImGui.Text("Fuel to burn:" + Stringify.Mass(_fuelToBurn));
             ImGui.Text("Burn time: " + (int)(_fuelToBurn / _fuelRate) +" s");
-            ImGui.Text("DeltaV: " + Stringify.Distance(DeltaV.Length())+ "/s of " + Stringify.Distance(_maxDV) + "/s");
+            ImGui.Text("DeltaV: " + Stringify.Distance(DeltaV.Length())+ "/s of " + Stringify.Distance(_maxDV) + "/s"); 
             ImGui.Text("Eccentricity: " + Eccentricity.ToString("g3"));
             return changes;
         }
 
+        public void SetDeltaV(Vector3 deltaV)
+        {
+            DeltaV = deltaV;
+            var rmtx = Matrix.IDRotate(-ProgradeAngle);
+            Vector2 dv = rmtx.TransformD(deltaV.Y, deltaV.X);
+            _radialDV = (float)dv.X;
+            _progradeDV = (float)dv.Y;
+            _fuelToBurn = OrbitMath.TsiolkovskyFuelUse(_curmass, _exhastVelocity, DeltaV.Length());
+            
+            var rmtx2 = Matrix.IDRotate(ProgradeAngle);
+            Vector2 dv2 = rmtx.TransformD(_progradeDV, _radialDV);
+            
+            
+        }
+
         private void Calcs()
         {
-            var rmtx = Matrix.IDRotate(DepartureAngle);
-            Vector2 dv = rmtx.TransformD(_radialDV, _progradeDV);
+            var rmtx = Matrix.IDRotate(ProgradeAngle);
+            Vector2 dv = rmtx.TransformD(_progradeDV, _radialDV);
             DeltaV = new Vector3(dv.X, dv.Y, 0);
             _fuelToBurn = OrbitMath.TsiolkovskyFuelUse(_curmass, _exhastVelocity, DeltaV.Length());
         }
