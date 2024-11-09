@@ -50,6 +50,7 @@ namespace Pulsar4X.SDL2UI
         Vector2[] _points = new Vector2[0]; //we calculate points around the ellipse and add them here. when we draw them we translate all the points. 
         SDL.SDL_Point[] _drawPoints = new SDL.SDL_Point[0];
         //sphere of influance radius, if the entity is outside this, then this is affected by the parent (or other) gravitational body
+        double _soiWorldRadius_m;
         double _soiWorldRadius_AU; 
         float _soiViewRadius;
         //this is the size of the planet that we're trying to orbit, 
@@ -103,6 +104,7 @@ namespace Pulsar4X.SDL2UI
 
             _linearEccentricity_m = 0;
 
+            _soiWorldRadius_m = targetEntity.GetSOI_m();
             _soiWorldRadius_AU = targetEntity.GetSOI_AU();
             _targetWorldRadius_AU = targetEntity.GetDataBlob<MassVolumeDB>().RadiusInAU;
             Setup();
@@ -188,7 +190,15 @@ namespace Pulsar4X.SDL2UI
 
         void CreatePointArray()
         {
+            if(_eccentricity <1 )
+                CreatePointArrayElliptic();
+            else
+                CreatePointArrayHyperbolic();
+            
+        }
 
+        void CreatePointArrayElliptic()
+        {
             var coslop = 1 * Math.Cos(LonditudeOfPeriapsis);
             var sinlop = 1 * Math.Sin(LonditudeOfPeriapsis);
             
@@ -220,6 +230,13 @@ namespace Pulsar4X.SDL2UI
                     _points[i] = new Vector2() {X = pnt.X, Y = pnt.Y};
                 }
             }
+        }
+
+        void CreatePointArrayHyperbolic()
+        {
+            double p = EllipseMath.SemiLatusRectum(OrbitEllipseSemiMaj_m, _eccentricity);
+            double angleToSOIPoint = EllipseMath.TrueAnomalyAtRadus(_soiWorldRadius_m, p, _eccentricity);
+            _points = CreatePrimitiveShapes.HyperbolicPoints(OrbitEllipseSemiMaj_m, _eccentricity, LonditudeOfPeriapsis, angleToSOIPoint, _numberOfArcSegments + 1);
         }
 
 
