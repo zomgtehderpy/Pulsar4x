@@ -363,15 +363,11 @@ namespace Pulsar4X.SDL2UI
             _progradeDV = (float)dv.Y;
             _fuelToBurn = OrbitMath.TsiolkovskyFuelUse(_curmass, _exhastVelocity, DeltaV.Length());
             
-            var rmtx2 = Matrix.IDRotate(ProgradeAngle);
-            Vector2 dv2 = rmtx.TransformD(_progradeDV, _radialDV);
-            
-            
         }
 
         private void Calcs()
         {
-            var rmtx = Matrix.IDRotate(ProgradeAngle);
+            var rmtx = Matrix.IDRotate(-ProgradeAngle);
             Vector2 dv = rmtx.TransformD(_progradeDV, _radialDV);
             DeltaV = new Vector3(dv.X, dv.Y, 0);
             _fuelToBurn = OrbitMath.TsiolkovskyFuelUse(_curmass, _exhastVelocity, DeltaV.Length());

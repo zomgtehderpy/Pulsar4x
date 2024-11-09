@@ -194,7 +194,19 @@ namespace Pulsar4X.SDL2UI
                 CreatePointArrayElliptic();
             else
                 CreatePointArrayHyperbolic();
-            
+            if (IsRetrogradeOrbit)
+            {
+                var mtxr1 = Matrix3d.IDRotateZ(-LonditudeOfPeriapsis);
+                var mtxri = Matrix3d.IDRotateX(Math.PI);
+                var mtxr2 = Matrix3d.IDRotateZ(LonditudeOfPeriapsis);
+
+                var mtxr = mtxr1 * mtxri * mtxr2;
+                for (int i = 0; i < _points.Length; i++)
+                {
+                    var pnt = mtxr.Transform(new Vector3(_points[i].X, _points[i].Y, 0));
+                    _points[i] = new Vector2() {X = pnt.X, Y = pnt.Y};
+                }
+            }
         }
 
         void CreatePointArrayElliptic()
@@ -215,35 +227,19 @@ namespace Pulsar4X.SDL2UI
                 _points[i] = new Vector2() { X = x2, Y = y2 };
                 angle += _segmentArcSweepRadians;
             }
-            
-            
-            if (IsRetrogradeOrbit)
-            {
-                var mtxr1 = Matrix3d.IDRotateZ(-LonditudeOfPeriapsis);
-                var mtxri = Matrix3d.IDRotateX(Math.PI);
-                var mtxr2 = Matrix3d.IDRotateZ(LonditudeOfPeriapsis);
-
-                var mtxr = mtxr1 * mtxri * mtxr2;
-                for (int i = 0; i < _points.Length; i++)
-                {
-                    var pnt = mtxr.Transform(new Vector3(_points[i].X, _points[i].Y, 0));
-                    _points[i] = new Vector2() {X = pnt.X, Y = pnt.Y};
-                }
-            }
         }
 
         void CreatePointArrayHyperbolic()
         {
             double p = EllipseMath.SemiLatusRectum(OrbitEllipseSemiMaj_m, _eccentricity);
             double angleToSOIPoint = EllipseMath.TrueAnomalyAtRadus(_soiWorldRadius_m, p, _eccentricity);
-            _points = CreatePrimitiveShapes.HyperbolicPoints(OrbitEllipseSemiMaj_m, _eccentricity, LonditudeOfPeriapsis, angleToSOIPoint, _numberOfArcSegments + 1);
+            _points = CreatePrimitiveShapes.HyperbolicPoints(OrbitEllipseSemiMaj_m, _eccentricity, LonditudeOfPeriapsis, angleToSOIPoint, _numberOfArcSegments );
         }
 
 
         public override void OnPhysicsUpdate()
         {
-
-
+            
             CreatePointArray();
             Vector2 vector2 = new Vector2() { X = _position_m.X, Y = _position_m.Y };
  
@@ -306,6 +302,8 @@ namespace Pulsar4X.SDL2UI
             float alpha = MaxAlpha;
             for (int i = 0; i < _numberOfDrawSegments - 1; i++)
             {
+                if(_eccentricity > 1 && i == _index-2)//don't draw the line segment for hyperbolic orbits where it's at the SOI.
+                    continue;
                 var au = 1;//UniversalConstants.Units.MetersPerAu;
                 int x1 = (int)(_drawPoints[i].x * au);
                 int y1 = (int)(_drawPoints[i].y * au);
