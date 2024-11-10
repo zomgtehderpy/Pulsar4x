@@ -63,17 +63,11 @@ namespace Pulsar4X.Engine.Orders
 
                 if(targetOrbitDB == null)
                 {
-                    var cargoLibrary = EntityCommanding.GetFactionOwner.GetDataBlob<FactionInfoDB>().Data.CargoGoods;
-                    (WarpMoveCommand warpCommand, _) = WarpMoveCommand.CreateCommand(
-                        cargoLibrary,
-                        RequestingFactionGuid,
+                    var cmd = WarpMoveCommand.CreateCommandEZ(
                         ship,
                         Target,
-                        Vector3.Zero,
-                        EntityCommanding.StarSysDateTime,
-                        new Vector3(),
-                        shipMass);
-                    _shipCommands.Add(warpCommand);
+                        EntityCommanding.StarSysDateTime);
+                    _shipCommands.Add(cmd);
                 }
                 else
                 {
@@ -87,9 +81,12 @@ namespace Pulsar4X.Engine.Orders
                     Vector3 targetPos = Vector3.Normalise(position) * targetSMA;
 
                     // Create the movement order
-                    var cargoLibrary = EntityCommanding.GetFactionOwner.GetDataBlob<FactionInfoDB>().Data.CargoGoods;
-                    (WarpMoveCommand warpCommand, NewtonThrustCommand? thrustCommand) = WarpMoveCommand.CreateCommand(cargoLibrary, RequestingFactionGuid, ship, Target, targetPos, EntityCommanding.StarSysDateTime, new Vector3() , shipMass);
-                    _shipCommands.Add(warpCommand);
+
+                    var cmd = WarpMoveCommand.CreateCommandEZ(
+                        ship,
+                        Target,
+                        EntityCommanding.StarSysDateTime);
+                    _shipCommands.Add(cmd);
                 }
             }
 

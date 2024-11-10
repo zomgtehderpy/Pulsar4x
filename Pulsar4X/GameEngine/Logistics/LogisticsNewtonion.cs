@@ -319,20 +319,13 @@ namespace Pulsar4X.Engine.Logistics
             var thrustV2 = OrbitalMath.ProgradeToStateVector(sgpTgtBdy, thrustVector, targetInsertionPosition, insertionVector);
             //should we expend deltaV now or when we get there?
 
-
-            var cargoLibary = ship.GetFactionOwner.GetDataBlob<FactionInfoDB>().Data.CargoGoods;
-            var cmd = WarpMoveCommand.CreateCommand(
-                cargoLibary,
-                ship.FactionOwnerID,
+            
+            var cmd = WarpMoveCommand.CreateCommandEZ(
                 ship,
                 targetBody,
-                targetInsertionPosition,
-                startState.At,
-                thrustV2,
-                shipMass);
+                startState.At);
 
-            var dv = cmd.Item2.OrbitrelativeDeltaV.Length();
-
+            var dv = cmd.EndpointTargetExpendDeltaV.Length();
             double ve = ship.GetDataBlob<NewtonThrustAbilityDB>().ExhaustVelocity;
             double fuelBurned = OrbitalMath.TsiolkovskyFuelUse(shipMass, ve, dv);
             tsec += OrbitMath.BurnTime(ship, dv, shipMass);

@@ -60,7 +60,7 @@ namespace Pulsar4X.Engine
                 case Manuver.ManuverType.Warp:
                 {
                     var endVector = OrbitalMath.GetStateVectors(manuver.EndKepler, manuver.EndDateTime);
-                    WarpMovingDB newDB = new WarpMovingDB(entity, manuver.EndSOIParent, endVector.position);
+                    WarpMovingDB newDB = new WarpMovingDB(entity, manuver.EndSOIParent, endVector.position, manuver.EndKepler);
                     entity.SetDataBlob(newDB);
                     db.CurrentActivity = "Warping";
                     break;

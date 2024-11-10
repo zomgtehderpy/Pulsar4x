@@ -57,59 +57,7 @@ namespace Pulsar4X.Engine.Orders
         /// </summary>
         public KeplerElements EndpointTargetOrbit;
         public PositionDB.MoveTypes MoveTypeAtDestination;
-
-        /// <summary>
-        /// Creates the transit cmd.
-        /// </summary>
-        /// <param name="game">Game.</param>
-        /// <param name="faction">Faction.</param>
-        /// <param name="orderEntity">Order entity.</param>
-        /// <param name="targetEntity">Target entity.</param>
-        /// <param name="targetOffsetPos_m">Target offset position in au.</param>
-        /// <param name="transitStartDatetime">Transit start datetime.</param>
-        /// <param name="expendDeltaV">Amount of DV to expend to change the orbit in m/s</param>
-        /// /// <param name="mass">mass of ship after warp (needed for DV calc)</param>
-        public static (WarpMoveCommand, NewtonThrustCommand?) CreateCommand(
-            CargoDefinitionsLibrary cargoLibrary, 
-            int faction, 
-            Entity orderEntity, 
-            Entity targetEntity, 
-            Vector3 targetOffsetPos_m, 
-            DateTime transitStartDatetime, 
-            Vector3 expendDeltaV, 
-            double mass)
-        {
-            var cmd = new WarpMoveCommand()
-            {
-                RequestingFactionGuid = faction,
-                EntityCommandingGuid = orderEntity.Id,
-                CreatedDate = orderEntity.Manager.ManagerSubpulses.StarSysDateTime,
-                TargetEntityGuid = targetEntity.Id,
-                EndpointRelitivePosition = targetOffsetPos_m,
-                TransitStartDateTime = transitStartDatetime,
-                EndpointTargetExpendDeltaV = expendDeltaV,
-            };
-
-            orderEntity.Manager.Game.OrderHandler.HandleOrder(cmd);
-            if (expendDeltaV.Length() != 0)
-            {
-
-                (Vector3 position, DateTime atDateTime) targetIntercept = WarpMath.GetInterceptPosition
-                (
-                    orderEntity,
-                    targetEntity.GetDataBlob<OrbitDB>(),
-                    orderEntity.StarSysDateTime,
-                    targetOffsetPos_m
-                );
-
-                var burntime = TimeSpan.FromSeconds(OrbitMath.BurnTime(orderEntity, expendDeltaV.Length(), mass));
-                var ntcmd = NewtonThrustCommand.CreateCommand(cargoLibrary, orderEntity, expendDeltaV, targetIntercept.atDateTime + burntime);
-
-                return (cmd, ntcmd);
-            }
-
-            return (cmd, null);
-        }
+        
         public static WarpMoveCommand CreateCommand(
             Entity orderEntity, 
             Entity targetEntity, 
@@ -181,6 +129,67 @@ namespace Pulsar4X.Engine.Orders
             return cmd;
         }
         
+        /// <summary>
+        /// Creates a warp order with an attempted simplenewt circular orbit post warp.
+        /// Currently only works if target has an OrbitDB.
+        /// </summary>
+        /// <param name="orderEntity"></param>
+        /// <param name="targetEntity"></param>
+        /// <param name="transitStartDatetime"></param>
+        /// <returns></returns>
+        public static WarpMoveCommand CreateCommandEZ(
+            Entity orderEntity, 
+            Entity targetEntity, 
+            DateTime transitStartDatetime)
+        {
+
+            (Vector3 pos, Vector3 vel) departureState;
+            if(orderEntity.Manager.Game.Settings.UseRelativeVelocity)
+            {
+                departureState = MoveMath.GetRelativeFutureState(orderEntity, transitStartDatetime);
+            }
+            else
+                departureState = MoveMath.GetAbsoluteState(orderEntity, transitStartDatetime);
+
+            var sgp = OrbitMath.SGP(targetEntity, orderEntity);
+            var lowOrbitRadius = OrbitMath.LowOrbitRadius(targetEntity);
+            var perpVec = Vector3.Normalise(new Vector3(departureState.vel.Y * -1, departureState.vel.X, 0));
+            var lowOrbitPos = perpVec * lowOrbitRadius;
+            (Vector3 pos, DateTime eti) targetIntercept  = WarpMath.GetInterceptPosition(orderEntity, targetEntity, transitStartDatetime, lowOrbitPos);
+            
+            var lowOrbit = OrbitMath.KeplerCircularFromPosition(sgp, lowOrbitPos, targetIntercept.eti);
+            var lowOrbitState = OrbitMath.GetStateVectors(lowOrbit, targetIntercept.eti);
+            var targetEntityOrbitDb = targetEntity.GetDataBlob<OrbitDB>();
+            Vector3 insertionVector = OrbitProcessor.GetOrbitalInsertionVector(departureState.vel, targetEntityOrbitDb, targetIntercept.eti);
+            var deltaV = insertionVector - (Vector3)lowOrbitState.velocity;
+
+            
+            var cmd = new WarpMoveCommand()
+            {
+                RequestingFactionGuid = orderEntity.FactionOwnerID,
+                EntityCommandingGuid = orderEntity.Id,
+                CreatedDate = orderEntity.Manager.ManagerSubpulses.StarSysDateTime,
+                TargetEntityGuid = targetEntity.Id,
+                EndpointRelitivePosition = lowOrbitPos,
+                EndpointTargetOrbit = lowOrbit,
+                TransitStartDateTime = transitStartDatetime,
+                EndpointTargetExpendDeltaV = deltaV,
+            };
+            if (targetEntity.GetDataBlob<PositionDB>().MoveType == PositionDB.MoveTypes.None)
+            {
+                cmd.MoveTypeAtDestination = PositionDB.MoveTypes.None;
+            }
+            else
+            {
+                cmd.MoveTypeAtDestination = PositionDB.MoveTypes.Orbit;
+            }
+
+            orderEntity.Manager.Game.OrderHandler.HandleOrder(cmd);
+
+
+            return cmd;
+        }
+        
         internal override bool IsValidCommand(Game game)
         {
             if (CommandHelpers.IsCommandValid(game.GlobalManager, RequestingFactionGuid, EntityCommandingGuid, out _factionEntity, out _entityCommanding))
@@ -207,10 +216,8 @@ namespace Pulsar4X.Engine.Orders
                 if (creationCost > estored)
                     return;
 
-                _warpingDB = new WarpMovingDB(_entityCommanding, _targetEntity, EndpointRelitivePosition);
-                _warpingDB.EndpointTargetOrbit = EndpointTargetOrbit;
+                _warpingDB = new WarpMovingDB(_entityCommanding, _targetEntity, EndpointRelitivePosition, EndpointTargetOrbit);
                 _warpingDB.EndpointTargetExpendDeltaV = EndpointTargetExpendDeltaV;
-
                 EntityCommanding.SetDataBlob(_warpingDB);
 
                 WarpMoveProcessor.StartNonNewtTranslation(EntityCommanding);

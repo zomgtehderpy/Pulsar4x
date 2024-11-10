@@ -46,7 +46,7 @@ namespace Pulsar4X.Datablobs
 
         internal Vector2 _position;
         internal Entity _parentEnitity;
-        public KeplerElements EndpointTargetOrbit { get; internal set; }
+        public KeplerElements EndpointTargetOrbit { get; private set; }
         
         /// <summary>
         /// Newtonion Vector to burn once warp is complete.
@@ -107,7 +107,7 @@ namespace Pulsar4X.Datablobs
         /// <param name="targetPositiondb"></param>
         /// <param name="offsetPosition">normaly you want to move to a position next to the entity, this is
         /// a position relative to the entity you're wanting to move to</param>
-        public WarpMovingDB(Entity thisEntity, Entity targetEntity, Vector3 offsetPosition)
+        public WarpMovingDB(Entity thisEntity, Entity targetEntity, Vector3 offsetPosition, KeplerElements endpointTargetOrbit)
         {
             EntryDateTime = thisEntity.Manager.ManagerSubpulses.StarSysDateTime;
             var targetIntercept = WarpMath.GetInterceptPosition(thisEntity, targetEntity, EntryDateTime, offsetPosition);
@@ -117,6 +117,7 @@ namespace Pulsar4X.Datablobs
             EntryPointAbsolute = startState.pos;
             ExitPointrelative = offsetPosition;
             PredictedExitTime = targetIntercept.etiDateTime;
+            EndpointTargetOrbit = endpointTargetOrbit;
             SavedNewtonionVector = MoveMath.GetRelativeState(thisEntity).Velocity; //TODO: this needs to check GameSettings.UseRelativeVelocity
             TargetEntity = targetEntity;
             TargetPositionDB = targetEntity.GetDataBlob<PositionDB>();

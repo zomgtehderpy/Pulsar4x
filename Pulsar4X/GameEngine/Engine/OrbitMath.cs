@@ -398,6 +398,19 @@ namespace Pulsar4X.Engine
         #endregion
 
 
+        /// <summary>
+        /// Standard Gravitational Parameter.
+        /// </summary>
+        /// <param name="parent">Parent Entity</param>
+        /// <param name="child">Child Entity</param>
+        /// <returns></returns>
+        public static double SGP(Entity parent, Entity child)
+        {
+            var mass = parent.GetDataBlob<MassVolumeDB>().MassTotal;
+            mass += child.GetDataBlob<MassVolumeDB>().MassTotal;
+            return mass * UniversalConstants.Science.GravitationalConstant;
+            
+        }
 
         /// <summary>
         /// returns the SOI radius of *this* orbital body,

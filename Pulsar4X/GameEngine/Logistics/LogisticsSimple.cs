@@ -63,15 +63,11 @@ namespace Pulsar4X.Engine.Logistics
             Vector3 targetPos = Vector3.Normalise(pos) * targetSMA;
 
             var cargoLibrary = ship.GetFactionOwner.GetDataBlob<FactionInfoDB>().Data.CargoGoods;
-            var cmd = WarpMoveCommand.CreateCommand(
-                cargoLibrary,
-                ship.FactionOwnerID,
+            
+            var cmd = WarpMoveCommand.CreateCommandEZ(
                 ship,
                 targetBody,
-                targetPos,
-                startState.At,
-                new Vector3(),
-                shipMass);
+                startState.At);
 
             var s = ship.GetDataBlob<WarpAbilityDB>().MaxSpeed;
             var d = pos.Length() - targetSMA;
@@ -130,15 +126,10 @@ namespace Pulsar4X.Engine.Logistics
             Vector3 targetPos = Vector3.Normalise(pos) * targetSMA;
 
             var cargoLibrary = ship.GetFactionOwner.GetDataBlob<FactionInfoDB>().Data.CargoGoods;
-            var cmd = WarpMoveCommand.CreateCommand(
-                cargoLibrary,
-                ship.FactionOwnerID,
+            var cmd = WarpMoveCommand.CreateCommandEZ(
                 ship,
                 targetBody,
-                targetPos,
-                startState.At,
-                new Vector3(),
-                shipMass);
+                startState.At);
 
             (Vector3 position, DateTime atDateTime) targetIntercept = WarpMath.GetInterceptPosition
             (
