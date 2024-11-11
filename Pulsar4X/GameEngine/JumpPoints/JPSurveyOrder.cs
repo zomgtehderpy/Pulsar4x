@@ -6,7 +6,7 @@ namespace Pulsar4X.Engine.Orders;
 
 public class JPSurveyOrder : EntityCommand
 {
-    public override ActionLaneTypes ActionLanes => ActionLaneTypes.InteractWithExternalEntity;
+    public override ActionLaneTypes ActionLanes => ActionLaneTypes.Movement | ActionLaneTypes.InteractWithExternalEntity;
 
     public override bool IsBlocking => true;
 
