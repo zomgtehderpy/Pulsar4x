@@ -68,7 +68,7 @@ namespace Pulsar4X.Engine.Logistics
                 ship,
                 targetBody,
                 startState.At);
-
+            ship.Manager.Game.OrderHandler.HandleOrder(cmd);
             var s = ship.GetDataBlob<WarpAbilityDB>().MaxSpeed;
             var d = pos.Length() - targetSMA;
             var t = d / s;
@@ -130,7 +130,7 @@ namespace Pulsar4X.Engine.Logistics
                 ship,
                 targetBody,
                 startState.At);
-
+            ship.Manager.Game.OrderHandler.HandleOrder(cmd);
             (Vector3 position, DateTime atDateTime) targetIntercept = WarpMath.GetInterceptPosition
             (
                 ship,

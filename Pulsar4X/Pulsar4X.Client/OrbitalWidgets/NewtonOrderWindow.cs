@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using Antlr.Runtime;
 using ImGuiNET;
 using Pulsar4X.Engine;
@@ -6,6 +7,8 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
 using Pulsar4X.Engine.Orders;
 using Pulsar4X.Orbital;
+using Vector2 = Pulsar4X.Orbital.Vector2;
+using Vector3 = Pulsar4X.Orbital.Vector3;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -347,9 +350,12 @@ namespace Pulsar4X.SDL2UI
                 changes = true;
             }*/
             
-            ImGui.Text("Fuel to burn:" + Stringify.Mass(_fuelToBurn));
+            //ImGui.Text("Fuel to burn:" + Stringify.Mass(_fuelToBurn));
             ImGui.Text("Burn time: " + (int)(_fuelToBurn / _fuelRate) +" s");
-            ImGui.Text("DeltaV: " + Stringify.Distance(DeltaV.Length())+ "/s of " + Stringify.Distance(_maxDV) + "/s"); 
+            if(DeltaV.Length() > _maxDV)
+                ImGui.TextColored(new Vector4(0.9f, 0, 0, 1) ,"DeltaV: " + Stringify.Distance(DeltaV.Length())+ "/s of " + Stringify.Distance(_maxDV) + "/s");
+            else
+                ImGui.Text("DeltaV: " + Stringify.Distance(DeltaV.Length())+ "/s of " + Stringify.Distance(_maxDV) + "/s"); 
             ImGui.Text("Eccentricity: " + Eccentricity.ToString("g3"));
             return changes;
         }

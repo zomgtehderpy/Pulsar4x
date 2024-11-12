@@ -68,6 +68,7 @@ namespace Pulsar4X.Engine.Orders
                         Target,
                         EntityCommanding.StarSysDateTime);
                     _shipCommands.Add(cmd);
+                    ship.Manager.Game.OrderHandler.HandleOrder(cmd);
                 }
                 else
                 {
@@ -87,6 +88,7 @@ namespace Pulsar4X.Engine.Orders
                         Target,
                         EntityCommanding.StarSysDateTime);
                     _shipCommands.Add(cmd);
+                    ship.Manager.Game.OrderHandler.HandleOrder(cmd);
                 }
             }
 

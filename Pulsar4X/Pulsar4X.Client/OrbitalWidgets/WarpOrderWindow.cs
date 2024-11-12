@@ -93,11 +93,6 @@ namespace Pulsar4X.SDL2UI
             get { return _endpointInitalVelocity_m - _endpointTargetVelocity_m; }
         }
         
-        
-        private Vector3 _targetInsertionPoint_AU
-        {
-            get { return Distance.MToAU(_endpointInsertionPoint_m); }
-        }
 
         private WarpOrderWindow(EntityState entityState, bool smMode = false)
         {
@@ -131,10 +126,10 @@ namespace Pulsar4X.SDL2UI
             {
                 //selectEntity      selectPos               clickAction     altClick
                 {DoNothing,         DoNothing,              DoNothing,      AbortOrder,  },     //needsEntity
-                {TargetSelected,    DoNothing,              DoNothing,      GoBackState, }, //needsTarget
-                {DoNothing,         InsertionPntSelected,   DoNothing,      GoBackState, }, //needsApopapsis
-                //{DoNothing,         PeriapsisPntSelected,   DoNothing,      GoBackState, }, //needsPeriapsis
-                {DoNothing,         DoNothing,              ActionCmd,      GoBackState, }  //needsActoning
+                {TargetSelected,    DoNothing,              DoNothing,      GoBackState, },     //needsTarget
+                {DoNothing,         InsertionPntSelected,   DoNothing,      GoBackState, },     //needsApopapsis
+                //{DoNothing,         PeriapsisPntSelected,   DoNothing,      GoBackState, },   //needsPeriapsis
+                {DoNothing,         DoNothing,              ActionCmd,      GoBackState, }      //needsActoning
             };
         }
 
@@ -361,14 +356,11 @@ namespace Pulsar4X.SDL2UI
                                             InsertionCalcs();
                                     }
                                     CurrentState = States.NeedsActioning;
-
                                 }
                                 else
                                 {
-                                    var mousePos = ImGui.GetMousePos();
-
                                     var mouseWorldPos = _uiState.Camera.MouseWorldCoordinate_m();
-                                    _endpointInsertionPoint_m = (mouseWorldPos - GetTargetAbsPosition()); //relative to the target body
+                                    _endpointInsertionPoint_m = mouseWorldPos - MoveMath.GetAbsolutePosition(TargetEntity.Entity); //relative to the target body
 
                                     _moveWidget.SetArrivalPosition(_endpointInsertionPoint_m);
                                     _endpointTargetOrbit = OrbitMath.KeplerFromPositionAndVelocity(_stdGravParamTargetBody_m, _endpointInsertionPoint_m, _endpointInitalVelocity_m, _departureDateTime);
@@ -506,17 +498,7 @@ namespace Pulsar4X.SDL2UI
 
         #region helper calcs
 
-
-
-        Orbital.Vector3 GetTargetAbsPosition()
-        {
-            return MoveMath.GetAbsolutePosition(TargetEntity.Entity);
-        }
-        Orbital.Vector3 GetMyPosition()
-        {
-            return  MoveMath.GetAbsolutePosition(OrderingEntityState.Entity);
-        }
-
+        
         void DepartureCalcs()
         {
 
@@ -603,8 +585,29 @@ namespace Pulsar4X.SDL2UI
 
         internal override void EntityClicked(EntityState entity, MouseButtons button)
         {
-            if(button == MouseButtons.Primary)
+            ImGuiIOPtr io = ImGui.GetIO();
+            
+            if (button == MouseButtons.Primary && !io.KeyShift )
+            {
+                var cmd = WarpMoveCommand.CreateCommandEZ(
+                    OrderingEntityState.Entity, 
+                    _uiState.LastClickedEntity.Entity, 
+                    _departureDateTime);
+                if (cmd.EndpointTargetExpendDeltaV.Length() < _maxDV)
+                {
+                    _uiState.Game.OrderHandler.HandleOrder(cmd);
+                    CloseWindow();
+                }
+                else
+                {
+                    fsm[(byte)CurrentState, (byte)Events.SelectedEntity].Invoke();
+                }
+                
+            }
+            else if(button == MouseButtons.Primary && io.KeyShift)
+            {
                 fsm[(byte)CurrentState, (byte)Events.SelectedEntity].Invoke();
+            }
         }
         internal override void MapClicked(Vector3 worldPos_m, MouseButtons button)
         {

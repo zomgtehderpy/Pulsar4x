@@ -324,7 +324,8 @@ namespace Pulsar4X.Engine.Logistics
                 ship,
                 targetBody,
                 startState.At);
-
+            ship.Manager.Game.OrderHandler.HandleOrder(cmd);
+            
             var dv = cmd.EndpointTargetExpendDeltaV.Length();
             double ve = ship.GetDataBlob<NewtonThrustAbilityDB>().ExhaustVelocity;
             double fuelBurned = OrbitalMath.TsiolkovskyFuelUse(shipMass, ve, dv);

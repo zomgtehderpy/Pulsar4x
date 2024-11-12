@@ -117,6 +117,7 @@ namespace Pulsar4X.Engine.Orders
                     targetEntity,
                     EntityCommanding.StarSysDateTime);
                 _shipCommands.Add(cmd);
+                ship.Manager.Game.OrderHandler.HandleOrder(cmd);
             }
 
             IsRunning = true;

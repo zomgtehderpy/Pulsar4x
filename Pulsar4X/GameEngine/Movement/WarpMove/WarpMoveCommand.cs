@@ -131,6 +131,7 @@ namespace Pulsar4X.Engine.Orders
         
         /// <summary>
         /// Creates a warp order with an attempted simplenewt circular orbit post warp.
+        /// DOES NOT QUEUE THE COMMAND. Game.OrderHandler.HandleOrder(cmd) should be called
         /// </summary>
         /// <param name="orderEntity"></param>
         /// <param name="targetEntity"></param>
@@ -226,7 +227,7 @@ namespace Pulsar4X.Engine.Orders
                     throw new NotImplementedException();
             }
             
-            orderEntity.Manager.Game.OrderHandler.HandleOrder(cmd);
+            //orderEntity.Manager.Game.OrderHandler.HandleOrder(cmd);
 
 
             return cmd;
