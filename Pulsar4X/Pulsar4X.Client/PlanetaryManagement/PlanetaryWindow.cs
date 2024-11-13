@@ -149,7 +149,7 @@ namespace Pulsar4X.SDL2UI
             {
                 var tempMassVolume = _lookedAtEntity.Entity.GetDataBlob<MassVolumeDB>();
                 rowData.Add(new string[] { "Radius", Stringify.Distance(tempMassVolume.RadiusInM) });
-                rowData.Add(new string[] { "Mass", tempMassVolume.MassDry.ToString() + " kg" });
+                rowData.Add(new string[] { "Mass", Stringify.Mass(tempMassVolume.MassDry)});
                 rowData.Add(new string[] { "Volume", Stringify.Volume(tempMassVolume.Volume_m3) });
                 rowData.Add(new string[] { "Density", tempMassVolume.DensityDry_gcm.ToString("##0.000") + " kg/m^3" });
             }

@@ -193,7 +193,12 @@ namespace Pulsar4X.Engine
         public static string Mass(double amountInKg, string format = "0.###")
         {
             string stringMass = "0 Kg";
-            if (amountInKg > 100000000)
+            if (amountInKg > 1000000000000)
+            {
+                amountInKg = amountInKg * 0.000000000001;
+                stringMass = amountInKg.ToString(format) + " GT";
+            }
+            else if (amountInKg > 100000000)
             {
                 amountInKg = amountInKg * 0.00000001;
                 stringMass = amountInKg.ToString(format) + " MT";
