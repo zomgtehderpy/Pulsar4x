@@ -27,6 +27,7 @@ namespace Pulsar4X.Engine
         public static ProtoEntity CreateBaseBody()
         {
             var position = new PositionDB(Vector3.Zero);
+            position.MoveType = PositionDB.MoveTypes.Orbit;
             var massVolume = new MassVolumeDB();
             var planetInfo = new SystemBodyInfoDB();
             var minerals = new MineralsDB();

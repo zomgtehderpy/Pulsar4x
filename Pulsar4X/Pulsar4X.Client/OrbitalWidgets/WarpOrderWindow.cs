@@ -539,44 +539,22 @@ namespace Pulsar4X.SDL2UI
 
         void InitialPlacement()
         {
-            
             var lowOrbitRadius = OrbitMath.LowOrbitRadius(TargetEntity.Entity);
             var lowOrbitPos = _perpVec * lowOrbitRadius;
             var lowOrbit = OrbitMath.KeplerCircularFromPosition(_stdGravParamTargetBody_m, lowOrbitPos, _targetIntercept.eti);
             var lowOrbitState = OrbitMath.GetStateVectors(lowOrbit, _targetIntercept.eti);
-            var velDif = _endpointInitalVelocity_m.Length() - lowOrbitState.velocity.Length();
+            
+            _endpointTargetOrbit = lowOrbit;
+            _endpointTargetVelocity_m = (Vector3)lowOrbitState.velocity;
+            _newtonUI.Radius = (float)lowOrbitState.position.Length();
+            _newtonUI.SetDeltaV((Vector3)lowOrbitState.velocity - _endpointInitalVelocity_m);
+            _newtonUI.Eccentricity = (float)_endpointTargetOrbit.Eccentricity;
 
-            
-            
-            var circularOrbit = OrbitMath.KeplerCircularFromVelocity(_stdGravParamTargetBody_m, _endpointInitalVelocity_m, _targetIntercept.eti);
-            var circOrbitState = OrbitMath.GetStateVectors(circularOrbit, _targetIntercept.eti);
-            var veldif2 = _endpointInitalVelocity_m.Length() - circOrbitState.velocity.Length();
-            //var posDif = circOrbitState.position.Length() - _endpointInsertionPoint_m.Length();
-            
-
-            if (velDif < _maxDV)
-            {
-                _endpointTargetOrbit = lowOrbit;
-                _endpointTargetVelocity_m = (Vector3)lowOrbitState.velocity;
-                _newtonUI.Radius = (float)lowOrbitState.position.Length();
-                _newtonUI.SetDeltaV((Vector3)lowOrbitState.velocity - _endpointInitalVelocity_m);
-                _newtonUI.Eccentricity = (float)_endpointTargetOrbit.Eccentricity;
-            }
-            else
-            {                
-                _endpointTargetOrbit = circularOrbit;
-                _endpointTargetVelocity_m = (Vector3)circOrbitState.velocity;
-                _newtonUI.Radius = (float)circOrbitState.position.Length();
-                _newtonUI.SetDeltaV((Vector3)circOrbitState.velocity - _endpointInitalVelocity_m);
-                _newtonUI.Eccentricity = (float)_endpointTargetOrbit.Eccentricity;
-            }
-            
             _endpointInsertionPoint_m = (_perpVec * _newtonUI.Radius); //relative to the target body
             _endpointTargetOrbitWidget.SetParametersFromKeplerElements(_endpointTargetOrbit, _endpointInsertionPoint_m);
-            //_newtonUI.Eccentricity = (float)_endpointTargetOrbit.Eccentricity;
+
             _endpointInitialOrbit = OrbitMath.KeplerFromPositionAndVelocity(_stdGravParamTargetBody_m, _endpointInsertionPoint_m, _endpointInitalVelocity_m, _targetIntercept.eti);
             _endpointInitalOrbitWidget.SetParametersFromKeplerElements(_endpointInitialOrbit, _endpointInsertionPoint_m);
-            
         }
 
 
