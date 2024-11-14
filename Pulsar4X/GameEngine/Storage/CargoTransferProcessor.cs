@@ -273,6 +273,47 @@ namespace Pulsar4X.Engine
             transferDB.TransferRateInKG = rate;
         }
 
+        public static (double bestDVRange, double bestRate) GetBestRangeRate(Entity from, Entity to)
+        {
+            var fromdb = from.GetDataBlob<VolumeStorageDB>();
+            var todb = to.GetDataBlob<VolumeStorageDB>();
+            var fromDVRange = fromdb.TransferRangeDv_mps;
+            var toDVRange = todb.TransferRangeDv_mps;
+            double bestXferRange_ms = Math.Min(fromDVRange, toDVRange);
+            double maxXferAtBestRange = fromdb.TransferRateInKgHr + todb.TransferRateInKgHr;
+            return (maxXferAtBestRange, bestXferRange_ms);
+        }
+
+        public static (double maxDVRange, double lowRate) GetMaxRangeRate(Entity from, Entity to)
+        {
+            var fromdb = from.GetDataBlob<VolumeStorageDB>();
+            var todb = to.GetDataBlob<VolumeStorageDB>();
+            var fromDVRange = fromdb.TransferRangeDv_mps;
+            var toDVRange = todb.TransferRangeDv_mps;
+            double maxRange;
+            double maxXferAtMaxRange;
+            
+            if (fromdb.TransferRangeDv_mps > todb.TransferRangeDv_mps)
+            {
+                maxRange = fromDVRange;
+                if (fromdb.TransferRateInKgHr > todb.TransferRateInKgHr)
+                    maxXferAtMaxRange = fromdb.TransferRateInKgHr;
+                else
+                    maxXferAtMaxRange = todb.TransferRateInKgHr;
+            }
+            else
+            {
+                maxRange = toDVRange;
+                if (todb.TransferRateInKgHr > fromdb.TransferRateInKgHr)
+                    maxXferAtMaxRange = todb.TransferRateInKgHr;
+                else
+                    maxXferAtMaxRange = fromdb.TransferRateInKgHr;
+            }
+            
+            return(maxRange, maxXferAtMaxRange);
+        }
+        
+
 
         public int ProcessManager(EntityManager manager, int deltaSeconds)
         {

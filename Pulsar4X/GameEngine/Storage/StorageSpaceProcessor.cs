@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
 using Pulsar4X.Atb;
@@ -52,17 +48,16 @@ namespace Pulsar4X.Engine
                 }
             }
 
-
             int i = 0;
-            if (instancesDB.TryGetComponentsByAttribute<StorageTransferRateAtbDB>(out var componentTransferInstances))
+            if (instancesDB.TryGetComponentsByAttribute<StorageTransferRateAtb>(out var componentTransferInstances))
             {
                 foreach (var instance in componentTransferInstances)
                 {
                     var design = instance.Design;
-                    if(!design.HasAttribute<StorageTransferRateAtbDB>())
+                    if(!design.HasAttribute<StorageTransferRateAtb>())
                         continue;
 
-                    var atbdata = design.GetAttribute<StorageTransferRateAtbDB>();
+                    var atbdata = design.GetAttribute<StorageTransferRateAtb>();
                     if (instance.HealthPercent() > 0.75)
                     {
                         transferRate += atbdata.TransferRate_kgh;

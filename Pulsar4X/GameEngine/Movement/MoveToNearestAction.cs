@@ -107,11 +107,10 @@ namespace Pulsar4X.Engine.Orders
                     targetEntity.GetDataBlob<OrbitDB>(),
                     EntityCommanding.StarSysDateTime
                 );
-
-                Vector3 targetPos = Vector3.Normalise(position) * targetSMA;
-
+                
+                var maxRangeRate = CargoTransferProcessor.GetMaxRangeRate(targetEntity, ship);
+                
                 // Create the movement order
-                var cargoLibrary = EntityCommanding.GetFactionOwner.GetDataBlob<FactionInfoDB>().Data.CargoGoods;
                 var cmd = WarpMoveCommand.CreateCommandEZ(
                     ship,
                     targetEntity,
