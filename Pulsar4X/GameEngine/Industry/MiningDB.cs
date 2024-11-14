@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Pulsar4X.Colonies;
 using Pulsar4X.Interfaces;
 
 namespace Pulsar4X.Datablobs

@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
 
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Colonies
 {
     public static class PopulationProcessor
     {

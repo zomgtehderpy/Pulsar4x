@@ -7,6 +7,7 @@ using Pulsar4X.Engine;
 using Pulsar4X.Interfaces;
 using System.Collections.Generic;
 using System.Reflection;
+using Pulsar4X.Colonies;
 
 namespace Pulsar4X.Extensions
 {
@@ -32,7 +33,7 @@ namespace Pulsar4X.Extensions
                 return entity.GetDataBlob<NameDB>().GetName(factionID);
             return "Unknown";
         }
-        
+
 
         /// <summary>
         /// Gets the Sphere of influence parent (the entity this object is orbiting) for a given entity.
@@ -48,8 +49,8 @@ namespace Pulsar4X.Extensions
 
             return positionDB.Parent;
         }
-        
-        
+
+
         public static double GetSOI_m(this Entity entity)
         {
             if(entity.TryGetDatablob<OrbitDB>(out var orbitDB) && orbitDB.Parent != null) //if we're not the parent star
@@ -215,7 +216,7 @@ namespace Pulsar4X.Extensions
 
             return false;
         }
-        
+
         public static CargoDefinitionsLibrary? GetFactionCargoDefinitions(this Entity entity)
         {
             if(entity.GetFactionOwner.TryGetDatablob<FactionInfoDB>(out var factionInfoDB))

@@ -10,6 +10,7 @@ using Pulsar4X.Engine.Designs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine.Orders;
 using System;
+using Pulsar4X.Colonies;
 
 namespace Pulsar4X.SDL2UI
 {

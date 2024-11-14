@@ -9,13 +9,14 @@ using Pulsar4X.Modding;
 using Pulsar4X.Orbital;
 using Pulsar4X.Components;
 using Pulsar4X.Engine.Designs;
+using Pulsar4X.Colonies;
 
 namespace Pulsar4X.Tests
 {
     internal static class TestingUtilities
     {
 
-        
+
         public static Entity BasicSol(EntityManager mgr)
         {
             double parentMass = 1.989e30;
@@ -145,7 +146,7 @@ namespace Pulsar4X.Tests
 
             StarSystemFactory starfac = new StarSystemFactory(Game);
             Sol = starfac.CreateSol(Game);
-            Earth = NameLookup.GetFirstEntityWithName(Sol, "Earth"); //Sol.Entities[3]; //should be fourth entity created 
+            Earth = NameLookup.GetFirstEntityWithName(Sol, "Earth"); //Sol.Entities[3]; //should be fourth entity created
              EarthColony = ColonyFactory.CreateColony(HumanFaction, HumanSpecies, Earth);
              var humondatastore = HumanFaction.GetDataBlob<FactionInfoDB>().Data;
             DefaultEngineDesign = DefaultStartFactory.DefaultThrusterDesign(HumanFaction, humondatastore);

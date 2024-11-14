@@ -4,6 +4,7 @@ using ImGuiNET;
 using Pulsar4X.Engine;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
+using Pulsar4X.Colonies;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -205,7 +206,7 @@ namespace Pulsar4X.SDL2UI
                             ImGui.NextColumn();
                             ImGui.Separator();
                         }
-                        
+
                     }
                 }
                 if(Entity.HasDataBlob<ColonyInfoDB>())
@@ -233,12 +234,12 @@ namespace Pulsar4X.SDL2UI
                     ImGui.NewLine();
                     ImGui.TextWrapped("Order a fleet equipped with a gravitational surveyor to survey this location. A successful survey may reveal a Jump Point to another system.");
                     ImGui.NewLine();
-                    
+
                     var factionID = _uiState.Faction.Id;
                     var remainingPoints = jPSurveyableDB.PointsRequired;
                     if( jPSurveyableDB.SurveyPointsRemaining.ContainsKey(factionID))
                         remainingPoints = jPSurveyableDB.SurveyPointsRemaining[factionID];
-                    
+
                     ImGui.TextWrapped("Survey Points Required: " + remainingPoints + "/" + jPSurveyableDB.PointsRequired);
                 }
 

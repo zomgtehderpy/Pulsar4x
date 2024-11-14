@@ -10,6 +10,7 @@ using Pulsar4X.Engine.Orders;
 using Pulsar4X.Engine.Designs;
 using Pulsar4X.SDL2UI;
 using Vector2 = System.Numerics.Vector2;
+using Pulsar4X.Colonies;
 
 namespace Pulsar4X.ImGuiNetUI.EntityManagement
 {

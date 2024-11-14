@@ -9,6 +9,7 @@ using Pulsar4X.Engine;
 using Pulsar4X.Engine.Auth;
 using Pulsar4X.Modding;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Colonies;
 
 namespace Pulsar4X.Tests
 {
@@ -167,7 +168,7 @@ namespace Pulsar4X.Tests
             Assert.AreEqual(0, testList.Count);  // should have 0 datablobs.
 
             Assert.IsFalse(testEntity.IsValid);
-            
+
             // Now try to remove the entity. Again.
             Assert.Catch<InvalidOperationException>(testEntity.Destroy);
         }

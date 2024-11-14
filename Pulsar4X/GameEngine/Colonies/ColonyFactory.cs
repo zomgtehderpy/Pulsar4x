@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using Pulsar4X.Orbital;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Colonies
 {
     public static class ColonyFactory
     {

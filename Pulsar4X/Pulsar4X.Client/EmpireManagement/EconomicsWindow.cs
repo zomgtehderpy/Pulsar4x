@@ -5,6 +5,7 @@ using System.Numerics;
 using ImGuiNET;
 using Pulsar4X.Engine;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Colonies;
 
 namespace Pulsar4X.SDL2UI
 {

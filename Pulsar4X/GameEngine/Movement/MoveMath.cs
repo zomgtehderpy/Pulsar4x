@@ -1,4 +1,5 @@
 using System;
+using Pulsar4X.Colonies;
 using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
 using Pulsar4X.Orbital;
@@ -10,7 +11,7 @@ namespace Pulsar4X.Datablobs;
 /// </summary>
 public static class MoveMath
 {
-    
+
     /// <summary>
     /// Gets future velocity for this entity, datablob agnostic.
     /// </summary>
@@ -57,8 +58,8 @@ public static class MoveMath
     public static Vector3 GetAbsoluteFutureVelocity(Entity entity, DateTime atDateTime)
     {
         PositionDB posDB = entity.GetDataBlob<PositionDB>();
-        
-        
+
+
         if (entity.HasDataBlob<OrbitDB>())
         {
             return OrbitMath.InstantaneousOrbitalVelocityVector_m(entity.GetDataBlob<OrbitDB>(), atDateTime);
@@ -205,7 +206,7 @@ public static class MoveMath
         }
         return pos;
     }
-    
+
     public static (Vector3 pos, Vector3 Velocity) GetRelativeFutureState(Entity entity, DateTime atDateTime)
     {
         var fvel = MoveMath.GetRelativeFutureVelocity(entity, atDateTime);
@@ -213,7 +214,7 @@ public static class MoveMath
 
         return (fpos, fvel);
     }
-    
+
 
     public static (Vector3 pos, Vector3 Velocity) GetRelativeState(Entity entity)
     {
@@ -317,12 +318,12 @@ public static class MoveMath
             var vel = move.CurrentVector_ms;
             return (pos, vel);
         }
-        
+
         if (entity.HasDataBlob<NewtonSimpleMoveDB>())
         {
             return  NewtonSimpleProcessor.GetAbsoluteState(entity, entity.StarSysDateTime);
         }
-        
+
         if(entity.HasDataBlob<WarpMovingDB>())
         {
             var vel = entity.GetDataBlob<WarpMovingDB>().CurrentNonNewtonionVectorMS;
@@ -333,7 +334,7 @@ public static class MoveMath
             return(pos, Vector3.Zero);
         }
     }
-    
+
     /// <summary>
     /// This is mostly syntatic sugar.
     /// For more efficent, get and store a reference to PositionDB.
@@ -344,7 +345,7 @@ public static class MoveMath
     {
         return entity.GetDataBlob<PositionDB>().AbsolutePosition;
     }
-    
+
     public static PositionDB? GetSOIParentPositionDB(Entity entity)
     {
         return (PositionDB?)entity.GetDataBlob<PositionDB>().ParentDB;

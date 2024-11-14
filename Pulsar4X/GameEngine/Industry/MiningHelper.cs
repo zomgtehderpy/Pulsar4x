@@ -5,6 +5,7 @@ using System.Text;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.DataStructures;
+using Pulsar4X.Colonies;
 
 namespace Pulsar4X.Engine.Industry
 {

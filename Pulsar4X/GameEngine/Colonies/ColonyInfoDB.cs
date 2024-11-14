@@ -2,8 +2,9 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Pulsar4X.Engine;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Colonies
 {
     public class ColonyInfoDB : BaseDataBlob
     {
