@@ -3,8 +3,9 @@ using Pulsar4X.Interfaces;
 using System;
 using Newtonsoft.Json;
 using Pulsar4X.Engine;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Energy
 {
     public class EnergyGenAbilityDB : BaseDataBlob
     {

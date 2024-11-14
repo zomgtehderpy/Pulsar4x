@@ -4,11 +4,9 @@ using Pulsar4X.Components;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Engine.Designs;
-using Pulsar4X.Engine.Orders;
 using Pulsar4X.Modding;
-using Pulsar4X.Orbital;
-using System;
 using GameEngine.WarpMove;
+using Pulsar4X.Energy;
 
 namespace Pulsar4X.Tests
 {

@@ -5,6 +5,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.ImGuiNetUI;
 using Pulsar4X.ImGuiNetUI.EntityManagement;
 using Pulsar4X.Colonies;
+using Pulsar4X.Energy;
 
 
 namespace Pulsar4X.SDL2UI

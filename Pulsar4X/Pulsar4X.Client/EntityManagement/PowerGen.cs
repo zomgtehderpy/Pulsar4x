@@ -1,9 +1,8 @@
 using System;
 using ImGuiNET;
-using Pulsar4X.Engine;
-using Pulsar4X.Datablobs;
 using Pulsar4X.SDL2UI;
 using Vector2 = System.Numerics.Vector2;
+using Pulsar4X.Energy;
 
 namespace Pulsar4X.ImGuiNetUI.EntityManagement
 {

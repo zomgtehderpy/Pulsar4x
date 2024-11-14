@@ -14,6 +14,7 @@ using Pulsar4X.Interfaces;
 using Pulsar4X.Extensions;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Atb;
+using Pulsar4X.Energy;
 
 namespace Pulsar4X.SDL2UI
 {

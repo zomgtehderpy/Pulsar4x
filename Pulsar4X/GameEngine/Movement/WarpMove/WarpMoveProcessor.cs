@@ -5,6 +5,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Engine.Orders;
 using Pulsar4X.Extensions;
+using Pulsar4X.Energy;
 
 namespace Pulsar4X.Engine
 {
@@ -68,8 +69,8 @@ namespace Pulsar4X.Engine
             _gameSettings = game.Settings;
         }
 
-        
-        
+
+
         public int ProcessManager(EntityManager manager, int deltaSeconds)
         {
             var datablobs = manager.GetAllDataBlobsOfType<WarpMovingDB>();
@@ -81,7 +82,7 @@ namespace Pulsar4X.Engine
             MoveStateProcessor.ProcessForType(datablobs, todateTime);
             return datablobs.Count;
         }
-        
+
 
 
         /// <summary>
@@ -103,7 +104,7 @@ namespace Pulsar4X.Engine
             WarpMove(entity, db, toDateTime);
             MoveStateProcessor.ProcessForType(db, toDateTime);
         }
-        
+
         public static void WarpMove(Entity entity, WarpMovingDB moveDB,  DateTime toDateTime)
         {
             if (moveDB.HasStarted || StartNonNewtTranslation(entity))
@@ -116,9 +117,9 @@ namespace Pulsar4X.Engine
                 double deltaT = (toDateTime - dateTimeFrom).TotalSeconds;
 
                 Vector3 targetPosMt = moveDB.ExitPointAbsolute;
-                
+
                 var newPositionMt = moveDB._position + (Vector2)currentVelocityMS * deltaT;
-                
+
                 double distanceToMove = ( moveDB._position - newPositionMt).Length();
                 double distanceToTargetMt = (moveDB._position - (Vector2)targetPosMt).Length();
 
@@ -143,10 +144,10 @@ namespace Pulsar4X.Engine
                 moveDB.LastProcessDateTime = toDateTime;
             }
         }
-        
+
         public static bool StartNonNewtTranslation(Entity entity)
         {
-            
+
             var warpDB = entity.GetDataBlob<WarpAbilityDB>();
             var positionDB = entity.GetDataBlob<PositionDB>();
             var maxSpeedMS = warpDB.MaxSpeed;
@@ -155,8 +156,8 @@ namespace Pulsar4X.Engine
             positionDB.SetParent(positionDB.Root);
 
             Vector3 currentPositionMt = positionDB.AbsolutePosition;
-            
-            
+
+
             var moveDB = entity.GetDataBlob<WarpMovingDB>();
             var tgt = moveDB.TargetEntity.GetDataBlob<PositionDB>();
             var tgtpos = tgt.AbsolutePosition;
@@ -177,7 +178,7 @@ namespace Pulsar4X.Engine
                 var speed = currentVelocityMS.Length();
                 moveDB.CurrentNonNewtonionVectorMS = currentVelocityMS;
                 moveDB.LastProcessDateTime = entity.StarSysDateTime;
-                
+
                 //estore = (estore.stored - creationCost, estore.maxStore);
                 powerDB.AddDemand(creationCost, entity.StarSysDateTime);
                 powerDB.AddDemand(-creationCost, entity.StarSysDateTime + TimeSpan.FromSeconds(1));
@@ -195,8 +196,8 @@ namespace Pulsar4X.Engine
         {
             var powerDB = entity.GetDataBlob<EnergyGenAbilityDB>();
 
-            
-            
+
+
             powerDB.AddDemand(warpDB.BubbleCollapseCost, entity.StarSysDateTime);
             powerDB.AddDemand(-warpDB.BubbleSustainCost, entity.StarSysDateTime);
             powerDB.AddDemand(-warpDB.BubbleCollapseCost, entity.StarSysDateTime + TimeSpan.FromSeconds(1));
@@ -241,10 +242,10 @@ namespace Pulsar4X.Engine
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
+
         }
-        
-        
+
+
         /// <summary>
         /// Sets a circular orbit without newtonion movement or fuel use.
         /// </summary>
@@ -258,7 +259,7 @@ namespace Pulsar4X.Engine
             if(moveDB.TargetEntity == null) throw new NullReferenceException("moveDB.TargetEntity cannot be null");
 
             PositionDB moveStatedb = entity.GetDataBlob<PositionDB>();
-            
+
             double targetSOI = moveDB.TargetEntity.GetSOI_m();
 
             Entity? targetEntity;
@@ -288,9 +289,9 @@ namespace Pulsar4X.Engine
             var mass = moveDB.TargetEntity.GetDataBlob<MassVolumeDB>().MassTotal;
             mass += entity.GetDataBlob<MassVolumeDB>().MassTotal;
             var sgp = GeneralMath.StandardGravitationalParameter(mass);
-            
+
             var currentOrbit = OrbitMath.KeplerFromPositionAndVelocity(sgp, moveDB.ExitPointrelative, moveDB.SavedNewtonionVector, atDateTime);
-            
+
             var target = moveDB.TargetEntity;
             NewtonSimpleMoveDB newtMove = new NewtonSimpleMoveDB(target, currentOrbit, newOrbit, atDateTime);
             entity.SetDataBlob(newtMove);
@@ -299,7 +300,7 @@ namespace Pulsar4X.Engine
         }
 
         /// <summary>
-        /// Sets an orbit using full newtonion movement and fuel use. 
+        /// Sets an orbit using full newtonion movement and fuel use.
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="positionDB"></param>
@@ -329,21 +330,21 @@ namespace Pulsar4X.Engine
             Vector3 insertionVector_m = OrbitProcessor.GetOrbitalInsertionVector(moveDB.SavedNewtonionVector, targetPlanetsOrbit, atDateTime);
             moveStatedb.SetParent(targetEntity);
             moveDB.IsAtTarget = true;
-            
+
             OrbitDB newOrbit = OrbitDB.FromVelocity(targetEntity, entity, insertionVector_m, atDateTime);
             entity.SetDataBlob(newOrbit);
-            
+
             var burnRate = entity.GetDataBlob<NewtonThrustAbilityDB>().FuelBurnRate;
             var exhaustVelocity = entity.GetDataBlob<NewtonThrustAbilityDB>().ExhaustVelocity;
             var mass = entity.GetDataBlob<MassVolumeDB>().MassTotal;
-            
+
             /*
             if (moveDB.EndpointTargetExpendDeltaV.Length() != 0)
             {
                 double fuelBurned = OrbitMath.TsiolkovskyFuelUse(mass, exhaustVelocity, moveDB.EndpointTargetExpendDeltaV.Length());
                 double secondsBurn = fuelBurned / burnRate;
                 var manuverNodeTime = entity.StarSysDateTime + TimeSpan.FromSeconds(secondsBurn * 0.5);
-                
+
                 NewtonThrustCommand.CreateCommand(entity.FactionOwnerID, entity, manuverNodeTime, moveDB.EndpointTargetExpendDeltaV, secondsBurn);
             }
             else if (moveDB.AutoCirculariseAfterWarp)
@@ -354,7 +355,7 @@ namespace Pulsar4X.Engine
                 double circSpeed = OrbitalMath.InstantaneousOrbitalSpeed(sgp, pos.Length(), pos.Length());
                 double speediff = circSpeed - curSpeed;
                 Vector3 circularizationBurn = speediff * Vector3.Normalise(insertionVector_m);
-                
+
                 double fuelBurned = OrbitMath.TsiolkovskyFuelUse(mass, exhaustVelocity, circularizationBurn.Length());
                 double secondsBurn = fuelBurned / burnRate;
                 var manuverNodeTime = entity.StarSysDateTime + TimeSpan.FromSeconds(secondsBurn * 0.5);

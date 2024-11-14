@@ -10,6 +10,7 @@ using Pulsar4X.Extensions;
 using Pulsar4X.SDL2UI.Combat;
 using Vector3 = Pulsar4X.Orbital.Vector3;
 using System.Linq;
+using Pulsar4X.Energy;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -442,7 +443,7 @@ namespace Pulsar4X.SDL2UI
                                 ImGui.Text("Creation Cost: " + warpDB.BubbleCreationCost.ToString());
                                 ImGui.Text("Sustain Cost: " + warpDB.BubbleSustainCost.ToString());
                                 ImGui.Text("Collapse Cost: " + warpDB.BubbleCollapseCost.ToString());
-                                
+
                             }
 
 

@@ -7,6 +7,7 @@ using Pulsar4X.Orbital;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
 using Pulsar4X.Colonies;
+using Pulsar4X.Energy;
 
 namespace Pulsar4X.Engine.Orders
 {

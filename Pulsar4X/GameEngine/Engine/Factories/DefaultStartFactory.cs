@@ -7,6 +7,7 @@ using Pulsar4X.Blueprints;
 using Pulsar4X.Colonies;
 using Pulsar4X.Components;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Energy;
 using Pulsar4X.Engine.Designs;
 using Pulsar4X.Engine.Factories;
 
