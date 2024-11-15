@@ -9,7 +9,7 @@ using Pulsar4X.Extensions;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Factions;
 
-namespace Pulsar4X.Engine.Logistics
+namespace Pulsar4X.Logistics
 {
 
     public static class LogisticsNewtonion

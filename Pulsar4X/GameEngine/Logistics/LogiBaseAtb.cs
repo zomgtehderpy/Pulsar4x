@@ -4,7 +4,7 @@ using Pulsar4X.Interfaces;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Components;
 
-namespace Pulsar4X.Atb;
+namespace Pulsar4X.Logistics;
 
 public class LogiBaseAtb : IComponentDesignAttribute
 {

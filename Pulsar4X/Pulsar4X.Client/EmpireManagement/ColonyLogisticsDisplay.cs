@@ -8,6 +8,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Blueprints;
 using Pulsar4X.Engine.Orders;
 using Pulsar4X.Factions;
+using Pulsar4X.Logistics;
 
 namespace Pulsar4X.SDL2UI
 {

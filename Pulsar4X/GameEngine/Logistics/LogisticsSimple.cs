@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using GameEngine.WarpMove;
 using Pulsar4X.Orbital;
 using Pulsar4X.Datablobs;
@@ -9,7 +8,7 @@ using Pulsar4X.Extensions;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Factions;
 
-namespace Pulsar4X.Engine.Logistics
+namespace Pulsar4X.Logistics
 {
 
     public static class LogisticsSimple

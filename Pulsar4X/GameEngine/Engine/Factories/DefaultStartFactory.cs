@@ -14,6 +14,7 @@ using Pulsar4X.Factions;
 using Pulsar4X.Fleets;
 using Pulsar4X.GeoSurveys;
 using Pulsar4X.JumpPoints;
+using Pulsar4X.Logistics;
 
 namespace Pulsar4X.Engine
 {

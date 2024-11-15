@@ -1,10 +1,8 @@
 using System;
-using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
-using Pulsar4X.Datablobs;
+using Pulsar4X.Engine.Orders;
 
-
-namespace Pulsar4X.Engine.Orders;
+namespace Pulsar4X.Logistics;
 
 public class ShipLogisticsOrders : EntityCommand
 {

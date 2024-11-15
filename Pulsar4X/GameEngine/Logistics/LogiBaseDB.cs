@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Pulsar4X.Orbital;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Engine;
-using Pulsar4X.Components;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs;
+namespace Pulsar4X.Logistics;
 
 /// <summary>
 /// Contains info on how an entitiy can be stored.
@@ -44,51 +43,3 @@ public class LogiBaseDB : BaseDataBlob
         return new LogiBaseDB(this);
     }
 }
-
-public class LogiBaseAtb : IComponentDesignAttribute
-{
-    public int LogisicCapacity { get; internal set; }
-    public void OnComponentInstallation(Entity parentEntity, ComponentInstance componentInstance)
-    {
-        if (!parentEntity.TryGetDatablob(out LogiBaseDB? lbdb))
-        {
-            parentEntity.SetDataBlob(lbdb = new LogiBaseDB());
-        }
-        var instancesDB = parentEntity.GetDataBlob<ComponentInstancesDB>();
-        if (instancesDB.TryGetComponentsByAttribute<LogiBaseAtb>(out var instances))
-        {
-            int totalCap = 0;
-            foreach (var instance in instances)
-            {
-                var designInfo = instance.Design.GetAttribute<LogiBaseAtb>();
-                totalCap += designInfo.LogisicCapacity;
-            }
-            lbdb.Capacity = totalCap;
-        }
-    }
-
-    public void OnComponentUninstallation(Entity parentEntity, ComponentInstance componentInstance)
-    {
-
-    }
-
-    public LogiBaseAtb() { }
-
-    public LogiBaseAtb(double logisticCap)
-    {
-        LogisicCapacity = (int)logisticCap;
-    }
-    public string AtbName()
-    {
-        return "Logistics Base";
-    }
-
-    public string AtbDescription()
-    {
-        return "An office which handles the export and import of goods";
-    }
-}
-
-
-
-

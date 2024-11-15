@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Pulsar4X.Interfaces;
-using Pulsar4X.Datablobs;
+using Pulsar4X.Engine.Orders;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine.Orders;
+namespace Pulsar4X.Logistics;
 
 public class SetLogisticsOrder : EntityCommand
 {

@@ -6,6 +6,7 @@ using Pulsar4X.Engine.Orders;
 using Pulsar4X.Extensions;
 using System;
 using Pulsar4X.Factions;
+using Pulsar4X.Logistics;
 
 namespace Pulsar4X.SDL2UI
 {
