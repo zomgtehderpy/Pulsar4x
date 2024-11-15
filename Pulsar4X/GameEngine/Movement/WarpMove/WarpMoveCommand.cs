@@ -334,7 +334,14 @@ namespace Pulsar4X.Engine.Orders
 
             foreach(var ship in ships)
             {
-                var shipCommand = WarpMoveCommand.CreateCommand(ship, Target, atDateTime);
+                //don't give move order if ship is already at location.
+                var shipParent = ship.GetDataBlob<PositionDB>().Parent;
+                if(shipParent == Target)
+                    continue;
+                if (Target.TryGetDatablob<ColonyInfoDB>(out var colonyDB) && colonyDB.PlanetEntity == shipParent)
+                    continue;
+                
+                var shipCommand = WarpMoveCommand.CreateCommandEZ(ship, Target, atDateTime);
 
                 _shipCommands.Add(shipCommand);
                 ship.Manager.Game.OrderHandler.HandleOrder(shipCommand);

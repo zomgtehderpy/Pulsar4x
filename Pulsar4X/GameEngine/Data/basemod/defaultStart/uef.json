@@ -10,6 +10,7 @@
     "componentDesigns/cargoHold-general.json",
     "componentDesigns/f1.json",
     "componentDesigns/factory.json",
+    "componentDesigns/fuelFarm-5000k.json",
     "componentDesigns/fuelTank-1000.json",
     "componentDesigns/fuelTank-1500.json",
     "componentDesigns/fuelTank-3000.json",
@@ -52,7 +53,7 @@
         { "id": "default-design-passive-sensor", "amount": 1 },
         { "id": "default-design-mine", "amount": 1 },
         { "id": "default-design-cargo-hold", "amount": 1 },
-        { "id": "default-design-fuel-tank-1000", "amount": 1 },
+        { "id": "default-design-fuel-farm-5000k", "amount": 1 },
         { "id": "default-design-refinery", "amount": 1 },
         { "id": "default-design-factory", "amount": 1 },
         { "id": "default-design-shipyard", "amount": 1 },
@@ -66,7 +67,7 @@
         { "id": "fissionables", "amount": 50000 },
         { "id": "copper", "amount": 50000 },
         { "id": "default-design-merlin", "amount": 5, "type": "byCount" },
-        { "id": "rp-1", "amount": 10000, "type": "byCount" },
+        { "id": "rp-1", "amount": 50000000, "type": "byCount" },
         { "id": "methalox", "amount": 10000, "type": "byCount" },
         { "id": "hydrolox", "amount": 10000, "type": "byCount" }
       ]

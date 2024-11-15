@@ -108,7 +108,7 @@ namespace Pulsar4X.Engine.Orders
                     EntityCommanding.StarSysDateTime
                 );
                 
-                var maxRangeRate = CargoTransferProcessor.GetMaxRangeRate(targetEntity, ship);
+                //var maxRangeRate = CargoTransferProcessor.GetMaxRangeRate(targetEntity, ship);
                 
                 // Create the movement order
                 var cmd = WarpMoveCommand.CreateCommandEZ(

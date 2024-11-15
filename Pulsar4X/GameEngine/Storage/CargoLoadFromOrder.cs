@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
+using Pulsar4X.Extensions;
+using Pulsar4X.Factions;
 using Pulsar4X.Interfaces;
 
 namespace Pulsar4X.Engine.Orders
@@ -76,6 +79,54 @@ namespace Pulsar4X.Engine.Orders
             cargoFromEntity.Manager.Game.OrderHandler.HandleOrder(loadCmd);
         }
 
+        
+        public static void CreateRefuelFleetCommand(Entity cargoFromEntity, Entity fleet)
+        {
+            var fleetOwner = fleet.GetFactionOwner;
+            var cargoLibrary = fleetOwner.GetDataBlob<FactionInfoDB>().Data.CargoGoods;
+            if(fleet.TryGetDatablob<FleetDB>(out var fleetDB))
+            {
+                var ships = fleetDB.Children.Where(c => c.HasDataBlob<ShipInfoDB>());
+
+                foreach (var ship in ships)
+                {
+                    var fuelInfo = ship.GetFuelInfo(cargoLibrary);
+                    ICargoable fuel = fuelInfo.Item1;
+                    long amountToMove = (long)ship.GetDataBlob<VolumeStorageDB>().GetFreeUnitSpace(fuel);
+                    var fuelAndAmount =(fuel, amountToMove);
+                    var list = new List<(ICargoable, long)>();
+                    list.Add(fuelAndAmount);
+                    var unloadcmd = new CargoUnloadToOrder()
+                    {
+                        RequestingFactionGuid = fleetOwner.Id,
+                        EntityCommandingGuid = cargoFromEntity.Id,
+                        CreatedDate = cargoFromEntity.Manager.ManagerSubpulses.StarSysDateTime,
+                        SendCargoToEntityGuid = ship.Id,
+                        ItemICargoablesToTransfer = list
+                    };
+                    cargoFromEntity.Manager.Game.OrderHandler.HandleOrder(unloadcmd);
+
+                    var loadCmd = new CargoLoadFromOrder()
+                    {
+                        RequestingFactionGuid = fleetOwner.Id,
+                        EntityCommandingGuid = ship.Id,
+                        CreatedDate = cargoFromEntity.Manager.ManagerSubpulses.StarSysDateTime,
+                        Order = unloadcmd,
+                        _cargoFrom = cargoFromEntity
+                    };
+
+                    cargoFromEntity.Manager.Game.OrderHandler.HandleOrder(loadCmd);
+                }
+            }
+            
+
+
+        }
+
+     
+        
+        
+        
         internal override void Execute(DateTime atDateTime)
         {
             //this needs to happen on a given trigger,ie a finished move command.

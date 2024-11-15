@@ -58,16 +58,13 @@ namespace Pulsar4X.Engine
                 long countToTransferThisTick = (long)(massToTransferThisTick / itemMassPerUnit);
 
                 long amountFrom = transferDB.CargoFromDB.RemoveCargoByUnit(cargoItem, countToTransferThisTick);
-                long amountTo = transferDB.CargoToDB.AddCargoByUnit(cargoItem, countToTransferThisTick);
+                long amountTo = transferDB.CargoToDB.AddCargoByUnit(cargoItem, amountFrom);
 
                 //update the total masses for these entites
                 transferDB.CargoFromDB.OwningEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal(transferDB.CargoFromDB);
                 transferDB.CargoToDB.OwningEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal(transferDB.CargoToDB);
                 UpdateFuelAndDeltaV(entity);
-
-
-                if(amountTo != amountFrom)
-                    throw new Exception("something went wrong here");
+                
                 long newAmount = transferDB.ItemsLeftToTransfer[i].amount - amountTo;
                 transferDB.ItemsLeftToTransfer[i] = (cargoItem, newAmount);
             }

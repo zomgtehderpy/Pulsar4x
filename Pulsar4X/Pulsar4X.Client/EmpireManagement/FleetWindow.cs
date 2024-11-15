@@ -4,6 +4,8 @@ using System.Linq;
 using System.Numerics;
 using ImGuiNET;
 using ImGuiSDL2CS;
+using Pulsar4X.Atb;
+using Pulsar4X.Colonies;
 using Pulsar4X.Engine;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine.Orders;
@@ -20,6 +22,7 @@ namespace Pulsar4X.SDL2UI
             GeoSurvey,
             JPSurvey,
             Jump,
+            RefuelAt,
         }
 
         private IssueOrderType selectedIssueOrderType = IssueOrderType.MoveTo;
@@ -50,6 +53,7 @@ namespace Pulsar4X.SDL2UI
         private List<EntityState> moveToList = new ();
         private List<EntityState> geoSurveyList = new ();
         private List<EntityState> gravSurveyList = new ();
+        private List<EntityState> colonyList = new ();
         private List<EntityState> jumpPointList = new ();
 
         private FleetWindow()
@@ -289,6 +293,10 @@ namespace Pulsar4X.SDL2UI
                         if(ImGui.Selectable("Move to ...", selectedIssueOrderType == IssueOrderType.MoveTo))
                         {
                             selectedIssueOrderType = IssueOrderType.MoveTo;
+                        }
+                        if(ImGui.Selectable("Refuel at ...", selectedIssueOrderType == IssueOrderType.RefuelAt))
+                        {
+                            selectedIssueOrderType = IssueOrderType.RefuelAt;
                         }
                         if(SelectedFleet.HasGeoSurveyAbility() && ImGui.Selectable("Geo Survey ...", selectedIssueOrderType == IssueOrderType.GeoSurvey))
                         {
@@ -621,6 +629,30 @@ namespace Pulsar4X.SDL2UI
 
                                     JumpOrder.CreateAndExecute(_uiState.Game, _uiState.Faction, SelectedFleet, jumpGateDB);
                                 }
+                            }
+                        }
+                        break;
+                    case IssueOrderType.RefuelAt:
+                        colonyList = _uiState.StarSystemStates[SelectedFleet.Manager.ManagerID].GetFilteredEntities(
+                            EntityFilter.Friendly | EntityFilter.Neutral,
+                            _uiState.Faction.Id,
+                            typeof(ColonyInfoDB));
+
+                        foreach(var colony in colonyList)
+                        {
+                            if(!colony.Entity.TryGetDatablob<VolumeStorageDB>(out var storageDB)) continue;
+                            
+                            var name = colony.Name;
+                            if(ImGui.Button(name + "###refuelAt-button-" + name))
+                            {
+
+                                //var order = MoveFleetTowardsTargetOrder.CreateCommand(SelectedFleet, jpSurveyableDB.OwningEntity);
+                                var order = WarpFleetTowardsTargetOrder.CreateCommand(SelectedFleet, colony.Entity);
+                                _uiState.Game.OrderHandler.HandleOrder(order);
+
+                                 CargoLoadFromOrder.CreateRefuelFleetCommand(colony.Entity,  SelectedFleet );
+                                //_uiState.Game.OrderHandler.HandleOrder(order2);
+                                
                             }
                         }
                         break;
