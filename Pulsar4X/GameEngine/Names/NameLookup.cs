@@ -1,9 +1,6 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using Pulsar4X.Blueprints;
 using Pulsar4X.Datablobs;
-using Pulsar4X.Engine.Industry;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Pulsar4X.Engine

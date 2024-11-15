@@ -7,7 +7,7 @@ using Pulsar4X.Blueprints;
 using Pulsar4X.Components;
 using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
-using Pulsar4X.Engine.Industry;
+using Pulsar4X.Industry;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Atb;
 using Pulsar4X.Factions;

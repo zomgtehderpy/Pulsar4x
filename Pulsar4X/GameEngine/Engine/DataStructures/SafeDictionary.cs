@@ -7,7 +7,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Pulsar4X.Engine;
-using Pulsar4X.Engine.Industry;
+using Pulsar4X.Industry;
 
 namespace Pulsar4X.DataStructures
 {

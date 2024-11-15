@@ -1,7 +1,7 @@
 using System.Linq;
 using Pulsar4X.Components;
 using Pulsar4X.Engine.Designs;
-using Pulsar4X.Engine.Industry;
+using Pulsar4X.Industry;
 using Pulsar4X.Interfaces;
 
 namespace Pulsar4X.SDL2UI;

@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Industry
 {
     //public struct ConstructJob
-    //{        
+    //{
     //    public ID Type;
     //    public float ItemsRemaining;
     //    public PercentValue PriorityPercent;
@@ -14,7 +14,7 @@ namespace Pulsar4X.Datablobs
     //}
 
     /// <summary>
-    /// this is used to turn installations on and off, 
+    /// this is used to turn installations on and off,
     /// and also used by the Processor to check pop requirements.
     /// </summary>
     public struct InstallationEmployment
@@ -32,7 +32,7 @@ namespace Pulsar4X.Datablobs
 
         public Dictionary<string,int> WorkingInstallations { get; set; }
 
-        public List<InstallationEmployment> EmploymentList { get; set; } 
+        public List<InstallationEmployment> EmploymentList { get; set; }
         /// <summary>
         /// list of ConstructJob Structs.
         /// </summary>
@@ -47,7 +47,7 @@ namespace Pulsar4X.Datablobs
             WorkingInstallations = new Dictionary<string, int>();
             EmploymentList = new List<InstallationEmployment>();
             //InstallationJobs = new List<ConstructJob>();
-            //ComponentJobs = new List<ConstructJob>(); 
+            //ComponentJobs = new List<ConstructJob>();
             //OrdnanceJobs = new List<ConstructJob>();
             //FigherJobs = new List<ConstructJob>();
             //RefineryJobs = new List<ConstructJob>();

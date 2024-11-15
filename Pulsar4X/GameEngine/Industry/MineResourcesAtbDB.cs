@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using Pulsar4X.Engine;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Components;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Industry
 {
     public class MineResourcesAtbDB : BaseDataBlob, IComponentDesignAttribute
     {

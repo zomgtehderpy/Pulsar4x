@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Engine;
-using Pulsar4X.Engine.Industry;
+using Pulsar4X.Industry;
 using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Extensions;

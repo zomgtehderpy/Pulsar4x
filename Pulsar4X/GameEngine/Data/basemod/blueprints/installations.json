@@ -48,7 +48,7 @@
             "gallicite": "10"
           },
           "AttributeFormula": "AtbConstrArgs([GuidDict])",
-          "AttributeType": "Pulsar4X.Datablobs.MineResourcesAtbDB"
+          "AttributeType": "Pulsar4X.Industry.MineResourcesAtbDB"
         }
       ]
     }
@@ -155,7 +155,7 @@
             "refining": "Ability('Refinery Points')"
           },
           "AttributeFormula": "AtbConstrArgs([GuidDict])",
-          "AttributeType": "Pulsar4X.Atb.IndustryAtb"
+          "AttributeType": "Pulsar4X.Industry.IndustryAtb"
         }
       ]
     }
@@ -226,7 +226,7 @@
             "ordnance-construction": "Ability('Ordnance Construction Points')"
           },
           "AttributeFormula": "AtbConstrArgs([GuidDict])",
-          "AttributeType": "Pulsar4X.Atb.IndustryAtb"
+          "AttributeType": "Pulsar4X.Industry.IndustryAtb"
         }
       ]
     }
@@ -291,7 +291,7 @@
             "ship-assembly": "Ability('Ship Assembly Points')"
           },
           "AttributeFormula": "AtbConstrArgs([GuidDict], Ability('Slip Size'))",
-          "AttributeType": "Pulsar4X.Atb.IndustryAtb"
+          "AttributeType": "Pulsar4X.Industry.IndustryAtb"
         }
       ]
     }

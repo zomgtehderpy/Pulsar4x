@@ -1,7 +1,7 @@
 using System.Linq;
 using ImGuiNET;
-using Pulsar4X.Datablobs;
 using Pulsar4X.Factions;
+using Pulsar4X.Industry;
 
 namespace Pulsar4X.SDL2UI
 {

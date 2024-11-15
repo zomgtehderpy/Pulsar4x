@@ -1,12 +1,10 @@
-using System;
 using System.Collections.Generic;
-using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
 using Pulsar4X.Factions;
 using Pulsar4X.Interfaces;
 
-namespace Pulsar4X.Engine.Industry
+namespace Pulsar4X.Industry
 {
     public class IndustryJob : JobBase
     {

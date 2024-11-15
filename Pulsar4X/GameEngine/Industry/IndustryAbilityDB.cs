@@ -1,12 +1,11 @@
 using Newtonsoft.Json;
-using System;
 using System.Linq;
 using System.Collections.Generic;
-using Pulsar4X.Engine.Industry;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Factions;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Industry
 {
     public class IndustryAbilityDB : BaseDataBlob, IAbilityDescription
     {

@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Colonies;
 
-namespace Pulsar4X.Engine.Industry
+namespace Pulsar4X.Industry
 {
     public static class MiningHelper
     {

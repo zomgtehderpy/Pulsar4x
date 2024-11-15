@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using Pulsar4X.Colonies;
-using Pulsar4X.Interfaces;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Industry
 {
     public class MiningDB : BaseDataBlob, IAbilityDescription
     {

@@ -6,7 +6,7 @@ using Pulsar4X.Components;
 using Pulsar4X.Interfaces;
 using Newtonsoft.Json;
 
-namespace Pulsar4X.Atb
+namespace Pulsar4X.Industry
 {
     public class IndustryAtb : IComponentDesignAttribute
     {

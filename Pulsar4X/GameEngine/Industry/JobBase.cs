@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Pulsar4X.Engine.Industry
+namespace Pulsar4X.Industry
 {
     public abstract class JobBase
     {

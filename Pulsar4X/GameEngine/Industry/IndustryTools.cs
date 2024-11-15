@@ -6,8 +6,9 @@ using Pulsar4X.Interfaces;
 using Pulsar4X.Extensions;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Factions;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine.Industry
+namespace Pulsar4X.Industry
 {
     public static class IndustryTools
     {

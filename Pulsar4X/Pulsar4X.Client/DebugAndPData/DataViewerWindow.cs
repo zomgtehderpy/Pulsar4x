@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using ImGuiNET;
 using Pulsar4X.Engine;
-using Pulsar4X.Engine.Industry;
+using Pulsar4X.Industry;
 using Pulsar4X.Extensions;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Modding;
@@ -44,12 +44,12 @@ public class DataViewerWindow : PulsarGuiWindow
 
         if (ImGui.Begin("Mod Data", ref IsActive))
         {
-            
+
             Type objType = _modDataStore.GetType();
             BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
             MemberInfo[] memberInfos = objType.GetMembers(flags);
             ModDataInspector.DisplayDataObj(_modDataStore);
-            
+
         }
     }
 
@@ -63,10 +63,10 @@ public static class ModDataInspector
 
     private static bool _isActive = false;
     private static int _selectedItem = 0;
-    
+
     public static void DisplayDataObj(object dataObj)
     {
-        
+
         object? value = null;
         Type objType = dataObj.GetType();
         BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetProperty;
@@ -89,9 +89,9 @@ public static class ModDataInspector
         }
 
         string[] stArray = stList.ToArray();
-        
+
         BorderListOptions.Begin("DataItems:", stArray, ref _selectedItem, 300f);
-        
+
         var p0 = ImGui.GetCursorPos();
 
         if (_selectedItem >= stArray.Length)
@@ -137,8 +137,8 @@ public static class ModDataInspector
                     ImGui.TreePop();
                 }
             }
-            
-            
+
+
             else if (value != null && typeof(ICollection).IsAssignableFrom(value.GetType()))
             {
                 var items = (ICollection?)GetValue(memberInfo, dataObj);
@@ -169,7 +169,7 @@ public static class ModDataInspector
                     }
                 }
             }
-            
+
             else
             {
                 ImGui.Text(memberInfo.Name);
@@ -183,7 +183,7 @@ public static class ModDataInspector
                     {
                         var guid = (string)value;
                         displayStr = guid.ToString();
-                        
+
                     }
                     else if(value is Entity)
                     {
@@ -230,9 +230,9 @@ public static class ModDataInspector
                     ImGui.SetTooltip(tooltipStr);
                 ImGui.NextColumn();
             }
-            
-            
-            
+
+
+
             ImGui.Columns(0);
             ImGui.EndChild();
         }
@@ -242,7 +242,7 @@ public static class ModDataInspector
 
         BorderListOptions.End(size);
     }
-    
+
         static void RecursiveReflection(object? obj)
         {
             if(obj == null) return;
@@ -391,7 +391,7 @@ public static class ModDataInspector
                             {
                                 var guid = (string)value;
                                 displayStr = guid.ToString();
-                                
+
                             }
                             else if(value is Entity)
                             {
@@ -441,10 +441,10 @@ public static class ModDataInspector
                 }
             }
         }
-    
+
     static object? GetValue(this MemberInfo memberInfo, object forObject)
     {
-        
+
             switch (memberInfo.MemberType)
             {
                 case MemberTypes.Field:
@@ -466,7 +466,7 @@ public static class ModDataInspector
                 }
 
             }
-        
+
         return "";
     }
 }

@@ -6,6 +6,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
 using Pulsar4X.Modding;
+using Pulsar4X.Industry;
 
 namespace Pulsar4X.Extensions
 {

@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using Pulsar4X.Orbital;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
-using Pulsar4X.Engine.Industry;
 using Pulsar4X.Factions;
 
 namespace Pulsar4X.Engine;

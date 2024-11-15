@@ -1,9 +1,8 @@
 using System;
 using Pulsar4X.Interfaces;
-using Pulsar4X.Datablobs;
-using Pulsar4X.Engine.Industry;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Industry
 {
     public class IndustryProcessor : IHotloopProcessor
     {

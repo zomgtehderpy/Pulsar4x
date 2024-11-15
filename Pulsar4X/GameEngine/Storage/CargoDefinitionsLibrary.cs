@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Pulsar4X.DataStructures;
-using Pulsar4X.Engine.Industry;
+using Pulsar4X.Industry;
 using Pulsar4X.Interfaces;
 
 namespace Pulsar4X.Engine

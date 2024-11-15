@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Pulsar4X.DataStructures;
 using System.Diagnostics.CodeAnalysis;
 using Pulsar4X.Colonies;
+using Pulsar4X.Industry;
 
 namespace Pulsar4X.SDL2UI
 {
