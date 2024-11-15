@@ -6,6 +6,7 @@ using Pulsar4X.Factions;
 using Pulsar4X.Industry;
 using Pulsar4X.Names;
 using Pulsar4X.People;
+using Pulsar4X.Storage;
 
 namespace Pulsar4X.Colonies
 {

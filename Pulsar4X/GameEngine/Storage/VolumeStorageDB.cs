@@ -1,14 +1,9 @@
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using Pulsar4X.Components;
 using Pulsar4X.DataStructures;
-using Pulsar4X.Interfaces;
-using Pulsar4X.Engine;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Storage
 {
 
     public class VolumeStorageDB : BaseDataBlob, IAbilityDescription

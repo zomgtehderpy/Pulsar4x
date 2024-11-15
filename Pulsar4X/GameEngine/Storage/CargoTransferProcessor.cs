@@ -4,8 +4,9 @@ using Pulsar4X.Orbital;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
 using Pulsar4X.Interfaces;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Storage
 {
     public class CargoTransferProcessor : IHotloopProcessor
     {
@@ -64,7 +65,7 @@ namespace Pulsar4X.Engine
                 transferDB.CargoFromDB.OwningEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal(transferDB.CargoFromDB);
                 transferDB.CargoToDB.OwningEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal(transferDB.CargoToDB);
                 UpdateFuelAndDeltaV(entity);
-                
+
                 long newAmount = transferDB.ItemsLeftToTransfer[i].amount - amountTo;
                 transferDB.ItemsLeftToTransfer[i] = (cargoItem, newAmount);
             }
@@ -289,7 +290,7 @@ namespace Pulsar4X.Engine
             var toDVRange = todb.TransferRangeDv_mps;
             double maxRange;
             double maxXferAtMaxRange;
-            
+
             if (fromdb.TransferRangeDv_mps > todb.TransferRangeDv_mps)
             {
                 maxRange = fromDVRange;
@@ -306,10 +307,10 @@ namespace Pulsar4X.Engine
                 else
                     maxXferAtMaxRange = fromdb.TransferRateInKgHr;
             }
-            
+
             return(maxRange, maxXferAtMaxRange);
         }
-        
+
 
 
         public int ProcessManager(EntityManager manager, int deltaSeconds)

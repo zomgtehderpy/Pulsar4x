@@ -1,7 +1,9 @@
 using System;
 using Pulsar4X.Components;
+using Pulsar4X.Engine;
+using Pulsar4X.Engine.Orders;
 
-namespace Pulsar4X.Engine.Orders
+namespace Pulsar4X.Storage
 {
     public class AddComponentToStorageOrder : EntityCommand
     {

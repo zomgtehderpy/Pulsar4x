@@ -1,10 +1,7 @@
 using System;
 using System.Linq;
-using Pulsar4X.Datablobs;
-using Pulsar4X.Interfaces;
-using Pulsar4X.Engine;
 
-namespace Pulsar4X.Extensions
+namespace Pulsar4X.Storage
 {
     public static class VolumeStorageDBExtensions
     {

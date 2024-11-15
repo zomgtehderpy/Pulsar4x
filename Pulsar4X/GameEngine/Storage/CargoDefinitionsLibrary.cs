@@ -4,7 +4,7 @@ using Pulsar4X.DataStructures;
 using Pulsar4X.Industry;
 using Pulsar4X.Interfaces;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Storage
 {
     public class CargoDefinitionsLibrary
     {

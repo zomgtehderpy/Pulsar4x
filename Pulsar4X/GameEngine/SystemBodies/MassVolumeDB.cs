@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using Pulsar4X.Orbital;
 using Pulsar4X.Sensors;
+using Pulsar4X.Storage;
 
 namespace Pulsar4X.Datablobs
 {

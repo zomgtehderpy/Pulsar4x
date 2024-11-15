@@ -4,7 +4,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Components;
 using Pulsar4X.Factions;
 
-namespace Pulsar4X.Atb;
+namespace Pulsar4X.Storage;
 
 public class StorageTransferRateAtb : IComponentDesignAttribute
 {

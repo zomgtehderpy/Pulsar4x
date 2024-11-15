@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
+using Pulsar4X.Engine.Orders;
 using Pulsar4X.Extensions;
 using Pulsar4X.Factions;
 using Pulsar4X.Fleets;
@@ -12,7 +13,7 @@ using Pulsar4X.Interfaces;
 using Pulsar4X.Names;
 using Pulsar4X.Ships;
 
-namespace Pulsar4X.Engine.Orders
+namespace Pulsar4X.Storage
 {
     public class CargoLoadFromOrder : EntityCommand
     {

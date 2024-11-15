@@ -504,7 +504,7 @@
           "Name": "DBargsStor",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs('ordnance-storage', Ability('Total Cargo Stored'))",
-          "AttributeType": "Pulsar4X.Atb.VolumeStorageAtb"
+          "AttributeType": "Pulsar4X.Storage.VolumeStorageAtb"
         },
         {
           "Name": "DBArgsXfer",

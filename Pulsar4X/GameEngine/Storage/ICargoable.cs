@@ -1,4 +1,4 @@
-namespace Pulsar4X.Interfaces
+namespace Pulsar4X.Storage
 {
     public interface ICargoable
     {

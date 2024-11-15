@@ -3,7 +3,7 @@ using Pulsar4X.Interfaces;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Components;
 
-namespace Pulsar4X.Atb;
+namespace Pulsar4X.Storage;
 public class VolumeStorageAtb : IComponentDesignAttribute
 {
     public string StoreTypeID;
