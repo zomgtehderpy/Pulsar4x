@@ -11,6 +11,7 @@ using Pulsar4X.Components;
 using Pulsar4X.Engine.Designs;
 using Pulsar4X.Colonies;
 using Pulsar4X.Factions;
+using Pulsar4X.JumpPoints;
 
 namespace Pulsar4X.Tests
 {

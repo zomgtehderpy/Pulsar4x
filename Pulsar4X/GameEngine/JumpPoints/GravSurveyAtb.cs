@@ -4,7 +4,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Interfaces;
 
-namespace Pulsar4X.Atb;
+namespace Pulsar4X.JumpPoints;
 
 public class GravSurveyAtb : IComponentDesignAttribute
 {

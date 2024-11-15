@@ -1,7 +1,4 @@
-using Pulsar4X.Datablobs;
-using Pulsar4X.Engine;
-
-namespace Pulsar4X.Extensions;
+namespace Pulsar4X.JumpPoints;
 
 public static class JPSurveyableDBExtensions
 {

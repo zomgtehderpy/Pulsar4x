@@ -2,8 +2,9 @@ using Newtonsoft.Json;
 using System;
 using Pulsar4X.Engine;
 using Pulsar4X.DataStructures;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.JumpPoints
 {
     /// <summary>
     /// Attached to entities that are surveyed for the discovery of JumpPoints.

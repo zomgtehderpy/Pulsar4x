@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Factions;
+using Pulsar4X.JumpPoints;
 
 namespace Pulsar4X.Engine
 {

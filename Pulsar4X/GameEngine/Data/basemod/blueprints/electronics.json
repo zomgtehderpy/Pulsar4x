@@ -300,7 +300,7 @@
           "GuiHint": "None",
           "GuidDictionary": {},
           "AttributeFormula": "AtbConstrArgs(Ability('Survey Speed'))",
-          "AttributeType": "Pulsar4X.Atb.GravSurveyAtb"
+          "AttributeType": "Pulsar4X.JumpPoints.GravSurveyAtb"
         }
       ]
     }

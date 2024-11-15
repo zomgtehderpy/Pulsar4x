@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Pulsar4X.Extensions;
 using Pulsar4X.Modding;
+using Pulsar4X.JumpPoints;
 
 namespace Pulsar4X.Tests
 {

@@ -12,6 +12,7 @@ using Pulsar4X.Engine.Factories;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using Pulsar4X.Factions;
+using Pulsar4X.JumpPoints;
 
 namespace Pulsar4X.Engine
 {

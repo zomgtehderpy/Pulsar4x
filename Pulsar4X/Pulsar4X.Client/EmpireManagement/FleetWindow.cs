@@ -13,6 +13,7 @@ using Pulsar4X.DataStructures;
 using Pulsar4X.Extensions;
 using Pulsar4X.Fleets;
 using Pulsar4X.GeoSurveys;
+using Pulsar4X.JumpPoints;
 
 namespace Pulsar4X.SDL2UI
 {

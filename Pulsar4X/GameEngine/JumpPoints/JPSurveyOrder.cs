@@ -1,8 +1,9 @@
 using System;
-using Pulsar4X.Datablobs;
+using Pulsar4X.Engine;
+using Pulsar4X.Engine.Orders;
 using Pulsar4X.Extensions;
 
-namespace Pulsar4X.Engine.Orders;
+namespace Pulsar4X.JumpPoints;
 
 public class JPSurveyOrder : EntityCommand
 {

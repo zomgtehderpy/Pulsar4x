@@ -2,8 +2,9 @@ using Pulsar4X.Orbital;
 using System;
 using System.Collections.Generic;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.JumpPoints
 {
     public static class JPFactory
     {
