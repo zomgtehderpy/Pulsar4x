@@ -1,8 +1,8 @@
+using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Factions
 {
     public class FactionSystemInfoDB : BaseDataBlob
     {

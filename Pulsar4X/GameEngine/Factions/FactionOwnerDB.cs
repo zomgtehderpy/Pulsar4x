@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
-using Pulsar4X.Extensions;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Factions
 {
     public class FactionOwnerDB : BaseDataBlob
     {

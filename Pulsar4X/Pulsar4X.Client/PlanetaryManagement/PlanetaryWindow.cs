@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Pulsar4X.Colonies;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.SDL2UI
 {

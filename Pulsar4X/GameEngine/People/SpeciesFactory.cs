@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Engine
 {

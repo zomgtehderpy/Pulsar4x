@@ -1,8 +1,9 @@
 using Newtonsoft.Json;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
+using Pulsar4X.Events;
 
-namespace Pulsar4X.Events;
+namespace Pulsar4X.Factions;
 
 public class FactionEventLog : IEventLog
 {

@@ -8,6 +8,7 @@ using Pulsar4X.Extensions;
 using Pulsar4X.Engine;
 using Pulsar4X.Engine.Industry;
 using Pulsar4X.Colonies;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Engine
 {

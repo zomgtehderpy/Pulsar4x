@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using NCalc;
 using Pulsar4X.Blueprints;
-using Pulsar4X.Datablobs;
-using Pulsar4X.Engine;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Components
 {

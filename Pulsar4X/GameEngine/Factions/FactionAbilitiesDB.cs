@@ -1,13 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using Newtonsoft.Json;
+using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
-using Pulsar4X.Extensions;
-using Pulsar4X.Interfaces;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Factions
 {
     public class FactionAbilitiesDB : BaseDataBlob
     {

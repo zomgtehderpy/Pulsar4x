@@ -13,6 +13,7 @@ using Pulsar4X.Extensions;
 using Pulsar4X.Engine.Industry;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Engine.Designs;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.SDL2UI
 {

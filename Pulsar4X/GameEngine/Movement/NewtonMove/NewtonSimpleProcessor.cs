@@ -5,6 +5,7 @@ using Pulsar4X.Interfaces;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
 using Pulsar4X.Engine.Industry;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Engine;
 
@@ -53,40 +54,40 @@ public class NewtonSimpleProcessor : IHotloopProcessor
         var posdb = entity.GetDataBlob<PositionDB>();
         var massdb = entity.GetDataBlob<MassVolumeDB>();
 
-        
+
         //update deltav
         CargoDefinitionsLibrary cargoLib = entity.GetFactionOwner.GetDataBlob<FactionInfoDB>().Data.CargoGoods;
         var fuelTypeID = thrustdb.FuelType;
         var fuelType = cargoLib.GetAny(fuelTypeID);
         var storage = entity.GetDataBlob<VolumeStorageDB>();
         var fuelMass = storage.GetMassStored(fuelType);
-        
+
         var currentOrbit = newtonSimplelMoveDB.CurrentTrajectory;
         var targetOrbit = newtonSimplelMoveDB.TargetTrajectory;
 
         var thrust = thrustdb.ThrustInNewtons;
         var fuelRate = thrustdb.FuelBurnRate;
-        
+
         var currentState = OrbitalMath.GetStateVectors(currentOrbit, toDateTime);
         var targetState = OrbitalMath.GetStateVectors(targetOrbit, toDateTime);
 
         var moveVector = targetState.velocity - currentState.velocity;
         var moveDeltaV = moveVector.Length();
-        
+
         //if ship has enough fuel to make the manuver:
         if (thrustdb.DeltaV > moveDeltaV)
         {
             //TODO: handle longer "burns" over several turns.
-            
+
             //set entity to new orbit.
-            
+
             OrbitDB newOrbit = OrbitDB.FromKeplerElements(newtonSimplelMoveDB.SOIParent, massdb.MassTotal, targetOrbit, toDateTime);
             entity.SetDataBlob(newOrbit);
 
             //remove fuel
             double fuelBurned = OrbitMath.TsiolkovskyFuelUse(massdb.MassTotal, thrustdb.ExhaustVelocity, moveDeltaV);
             CargoTransferProcessor.AddRemoveCargoMass(entity, fuelType, fuelBurned);
-            
+
             //tag as complete
             newtonSimplelMoveDB.IsComplete = true;
         }
@@ -106,7 +107,7 @@ public class NewtonSimpleProcessor : IHotloopProcessor
         var state = OrbitMath.GetStateVectors(db.CurrentTrajectory, atDateTime);
         var pos = state.position;
         var vel = (Vector3)state.velocity;
-        
+
         if (posdb.Parent != null)
         {
             pos += MoveMath.GetAbsoluteFuturePosition(posdb.Parent,atDateTime);

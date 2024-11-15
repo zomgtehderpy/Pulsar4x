@@ -10,6 +10,7 @@ using Pulsar4X.Orbital;
 using Pulsar4X.Components;
 using Pulsar4X.Engine.Designs;
 using Pulsar4X.Colonies;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Tests
 {

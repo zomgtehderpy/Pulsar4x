@@ -14,6 +14,7 @@ using Pulsar4X.Atb;
 using Pulsar4X.Components;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Orbital;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.ImGuiNetUI
 {

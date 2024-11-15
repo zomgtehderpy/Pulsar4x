@@ -11,6 +11,7 @@ using Pulsar4X.Engine.Designs;
 using Pulsar4X.SDL2UI;
 using Vector2 = System.Numerics.Vector2;
 using Pulsar4X.Colonies;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.ImGuiNetUI.EntityManagement
 {

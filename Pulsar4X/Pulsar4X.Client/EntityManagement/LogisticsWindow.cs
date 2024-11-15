@@ -5,6 +5,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Engine.Orders;
 using Pulsar4X.Extensions;
 using System;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -37,7 +38,7 @@ namespace Pulsar4X.SDL2UI
             if(instance._entityState != _uiState.LastClickedEntity)
                 instance.SetEntity(_uiState.LastClickedEntity);
             return instance;
-        } 
+        }
 
         public void SetEntity(EntityState? entityState)
         {
@@ -180,23 +181,23 @@ namespace Pulsar4X.SDL2UI
 
         public string Sugestion(string fromInput)
         {
-            
+
             string hint = SugestionList[0];
             int j = 0;
-            
+
 
             for (int i = 0; i < fromInput.Length; i++)
             {
-                
+
                 var chr = fromInput[i];
                 if(hint[j] == chr)
                 {
                     j++;
                     continue;
                 }
-            
-            
-            
+
+
+
             }
             return hint;
         }

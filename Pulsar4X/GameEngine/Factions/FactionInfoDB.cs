@@ -10,8 +10,9 @@ using Pulsar4X.Engine.Designs;
 using Pulsar4X.Engine.Sensors;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Events;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Factions
 {
     public class FactionInfoDB : BaseDataBlob
     {

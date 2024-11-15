@@ -4,6 +4,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Events;
 using Pulsar4X.Extensions;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Engine
 {

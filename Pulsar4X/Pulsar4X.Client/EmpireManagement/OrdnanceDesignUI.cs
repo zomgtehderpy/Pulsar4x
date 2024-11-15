@@ -9,6 +9,7 @@ using Pulsar4X.Components;
 using Pulsar4X.Atb;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Blueprints;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.SDL2UI
 {

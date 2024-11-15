@@ -5,6 +5,7 @@ using Pulsar4X.Extensions;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine.Designs;
 using Pulsar4X.Colonies;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Engine.Orders
 {

@@ -13,6 +13,7 @@ using Pulsar4X.Engine.Industry;
 using Pulsar4X.Components;
 using Pulsar4X.Engine.Sensors;
 using Pulsar4X.Extensions;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.SDL2UI
 {

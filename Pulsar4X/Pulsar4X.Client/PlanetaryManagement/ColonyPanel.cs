@@ -5,6 +5,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Engine.Orders;
 using Pulsar4X.ImGuiNetUI.EntityManagement;
 using Pulsar4X.Blueprints;
+using Pulsar4X.Factions;
 
 
 namespace Pulsar4X.SDL2UI
@@ -56,10 +57,10 @@ namespace Pulsar4X.SDL2UI
 
             //resources list include refined or seperate?
             //factories/installations list - expandable to show health and disable/enable specific installations
-            //mining stats pannel. 
+            //mining stats pannel.
             //refinary panel, expandable?
             //construction pannel, expandable?
-            //constructed but not installed components. 
+            //constructed but not installed components.
             //installation pannel (install constructed components
             if (IsActive)
             {
@@ -68,22 +69,22 @@ namespace Pulsar4X.SDL2UI
                 {
                     ImGui.BeginTabBar("IndustryTabs");
 
-                    
+
                     if (ImGui.BeginTabItem("Overview"))
                     {
                         OverViewPannel.Display(_selectedEntity);
                         ImGui.EndTabItem();
                     }
-                    
+
                     if (ImGui.BeginTabItem("Facilities"))
                     {
                         FacilitiesViewPannel.Display(_selectedEntity);
                         ImGui.EndTabItem();
                     }
 
-                    
-                    
-                    
+
+
+
                     if( ImGui.BeginTabItem("Cargo and Storage"))
                     {
                         _cargoList.Display();
@@ -107,8 +108,8 @@ namespace Pulsar4X.SDL2UI
                 ImGui.End();
             }
         }
-        
-        
+
+
         internal void HardRefresh()
         {
             _factionInfoDB = _uiState.Faction.GetDataBlob<FactionInfoDB>();

@@ -9,6 +9,7 @@ using Pulsar4X.Engine.Damage;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Orbital;
+using Pulsar4X.Factions;
 
 
 namespace Pulsar4X.SDL2UI.Combat
@@ -113,7 +114,7 @@ namespace Pulsar4X.SDL2UI.Combat
         void SetDamageEventFrames()
         {
             if(_profile == null) return;
-            
+
             _damageFrames = DamageTools.DealDamageSim(_profile, _profile.DamageEvents[_damageEventIndex]).damageFrames;
             _showFrameNum = 0;
             if(_damageFrames != null)
@@ -125,7 +126,7 @@ namespace Pulsar4X.SDL2UI.Combat
             public static double BeamFreq = 700;
             public static double MinFreq; //in meters
             public static double MaxFreq; //in meters
-            
+
             public static double BeamEnergy = 1000;
             public static double MinEnergy = 10; //in meters
             public static double MaxEnergy = 10000; //in meters
@@ -135,7 +136,7 @@ namespace Pulsar4X.SDL2UI.Combat
         }
 
 
-        
+
         static class ExsistingWeapons
         {
             private static FactionInfoDB? _factionInfoDB;
@@ -166,7 +167,7 @@ namespace Pulsar4X.SDL2UI.Combat
                 //_sortedComponentNames = new string[sortedTempGroupNames.Length + 1];
                 //_sortedComponentNames[0] = "All";
                 //Array.Copy(sortedTempGroupNames, 0, _sortedComponentNames, 1, sortedTempGroupNames.Length);
-                
+
                 AvailableShipComponents = _allShipComponents.Where(t => t.ComponentType.Equals("Weapon")).ToList();
                 WeaponNames = new string[AvailableShipComponents.Count];
                 for (int index = 0; index < AvailableShipComponents.Count; index++)
@@ -211,12 +212,12 @@ namespace Pulsar4X.SDL2UI.Combat
 
                         ImGui.Columns(2);
 
-                        
+
                         //type of damage to test
                         ExsistingWeapons.Create(_selectedEntity.GetFactionOwner);
                         if (ImGui.Combo("Exsisting Design", ref ExsistingWeapons.SelectedWeaponIndex, ExsistingWeapons.WeaponNames, ExsistingWeapons.AvailableShipComponents.Count))
                         {
-                            
+
                             //ExsistingWeapons.SelectedWeapon.
                         }
                         if (_profile != null && ImGui.Button("Beam"))
@@ -227,9 +228,9 @@ namespace Pulsar4X.SDL2UI.Combat
                         {
                             _typeIsBeam = false;
                         }
-                        
-                        
-                        
+
+
+
                         ImGui.NextColumn();
 
                         //tweaks to damage type
@@ -247,7 +248,7 @@ namespace Pulsar4X.SDL2UI.Combat
                         }
                         else
                         {
-                            
+
                         }
 
                         ImGui.NextColumn();

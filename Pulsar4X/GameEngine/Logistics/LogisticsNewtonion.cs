@@ -7,6 +7,7 @@ using Pulsar4X.Engine;
 using Pulsar4X.Engine.Orders;
 using Pulsar4X.Extensions;
 using Pulsar4X.DataStructures;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Engine.Logistics
 {
@@ -76,7 +77,7 @@ namespace Pulsar4X.Engine.Logistics
                 double shipMass = shippingEntity.GetDataBlob<MassVolumeDB>().MassTotal;
                 // double totalDeltaV = 0;
                 // double TotalSeconds = 0;
-                
+
                 var time = shippingEntity.StarSysDateTime;
                 var pos = MoveMath.GetRelativeFuturePosition(shippingEntity,time);
                 List<(double deltav, double secTillNextManuver)> dvandTimes = new List<(double deltav, double secTillNextManuver)>();
@@ -297,9 +298,9 @@ namespace Pulsar4X.Engine.Logistics
 
             double targetRad = OrbitMath.LowOrbitRadius(targetBody);
 
-            //This is wrong, we need the state for where we WILL BE at this point. 
-            //this is getting our state *now* but we may be doing manuvers before we get to this manuver. 
-            //var ourState = ship.GetRelativeState(); 
+            //This is wrong, we need the state for where we WILL BE at this point.
+            //this is getting our state *now* but we may be doing manuvers before we get to this manuver.
+            //var ourState = ship.GetRelativeState();
 
             //We should be inserting at a position where our velocity is 90deg from our position to the parent.
             //this should mean we only require a retrograde thrust to circularise.
@@ -319,13 +320,13 @@ namespace Pulsar4X.Engine.Logistics
             var thrustV2 = OrbitalMath.ProgradeToStateVector(sgpTgtBdy, thrustVector, targetInsertionPosition, insertionVector);
             //should we expend deltaV now or when we get there?
 
-            
+
             var cmd = WarpMoveCommand.CreateCommandEZ(
                 ship,
                 targetBody,
                 startState.At);
             ship.Manager.Game.OrderHandler.HandleOrder(cmd);
-            
+
             var dv = cmd.EndpointTargetExpendDeltaV.Length();
             double ve = ship.GetDataBlob<NewtonThrustAbilityDB>().ExhaustVelocity;
             double fuelBurned = OrbitalMath.TsiolkovskyFuelUse(shipMass, ve, dv);

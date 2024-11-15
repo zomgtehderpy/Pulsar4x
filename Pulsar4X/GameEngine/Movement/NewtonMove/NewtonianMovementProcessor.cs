@@ -5,6 +5,7 @@ using Pulsar4X.Interfaces;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
 using Pulsar4X.Engine.Industry;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Engine
 {
@@ -45,13 +46,13 @@ namespace Pulsar4X.Engine
         {
             //List<Entity> entites = manager.GetAllEntitiesWithDataBlob<NewtonMoveDB>(_nmDBIdx);
             var nmdb = manager.GetAllDataBlobsOfType<NewtonMoveDB>();
-            
+
             DateTime toDateTime = manager.StarSysDateTime + TimeSpan.FromSeconds(deltaSeconds);
             foreach (var db in nmdb)
             {
                 NewtonMove(db, toDateTime);
             }
-            
+
             MoveStateProcessor.ProcessForType(nmdb, toDateTime);
 
             return nmdb.Count;

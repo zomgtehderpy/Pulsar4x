@@ -10,6 +10,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Energy;
 using Pulsar4X.Engine.Designs;
 using Pulsar4X.Engine.Factories;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Engine
 {

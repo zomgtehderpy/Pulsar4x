@@ -6,6 +6,7 @@ using Pulsar4X.ImGuiNetUI;
 using Pulsar4X.ImGuiNetUI.EntityManagement;
 using Pulsar4X.Colonies;
 using Pulsar4X.Energy;
+using Pulsar4X.Factions;
 
 
 namespace Pulsar4X.SDL2UI

@@ -7,6 +7,7 @@ using Pulsar4X.Engine;
 using Pulsar4X.Engine.Orders;
 using Pulsar4X.Extensions;
 using Pulsar4X.DataStructures;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Engine.Logistics
 {
@@ -63,7 +64,7 @@ namespace Pulsar4X.Engine.Logistics
             Vector3 targetPos = Vector3.Normalise(pos) * targetSMA;
 
             var cargoLibrary = ship.GetFactionOwner.GetDataBlob<FactionInfoDB>().Data.CargoGoods;
-            
+
             var cmd = WarpMoveCommand.CreateCommandEZ(
                 ship,
                 targetBody,
@@ -73,7 +74,7 @@ namespace Pulsar4X.Engine.Logistics
             var d = pos.Length() - targetSMA;
             var t = d / s;
 
-            //we can use 0 for many of these since we're looking at a circular orbit. 
+            //we can use 0 for many of these since we're looking at a circular orbit.
             var velVec = OrbitalMath.ParentLocalVeclocityVector(sgptgt, targetPos, targetSMA, 0, 0, 0, 0, 0);
 
             ManuverState mstate = new ManuverState()
@@ -193,13 +194,13 @@ namespace Pulsar4X.Engine.Logistics
             //var iAng = Angle.NormaliseRadians(ivecAng - Math.PI * 0.5);
             var xpos = Math.Sin(ivecAng) * targetRad;
             var ypos = Math.Cos(ivecAng) * targetRad;
-            
+
             var thrustVector = Vector3.Normalise(insertionVector) * -deltaV;
-            
+
             //position end of warp so we're 90 degrees to our newtonion insertion vector
             var targetInsertionPosition = new Vector3(xpos, ypos, 0);
             var thrustV2 = OrbitalMath.ProgradeToStateVector(sgpTgtBdy, thrustVector, targetInsertionPosition, insertionVector);
-            
+
             /*
             var cmd = WarpMoveCommand.CreateCommand(
                 ship.FactionOwnerID,
@@ -210,15 +211,15 @@ namespace Pulsar4X.Engine.Logistics
                 thrustV2,
                 shipMass);
 
-            
+
             */
             var dv = thrustV2.Length();
             //KeplerElements endKE;
 
             KeplerElements postWarpKE = OrbitMath.KeplerFromPositionAndVelocity(sgpTgtBdy, targetInsertionPosition, insertionVector, targetIntercept.eti);
-            
-            
-            
+
+
+
             double ve = ship.GetDataBlob<NewtonThrustAbilityDB>().ExhaustVelocity;
             double fuelBurned = OrbitalMath.TsiolkovskyFuelUse(shipMass, ve, dv);
             tsec += OrbitMath.BurnTime(ship, dv, shipMass);
@@ -245,9 +246,9 @@ namespace Pulsar4X.Engine.Logistics
             DateTime startWarpTime = startState.At;
             DateTime endWarpTime = targetIntercept.eti;
             DateTime endNewtonThrustTime = targetIntercept.eti;
-            
+
             navDB.AddManuver(
-                Manuver.ManuverType.Warp, 
+                Manuver.ManuverType.Warp,
                 startWarpTime,
                 cur,
                 startKE,
@@ -256,7 +257,7 @@ namespace Pulsar4X.Engine.Logistics
                 postWarpKE
             );
             navDB.AddManuver(
-                Manuver.ManuverType.NewtonSimple, 
+                Manuver.ManuverType.NewtonSimple,
                 endWarpTime,
                 targetBody,
                 postWarpKE,
@@ -264,8 +265,8 @@ namespace Pulsar4X.Engine.Logistics
                 targetBody,
                 endKE
             );
-            
-            
+
+
             ManuverState mstate = new ManuverState()
             {
                 At = startState.At + TimeSpan.FromSeconds(tsec),

@@ -12,6 +12,7 @@ using Pulsar4X.SDL2UI.ManuverNodes;
 using Vector2 = System.Numerics.Vector2;
 using Vector3 = Pulsar4X.Orbital.Vector3;
 using Pulsar4X.Engine.Orders;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.ImGuiNetUI.EntityManagement
 {
@@ -189,10 +190,10 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
         private NavMode _navMode = NavMode.None;
         private string[] nodenames = new string[0];
         private int _selectedNode = 0;
-        
+
         private float _radialDV;
         private float _progradeDV;
-        
+
         private int _indentAmount = 4;
         private int _indentDepth = 0;
         private int indent
@@ -201,8 +202,8 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
         }
         void ManuverTree(ManuverSequence mseq)
         {
-            
-            
+
+
             if (ImGui.Selectable(mseq.SequenceName))
             {
                 _navMode = NavMode.None;
@@ -666,7 +667,7 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
                     _targetSMA = (float)_siblingEntities[_selectedSibling].GetDataBlob<NewtonMoveDB >().GetElements().SemiMajorAxis;
             }
 
-            //TODO this should be radius from orbiting body not major axies.  
+            //TODO this should be radius from orbiting body not major axies.
             ImGui.SliderFloat("Target SemiMajorAxis", ref _targetSMA, smaMin, smaMax);
             _manuvers = OrbitalMath.Hohmann2(_sgp, mySMA, _targetSMA);
 
@@ -707,7 +708,7 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
                 if(_fuelType == null)
                     throw new NullReferenceException();
 
-                double mass2 = _totalMass - (fuelBurned1 * _fuelType.MassPerUnit); 
+                double mass2 = _totalMass - (fuelBurned1 * _fuelType.MassPerUnit);
                 double fuelBurned2 = OrbitMath.TsiolkovskyFuelUse(mass2, _exhaustVelocity, _manuvers[1].deltaV.Length());
                 double secondsBurn2 = fuelBurned2 / _burnRate;
                 var manuverNodeTime2 = manuverNodeTime1 + TimeSpan.FromSeconds(_manuvers[1].tSec);
@@ -743,10 +744,10 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
                     _targetSMA = (float)_siblingEntities[_selectedSibling].GetDataBlob<OrbitUpdateOftenDB>().SemiMajorAxis;
                 if(selectedSib.HasDataBlob<NewtonMoveDB>())
                     _targetSMA = (float)_siblingEntities[_selectedSibling].GetDataBlob<NewtonMoveDB >().GetElements().SemiMajorAxis;
-                
+
             }
 
-            //TODO this should be radius from orbiting body not major axies.  
+            //TODO this should be radius from orbiting body not major axies.
             ImGui.SliderFloat("Target SemiMajorAxis", ref _targetSMA, smaMin, smaMax);
             _manuvers = OrbitalMath.Hohmann2(_sgp, mySMA, _targetSMA);
 
@@ -793,7 +794,7 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
                 if(_fuelType == null)
                     throw new NullReferenceException();
 
-                double mass2 = _totalMass - (fuelBurned1 * _fuelType.MassPerUnit); 
+                double mass2 = _totalMass - (fuelBurned1 * _fuelType.MassPerUnit);
                 double fuelBurned2 = OrbitMath.TsiolkovskyFuelUse(mass2, _exhaustVelocity, _manuvers[1].deltaV.Length());
                 double secondsBurn2 = fuelBurned2 / _burnRate;
                 var manuverNodeTime2 = manuverNodeTime1 + TimeSpan.FromSeconds(_manuvers[1].tSec);
@@ -838,7 +839,7 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
                     _targetSMA = (float)_siblingEntities[_selectedSibling].GetDataBlob<OrbitUpdateOftenDB>().SemiMajorAxis;
                 if(selectedSib.HasDataBlob<NewtonMoveDB>())
                     _targetSMA = (float)_siblingEntities[_selectedSibling].GetDataBlob<NewtonMoveDB >().GetElements().SemiMajorAxis;
-                
+
                 trueanomTgt = OrbitMath.GetTrueAnomaly(TgtOrbitDB,_atDatetime);
                 trueanomInt = OrbitMath.GetTrueAnomaly(IntOrbitDB,_atDatetime);
 
@@ -849,9 +850,9 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
                 _truelongInt = trueanomInt + lopInt;
             }
 
-            //TODO this should be radius from orbiting body not major axies.  
+            //TODO this should be radius from orbiting body not major axies.
             ImGui.SliderFloat("Target SemiMajorAxis", ref _targetSMA, smaMin, smaMax);
-            
+
             _manuvers = OrbitalMath.HohmannOE(_sgp, intSMA, _truelongInt, _targetSMA, _truelongTgt);
 
             double totalManuverTime = 0;
@@ -900,7 +901,7 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
                     AoP = 0,
                     Inclination = 0,
                     StandardGravParameter = _sgp
-                           
+
                 };
                 Manuver navManuver = new Manuver()
                 {
@@ -913,10 +914,10 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
                     EndDateTime = timeAtSecondManuver
                 };
                 NavSequenceCommand.CreateNewCommand(_orderEntity, navManuver);
-                
-                
-                
-                
+
+
+
+
                 /*
                 double fuelBurned1 = OrbitMath.TsiolkovskyFuelUse(_totalMass, _exhaustVelocity, _manuvers[0].deltaV.Length());
                 double secondsBurn1 = fuelBurned1 / _burnRate;
@@ -969,7 +970,7 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
                     _targetSMA = (float)_uncleEntites[_selectedUncle].GetDataBlob<NewtonMoveDB>().GetElements().SemiMajorAxis;
             }
 
-            //TODO this should be radius from orbiting body not major axies.  
+            //TODO this should be radius from orbiting body not major axies.
             //ImGui.SliderFloat("Target SemiMajorAxis", ref _targetSMA, smaMin, smaMax);
             if(_selectedUncle > -1)
             {
@@ -1026,7 +1027,7 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
             }
         }
 
-        private bool _EscapeVelocityHigh = true; 
+        private bool _EscapeVelocityHigh = true;
         void DisplayEscapeSOI()
         {
             var period = _orderEntity.GetDataBlob<OrbitDB>().OrbitalPeriod.TotalSeconds;
@@ -1056,7 +1057,7 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
                 secondsToManuver += period * 0.5;
 
             double mySMA = _currentKE.Value.SemiMajorAxis;
-            //double escapeSMA = 
+            //double escapeSMA =
             var manuverDateTime = _atDatetime + TimeSpan.FromSeconds(secondsToManuver);
             var manuverPos = MoveMath.GetRelativeFuturePosition(_orderEntity,manuverDateTime);
             var manuverVel = MoveMath.GetRelativeFutureVelocity(_orderEntity, manuverDateTime);

@@ -11,6 +11,7 @@ using Pulsar4X.Engine.Orders;
 using System.Runtime.CompilerServices;
 using Pulsar4X.Events;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Factions;
 [assembly: InternalsVisibleTo("Pulsar4X.Tests")]
 
 namespace Pulsar4X.Engine
@@ -113,7 +114,7 @@ namespace Pulsar4X.Engine
             GalaxyGen = new GalaxyFactory(SystemGenSettings, Settings.MasterSeed);
             HaltEventLog = HaltEventLog.Create(new List<EventType>(), TimePulse);
         }
-        
+
         public void ApplySettings(NewGameSettings settings)
         {
             Settings = settings;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Pulsar4X.Engine;
 using Pulsar4X.Events;
+using Pulsar4X.Factions;
 using Pulsar4X.Modding;
 
 namespace Pulsar4X.Tests;
@@ -98,5 +99,5 @@ public class EventLogTests
 
         Assert.AreEqual(2, _spaceMasterEventLog.GetEvents().Count);
     }
-    
+
 }

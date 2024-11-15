@@ -3,6 +3,7 @@ using System.Linq;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Events;
 using Pulsar4X.Extensions;
+using Pulsar4X.Factions;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Messaging;
 using Pulsar4X.Orbital;
@@ -93,7 +94,7 @@ public class JPSurveyProcessor : IInstanceProcessor
         var jpRemaining = Fleet.Manager.GetAllDataBlobsOfType<JumpPointDB>()
                             .Where(db => !db.IsDiscovered.Contains(Fleet.FactionOwnerID))
                             .ToList();
-        
+
         var chance = (double)jpRemaining.Count / (double)surveyLocationsRemaining.Count;
         var roll = Target.Manager.Game.RNG.NextDouble();
 
@@ -172,7 +173,7 @@ public class JPSurveyProcessor : IInstanceProcessor
                         destinationEntity.Manager.ManagerID,
                         destinationEntity.Id));
             }
-            
+
         }
     }
 }

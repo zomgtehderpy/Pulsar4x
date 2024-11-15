@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Pulsar4X.DataStructures;
 using Pulsar4X.ImGuiNetUI.ManuverNodes;
 using static Pulsar4X.SDL2UI.SystemViewPreferences;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.SDL2UI
 {

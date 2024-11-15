@@ -8,6 +8,7 @@ using Pulsar4X.Interfaces;
 using System.Collections.Generic;
 using System.Reflection;
 using Pulsar4X.Colonies;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Extensions
 {

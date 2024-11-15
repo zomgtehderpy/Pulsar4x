@@ -4,8 +4,9 @@ using Pulsar4X.DataStructures;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Blueprints;
 using Pulsar4X.Modding;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Factions
 {
     /// <summary>
     /// Stores all the game data per faction, since the factions will unlock things at their own pace

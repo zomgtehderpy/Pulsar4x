@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Engine
 {

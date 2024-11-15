@@ -10,6 +10,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Components;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.SDL2UI
 {

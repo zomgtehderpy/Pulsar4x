@@ -8,6 +8,7 @@ using Pulsar4X.Interfaces;
 using Pulsar4X.Extensions;
 using Pulsar4X.Orbital;
 using Vector3 = System.Numerics.Vector3;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.SDL2UI.ManuverNodes;
 
@@ -15,16 +16,16 @@ public class ManuverNode
 {
     public string NodeName = "";
     /// <summary>
-    /// This descibes the center of the burn in DeltaV 
+    /// This descibes the center of the burn in DeltaV
     /// </summary>
     public DateTime NodeTime;
     /// <summary>
     /// This is the time we should start the burn
     /// </summary>
-    public DateTime TimeAtStartBurn; 
-    
+    public DateTime TimeAtStartBurn;
+
     /// <summary>
-    /// Raises and lowers altitude of orbit 
+    /// Raises and lowers altitude of orbit
     /// Positive Prograde,
     /// Negative Retrograde
     /// </summary>
@@ -39,7 +40,7 @@ public class ManuverNode
 
     /// <summary>
     /// Rotates the orbit around the craft, changing the position of the apoapsis/periapsis along the line of the orbit
-    /// normally inefficient way to change orbit, but good for small adjustments. 
+    /// normally inefficient way to change orbit, but good for small adjustments.
     /// This points towards the center of the ellipse not the focal (parent body)
     /// Positive in,
     /// Negative out.
@@ -69,7 +70,7 @@ public class ManuverNode
     {
         get { return Angle.RadiansFromVector3(NodePosition); }
     }
-    
+
     internal Entity _orderEntity;
     private NewtonThrustAbilityDB _newtonThrust;
     private double _totalMass;
@@ -95,7 +96,7 @@ public class ManuverNode
         _fuelType = orderEntity.GetFactionOwner.GetDataBlob<FactionInfoDB>().Data.CargoGoods.GetAny(fuelTypeID);
         _burnRate = _newtonThrust.FuelBurnRate;
         _exhaustVelocity = _newtonThrust.ExhaustVelocity;
-        
+
         PriorOrbit = orderEntity.GetDataBlob<OrbitDB>().GetElements();
         TargetOrbit = PriorOrbit;
         NodePosition = OrbitalMath.GetRelativePosition(PriorOrbit, NodeTime);
@@ -129,7 +130,7 @@ public class ManuverNode
         var firsthalfBurnTime = firsthalfDvFuel / _burnRate;
         TimeAtStartBurn = NodeTime - TimeSpan.FromSeconds(firsthalfBurnTime);
         (Orbital.Vector3 position, Vector2 velocity) stateVectors = OrbitalMath.GetStateVectors(PriorOrbit, NodeTime);
-        
+
         Orbital.Vector3 velocity = new Orbital.Vector3(stateVectors.velocity.X, stateVectors.velocity.Y, 0);
         velocity += OrbitalMath.ProgradeToStateVector(new(prograde, radial, normal), PriorOrbit);
         TargetVelocity = new Vector2(velocity.X, velocity.Y);
@@ -176,7 +177,7 @@ public class ManuverNode
     {
         ManipulateNode(burn.Y, burn.X, 0, time);
     }
-    
+
     /// <summary>
     /// Adds parameters to exsisting node
     /// </summary>
@@ -220,28 +221,28 @@ public class ManuverNode
         Console.Out.WriteLine(stateVectors.velocity);
         var velocityOrig = new Orbital.Vector3(stateVectors.velocity.X, stateVectors.velocity.Y, 0);
         Console.Out.WriteLine(Stringify.Velocity(velocityOrig.X) + ", " + Stringify.Velocity(velocityOrig.Y));
-        
+
         var velocityPgde = new Orbital.Vector3(prograde, radial, normal);
         Console.Out.WriteLine(Stringify.Velocity(velocityPgde.X) + ", " + Stringify.Velocity(velocityPgde.Y));
 
         var velocitystate = OrbitMath.ProgradeToStateVector(velocityPgde, PriorOrbit);
         Console.Out.WriteLine(Stringify.Velocity(velocitystate.X) + ", " + Stringify.Velocity(velocitystate.Y));
-        
+
         var velocitynew = velocityOrig + velocitystate;
         Console.Out.WriteLine(Stringify.Velocity(velocitynew.X) + ", " + Stringify.Velocity(velocitynew.Y));
-        
+
         TargetOrbit =  OrbitalMath.KeplerFromPositionAndVelocity(_sgp, NodePosition, velocitynew, NodeTime);
-        
+
         if (TargetOrbit.MeanAnomalyAtEpoch is double.NaN)
             throw new Exception("wtf exception");
-        
+
     }
-    
+
     public void SetNode(Orbital.Vector3 burn, DateTime time)
     {
         SetNode(burn.Y, burn.X, burn.Z, time);
     }
-    
+
 }
 
 public class ManuverSequence
@@ -251,7 +252,7 @@ public class ManuverSequence
     //public ManuverSequence ParentSequence;
 
     /// <summary>
-    /// the focal point of orbits in this sequence. 
+    /// the focal point of orbits in this sequence.
     /// </summary>
     public IPosition ParentPosition = new zeroPosition();
 
@@ -264,6 +265,6 @@ public class ManuverSequence
     public List<ManuverNode> ManuverNodes = new List<ManuverNode>();
     public List<(double startAngle, double endAngle)> OrbitArcs = new List<(double startAngle, double endAngle)>();
     public List<ManuverSequence> ManuverSequences = new List<ManuverSequence>();
-    
-    
+
+
 }

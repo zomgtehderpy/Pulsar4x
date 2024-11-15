@@ -7,6 +7,7 @@ using Pulsar4X.Engine.Designs;
 using Pulsar4X.Modding;
 using GameEngine.WarpMove;
 using Pulsar4X.Energy;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Tests
 {

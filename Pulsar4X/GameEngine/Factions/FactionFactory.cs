@@ -4,13 +4,14 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using Pulsar4X.Colonies;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Engine;
 using Pulsar4X.Engine.Auth;
 using Pulsar4X.Engine.Factories;
 using Pulsar4X.Events;
 using Pulsar4X.Extensions;
 using Pulsar4X.Interfaces;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Factions
 {
 
     public static class FactionFactory

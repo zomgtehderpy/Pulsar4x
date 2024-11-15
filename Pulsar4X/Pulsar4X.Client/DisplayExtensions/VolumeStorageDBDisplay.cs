@@ -11,6 +11,7 @@ using Pulsar4X.DataStructures;
 using Pulsar4X.Engine.Orders;
 using System;
 using Pulsar4X.Colonies;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.SDL2UI
 {

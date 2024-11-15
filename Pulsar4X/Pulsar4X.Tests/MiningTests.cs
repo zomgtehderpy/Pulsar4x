@@ -5,6 +5,7 @@ using Pulsar4X.Components;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Engine.Auth;
+using Pulsar4X.Factions;
 using Pulsar4X.Modding;
 using System;
 using System.Collections.Generic;

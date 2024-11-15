@@ -4,6 +4,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
 using Pulsar4X.Modding;
 using Pulsar4X.Events;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Engine
 {
@@ -16,7 +17,7 @@ namespace Pulsar4X.Engine
     /// Some simular functions with simular inputs left in for future performance testing (ie one of the two might be slightly more performant).
     /// </summary>
     ///
-    
+
     public class OrbitMath : OrbitalMath
     {
 
@@ -36,7 +37,7 @@ namespace Pulsar4X.Engine
                 planetEntity.GetDataBlob<MassVolumeDB>().MassDry, payload
             );
         }
-                
+
         /// <summary>
         /// Mass of fuel burned for a given DV change.
         /// </summary>
@@ -151,7 +152,7 @@ namespace Pulsar4X.Engine
             return TsiolkovskyRocketEquation(massTotal, massCargoDry, exhaustVelocity);
 
         }
-        
+
         /// <summary>
         /// deltaV this ship has right now.
         /// </summary>
@@ -179,10 +180,10 @@ namespace Pulsar4X.Engine
             return TsiolkovskyRocketEquation(massTotal, massCargoDry, exhaustVelocity);
 
         }
-        
+
         /// <summary>
         /// Currently this only calculates the change in velocity from 0 to planet radius +* 0.33333.
-        /// TODO: add gravity drag and atmosphere drag, and tech improvements for such.  
+        /// TODO: add gravity drag and atmosphere drag, and tech improvements for such.
         /// </summary>
         /// <param name="planetRadiusInM"></param>
         /// <param name="planetMassDryInKG"></param>
@@ -201,19 +202,19 @@ namespace Pulsar4X.Engine
             return fuelCost;
         }
 
-        
-        
+
+
         #endregion
 
 
         #region RelativePosition And Velocity
-        
-        
+
+
         public static Vector3 GetPosition(OrbitDB orbit, DateTime atDateTime)
         {
             return GetPosition(orbit, GetTrueAnomaly(orbit, atDateTime));
         }
-        
+
         public static Vector3 GetPosition(OrbitDB orbit, double trueAnomaly)
         {
             if (orbit.IsStationary)
@@ -230,12 +231,12 @@ namespace Pulsar4X.Engine
                 return OrbitMath.GetPosition(orbit, ta);
             //else if we're a child
             Vector3 rootPos = GetAbsolutePosition((OrbitDB)orbit.ParentDB, atDateTime);
-            
+
             if (orbit.IsStationary)
             {
                 return rootPos;
             }
-            
+
             return rootPos + GetPosition(orbit, ta);
 
         }
@@ -247,7 +248,7 @@ namespace Pulsar4X.Engine
             var vel = OrbitMath.InstantaneousOrbitalVelocityVector_m(orbitDB, atTime);
             return (pos, vel);
         }
-                
+
         /// <summary>
         /// Parent relative velocity vector.
         /// </summary>
@@ -269,7 +270,7 @@ namespace Pulsar4X.Engine
             double loAN = orbit.LongitudeOfAscendingNode;
             return ParentLocalVeclocityVector(sgp, position, sma, e, trueAnomaly, aoP, i, loAN);
         }
-        
+
         /// <summary>
         /// basicaly the radius of the planet * 1.1
         /// in future we may have this dependant on atmosphere (thickness and or gravity?)
@@ -291,7 +292,7 @@ namespace Pulsar4X.Engine
 
         #region TrueAnomaly
 
-                
+
         public static double GetTrueAnomaly(OrbitDB orbit, DateTime time)
         {
             TimeSpan timeSinceEpoch = time - orbit.Epoch;
@@ -321,7 +322,7 @@ namespace Pulsar4X.Engine
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="orbit"></param>
         /// <param name="currentMeanAnomaly"></param>
@@ -338,7 +339,7 @@ namespace Pulsar4X.Engine
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="orbit"></param>
         /// <param name="currentHyperbolicAnomaly"></param>
@@ -356,7 +357,7 @@ namespace Pulsar4X.Engine
 
 
         #endregion
-        
+
 
         #region Time
 
@@ -377,7 +378,7 @@ namespace Pulsar4X.Engine
             }
             return orbitDB.Epoch + TimeSpan.FromSeconds(t_s);
         }
-        
+
         /// <summary>
         /// Time for a burn manuver in seconds
         /// </summary>
@@ -409,7 +410,7 @@ namespace Pulsar4X.Engine
             var mass = parent.GetDataBlob<MassVolumeDB>().MassTotal;
             mass += child.GetDataBlob<MassVolumeDB>().MassTotal;
             return mass * UniversalConstants.Science.GravitationalConstant;
-            
+
         }
 
         /// <summary>
@@ -423,7 +424,7 @@ namespace Pulsar4X.Engine
         {
             return GetSOI(orbit.SemiMajorAxis, orbit._myMass, orbit._parentMass);
         }
-        
+
         public static OrbitDB FindSOIForOrbit(OrbitDB orbit, Vector3 AbsolutePosition)
         {
             var soi = orbit.SOI_m;
@@ -441,7 +442,7 @@ namespace Pulsar4X.Engine
 
             return null;
         }
-        
+
         public static KeplerElements KeplerFromOrbitDB(OrbitDB orbitDB)
         {
             var entity = orbitDB.OwningEntity;

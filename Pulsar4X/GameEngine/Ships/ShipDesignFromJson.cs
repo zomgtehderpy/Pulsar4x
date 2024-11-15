@@ -5,6 +5,7 @@ using Pulsar4X.Blueprints;
 using Pulsar4X.Components;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine.Designs;
+using Pulsar4X.Factions;
 
 namespace Pulsar4X.Engine.Factories;
 
