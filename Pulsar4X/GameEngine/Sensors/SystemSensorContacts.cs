@@ -3,6 +3,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Messaging;
+using Pulsar4X.Sensors;
 
 namespace Pulsar4X.Engine.Sensors
 {

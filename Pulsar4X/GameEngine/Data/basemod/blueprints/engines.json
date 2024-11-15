@@ -75,7 +75,7 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(3500, Ability('Thrust'))",
-          "AttributeType": "Pulsar4X.Atb.SensorSignatureAtb"
+          "AttributeType": "Pulsar4X.Sensors.SensorSignatureAtb"
         }
       ]
     }

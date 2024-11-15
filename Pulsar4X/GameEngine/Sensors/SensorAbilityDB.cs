@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
+using Pulsar4X.Datablobs;
 using Pulsar4X.Engine.Sensors;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Sensors
 {
     public class SensorAbilityDB : BaseDataBlob
     {
         public new static List<Type> GetDependencies() => new List<Type>() { typeof(ComponentInstancesDB) };
- 
+
         internal Dictionary<string, SensorReturnValues> CurrentContacts = new ();
         internal Dictionary<string, SensorReturnValues> OldContacts = new ();
 

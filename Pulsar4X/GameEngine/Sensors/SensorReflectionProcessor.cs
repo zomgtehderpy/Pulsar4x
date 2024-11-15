@@ -1,10 +1,11 @@
 using System;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Engine;
 using Pulsar4X.Engine.Sensors;
 using Pulsar4X.Extensions;
 using Pulsar4X.Interfaces;
 
-namespace Pulsar4X.Engine;
+namespace Pulsar4X.Sensors;
 
 public class SensorReflectionProcessor : IHotloopProcessor
 {

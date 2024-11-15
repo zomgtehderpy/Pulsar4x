@@ -6,13 +6,12 @@ using Newtonsoft.Json.Linq;
 using Pulsar4X.Colonies;
 using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
-using Pulsar4X.Engine.Sensors;
-using Pulsar4X.Extensions;
 using Pulsar4X.GeoSurveys;
 using Pulsar4X.Industry;
 using Pulsar4X.Names;
 using Pulsar4X.Orbital;
 using Pulsar4X.Orbits;
+using Pulsar4X.Sensors;
 
 namespace Pulsar4X.Engine.Factories;
 

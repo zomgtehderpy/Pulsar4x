@@ -1,8 +1,7 @@
 using Newtonsoft.Json;
 using System;
 using Pulsar4X.Orbital;
-using Pulsar4X.Extensions;
-using Pulsar4X.Interfaces;
+using Pulsar4X.Sensors;
 
 namespace Pulsar4X.Datablobs
 {
@@ -31,21 +30,21 @@ namespace Pulsar4X.Datablobs
         /// </summary>
         /// <value>The volume m^3.</value>
         [JsonIgnore]
-        public double Volume_m3 { 
+        public double Volume_m3 {
             get { return Volume_km3 * 1e9; }
             set { Volume_km3 = value / 1e9; }
         }
 
         /// <summary>
         /// The density of the body in g/cm^3
-        /// </summary> 
+        /// </summary>
         [JsonProperty]
         public double DensityDry_gcm
         {
             get { return DensityDry_kgm * 1000;}
             internal set { DensityDry_kgm = value * 0.001; }
         }
-        
+
         public double DensityDry_kgm { get; set; }
 
         /// <summary>
@@ -92,9 +91,9 @@ namespace Pulsar4X.Datablobs
             mvDB.MassTotal = mass;
             return mvDB;
         }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="mass">DryMass</param>
         /// <param name="radius_m"></param>
@@ -203,7 +202,7 @@ namespace Pulsar4X.Datablobs
         {
             return (4.0 / 3.0) * Math.PI * Math.Pow(radius_m, 3);
         }
-        
+
         /// <summary>
         /// Calculate density from mass(kg) and volume(m^3)
         /// </summary>
@@ -217,9 +216,9 @@ namespace Pulsar4X.Datablobs
             // now convert to g/cm^3
             return densityinkg_m3 * 0.001;
         }
-        
+
         /// <summary>
-        /// Calculates the radius_au of a body from mass and densitiy using the formular: 
+        /// Calculates the radius_au of a body from mass and densitiy using the formular:
         /// <c>r = ((3M)/(4pD))^(1/3)</c>
         /// Where p = PI, D = Density, and M = Mass.
         /// </summary>
@@ -228,14 +227,14 @@ namespace Pulsar4X.Datablobs
         /// <returns>The radius_au in AU</returns>
         public static double CalculateRadius_Au(double mass, double density)
         {
-            double radius = Math.Pow((3 * mass) / (4 * Math.PI * (density / 1000)), 0.3333333333); // density / 1000 changes it from g/cm2 to Kg/cm3, needed because mass in is KG. 
+            double radius = Math.Pow((3 * mass) / (4 * Math.PI * (density / 1000)), 0.3333333333); // density / 1000 changes it from g/cm2 to Kg/cm3, needed because mass in is KG.
             // 0.3333333333 should be 1/3 but 1/3 gives radius_au of 0.999999 for any mass/density pair, so i used 0.3333333333
             return Distance.KmToAU(radius / 1000 / 100);     // convert from cm to AU.
         }
-        
+
         public static double CalculateRadius_m(double mass, double density)
         {
-            double radius = Math.Pow((3 * mass) / (4 * Math.PI * (density / 1000)), 0.3333333333); // density / 1000 changes it from g/cm2 to Kg/cm3, needed because mass in is KG. 
+            double radius = Math.Pow((3 * mass) / (4 * Math.PI * (density / 1000)), 0.3333333333); // density / 1000 changes it from g/cm2 to Kg/cm3, needed because mass in is KG.
             // 0.3333333333 should be 1/3 but 1/3 gives radius_au of 0.999999 for any mass/density pair, so i used 0.3333333333
             return Distance.KmToM(radius / 1000 / 100);     // convert from cm to AU.
         }
@@ -257,7 +256,7 @@ namespace Pulsar4X.Datablobs
 
         void Update(MassVolumeDB originalDB, SensorInfoDB sensorInfo)
         {
-            //TODO: add rand from sensorInfo. 
+            //TODO: add rand from sensorInfo.
             MassDry = originalDB.MassDry;
             DensityDry_gcm = originalDB.DensityDry_gcm;
             RadiusInAU = originalDB.RadiusInAU;

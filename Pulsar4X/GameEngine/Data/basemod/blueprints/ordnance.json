@@ -284,7 +284,7 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Thrust'), 811 , 400, 1400)",
-          "AttributeType": "Pulsar4X.Atb.SensorSignatureAtb"
+          "AttributeType": "Pulsar4X.Sensors.SensorSignatureAtb"
         }
       ]
     }
@@ -427,7 +427,7 @@
           "DescriptionFormula": "'(double peakWaveLength, double bandwidth, double bestSensitivity, double worstSensitivity, double resolution, double scanTime)'",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Ideal Detection Wavelength'), Ability('Detection Bandwidth'), Ability('Sensitivity at Ideal Wavelength'), Ability('Sensitivity at Worst Wavelength'), Ability('Resolution'), Ability('Scan Time'))",
-          "AttributeType": "Pulsar4X.Datablobs.SensorReceiverAtbDB"
+          "AttributeType": "Pulsar4X.Sensors.SensorReceiverAtbDB"
         }
       ]
     }

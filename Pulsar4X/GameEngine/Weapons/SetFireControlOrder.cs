@@ -7,6 +7,7 @@ using Pulsar4X.Components;
 using Pulsar4X.Engine.Damage;
 using Pulsar4X.Engine.Designs;
 using Pulsar4X.Factions;
+using Pulsar4X.Sensors;
 
 namespace Pulsar4X.Engine.Orders
 {

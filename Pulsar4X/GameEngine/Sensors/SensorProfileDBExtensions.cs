@@ -2,8 +2,9 @@ using System;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Engine.Sensors;
+using Pulsar4X.Extensions;
 
-namespace Pulsar4X.Extensions;
+namespace Pulsar4X.Sensors;
 
 public static class SensorProfileDBExtensions
 {

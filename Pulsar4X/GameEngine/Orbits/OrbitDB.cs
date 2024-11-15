@@ -7,6 +7,7 @@ using Pulsar4X.Extensions;
 using System.Collections.Generic;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Events;
+using Pulsar4X.Sensors;
 
 namespace Pulsar4X.Orbits
 {

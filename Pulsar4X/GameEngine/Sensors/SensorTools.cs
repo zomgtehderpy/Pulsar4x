@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Pulsar4X.Orbital;
 using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Extensions;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine.Sensors
+namespace Pulsar4X.Sensors
 {
 
     public static class SensorTools

@@ -18,6 +18,7 @@ using Pulsar4X.Logistics;
 using Pulsar4X.Names;
 using Pulsar4X.Orbits;
 using Pulsar4X.People;
+using Pulsar4X.Sensors;
 
 namespace Pulsar4X.Engine
 {

@@ -7,6 +7,7 @@ using ImGuiNET;
 using Pulsar4X.Engine;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Orbits;
+using Pulsar4X.Sensors;
 
 namespace Pulsar4X.SDL2UI
 {

@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace Pulsar4X.Engine.Sensors
+namespace Pulsar4X.Sensors
 {
     /// <summary>
     /// EM waveform, think of this of this as a triange wave, the average is the peak, with min and max defining the minimuam and maximium wavelengths

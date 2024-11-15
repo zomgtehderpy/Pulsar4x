@@ -1,9 +1,9 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Pulsar4X.Interfaces;
 using Pulsar4X.Engine;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Sensors;
 
 namespace Pulsar4X.Names
 {

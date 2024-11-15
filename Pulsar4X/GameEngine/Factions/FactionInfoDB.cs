@@ -11,6 +11,7 @@ using Pulsar4X.Engine.Sensors;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Events;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Sensors;
 
 namespace Pulsar4X.Factions
 {

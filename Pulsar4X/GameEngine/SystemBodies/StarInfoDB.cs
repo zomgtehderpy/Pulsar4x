@@ -1,13 +1,11 @@
 using Newtonsoft.Json;
 using System;
 using Pulsar4X.Orbital;
-using System.ComponentModel;
 using Pulsar4X.DataStructures;
-using Pulsar4X.Interfaces;
 using Pulsar4X.Engine;
-using Pulsar4X.Engine.Sensors;
 using System.Collections.Generic;
 using Pulsar4X.Names;
+using Pulsar4X.Sensors;
 
 namespace Pulsar4X.Datablobs
 {

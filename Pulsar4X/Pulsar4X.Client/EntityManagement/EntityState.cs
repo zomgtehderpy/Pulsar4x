@@ -10,6 +10,7 @@ using Pulsar4X.DataStructures;
 using System.Diagnostics.CodeAnalysis;
 using Pulsar4X.Colonies;
 using Pulsar4X.Industry;
+using Pulsar4X.Sensors;
 
 namespace Pulsar4X.SDL2UI
 {

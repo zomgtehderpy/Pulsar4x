@@ -1,10 +1,10 @@
 using System;
 using Newtonsoft.Json;
+using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Engine.Sensors;
-using Pulsar4X.Extensions;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Sensors
 {
     /// <summary>
     /// This datablob goes into the sensor contact.

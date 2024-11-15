@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Pulsar4X.Orbital;
 using Pulsar4X.Engine;
 using Pulsar4X.Datablobs;
-using Pulsar4X.Interfaces;
 
-namespace Pulsar4X.Engine.Sensors
+namespace Pulsar4X.Sensors
 {
     public static class SensorEntityFactory
     {

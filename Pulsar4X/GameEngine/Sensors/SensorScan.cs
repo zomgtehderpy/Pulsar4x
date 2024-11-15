@@ -3,8 +3,9 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Engine.Sensors;
 using Pulsar4X.Colonies;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Sensors
 {
     public class SensorScan : IInstanceProcessor
     {

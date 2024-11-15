@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Pulsar4X.Components;
 
-namespace Pulsar4X.Engine.Sensors
+namespace Pulsar4X.Sensors
 {
     public class SensorReceiverAbility : ComponentAbilityState
     {
