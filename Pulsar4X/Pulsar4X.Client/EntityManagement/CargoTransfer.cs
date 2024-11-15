@@ -293,7 +293,7 @@ namespace Pulsar4X.SDL2UI
         public void Display()
         {
 
-            ImGui.BeginChild(_entityState.Name, new Vector2(260, 200), true);
+            ImGui.BeginChild(_entityState.Name, new Vector2(360, 200), true);
             ImGui.Text(_entityState.Name);
             ImGui.Text("Transfer Rate: " + _volStorageDB.TransferRateInKgHr);
             ImGui.Text("At DeltaV < " + Stringify.Velocity(_volStorageDB.TransferRangeDv_mps));
@@ -310,7 +310,12 @@ namespace Pulsar4X.SDL2UI
                 string headerText = stype.Name + " " + Stringify.Volume(freeVolume) + " / " + Stringify.Volume(maxVolume) + " free" + "###" + stype.UniqueID;
                 if(ImGui.CollapsingHeader(headerText, ImGuiTreeNodeFlags.CollapsingHeader ))
                 {
+                    
                     ImGui.Columns(4);
+                    ImGui.SetColumnWidth(0, 90);
+                    ImGui.SetColumnWidth(1, 120);
+                    ImGui.SetColumnWidth(2, 60);
+                    ImGui.SetColumnWidth(3, 90);
                     ImGui.Text("Item");
                     ImGui.NextColumn();
                     ImGui.Text("Count");

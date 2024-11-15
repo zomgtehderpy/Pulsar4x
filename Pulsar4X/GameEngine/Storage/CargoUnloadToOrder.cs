@@ -96,7 +96,7 @@ namespace Pulsar4X.Engine.Orders
         {
             if (CommandHelpers.IsCommandValid(game.GlobalManager, RequestingFactionGuid, EntityCommandingGuid, out factionEntity, out _entityCommanding))
             {
-                if (game.GlobalManager.TryGetEntityById(SendCargoToEntityGuid, out sendToEntity))
+                if (game.GlobalManager.TryGetGlobalEntityById(SendCargoToEntityGuid, out sendToEntity))
                 {
                     return true;
                 }
