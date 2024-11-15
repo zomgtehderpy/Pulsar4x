@@ -3,6 +3,7 @@ using Pulsar4X.Datablobs;
 using Newtonsoft.Json;
 using Pulsar4X.Orbital;
 using Pulsar4X.Engine;
+using Pulsar4X.Orbits;
 
 namespace Pulsar4X.Datablobs
 {
@@ -42,7 +43,7 @@ namespace Pulsar4X.Datablobs
         public Vector3 CurrentVector_ms { get; internal set; }
 
         public Vector2 _position;
-        
+
         [JsonProperty]
         public Entity SOIParent { get; internal set; }
 

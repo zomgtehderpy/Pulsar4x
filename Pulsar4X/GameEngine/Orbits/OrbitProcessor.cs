@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using GameEngine.WarpMove;
 using Pulsar4X.Orbital;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Extensions;
 using Pulsar4X.Events;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Orbits
 {
     /// <summary>
     /// Orbit processor.
@@ -25,9 +25,9 @@ namespace Pulsar4X.Engine
         public TimeSpan FirstRunOffset => TimeSpan.FromTicks(0);
 
         public Type GetParameterType => typeof(OrbitDB);
-        
+
         private static GameSettings _gameSettings;
-        
+
         public void Init(Game game)
         {
             _gameSettings = game.Settings;
@@ -69,7 +69,7 @@ namespace Pulsar4X.Engine
 
         /// <summary>
         /// this will also update any child positions.
-        /// will be slightly slower than UpdateSystemOrbits as it walks the heirarchy 
+        /// will be slightly slower than UpdateSystemOrbits as it walks the heirarchy
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="parentPositionDB"></param>
@@ -80,12 +80,12 @@ namespace Pulsar4X.Engine
             var entityOrbitDB = entity.GetDataBlob<OrbitDB>();
             var entityPosition = entity.GetDataBlob<PositionDB>();
             int counter = 1;
-            
+
             // Get our Parent-Relative coordinates.
             Vector3 newPosition = entityOrbitDB.GetPosition(toDate);
             // Get our Absolute coordinates.
             entityPosition.AbsolutePosition = parentPositionDB.AbsolutePosition + newPosition;
-            
+
             // Update our children.
             foreach (Entity child in entityOrbitDB.Children)
             {
@@ -162,14 +162,14 @@ namespace Pulsar4X.Engine
     {
         internal override void ProcessEntity(Entity entity, DateTime atDateTime)
         {
-            
+
             var parent = entity.GetSOIParentEntity();
             if(parent == null) throw new NullReferenceException("parent cannot be null");
             var grandparent = parent.GetSOIParentEntity();
             var newParent = grandparent == null ? parent : grandparent;
 
             var vel = MoveMath.GetAbsoluteFutureVelocity(entity, atDateTime);
-            
+
             entity.GetDataBlob<PositionDB>().SetParent(newParent);
             var rpos = MoveMath.GetRelativeFuturePosition(entity, atDateTime);
             var myMass = entity.GetDataBlob<MassVolumeDB>().MassTotal;
@@ -184,7 +184,7 @@ namespace Pulsar4X.Engine
 
 
     /// <summary>
-    /// designed to be used for ships in combat etc where we need a more frequent position update. 
+    /// designed to be used for ships in combat etc where we need a more frequent position update.
     /// </summary>
     public class OrbitUpdateOftenProcessor : IHotloopProcessor
     {
@@ -224,7 +224,7 @@ namespace Pulsar4X.Engine
         {
             Vector3 newPosition = entityOrbitDB.GetPosition(toDate);
             entityOrbitDB._position = (Vector2)newPosition;
-            
+
         }
     }
 }

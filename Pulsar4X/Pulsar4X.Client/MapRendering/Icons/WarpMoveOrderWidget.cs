@@ -6,6 +6,7 @@ using Pulsar4X.Extensions;
 using Pulsar4X.Orbital;
 using SDL2;
 using static SDL2.SDL;
+using Pulsar4X.Orbits;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -76,8 +77,8 @@ namespace Pulsar4X.SDL2UI
             _arriveIcon = TransitIcon.CreateArriveIcon(_targetPositionDB);
             //these are relative to thier respective bodies, for the initial default, copying the position shoul be fine.
             //however a better default would djust the distance from the target to get a circular orbit and
-            //check if it's above minimum and that the resulting orbit is within soi 
-            _arriveIcon.ProgradeAngle = _departIcon.ProgradeAngle; 
+            //check if it's above minimum and that the resulting orbit is within soi
+            _arriveIcon.ProgradeAngle = _departIcon.ProgradeAngle;
             OnPhysicsUpdate();
         }
 
@@ -144,7 +145,7 @@ namespace Pulsar4X.SDL2UI
                 var y1 = _linePoints[0].y;
                 var x2 = _linePoints[1].x;
                 var y2 = _linePoints[1].y;
-                
+
                 SDL_SetRenderDrawColor(rendererPtr, TransitLineColor.r, TransitLineColor.g, TransitLineColor.b, TransitLineColor.a);
                 SDL_RenderDrawLine(rendererPtr, x1, y1, x2, y2);
 
@@ -208,7 +209,7 @@ namespace Pulsar4X.SDL2UI
                 Color = PrimaryColour
             };
 
-            //Shapes[0] = vectorArrow; 
+            //Shapes[0] = vectorArrow;
             //Shapes[1] = dot;
             //Shapes[2] = circle;
             //Shapes[3] = chevron;
@@ -284,12 +285,12 @@ namespace Pulsar4X.SDL2UI
         public void SetTransitPositon(Vector3 transitPositionrelative_m)
         {
             _worldPosition_m = transitPositionrelative_m;
-            
+
             OnPhysicsUpdate();
         }
 
         /// <summary>
-        /// Sets the transit position from the prograde Angle and distance from the body. 
+        /// Sets the transit position from the prograde Angle and distance from the body.
         /// </summary>
         /// <param name="progradeAngle">Prograde angle.</param>
         /// <param name="radius_AU">Radius au.</param>
@@ -314,9 +315,9 @@ namespace Pulsar4X.SDL2UI
                 _progradeArrow.Points[i] = rotate.TransformToVector2(_arrow[i]);
             }
             Shapes[0] = _progradeArrow;
-            
+
             ViewScreenPos = camera.ViewCoordinate_m(WorldPosition_m);
-            
+
             var mirrorMtx = Matrix.IDMirror(true, false);
             var scaleMtx = Matrix.IDScale(Scale, Scale);
             Matrix nonZoomMatrix = mirrorMtx * scaleMtx;
@@ -326,7 +327,7 @@ namespace Pulsar4X.SDL2UI
             {
                 var shape = Shapes[i];
                 Orbital.Vector2[] drawPoints = new Orbital.Vector2[shape.Points.Length];
-                
+
                 for (int i2 = 0; i2 < shape.Points.Length; i2++)
                 {
                     int x;
@@ -340,7 +341,7 @@ namespace Pulsar4X.SDL2UI
                 DrawShapes[i] = new Shape() { Points = drawPoints, Color = shape.Color };
             }
         }
-        
+
         public override void Draw(IntPtr rendererPtr, Camera camera)
         {
             if (DrawShapes == null)

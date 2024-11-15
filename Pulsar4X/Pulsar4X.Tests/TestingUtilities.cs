@@ -13,6 +13,7 @@ using Pulsar4X.Colonies;
 using Pulsar4X.Factions;
 using Pulsar4X.JumpPoints;
 using Pulsar4X.Names;
+using Pulsar4X.Orbits;
 
 namespace Pulsar4X.Tests
 {

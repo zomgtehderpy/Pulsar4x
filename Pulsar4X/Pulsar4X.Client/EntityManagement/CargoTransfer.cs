@@ -11,6 +11,7 @@ using Pulsar4X.Blueprints;
 using Pulsar4X.Extensions;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Factions;
+using Pulsar4X.Orbits;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -310,7 +311,7 @@ namespace Pulsar4X.SDL2UI
                 string headerText = stype.Name + " " + Stringify.Volume(freeVolume) + " / " + Stringify.Volume(maxVolume) + " free" + "###" + stype.UniqueID;
                 if(ImGui.CollapsingHeader(headerText, ImGuiTreeNodeFlags.CollapsingHeader ))
                 {
-                    
+
                     ImGui.Columns(4);
                     ImGui.SetColumnWidth(0, 90);
                     ImGui.SetColumnWidth(1, 120);

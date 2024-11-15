@@ -9,6 +9,7 @@ using Pulsar4X.Engine.Orders;
 using Pulsar4X.Orbital;
 using Vector2 = Pulsar4X.Orbital.Vector2;
 using Vector3 = Pulsar4X.Orbital.Vector3;
+using Pulsar4X.Orbits;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -60,13 +61,13 @@ namespace Pulsar4X.SDL2UI
         private double _eccentricity;
         private double Eccentricity
         {
-            get { return _eccentricity; } 
+            get { return _eccentricity; }
             set
             {
                 if (_newtonUI != null)
                     _newtonUI.Eccentricity = value;
                 _eccentricity = value;
-            } 
+            }
         }
 
         private ChangeCurrentOrbitWindow(EntityState entityState)
@@ -156,7 +157,7 @@ namespace Pulsar4X.SDL2UI
         {
 
             if (_actionDateTime < newDate && _orderEntityOrbit != null)
-            { 
+            {
                 _actionDateTime = newDate;
                 _positonAtChange_m = _orderEntityOrbit.GetPosition( _actionDateTime);
                 var vector2 = OrbitProcessor.GetOrbitalVector(_orderEntityOrbit, _actionDateTime);
@@ -210,24 +211,24 @@ namespace Pulsar4X.SDL2UI
 
         }
     }
-    
-    
+
+
     public class NewtonionOrderUI
     {
 
         double _fuelToBurn = double.NaN;
         public Vector3 DeltaV { get; set; } = Vector3.Zero;
-        
+
         float _progradeDV;
         float _radialDV;
-        
+
         double _maxDV;
         private double _exhastVelocity = double.NaN;
         private double _fuelRate = double.NaN;
         private double _wetMass;
         private double _dryMass;
         private double _curmass;
-        
+
         public double DepartureAngle { get; set; }
         public double Eccentricity { get; set; }
 
@@ -244,7 +245,7 @@ namespace Pulsar4X.SDL2UI
             bool changes = false;
             float maxprogradeDV = (float)(_maxDV - Math.Abs(_radialDV));
             float maxradialDV = (float)(_maxDV - Math.Abs(_progradeDV));
-                        
+
             if (ImGui.SliderFloat("Prograde DV", ref _progradeDV, -maxprogradeDV, maxprogradeDV))
             {
                 Calcs();
@@ -255,7 +256,7 @@ namespace Pulsar4X.SDL2UI
                 Calcs();
                 changes = true;
             }
-            
+
             ImGui.Text("Fuel to burn:" + Stringify.Mass(_fuelToBurn));
             ImGui.Text("Burn time: " + (int)(_fuelToBurn / _fuelRate) +" s");
             ImGui.Text("DeltaV: " + Stringify.Distance(DeltaV.Length())+ "/s of " + Stringify.Distance(_maxDV) + "/s");
@@ -272,7 +273,7 @@ namespace Pulsar4X.SDL2UI
         }
 
     }
-    
+
     public class NewtonionRadialOrderUI
     {
 
@@ -280,29 +281,29 @@ namespace Pulsar4X.SDL2UI
 
         public Vector3 DeltaV
         {
-            get; 
+            get;
             private set;
         } = Vector3.Zero;
-        
+
         float _progradeDV;
         float _radialDV;
-        
+
         double _maxDV;
         private double _exhastVelocity = double.NaN;
         private double _fuelRate = double.NaN;
         private double _wetMass;
         private double _dryMass;
         private double _curmass;
-        
+
         private float _minRad;
         private float _rad;
         public float Radius
         {
-            get { return _rad;} set {_rad = value;} 
+            get { return _rad;} set {_rad = value;}
         }
         private float _maxRad;
         private Vector2 _vector = new Vector2(0, 1);
-        
+
         public double ProgradeAngle
         {
             get; set;
@@ -330,7 +331,7 @@ namespace Pulsar4X.SDL2UI
             bool changes = false;
             float maxprogradeDV = (float)(_maxDV - Math.Abs(_radialDV));
             //float maxradialDV = (float)(_maxDV - Math.Abs(_progradeDV));
-                        
+
             if (ImGui.SliderFloat("Prograde DV", ref _progradeDV, -maxprogradeDV, maxprogradeDV))
             {
                 Calcs();
@@ -349,13 +350,13 @@ namespace Pulsar4X.SDL2UI
                 Calcs();
                 changes = true;
             }*/
-            
+
             //ImGui.Text("Fuel to burn:" + Stringify.Mass(_fuelToBurn));
             ImGui.Text("Burn time: " + (int)(_fuelToBurn / _fuelRate) +" s");
             if(DeltaV.Length() > _maxDV)
                 ImGui.TextColored(new Vector4(0.9f, 0, 0, 1) ,"DeltaV: " + Stringify.Distance(DeltaV.Length())+ "/s of " + Stringify.Distance(_maxDV) + "/s");
             else
-                ImGui.Text("DeltaV: " + Stringify.Distance(DeltaV.Length())+ "/s of " + Stringify.Distance(_maxDV) + "/s"); 
+                ImGui.Text("DeltaV: " + Stringify.Distance(DeltaV.Length())+ "/s of " + Stringify.Distance(_maxDV) + "/s");
             ImGui.Text("Eccentricity: " + Eccentricity.ToString("g3"));
             return changes;
         }
@@ -368,7 +369,7 @@ namespace Pulsar4X.SDL2UI
             _radialDV = (float)dv.X;
             _progradeDV = (float)dv.Y;
             _fuelToBurn = OrbitMath.TsiolkovskyFuelUse(_curmass, _exhastVelocity, DeltaV.Length());
-            
+
         }
 
         private void Calcs()

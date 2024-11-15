@@ -7,6 +7,7 @@ using SDL2;
 using ImGuiNET;
 using System.Collections.Generic;
 using System.Linq;
+using Pulsar4X.Orbits;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -20,7 +21,7 @@ namespace Pulsar4X.SDL2UI
         internal double LoP_radians{ get; }
         internal double Eccentricity{ get; }
         internal double LinearEccent{ get; }
-        
+
     }
 
     /// <summary>
@@ -36,12 +37,12 @@ namespace Pulsar4X.SDL2UI
         protected Vector2 _bodyAbsolutePos;
         internal float SemiMaj;
         internal float SemiMinor;
-        protected float _loP_Degrees; //longditudeOfPeriapsis (loan + aop) 
+        protected float _loP_Degrees; //longditudeOfPeriapsis (loan + aop)
         internal float _loP_radians; //longditudeOfPeriapsis (loan + aop) in radians
         internal float _aop;
         internal float _eccentricity;
-        internal float _linearEccentricity; //distance from the center of the ellpse to one of the focal points. 
-        protected Vector2[] _points; //we calculate points around the ellipse and add them here. when we draw them we translate all the points. 
+        internal float _linearEccentricity; //distance from the center of the ellpse to one of the focal points.
+        protected Vector2[] _points; //we calculate points around the ellipse and add them here. when we draw them we translate all the points.
         protected SDL.SDL_Point[] _drawPoints = new SDL.SDL_Point[0];
         protected bool IsRetrogradeOrbit = false;
         #endregion
@@ -58,9 +59,9 @@ namespace Pulsar4X.SDL2UI
         protected UserOrbitSettings _userSettings { get { return _userOrbitSettingsMtx[(int)BodyType][(int)TrajectoryType]; } }
 
         //change after user makes adjustments:
-        protected byte _numberOfArcSegments = 180; //how many segments in a complete 360 degree ellipse. this is set in UserOrbitSettings, localy adjusted because the whole point array needs re-creating when it changes. 
+        protected byte _numberOfArcSegments = 180; //how many segments in a complete 360 degree ellipse. this is set in UserOrbitSettings, localy adjusted because the whole point array needs re-creating when it changes.
         protected int _numberOfDrawSegments; //this is now many segments get drawn in the ellipse, ie if the _ellipseSweepAngle or _numberOfArcSegments are less, less will be drawn.
-        protected float _segmentArcSweepRadians; //how large each segment in the drawn portion of the ellipse.  
+        protected float _segmentArcSweepRadians; //how large each segment in the drawn portion of the ellipse.
         protected float _alphaChangeAmount;
 
 
@@ -84,7 +85,7 @@ namespace Pulsar4X.SDL2UI
             }
             else
             {
-                _positionDB = _orbitDB.Parent.GetDataBlob<PositionDB>(); //orbit's position is parent's body position. 
+                _positionDB = _orbitDB.Parent.GetDataBlob<PositionDB>(); //orbit's position is parent's body position.
             }
 
             SemiMaj = (float)_orbitDB.SemiMajorAxis;
@@ -96,7 +97,7 @@ namespace Pulsar4X.SDL2UI
             _linearEccentricity = (float)(_eccentricity * _orbitDB.SemiMajorAxis); //linear ecentricity
 
             var inclination = Angle.NormaliseRadiansPositive(_orbitDB.Inclination);
-            if (inclination > 0.5 * Math.PI && inclination < 1.5 * Math.PI) 
+            if (inclination > 0.5 * Math.PI && inclination < 1.5 * Math.PI)
             {
                 IsRetrogradeOrbit = true;
                 //_loP_Degrees = (float)(_orbitDB.LongitudeOfAscendingNode - _orbitDB.ArgumentOfPeriapsis);
@@ -118,11 +119,11 @@ namespace Pulsar4X.SDL2UI
 
         }
         /// <summary>
-        ///calculate anything that could have changed from the users input. 
+        ///calculate anything that could have changed from the users input.
         /// </summary>
         public virtual void UpdateUserSettings()
         {
-            //if this happens, we need to rebuild the whole set of points. 
+            //if this happens, we need to rebuild the whole set of points.
             if (_userSettings.NumberOfArcSegments != _numberOfArcSegments)
             {
                 _numberOfArcSegments = _userSettings.NumberOfArcSegments;

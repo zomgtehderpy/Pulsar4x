@@ -8,13 +8,14 @@ using Pulsar4X.Engine;
 using Pulsar4X.Orbital;
 using Pulsar4X.Extensions;
 using Pulsar4X.Orbital.Helpers;
+using Pulsar4X.Orbits;
 
 namespace Pulsar4X.Tests
 {
     [TestFixture, Description("Tests kepler form velocity")]
     public class OrbitTests
     {
-        private EntityManager _entityManager; 
+        private EntityManager _entityManager;
         const double Tolerance = 1e-14;
 
 

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Events;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Orbits
 {
     public class OrbitDB : TreeHierarchyDB
     {
@@ -325,7 +325,7 @@ namespace Pulsar4X.Datablobs
             double sma_m = Distance.AuToMt(semiMajorAxis_AU);
             return new OrbitDB(parent, parentMass, myMass, sma_m, eccentricity, Angle.ToRadians(inclination), Angle.ToRadians(longitudeOfAscendingNode), Angle.ToRadians(argumentOfPeriapsis), Angle.ToRadians(meanAnomaly), epoch);
         }
-        
+
         /// <summary>
         /// Arguments in meters and degrees.
         /// </summary>
@@ -353,7 +353,7 @@ namespace Pulsar4X.Datablobs
             double argumentOfPeriapsis = longitudeOfPeriapsis - longitudeOfAscendingNode;
             // http://en.wikipedia.org/wiki/Mean_longitude
             double meanAnomaly = meanLongitude - (longitudeOfAscendingNode + argumentOfPeriapsis);
-            
+
             return new OrbitDB(parent, parentMass, myMass, semiMajorAxis_m, eccentricity, inclination, longitudeOfAscendingNode, argumentOfPeriapsis, meanAnomaly, epoch);
         }
 
@@ -382,7 +382,7 @@ namespace Pulsar4X.Datablobs
             double o_M = Angle.NormaliseRadiansPositive(Angle.ToRadians(meanAnomaly));
 			return new OrbitDB(parent, parentMass, myMass, sma_m, eccentricity, o_i, o_loAN, o_aoP, o_M, epoch);
         }
-        
+
         /// <summary>
         /// in radians and meters.
         /// </summary>
@@ -575,14 +575,14 @@ namespace Pulsar4X.Datablobs
             {
                 var soiParent = OwningEntity.GetSOIParentEntity();
                 var soiRadius = OrbitMath.GetSOIRadius(soiParent.GetDataBlob<OrbitDB>());
-                if (soiRadius is not double.NaN)//radius will return nan if for example soiParent is the sun. 
+                if (soiRadius is not double.NaN)//radius will return nan if for example soiParent is the sun.
                 {
                     var soiChangeAt = OrbitMath.TimeToRadius(this, soiRadius);
                     OwningEntity.Manager.ManagerSubpulses.AddEntityInterupt(soiChangeAt, nameof(ChangeSOIProcessor), OwningEntity);
                 }
-                else//in this case we dont need to do a transition. might need to destroy it or something. 
+                else//in this case we dont need to do a transition. might need to destroy it or something.
                 {
-                    
+
                 }
             }
         }

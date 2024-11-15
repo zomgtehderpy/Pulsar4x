@@ -7,6 +7,7 @@ using Pulsar4X.Orbital;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Extensions;
 using SDL2;
+using Pulsar4X.Orbits;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -22,13 +23,13 @@ namespace Pulsar4X.SDL2UI
         }
 
         public static OrbitalDebugWindow GetInstance()
-        { 
+        {
             if(_orbitalDebugWindow == null)
-                _orbitalDebugWindow = new OrbitalDebugWindow(); 
+                _orbitalDebugWindow = new OrbitalDebugWindow();
 
             if(_uiState.LastClickedEntity != null)
             {
-                if (_orbitalDebugWindow._debugWidget == null || 
+                if (_orbitalDebugWindow._debugWidget == null ||
                     _orbitalDebugWindow._debugWidget.EntityGuid != _uiState.LastClickedEntity.Entity.Id)
                 {
                     _orbitalDebugWindow.HardRefresh();
@@ -46,8 +47,8 @@ namespace Pulsar4X.SDL2UI
             var hasParent = entity.GetSOIParentEntity() != null;
             IsActive = wasActive;
             if(hasParent &&
-               (entity.HasDataBlob<OrbitDB>() 
-                || entity.HasDataBlob<OrbitUpdateOftenDB>()) 
+               (entity.HasDataBlob<OrbitDB>()
+                || entity.HasDataBlob<OrbitUpdateOftenDB>())
                 || entity.HasDataBlob<NewtonMoveDB>())
                 _debugWidget = new OrbitalDebugWidget(entityState);
             else
@@ -285,11 +286,11 @@ namespace Pulsar4X.SDL2UI
             /*
             var pos_m = _bodyPosition.RelativePosition_m;
             var vel_m = OrbitMath.ObjectLocalVelocityVector(
-                _sgp, 
-                pos_m, 
-                _semiMajAxis, 
-                _keplerElements.Eccentricity, 
-                _trueAnom, 
+                _sgp,
+                pos_m,
+                _semiMajAxis,
+                _keplerElements.Eccentricity,
+                _trueAnom,
                 _keplerElements.AoP); //OrbitProcessor.InstantaneousOrbitalVelocityVector_AU(_keplerElements, systemDateTime);
             */
             var state = MoveMath.GetRelativeState(_entity);
@@ -524,9 +525,9 @@ namespace Pulsar4X.SDL2UI
                 {
                     Points = listSMin.ToArray(),
                     Colors = SMinAColour,
-                    ColourChanges = new (int pointIndex, int colourIndex)[] 
-                    { 
-                        (0, 0) 
+                    ColourChanges = new (int pointIndex, int colourIndex)[]
+                    {
+                        (0, 0)
                     },
                     Scales = true
                 }
@@ -766,7 +767,7 @@ namespace Pulsar4X.SDL2UI
                         new Vector2(){ X =  + 8, Y = 0 },
                         new Vector2(){ X = 0 , Y =   - 8 },
                         new Vector2(){ X = 0 , Y =   + 8 }
-                    }, 
+                    },
                     Colors = objPntColour,
                     ColourChanges = new (int pointIndex, int colourIndex)[]
                     {
@@ -940,7 +941,7 @@ namespace Pulsar4X.SDL2UI
                 Colour = aopColour,
                 HighlightColour = aopHColour,
                 //DataItem = _semiMinAxis,
-                DataString = Stringify.Distance(_apoapsisPnt.Length()), 
+                DataString = Stringify.Distance(_apoapsisPnt.Length()),
                 Shape = new ComplexShape()
                 {
                     Points = new Vector2[]
@@ -1201,11 +1202,11 @@ namespace Pulsar4X.SDL2UI
             //var vel = OrbitProcessor.InstantaneousOrbitalVelocityVector_AU(_keplerElements, _keplerElements.Parent.Manager.ManagerSubpulses.StarSysDateTime);
 
             var vel = OrbitMath.ObjectLocalVelocityVector(
-                _sgp, 
-                pos, 
-                _semiMajAxis, 
-                _keplerElements.Eccentricity, 
-                _trueAnom, 
+                _sgp,
+                pos,
+                _semiMajAxis,
+                _keplerElements.Eccentricity,
+                _trueAnom,
                 _aop);
             */
 
@@ -1219,7 +1220,7 @@ namespace Pulsar4X.SDL2UI
             var evenorm2 = Vector3.Normalise(ecvec2) * 84;
             Vector2[] evLine =
             {
-                new Vector2() { X = 0, Y = 0 }, 
+                new Vector2() { X = 0, Y = 0 },
                 new Vector2(){X=evenorm.X, Y = evenorm.Y},
                 new Vector2() { X = 0, Y = 0 },
                 new Vector2(){X= evenorm2.X, Y = evenorm2.Y}
@@ -1250,43 +1251,43 @@ namespace Pulsar4X.SDL2UI
             #endregion
 
             _headingItemRel = new HeadingElement(
-                _keplerElements, 
-                _sgp, 
-                _worldPosition_m, 
-                _bodyPosition, 
-                _trueAnom, 
+                _keplerElements,
+                _sgp,
+                _worldPosition_m,
+                _bodyPosition,
+                _trueAnom,
                 (Vector3)vel_m);
             _headingItemRel.NameString = "Heading (rel)";
             ElementItems.Add(_headingItemRel);
 
             var vel2 = OrbitalMath.HackVelocityVector(_keplerElements, _entity.StarSysDateTime);
             _headingItemRel2 = new HeadingElement(
-                _keplerElements, 
-                _sgp, 
-                _worldPosition_m, 
-                _bodyPosition, 
-                _trueAnom, 
+                _keplerElements,
+                _sgp,
+                _worldPosition_m,
+                _bodyPosition,
+                _trueAnom,
                 (Vector3)vel_m);
             _headingItemRel2.NameString = "Heading (rel2)";
             ElementItems.Add(_headingItemRel2);
 
             var absVel = MoveMath.GetAbsoluteFutureVelocity(_entity, _entity.StarSysDateTime);
             _headingItemAbs = new HeadingElement(
-                _keplerElements, 
-                _sgp, 
-                _worldPosition_m, 
-                _bodyPosition, 
-                _trueAnom, 
+                _keplerElements,
+                _sgp,
+                _worldPosition_m,
+                _bodyPosition,
+                _trueAnom,
                 (Vector3)absVel);
             _headingItemAbs.NameString = "Heading (abs)";
             ElementItems.Add(_headingItemAbs);
 
             _velvecItem = new VelVecElement(
-                _keplerElements, 
-                _sgp, 
-                _worldPosition_m, 
-                _bodyPosition, 
-                _trueAnom, 
+                _keplerElements,
+                _sgp,
+                _worldPosition_m,
+                _bodyPosition,
+                _trueAnom,
                 (Vector3)vel_m);
             ElementItems.Add(_velvecItem);
 
@@ -1320,11 +1321,11 @@ namespace Pulsar4X.SDL2UI
             /*
             var pos_m = _bodyPosition.RelativePosition_m;
             var vel_m = OrbitMath.ObjectLocalVelocityVector(
-                _sgp, 
-                pos_m, 
-                _semiMajAxis, 
-                _keplerElements.Eccentricity, 
-                _trueAnom, 
+                _sgp,
+                pos_m,
+                _semiMajAxis,
+                _keplerElements.Eccentricity,
+                _trueAnom,
                 _keplerElements.AoP);
             */
             var state = MoveMath.GetRelativeState(_entity);
@@ -1350,10 +1351,10 @@ namespace Pulsar4X.SDL2UI
             _trueAnomItem_FromStateVec.DataItem = Angle.ToDegrees(_trueAnom_FromStateVec);
             _trueAnomItem_FromStateVec.DataString = Angle.ToDegrees(_trueAnom_FromStateVec).ToString() + "°";
 
-            _bodyPosPnt_m = new Vector2() 
-            { 
-                X = (_bodyPosition.AbsolutePosition ).X, 
-                Y = (_bodyPosition.AbsolutePosition ).Y 
+            _bodyPosPnt_m = new Vector2()
+            {
+                X = (_bodyPosition.AbsolutePosition ).X,
+                Y = (_bodyPosition.AbsolutePosition ).Y
             };
 
             if(_bodyPosItem == null || _bodyPosItem.Shape == null)
@@ -1417,14 +1418,14 @@ namespace Pulsar4X.SDL2UI
             /*
             Vector2[] evLine =
             {
-                new Vector2() { X = _f1a.X, Y = _f1a.Y }, 
+                new Vector2() { X = _f1a.X, Y = _f1a.Y },
                 new Vector2(){X= _f1a.X + evenorm.X, Y = _f1a.X+ evenorm.Y},
                 new Vector2() { X = _f1a.X, Y = _f1a.Y },
                 new Vector2(){X= _f1a.X + evenorm2.X, Y = _f1a.X+ evenorm2.Y}
             };*/
             Vector2[] evLine =
             {
-                new Vector2() { X = 0, Y = 0 }, 
+                new Vector2() { X = 0, Y = 0 },
                 new Vector2(){X=evenorm.X, Y = evenorm.Y},
                 new Vector2() { X = 0, Y = 0 },
                 new Vector2(){X= evenorm2.X, Y = evenorm2.Y}
@@ -1460,7 +1461,7 @@ namespace Pulsar4X.SDL2UI
             _aopItem_FromCalc2.DataString = Angle.ToDegrees(_aopFromCalc2).ToString() + "°";
 
             /*
-            _aopFromCalc3 = OrbitMath.GetArgumentOfPeriapsis3(nodeVector, ecvec, pos, (Vector3)vel, _loan); 
+            _aopFromCalc3 = OrbitMath.GetArgumentOfPeriapsis3(nodeVector, ecvec, pos, (Vector3)vel, _loan);
             _aopItem_FromCalc3.Shape.Points = CreatePrimitiveShapes.AngleArc(_cP, 96, -6, _loan, _aopFromCalc3, 128);
             _aopItem_FromCalc3.DataItem = Angle.ToDegrees(_aopFromCalc3);
             _aopItem_FromCalc3.DataString = Angle.ToDegrees(_aopFromCalc3).ToString() + "°";
@@ -1497,7 +1498,7 @@ namespace Pulsar4X.SDL2UI
 
             foreach (var item in ElementItems)
             {
-                if(!item.ShowLines || item.Shape == null || item.Shape.Points == null)//don't draw the lines if we're not suposed to. 
+                if(!item.ShowLines || item.Shape == null || item.Shape.Points == null)//don't draw the lines if we're not suposed to.
                     continue;
 
                 var shape = item.Shape;
@@ -1528,7 +1529,7 @@ namespace Pulsar4X.SDL2UI
                         }
                     }
                 }
-                
+
                 _drawComplexShapes.Add( new ComplexShape()
                 {
                     Points = points,
@@ -1588,15 +1589,15 @@ namespace Pulsar4X.SDL2UI
                 double lop = _ke.LoAN + _ke.AoP;
                 double speed = OrbitalMath.InstantaneousOrbitalSpeed(_sgp, _bodyPosition.RelativePosition.Length(), _ke.SemiMajorAxis);
 
-                SDL.SDL_Color[] headingColour = 
-                { 
+                SDL.SDL_Color[] headingColour =
+                {
                     new () { r = 100, g = 100, b = 100, a = 100 },
-                    new () {a = 0} 
+                    new () {a = 0}
                 };
-                SDL.SDL_Color[] headingHColour = 
-                { 
+                SDL.SDL_Color[] headingHColour =
+                {
                     new () { r = 100, g = 100, b = 100, a = 255 },
-                    new () {a = 0} 
+                    new () {a = 0}
                 };
 
                 NameString = "Heading";
@@ -1629,10 +1630,10 @@ namespace Pulsar4X.SDL2UI
                     throw new NullReferenceException();
 
                 Shape.StartPoint = new Vector2( _bodyPosPnt_m.X, _bodyPosPnt_m.Y);
-                Vector2[] headingLine = 
+                Vector2[] headingLine =
                 {
-                    new () { X = 0, Y = 0 }, 
-                    new () { X = vnorm.X, Y = vnorm.Y}, 
+                    new () { X = 0, Y = 0 },
+                    new () { X = vnorm.X, Y = vnorm.Y},
                 };
 
                 Shape.Points = headingLine;
@@ -1650,7 +1651,7 @@ namespace Pulsar4X.SDL2UI
             private Vector3 _worldPosition_m;
             IPosition _bodyPosition;
             private Vector2 _bodyPosPnt_m;
-            
+
             public VelVecElement(KeplerElements ke, double sgp, Vector3 worldPos_m, IPosition bodyPos, double trueAnomaly, Vector3 vel_m)
             {
                 _ke = ke;
@@ -1663,21 +1664,21 @@ namespace Pulsar4X.SDL2UI
                     Y = (_bodyPosition.AbsolutePosition ).Y
                 };
                 double lop = _ke.LoAN + _ke.AoP;
-                
-                
-                
-                //double speed = OrbitMath.InstantaneousOrbitalSpeed(_sgp, _bodyPosition.RelativePosition_m.Length(), _ke.SemiMajorAxis);
-            
 
-                SDL.SDL_Color[] headingColour = 
-                { 
+
+
+                //double speed = OrbitMath.InstantaneousOrbitalSpeed(_sgp, _bodyPosition.RelativePosition_m.Length(), _ke.SemiMajorAxis);
+
+
+                SDL.SDL_Color[] headingColour =
+                {
                     new() { r = 255, g = 100, b = 100, a = 100 },
-                    new SDL.SDL_Color() {a = 0} 
+                    new SDL.SDL_Color() {a = 0}
                 };
-                SDL.SDL_Color[] headingHColour = 
-                { 
+                SDL.SDL_Color[] headingHColour =
+                {
                     new() { r = 255, g = 100, b = 100, a = 255 },
-                    new SDL.SDL_Color() {a = 0} 
+                    new SDL.SDL_Color() {a = 0}
                 };
 
                 NameString = "VelocityVector";
@@ -1690,7 +1691,7 @@ namespace Pulsar4X.SDL2UI
                     ColourChanges = new (int, int)[] {(0, 0),},
                     Scales = false
                 };
-                
+
                 Update(vel_m);
 
             }
@@ -1719,11 +1720,11 @@ namespace Pulsar4X.SDL2UI
                 Shape.StartPoint = new Vector2(_bodyPosPnt_m.X,_bodyPosPnt_m.Y);
                 Vector2[] vline =
                 {
-                    new () { X = 0, Y = 0 }, 
+                    new () { X = 0, Y = 0 },
                     new () { X = vnorm.X, Y = vnorm.Y },
-                    new () { X = 0, Y = 0 }, 
+                    new () { X = 0, Y = 0 },
                     new () { X = pgd.X, Y = pgd.Y },
-                    new () { X = 0, Y = 0 }, 
+                    new () { X = 0, Y = 0 },
                     new () { X = stp.X, Y = stp.Y }
                 };
 

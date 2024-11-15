@@ -2,15 +2,16 @@ using System;
 using Pulsar4X.Orbital;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
+using Pulsar4X.Orbits;
 
 namespace Pulsar4X.Engine
 {
     public static class InterceptCalcs
     {
- 
+
 
         /// <summary>
-        /// assumes circular orbit, attempts to calculate transfer window. 
+        /// assumes circular orbit, attempts to calculate transfer window.
         /// </summary>
         /// <param name="deltaV"></param>
         /// <param name="currentParent"></param>
@@ -30,7 +31,7 @@ namespace Pulsar4X.Engine
 
             var cpOdb = currentParent.GetDataBlob<OrbitDB>();
             var cpSOI = currentParent.GetSOI_m() + 100; //might as well go another 100m past soi so less likely problems.
-            var cpmass = currentParent.GetDataBlob<MassVolumeDB>().MassTotal;            
+            var cpmass = currentParent.GetDataBlob<MassVolumeDB>().MassTotal;
             var cpsgp = GeneralMath.StandardGravitationalParameter(meMass + cpmass);
             var cpSMA = cpOdb.SemiMajorAxis;
             var cpOprd = cpOdb.OrbitalPeriod;
@@ -50,12 +51,12 @@ namespace Pulsar4X.Engine
             var grandParent = currentParent.GetSOIParentEntity();
             var gpMass = grandParent.GetDataBlob<MassVolumeDB>().MassTotal;
             var gpSGP = GeneralMath.StandardGravitationalParameter(meMass + gpMass);
-            
+
             var gpHomman = OrbitalMath.Hohmann2(gpSGP, cpSMA, tpSMA);
             var gpHommanAngle = Math.PI*( (1-1/2*Math.Sqrt(2))*Math.Sqrt( Math.Pow((cpSMA / tpSMA +1),3)));
 
 
-            
+
             var rads = cpAngle - tpAngle;
             var closinRads = Math.Max(cpOdb.MeanMotion, tpOdb.MeanMotion) - Math.Min(cpOdb.MeanMotion, tpOdb.MeanMotion);
             var ttXferWnidow = rads / closinRads;
@@ -73,8 +74,8 @@ namespace Pulsar4X.Engine
             var cpFutureAngle = soiBurnstart / cpOprd.TotalSeconds;
             var dif = cpFutureAngle - meFutureAngle;
             soiBurnstart += dif * meMeanMotion;
-            
-            if (cpSMA > tpSMA) //larger orbit to smaller. 
+
+            if (cpSMA > tpSMA) //larger orbit to smaller.
             {
                 soiBurnstart += meOprd.TotalSeconds * 0.5; //add half an orbit
             }
@@ -89,7 +90,7 @@ namespace Pulsar4X.Engine
         }
 
         /// <summary>
-        /// This intercept only works if time to intercept is less than the orbital period. 
+        /// This intercept only works if time to intercept is less than the orbital period.
         /// </summary>
         /// <returns>The ntercept.</returns>
         /// <param name="mover">Mover.</param>
@@ -164,7 +165,7 @@ namespace Pulsar4X.Engine
 
             var wc1 = Math.Sqrt((1 - e) / (1 + e));
             var wc2 = Math.Tan(phaseAngle / 2);
-            
+
             double E = 2 * Math.Atan(wc1 * wc2);
 
             double wc3 = orbitalPeriod / (Math.PI * 2);
@@ -175,13 +176,13 @@ namespace Pulsar4X.Engine
             double phaseOrbitPeriod = orbitalPeriod - phaseTime;
 
             //double phaseOrbitSMA0 = Math.Pow(Math.Sqrt(sgp) * phaseOrbitPeriod / (Math.PI * 2), (2.0 / 3.0)); //I think this one will be slightly slower
-            
+
             //using the full Major axis here rather than semiMaj.
             double phaseOrbitMA = 2 * Math.Cbrt((sgp * phaseOrbitPeriod * phaseOrbitPeriod) / (4 * Math.PI * Math.PI));
-            
-            
+
+
             //one of these will be the periapsis, the other the appoapsis, depending on whether we're behind or ahead of the target.
-            double phaseOrbitApsis1 = OrbitMath.GetPosition(orbit, manuverTime).Length();// 
+            double phaseOrbitApsis1 = OrbitMath.GetPosition(orbit, manuverTime).Length();//
             double phaseOrbitApsis2 = phaseOrbitMA - phaseOrbitApsis1;
 
 
@@ -201,10 +202,10 @@ namespace Pulsar4X.Engine
             (Vector3, double)[] manuvers = new (Vector3, double)[2];
             manuvers[0] = (new Vector3(0, dv, 0), 0);
             manuvers[1] = (new Vector3(0, -dv, 0), phaseOrbitPeriod);
-            
+
             return manuvers;
         }
-        
+
         public static (Vector3 deltaV, double timeInSeconds)[] OrbitPhasingManuvers(OrbitDB orbit, DateTime manuverTime, double phaseAngle)
         {
             //https://en.wikipedia.org/wiki/Orbit_phasing
@@ -213,7 +214,7 @@ namespace Pulsar4X.Engine
 
             var wc1 = Math.Sqrt((1 - e) / (1 + e));
             var wc2 = Math.Tan(phaseAngle / 2);
-            
+
             double E = 2 * Math.Atan(wc1 * wc2);
 
             double wc3 = orbitalPeriod / (Math.PI * 2);
@@ -226,13 +227,13 @@ namespace Pulsar4X.Engine
             double sgp = orbit.GravitationalParameter_m3S2;
 
             //double phaseOrbitSMA0 = Math.Pow(Math.Sqrt(sgp) * phaseOrbitPeriod / (Math.PI * 2), (2.0 / 3.0)); //I think this one will be slightly slower
-            
+
             //using the full Major axis here rather than semiMaj.
             double phaseOrbitMA = 2 * Math.Cbrt((sgp * phaseOrbitPeriod * phaseOrbitPeriod) / (4 * Math.PI * Math.PI));
-            
-            
+
+
             //one of these will be the periapsis, the other the appoapsis, depending on whether we're behind or ahead of the target.
-            double phaseOrbitApsis1 = orbit.GetPosition(manuverTime).Length();// 
+            double phaseOrbitApsis1 = orbit.GetPosition(manuverTime).Length();//
             double phaseOrbitApsis2 = phaseOrbitMA - phaseOrbitApsis1;
 
 
@@ -252,7 +253,7 @@ namespace Pulsar4X.Engine
             (Vector3, double)[] manuvers = new (Vector3, double)[2];
             manuvers[0] = (new Vector3(0, dv, 0), 0);
             manuvers[1] = (new Vector3(0, -dv, 0), phaseOrbitPeriod);
-            
+
             return manuvers;
         }
     }

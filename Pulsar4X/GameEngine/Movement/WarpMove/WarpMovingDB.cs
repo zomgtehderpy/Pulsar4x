@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Pulsar4X.Orbital;
 using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
+using Pulsar4X.Orbits;
 
 namespace Pulsar4X.Datablobs
 {
@@ -47,7 +48,7 @@ namespace Pulsar4X.Datablobs
         internal Vector2 _position;
         internal Entity _parentEnitity;
         public KeplerElements EndpointTargetOrbit { get; private set; }
-        
+
         /// <summary>
         /// Newtonion Vector to burn once warp is complete.
         /// </summary>
@@ -57,9 +58,9 @@ namespace Pulsar4X.Datablobs
         /// <summary>
         /// when true, will attempt a newton circularization burn after warp, if ExpendDelaV is 0
         /// </summary>
-        [JsonProperty] 
+        [JsonProperty]
         internal bool AutoCirculariseAfterWarp { get; set; } = true;
-        
+
         [JsonProperty]
         internal bool IsAtTarget { get; set; }
 
@@ -87,7 +88,7 @@ namespace Pulsar4X.Datablobs
             ExitPointAbsolute = targetPosition_m;
 
             var startState = MoveMath.GetAbsoluteState(thisEntity);
-            
+
             ExitPointAbsolute = targetPosition_m;
             EntryPointAbsolute = startState.pos;
             EntryDateTime = thisEntity.Manager.ManagerSubpulses.StarSysDateTime;
@@ -102,7 +103,7 @@ namespace Pulsar4X.Datablobs
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="targetPositiondb"></param>
         /// <param name="offsetPosition">normaly you want to move to a position next to the entity, this is

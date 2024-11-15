@@ -11,6 +11,7 @@ using Pulsar4X.Modding;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Colonies;
 using Pulsar4X.Names;
+using Pulsar4X.Orbits;
 
 namespace Pulsar4X.Tests
 {

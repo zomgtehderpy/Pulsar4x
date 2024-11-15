@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Orbital;
+using Pulsar4X.Orbits;
 using SDL2;
 
 namespace Pulsar4X.SDL2UI;
@@ -34,7 +35,7 @@ public class OrbitHyperbolicIcon2 : OrbitIconBase
 
     public override void OnPhysicsUpdate()
     {
-        Vector3 pos = BodyPositionDB.RelativePosition; 
+        Vector3 pos = BodyPositionDB.RelativePosition;
         _bodyrelativePos = new Vector2() { X = pos.X, Y = pos.Y };
         var apos = BodyPositionDB.AbsolutePosition;
         _bodyAbsolutePos = new Vector2(apos.X, apos.Y);
@@ -119,9 +120,9 @@ public class OrbitHyperbolicIcon2 : OrbitIconBase
         float alpha = _userSettings.MaxAlpha;
         for (int i = 0; i < _drawPoints.Length - 1; i++)
         {
-            SDL.SDL_SetRenderDrawColor(rendererPtr, _userSettings.Red, _userSettings.Grn, _userSettings.Blu, (byte)alpha);//we cast the alpha here to stop rounding errors creaping up. 
+            SDL.SDL_SetRenderDrawColor(rendererPtr, _userSettings.Red, _userSettings.Grn, _userSettings.Blu, (byte)alpha);//we cast the alpha here to stop rounding errors creaping up.
             SDL.SDL_RenderDrawLine(rendererPtr, _drawPoints[i].x, _drawPoints[i].y, _drawPoints[i + 1].x, _drawPoints[i +1].y);
-            alpha -= _alphaChangeAmount; 
+            alpha -= _alphaChangeAmount;
         }
     }
 }

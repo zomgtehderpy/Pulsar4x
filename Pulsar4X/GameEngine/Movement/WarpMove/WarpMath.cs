@@ -4,6 +4,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
 using Pulsar4X.Orbital;
+using Pulsar4X.Orbits;
 
 namespace GameEngine.WarpMove;
 
@@ -18,8 +19,8 @@ public static class WarpMath
         Dictionary<string, double> totalFuelUsage = new Dictionary<string, double>();
         var instancesDB = ship.GetDataBlob<ComponentInstancesDB>();
         int totalEnginePower = instancesDB.GetTotalEnginePower(out totalFuelUsage);
-            
-        //Note: TN aurora uses the TCS for max speed calcs. 
+
+        //Note: TN aurora uses the TCS for max speed calcs.
         WarpAbilityDB warpDB = ship.GetDataBlob<WarpAbilityDB>();
         warpDB.TotalWarpPower = totalEnginePower;
         //propulsionDB.FuelUsePerKM = totalFuelUsage;
@@ -27,9 +28,9 @@ public static class WarpMath
         var mass = ship.GetDataBlob<MassVolumeDB>().MassTotal;
         var maxSpeed = MaxSpeedCalc(totalEnginePower, mass);
         warpDB.MaxSpeed = maxSpeed;
-            
+
     }
-    
+
     /// <summary>
     /// Calculates max ship speed based on engine power and ship mass
     /// </summary>
@@ -41,20 +42,20 @@ public static class WarpMath
         // From Aurora4x wiki:  Speed = (Total Engine Power / Total Class Size in HS) * 1000 km/s
         return (int)((power / tonage) * 1000);
     }
-    
+
     struct Orbit
     {
         public Vector3 position;
         public double T;
     }
-    
+
     public static (Vector3 position, DateTime etiDateTime) GetInterceptPosition(Entity mover, Entity target, DateTime atDateTime, Vector3 offsetPosition = new Vector3())
     {
         var moverPos = (Vector3)MoveMath.GetAbsoluteFuturePosition(mover, atDateTime);
         var tgtPos = (Vector3)MoveMath.GetAbsoluteFuturePosition(target, atDateTime);
         var exitPos = tgtPos + offsetPosition;
         double spd_m = mover.GetDataBlob<WarpAbilityDB>().MaxSpeed;
-        
+
         var tgtMoveType = target.GetDataBlob<PositionDB>().MoveType;
         switch (tgtMoveType)
         {
@@ -72,7 +73,7 @@ public static class WarpMath
                 break;
             }
             //For the following cases, we need to know if the target is an object which is owned by the same empire and we know what it's doing,
-            //or if that info is unknown and how do we try predict? 
+            //or if that info is unknown and how do we try predict?
             case PositionDB.MoveTypes.NewtonSimple:
                 throw new NotImplementedException("not implemented");
             case PositionDB.MoveTypes.NewtonComplex:
@@ -83,7 +84,7 @@ public static class WarpMath
                 throw new ArgumentOutOfRangeException();
         }
     }
-    
+
     /// <summary>
     /// Calculates a cartisian position for an intercept for a ship and an target's orbit using warp.
     /// </summary>

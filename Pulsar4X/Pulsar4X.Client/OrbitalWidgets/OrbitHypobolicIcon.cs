@@ -7,6 +7,7 @@ using SDL2;
 using System.Linq;
 using System.Collections.Generic;
 using Pulsar4X.Interfaces;
+using Pulsar4X.Orbits;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -24,7 +25,7 @@ namespace Pulsar4X.SDL2UI
         int _numberOfPoints;
         //internal float a;
         //protected float b;
-        protected Vector2[] _points; //we calculate points around the ellipse and add them here. when we draw them we translate all the points. 
+        protected Vector2[] _points; //we calculate points around the ellipse and add them here. when we draw them we translate all the points.
         protected SDL.SDL_Point[] _drawPoints = new SDL.SDL_Point[0];
         Vector2[] _debugPoints;
         SDL.SDL_Point[] _debugDrawPoints = new SDL.SDL_Point[0];
@@ -36,9 +37,9 @@ namespace Pulsar4X.SDL2UI
         protected UserOrbitSettings _userSettings { get { return _userOrbitSettingsMtx[(int)BodyType][(int)TrajectoryType]; } }
 
         //change after user makes adjustments:
-        protected byte _numberOfArcSegments = 255; //how many segments in a complete 360 degree ellipse. this is set in UserOrbitSettings, localy adjusted because the whole point array needs re-creating when it changes. 
+        protected byte _numberOfArcSegments = 255; //how many segments in a complete 360 degree ellipse. this is set in UserOrbitSettings, localy adjusted because the whole point array needs re-creating when it changes.
         protected int _numberOfDrawSegments; //this is now many segments get drawn in the ellipse, ie if the _ellipseSweepAngle or _numberOfArcSegments are less, less will be drawn.
-        protected float _segmentArcSweepRadians; //how large each segment in the drawn portion of the ellipse.  
+        protected float _segmentArcSweepRadians; //how large each segment in the drawn portion of the ellipse.
         protected float _alphaChangeAmount;
 
         private double _dv = 0;
@@ -56,7 +57,7 @@ namespace Pulsar4X.SDL2UI
         double IKepler.Eccentricity => _ke.Eccentricity;
 
         double IKepler.LinearEccent => _ke.LinearEccentricity;
-        
+
         public OrbitHypobolicIcon(EntityState entityState, List<List<UserOrbitSettings>> settings) : base(MoveMath.GetSOIParentPositionDB(entityState.Entity))
         {
             entityState.OrbitIcon = this;
@@ -81,21 +82,21 @@ namespace Pulsar4X.SDL2UI
             var myMass = entityState.Entity.GetDataBlob<MassVolumeDB>().MassDry;
             //_sgp = UniversalConstants.Science.GravitationalConstant * (parentMass + myMass) / 3.347928976e33;
 
-            
+
             UpdateUserSettings();
             CreatePointArray();
             OnPhysicsUpdate();
         }
-        
+
         /// <summary>
-        ///calculate anything that could have changed from the users input. 
+        ///calculate anything that could have changed from the users input.
         /// </summary>
         public void UpdateUserSettings()
         {
-            
-            
-         
-            //if this is the case, we need to rebuild the whole set of points. 
+
+
+
+            //if this is the case, we need to rebuild the whole set of points.
             if (_userSettings.NumberOfArcSegments != _numberOfArcSegments)
             {
                 _numberOfArcSegments = _userSettings.NumberOfArcSegments;
@@ -108,14 +109,14 @@ namespace Pulsar4X.SDL2UI
             _segmentArcSweepRadians = (float)(Math.PI * 2.0 / _numberOfArcSegments);
             _numberOfDrawSegments = (int)Math.Max(1, (_userSettings.EllipseSweepRadians / _segmentArcSweepRadians));
             _alphaChangeAmount = ((float)_userSettings.MaxAlpha - _userSettings.MinAlpha) / _numberOfDrawSegments;
-            _numberOfPoints = _numberOfDrawSegments + 1;   
-            
+            _numberOfPoints = _numberOfDrawSegments + 1;
+
 
         }
 
         internal void CreatePointArray()
         {
-            
+
             double p = EllipseMath.SemiLatusRectum(_ke.SemiMajorAxis, _ke.Eccentricity);
             double angleToSOIPoint = Math.Abs(EllipseMath.TrueAnomalyAtRadus(_soi, p, _ke.Eccentricity));
             var pos = _myPosDB.RelativePosition;
@@ -129,7 +130,7 @@ namespace Pulsar4X.SDL2UI
             if (_drawPoints.Length != _points.Length)
                 _drawPoints = new SDL.SDL_Point[_numberOfPoints];
             CreatePrimitiveShapes.KeplerPoints(_ke, (Vector2)pos, endPos, ref _points);
-            
+
             /*
             _dv = _newtonMoveDB.ManuverDeltaVLen;
             Vector3 vel = Distance.MToAU(_newtonMoveDB.CurrentVector_ms);
@@ -220,7 +221,7 @@ namespace Pulsar4X.SDL2UI
             CreatePointArray(); //remove this, this is for testing only.
             //resize for zoom
             //translate to position
-            
+
             var foo = camera.ViewCoordinate_m(WorldPosition_m);
             var trns = Matrix.IDTranslate(foo.x, foo.y);
             var scAU = Matrix.IDScale(6.6859E-12, 6.6859E-12);
@@ -235,7 +236,7 @@ namespace Pulsar4X.SDL2UI
             for (int i = 0; i < _numberOfPoints; i++)
             {
 
-                
+
                 _drawPoints[i] = mtrx.TransformToSDL_Point(_points[index].X, _points[index].Y);
             }
 
@@ -246,12 +247,12 @@ namespace Pulsar4X.SDL2UI
 /*
             if (_dv != _newtonMoveDB.ManuverDeltaVLen)
                 CreatePointArray();
-            
-            
+
+
             Vector3 pos = Distance.MToAU(_myPosDB.RelativePosition);
             var relativePos = new Vector2() { X = pos.X, Y = pos.Y };
- 
-            
+
+
             double minDist = (relativePos - _points[_index]).Length();
 
             for (int i = 0; i < _points.Count(); i++)
@@ -281,7 +282,7 @@ namespace Pulsar4X.SDL2UI
                     alpha = postalpha;
                 else
                     alpha = predAlpha;
-                SDL.SDL_SetRenderDrawColor(rendererPtr, _userSettings.Red, _userSettings.Grn, _userSettings.Blu, (byte)alpha);//we cast the alpha here to stop rounding errors creaping up. 
+                SDL.SDL_SetRenderDrawColor(rendererPtr, _userSettings.Red, _userSettings.Grn, _userSettings.Blu, (byte)alpha);//we cast the alpha here to stop rounding errors creaping up.
                 SDL.SDL_RenderDrawLine(rendererPtr, _drawPoints[i].x, _drawPoints[i].y, _drawPoints[i + 1].x, _drawPoints[i + 1].y);
                 alpha -= _alphaChangeAmount;
             }

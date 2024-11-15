@@ -1,16 +1,14 @@
 using Pulsar4X.Orbital;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 
-namespace Pulsar4X.Extensions
+namespace Pulsar4X.Orbits
 {
     public static class OrbitExtensions
     {
 
-        
+
         /// <summary>
         /// Calculates the parent-relative cartesian coordinate of an orbit for a given time.
         /// </summary>
@@ -20,7 +18,7 @@ namespace Pulsar4X.Extensions
         {
             return Distance.MToAU(orbit.GetPosition(orbit.GetTrueAnomaly(time)));
         }
-        
+
 
         public static Vector3 GetPosition(this OrbitDB orbit, DateTime time)
         {
@@ -36,7 +34,7 @@ namespace Pulsar4X.Extensions
         {
             return OrbitMath.GetTrueAnomaly(orbit, time);
         }
-        
+
 
         /// <summary>
         /// Parent relative velocity vector.
@@ -69,7 +67,7 @@ namespace Pulsar4X.Extensions
             }
             return vector;
         }
-        
+
 
         /// <summary>
         /// This is an aproximation of the mean velocity of an orbit.
@@ -85,11 +83,11 @@ namespace Pulsar4X.Extensions
             return peremeter / orbitalPerodSeconds;
         }
 
-        
+
 
         public static bool IsTidallyLocked(this OrbitDB orbit, SystemBodyInfoDB systemBodyInfo)
         {
-            // Define a tolerance threshold to account for small differences 
+            // Define a tolerance threshold to account for small differences
             // (you can adjust this value as needed)
             const double tolerance = 0.05; // 5% tolerance
 

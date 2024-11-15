@@ -10,6 +10,7 @@ using Pulsar4X.Modding;
 using Pulsar4X.Engine.Sensors;
 using Pulsar4X.Industry;
 using Pulsar4X.Names;
+using Pulsar4X.Orbits;
 
 namespace Pulsar4X.Engine
 {

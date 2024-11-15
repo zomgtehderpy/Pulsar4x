@@ -5,6 +5,7 @@ using Pulsar4X.Extensions;
 using Pulsar4X.Orbital;
 using SDL2;
 using System.Linq;
+using Pulsar4X.Orbits;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -14,14 +15,14 @@ namespace Pulsar4X.SDL2UI
     /// How this works:
     /// First, we set up all the static non changing variables from the entites datablobs.
     /// On Setup we create a list of points for the full ellipse, as if it was orbiting around 0,0 world coordinates. (focalPoint).
-    /// as well as the orbitAngle (Longitude of the periapsis, which should be the Argument of Periapsis + Longdidtude of the Accending Node, in 2d orbits we just add these together and use the LoP)  
-    /// On Update we calculate the angle from the center of the ellipse to the orbiting entity. TODO: (this *should* only be called when the game updates, but is currently called each frame) 
+    /// as well as the orbitAngle (Longitude of the periapsis, which should be the Argument of Periapsis + Longdidtude of the Accending Node, in 2d orbits we just add these together and use the LoP)
+    /// On Update we calculate the angle from the center of the ellipse to the orbiting entity. TODO: (this *should* only be called when the game updates, but is currently called each frame)
     /// On Draw we translate the points to correct for the position in world view, and for the viewscreen and camera positions as well as zoom.
-    /// We then find the index in the Point Array (created in Setup) that will be where the orbiting entity is, using the angle from the center of the ellipse to the orbiting entity. 
-    /// Using this index we create a tempory array of only the points which will be in the drawn portion of the ellipse (UserOrbitSettings.EllipseSweepRadians) which start from where the entity should be.  
+    /// We then find the index in the Point Array (created in Setup) that will be where the orbiting entity is, using the angle from the center of the ellipse to the orbiting entity.
+    /// Using this index we create a tempory array of only the points which will be in the drawn portion of the ellipse (UserOrbitSettings.EllipseSweepRadians) which start from where the entity should be.
     /// We start drawing segments from where the planet will be, and decrease the alpha channel for each segment.
-    /// On ajustments to settings from the user, we re-calculate needed info for that. (if the number of segments change, we have to recreate the point indiex so we run setup in that case) 
-    /// Currently we're not distingishing between clockwise and counter clockwise orbits, not sure if the engine even does counterclockwise, will have to check that and fix. 
+    /// On ajustments to settings from the user, we re-calculate needed info for that. (if the number of segments change, we have to recreate the point indiex so we run setup in that case)
+    /// Currently we're not distingishing between clockwise and counter clockwise orbits, not sure if the engine even does counterclockwise, will have to check that and fix.
     /// </summary>
     public class OrbitOrderWidget : Icon
     {
@@ -43,19 +44,19 @@ namespace Pulsar4X.SDL2UI
         internal double OrbitEllipseSemiMaj_m;
         internal double OrbitEllipseSemiMinor_m;
 
-        internal double LonditudeOfPeriapsis; //the orbit is an ellipse which is rotated arround one of the focal points. this is eqal to the LoAN + AoP 
+        internal double LonditudeOfPeriapsis; //the orbit is an ellipse which is rotated arround one of the focal points. this is eqal to the LoAN + AoP
 
-        double _linearEccentricity_m; //distance from the center of the ellpse to one of the focal points. 
+        double _linearEccentricity_m; //distance from the center of the ellpse to one of the focal points.
 
-        Vector2[] _points = new Vector2[0]; //we calculate points around the ellipse and add them here. when we draw them we translate all the points. 
+        Vector2[] _points = new Vector2[0]; //we calculate points around the ellipse and add them here. when we draw them we translate all the points.
         SDL.SDL_Point[] _drawPoints = new SDL.SDL_Point[0];
         //sphere of influance radius, if the entity is outside this, then this is affected by the parent (or other) gravitational body
         double _soiWorldRadius_m;
-        double _soiWorldRadius_AU; 
+        double _soiWorldRadius_AU;
         float _soiViewRadius;
-        //this is the size of the planet that we're trying to orbit, 
-        //if the entity is inside this... currently nothing happens, 
-        //but it shoudl be bad. we should not allow translations inside this radius, and warn if the orbit goes within this radius. 
+        //this is the size of the planet that we're trying to orbit,
+        //if the entity is inside this... currently nothing happens,
+        //but it shoudl be bad. we should not allow translations inside this radius, and warn if the orbit goes within this radius.
         double _targetWorldRadius_AU;
         float _targetViewRadius;
         #endregion
@@ -67,19 +68,19 @@ namespace Pulsar4X.SDL2UI
         internal bool IsRetrogradeOrbit = false;
         public float EllipseSweepRadians = 4.71239f;
 
-        //32 is a good low number, slightly ugly.  180 is a little overkill till you get really big orbits. 
-        public byte NumberOfArcSegments = 180; 
+        //32 is a good low number, slightly ugly.  180 is a little overkill till you get really big orbits.
+        public byte NumberOfArcSegments = 180;
 
         public byte Red = 0;
         public byte Grn = 255;
         public byte Blu = 0;
         public byte MaxAlpha = 255;
-        public byte MinAlpha = 0; 
+        public byte MinAlpha = 0;
 
         //change after user makes adjustments:
-        byte _numberOfArcSegments = 180; //how many segments in a complete 360 degree ellipse. this is set in UserOrbitSettings, localy adjusted because the whole point array needs re-creating when it changes. 
+        byte _numberOfArcSegments = 180; //how many segments in a complete 360 degree ellipse. this is set in UserOrbitSettings, localy adjusted because the whole point array needs re-creating when it changes.
         int _numberOfDrawSegments; //this is now many segments get drawn in the ellipse, ie if the _ellipseSweepAngle or _numberOfArcSegments are less, less will be drawn.
-        float _segmentArcSweepRadians; //how large each segment in the drawn portion of the ellipse.  
+        float _segmentArcSweepRadians; //how large each segment in the drawn portion of the ellipse.
         float _alphaChangeAmount;
 
         double _eccentricity;
@@ -153,11 +154,11 @@ namespace Pulsar4X.SDL2UI
             _linearEccentricity_m = ke_m.LinearEccentricity;
             _position_m = position_m;
 
-            OrbitEllipseSemiMaj_m = ke_m.SemiMajorAxis; 
+            OrbitEllipseSemiMaj_m = ke_m.SemiMajorAxis;
             OrbitEllipseSemiMinor_m = ke_m.SemiMinorAxis;
 
-            //TODO: Periapsis and Apoapsis calc doesn't look right to me... though it's not currently being used. 
-            //this was probibly written when the orbit could only be created when the ship was at the pere or apo. 
+            //TODO: Periapsis and Apoapsis calc doesn't look right to me... though it's not currently being used.
+            //this was probibly written when the orbit could only be created when the ship was at the pere or apo.
             /*
             Periapsis = new PointD()
             {
@@ -179,7 +180,7 @@ namespace Pulsar4X.SDL2UI
                 IsRetrogradeOrbit = false;
             }
 
-            
+
 
             LonditudeOfPeriapsis = ke_m.LoAN + ke_m.AoP;
             _loAN = ke_m.LoAN;
@@ -213,7 +214,7 @@ namespace Pulsar4X.SDL2UI
         {
             var coslop = 1 * Math.Cos(LonditudeOfPeriapsis);
             var sinlop = 1 * Math.Sin(LonditudeOfPeriapsis);
-            
+
             _points = new Vector2[_numberOfArcSegments + 1];
             double angle = 0;
             for (int i = 0; i < _numberOfArcSegments + 1; i++)
@@ -221,7 +222,7 @@ namespace Pulsar4X.SDL2UI
                 double x1 = OrbitEllipseSemiMaj_m * Math.Sin(angle) - _linearEccentricity_m; //we add the focal distance so the focal point is "center"
                 double y1 = OrbitEllipseSemiMinor_m * Math.Cos(angle);
 
-                //rotates the points to allow for the LongditudeOfPeriapsis. 
+                //rotates the points to allow for the LongditudeOfPeriapsis.
                 double x2 = (x1 * coslop) - (y1 * sinlop);
                 double y2 = (x1 * sinlop) + (y1 * coslop);
                 _points[i] = new Vector2() { X = x2, Y = y2 };
@@ -239,10 +240,10 @@ namespace Pulsar4X.SDL2UI
 
         public override void OnPhysicsUpdate()
         {
-            
+
             CreatePointArray();
             Vector2 vector2 = new Vector2() { X = _position_m.X, Y = _position_m.Y };
- 
+
             double minDist = (vector2 - _points[_index]).Length();
 
             for (int i = 0; i < _points.Count(); i++)
@@ -255,13 +256,13 @@ namespace Pulsar4X.SDL2UI
                 }
             }
         }
-        
+
 
 
         public override void OnFrameUpdate(Matrix matrix, Camera camera)
         {
 
-            ViewScreenPos = camera.ViewCoordinate_m(WorldPosition_m); 
+            ViewScreenPos = camera.ViewCoordinate_m(WorldPosition_m);
 
 
             _soiViewRadius = camera.ViewDistance(_soiWorldRadius_AU);
@@ -277,26 +278,26 @@ namespace Pulsar4X.SDL2UI
 
                     index++;
                 else
-                    index = 0; 
-                
-                    
-                translated = matrix.TransformD(Distance.MToAU( _points[index].X), Distance.MToAU(_points[index].Y)); //add zoom transformation. 
+                    index = 0;
+
+
+                translated = matrix.TransformD(Distance.MToAU( _points[index].X), Distance.MToAU(_points[index].Y)); //add zoom transformation.
 
                 int x = (int)(ViewScreenPos.x + translated.X);
                 int y = (int)(ViewScreenPos.y + translated.Y);
 
                 _drawPoints[i] = new SDL.SDL_Point() { x = x, y = y };
             }
-            
-            
-            
+
+
+
         }
 
 
 
         public override void Draw(IntPtr rendererPtr, Camera camera)
         {
-            
+
             //Orbit line
             //now we draw a line between each of the points in the translatedPoints[] array.
             float alpha = MaxAlpha;
@@ -309,27 +310,27 @@ namespace Pulsar4X.SDL2UI
                 int y1 = (int)(_drawPoints[i].y * au);
                 int x2 = (int)(_drawPoints[i + 1].x * au);
                 int y2 = (int)(_drawPoints[i + 1].y * au);
-                
+
                 //SDL.SDL_RenderDrawLine(rendererPtr, x1, y1, x2, y2);
 
-                SDL.SDL_SetRenderDrawColor(rendererPtr, Red, Grn, Blu, (byte)alpha);//we cast the alpha here to stop rounding errors creaping up. 
-                
+                SDL.SDL_SetRenderDrawColor(rendererPtr, Red, Grn, Blu, (byte)alpha);//we cast the alpha here to stop rounding errors creaping up.
+
                 SDL.SDL_RenderDrawLine(rendererPtr, x1, y1, x2, y2);
                 //SDL.SDL_RenderDrawLine(rendererPtr, _drawPoints[i].x, _drawPoints[i].y, _drawPoints[i + 1].x, _drawPoints[i + 1].y);
                 alpha -= _alphaChangeAmount;
 
             }
 
-            
-            
-            //SOI filled circle area. 
+
+
+            //SOI filled circle area.
             SDL.SDL_SetRenderDrawColor(rendererPtr, 0, 50, 100, 100);
             //DrawPrimitive.DrawFilledCircle(rendererPtr ,ViewScreenPos.x , ViewScreenPos.y, (int)_soiViewRadius);
             //DrawPrimitive.DrawEllipse(rendererPtr, ViewScreenPos.x, ViewScreenPos.y, _soiViewRadius, _soiViewRadius);
 
-            
+
             var soipnts = CreatePrimitiveShapes.BresenhamCircle(0, 0, (int)_soiViewRadius);
-            
+
             //SDL.SDL_RenderDrawPoints(rendererPtr, soipnts.ToArray(), soipnts.Count);
             var lasty = 0;
             for (int i = 0; i < soipnts.Count ; i+=2)
@@ -341,7 +342,7 @@ namespace Pulsar4X.SDL2UI
                 lasty = y;
             }
 
-            
+
 /*
             for (int i = 0; i < soipnts.Count -1; i++)
             {
@@ -355,7 +356,7 @@ namespace Pulsar4X.SDL2UI
                 //SDL.SDL_RenderDrawLine(rendererPtr, ViewScreenPos.x, ViewScreenPos.y, soipnts[i].x, soipnts[i].y);
                 //var err2 = SDL.SDL_GetError();
             }
-  */         
+  */
             //Planet Filled Circle
             SDL.SDL_SetRenderDrawColor(rendererPtr, 100, 0, 0, 255);
             DrawPrimitive.DrawEllipse(rendererPtr, ViewScreenPos.x, ViewScreenPos.y, _targetViewRadius, _targetViewRadius);

@@ -12,6 +12,7 @@ using Pulsar4X.GeoSurveys;
 using Pulsar4X.Industry;
 using Pulsar4X.Names;
 using Pulsar4X.Orbital;
+using Pulsar4X.Orbits;
 
 namespace Pulsar4X.Engine.Factories;
 
