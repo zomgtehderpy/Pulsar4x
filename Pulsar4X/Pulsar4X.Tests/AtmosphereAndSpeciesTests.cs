@@ -8,6 +8,7 @@ using Pulsar4X.Modding;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Names;
 using Pulsar4X.Orbits;
+using Pulsar4X.People;
 
 namespace Pulsar4X.Tests
 {

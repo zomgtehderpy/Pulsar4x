@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Pulsar4X.Engine;
 using Pulsar4X.Interfaces;
-using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.People
 {
     public class NavalAcademyProcessor : IInstanceProcessor
     {

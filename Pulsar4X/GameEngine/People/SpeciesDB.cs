@@ -1,7 +1,8 @@
 using Newtonsoft.Json;
+using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.People
 {
     /// <summary>
     /// SpeciesDB defines an entity as being a Species.

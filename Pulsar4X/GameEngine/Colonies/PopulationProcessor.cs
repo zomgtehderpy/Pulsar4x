@@ -4,6 +4,7 @@ using System.Linq;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
+using Pulsar4X.People;
 
 
 namespace Pulsar4X.Colonies

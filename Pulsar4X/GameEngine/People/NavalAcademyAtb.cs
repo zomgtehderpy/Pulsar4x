@@ -4,7 +4,7 @@ using Pulsar4X.Components;
 using Pulsar4X.Engine;
 using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Atb
+namespace Pulsar4X.People
 {
     public class NavalAcademyAtb : IComponentDesignAttribute
     {

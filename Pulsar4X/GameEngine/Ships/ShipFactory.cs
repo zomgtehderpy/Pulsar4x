@@ -9,6 +9,7 @@ using Pulsar4X.Fleets;
 using Pulsar4X.Damage;
 using Pulsar4X.Names;
 using Pulsar4X.Orbits;
+using Pulsar4X.People;
 
 namespace Pulsar4X.Engine
 {

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Names;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.People
 {
     public class CommanderDB : BaseDataBlob
     {

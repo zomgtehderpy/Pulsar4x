@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Engine;
 using Pulsar4X.Factions;
 using Pulsar4X.Names;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.People
 {
     public static class SpeciesFactory
     {

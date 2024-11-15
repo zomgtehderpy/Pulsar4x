@@ -1,7 +1,8 @@
 using System;
+using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.People
 {
     public struct NavalAcademy
     {

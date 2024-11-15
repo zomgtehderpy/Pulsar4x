@@ -5,6 +5,7 @@ using Pulsar4X.Engine;
 using Pulsar4X.Factions;
 using Pulsar4X.Industry;
 using Pulsar4X.Names;
+using Pulsar4X.People;
 
 namespace Pulsar4X.Colonies
 {

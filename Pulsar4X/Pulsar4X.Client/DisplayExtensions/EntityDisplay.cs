@@ -9,6 +9,7 @@ using Pulsar4X.Extensions;
 using Pulsar4X.Colonies;
 using Pulsar4X.Factions;
 using Pulsar4X.Industry;
+using Pulsar4X.People;
 
 namespace Pulsar4X.SDL2UI
 {
