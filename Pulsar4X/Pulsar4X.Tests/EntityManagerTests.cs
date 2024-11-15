@@ -10,6 +10,7 @@ using Pulsar4X.Engine.Auth;
 using Pulsar4X.Modding;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Colonies;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.Tests
 {

@@ -7,6 +7,7 @@ using Pulsar4X.Interfaces;
 using Pulsar4X.Engine;
 using Pulsar4X.Engine.Sensors;
 using System.Collections.Generic;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.Datablobs
 {

@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.Engine
 {

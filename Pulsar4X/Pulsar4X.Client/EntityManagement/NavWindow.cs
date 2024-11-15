@@ -13,6 +13,7 @@ using Vector2 = System.Numerics.Vector2;
 using Vector3 = Pulsar4X.Orbital.Vector3;
 using Pulsar4X.Engine.Orders;
 using Pulsar4X.Factions;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.ImGuiNetUI.EntityManagement
 {

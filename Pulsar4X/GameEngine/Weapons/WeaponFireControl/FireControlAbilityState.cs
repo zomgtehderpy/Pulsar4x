@@ -1,5 +1,5 @@
 using Pulsar4X.Components;
-using Pulsar4X.Datablobs;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.Engine.Damage
 {
@@ -38,7 +38,7 @@ namespace Pulsar4X.Engine.Damage
         //public ComponentInstance[] AssignedWeapons {get{return GetChildrenOfType<WeaponState>()}}
 
         public bool IsEngaging { get; internal set; } = false;
-        
+
 
         public FireControlAbilityState(ComponentInstance componentInstance) : base(componentInstance)
         {

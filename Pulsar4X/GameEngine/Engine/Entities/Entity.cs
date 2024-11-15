@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 using Pulsar4X.Components;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.Engine;
 

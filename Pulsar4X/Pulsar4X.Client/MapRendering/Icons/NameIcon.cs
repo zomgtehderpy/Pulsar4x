@@ -7,6 +7,7 @@ using Pulsar4X.Datablobs;
 using SDL2;
 using System.Numerics;
 using Pulsar4X.JumpPoints;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.SDL2UI
 {

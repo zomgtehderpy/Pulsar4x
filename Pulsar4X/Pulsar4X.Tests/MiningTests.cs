@@ -8,6 +8,7 @@ using Pulsar4X.Engine.Auth;
 using Pulsar4X.Factions;
 using Pulsar4X.Industry;
 using Pulsar4X.Modding;
+using Pulsar4X.Names;
 using System;
 using System.Collections.Generic;
 using System.Linq;

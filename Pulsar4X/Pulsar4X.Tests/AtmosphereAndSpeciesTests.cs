@@ -6,6 +6,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
 using Pulsar4X.Modding;
 using Pulsar4X.DataStructures;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.Tests
 {

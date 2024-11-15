@@ -6,6 +6,7 @@ using SDL2;
 using Pulsar4X.Datablobs;
 using System.Data;
 using Pulsar4X.DataStructures;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.SDL2UI
 {

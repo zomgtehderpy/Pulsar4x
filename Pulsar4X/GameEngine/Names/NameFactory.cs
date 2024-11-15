@@ -1,6 +1,7 @@
 using Pulsar4X.Blueprints;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Names
 {
     public class NameFactory
     {

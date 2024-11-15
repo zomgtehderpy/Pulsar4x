@@ -8,6 +8,7 @@ using Pulsar4X.Blueprints;
 using Pulsar4X.Extensions;
 using Pulsar4X.Colonies;
 using Pulsar4X.GeoSurveys;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.Engine.Sol
 {

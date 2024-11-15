@@ -3,6 +3,7 @@ using ImGuiNET;
 using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
 using Pulsar4X.Engine.Orders;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -16,7 +17,7 @@ namespace Pulsar4X.SDL2UI
             {
                 if(_nameInputBuffer == null)
                     return "";
-                return System.Text.Encoding.UTF8.GetString(_nameInputBuffer); 
+                return System.Text.Encoding.UTF8.GetString(_nameInputBuffer);
             }
         }
         private bool _setFocus = true;

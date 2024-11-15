@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Pulsar4X.DataStructures;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.Datablobs
 {

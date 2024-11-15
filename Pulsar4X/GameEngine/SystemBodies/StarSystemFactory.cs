@@ -13,6 +13,7 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using Pulsar4X.Factions;
 using Pulsar4X.JumpPoints;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.Engine
 {

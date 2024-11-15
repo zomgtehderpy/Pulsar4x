@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Pulsar4X.Datablobs;
 using System.Diagnostics.CodeAnalysis;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Names
 {
     public static class NameLookup
     {

@@ -3,6 +3,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Extensions;
 using Pulsar4X.Orbital;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.Engine
 {
@@ -16,7 +17,7 @@ namespace Pulsar4X.Engine
                 StartManuver(entity, db, manuver, atDateTime);
             if(manuver.EndDateTime < atDateTime)
                 EndManuver(db);
-            
+
             db.ManuverNodes.RemoveAt(0);
             var nextManuverDate = db.ManuverNodes[0].StartDateTime;
         }
@@ -34,17 +35,17 @@ namespace Pulsar4X.Engine
                 case Manuver.ManuverType.NewtonThrust:
                 {
                     var currentVel = MoveMath.GetRelativeFutureVelocity(entity, atDateTime);
-                    
+
                     var parentMass = entity.GetSOIParentEntity().GetDataBlob<MassVolumeDB>().MassTotal;
                     var myMass = entity.GetDataBlob<MassVolumeDB>().MassTotal;
                     //var sgp = GeneralMath.StandardGravitationalParameter(myMass + parentMass);
-                    
-                    //This is going to be very wrong at long manuvers. 
+
+                    //This is going to be very wrong at long manuvers.
                     var startVector = OrbitalMath.GetStateVectors(manuver.StartKepler, atDateTime);
                     var endVector = OrbitalMath.GetStateVectors(manuver.EndKepler, manuver.EndDateTime);
                     var manuverDV = endVector.velocity - startVector.velocity;
-                    
-                    
+
+
                     NewtonMoveDB newDB = new NewtonMoveDB(manuver.StartSOIParent, currentVel, (Vector3)manuverDV);
                     entity.SetDataBlob(newDB);
                     db.CurrentActivity = "Maneuvering";

@@ -10,6 +10,7 @@ using Pulsar4X.Engine.Sensors;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Messaging;
 using Pulsar4X.JumpPoints;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.SDL2UI
 {

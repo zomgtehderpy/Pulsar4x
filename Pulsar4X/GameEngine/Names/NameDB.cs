@@ -1,12 +1,11 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Engine;
-using Pulsar4X.Extensions;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Names
 {
     [DebuggerDisplay("{" + nameof(OwnersName) + "}")]
     public class NameDB : BaseDataBlob, ISensorCloneMethod
