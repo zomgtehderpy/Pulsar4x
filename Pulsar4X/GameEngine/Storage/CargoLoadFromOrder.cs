@@ -7,6 +7,7 @@ using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
 using Pulsar4X.Factions;
+using Pulsar4X.Fleets;
 using Pulsar4X.Interfaces;
 
 namespace Pulsar4X.Engine.Orders
@@ -79,7 +80,7 @@ namespace Pulsar4X.Engine.Orders
             cargoFromEntity.Manager.Game.OrderHandler.HandleOrder(loadCmd);
         }
 
-        
+
         public static void CreateRefuelFleetCommand(Entity cargoFromEntity, Entity fleet)
         {
             var fleetOwner = fleet.GetFactionOwner;
@@ -118,15 +119,15 @@ namespace Pulsar4X.Engine.Orders
                     cargoFromEntity.Manager.Game.OrderHandler.HandleOrder(loadCmd);
                 }
             }
-            
+
 
 
         }
 
-     
-        
-        
-        
+
+
+
+
         internal override void Execute(DateTime atDateTime)
         {
             //this needs to happen on a given trigger,ie a finished move command.

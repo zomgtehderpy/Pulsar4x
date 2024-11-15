@@ -11,6 +11,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Engine.Orders;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Extensions;
+using Pulsar4X.Fleets;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -641,7 +642,7 @@ namespace Pulsar4X.SDL2UI
                         foreach(var colony in colonyList)
                         {
                             if(!colony.Entity.TryGetDatablob<VolumeStorageDB>(out var storageDB)) continue;
-                            
+
                             var name = colony.Name;
                             if(ImGui.Button(name + "###refuelAt-button-" + name))
                             {
@@ -652,7 +653,7 @@ namespace Pulsar4X.SDL2UI
 
                                  CargoLoadFromOrder.CreateRefuelFleetCommand(colony.Entity,  SelectedFleet );
                                 //_uiState.Game.OrderHandler.HandleOrder(order2);
-                                
+
                             }
                         }
                         break;

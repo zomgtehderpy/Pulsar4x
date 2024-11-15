@@ -11,6 +11,7 @@ using Pulsar4X.Energy;
 using Pulsar4X.Engine.Designs;
 using Pulsar4X.Engine.Factories;
 using Pulsar4X.Factions;
+using Pulsar4X.Fleets;
 
 namespace Pulsar4X.Engine
 {

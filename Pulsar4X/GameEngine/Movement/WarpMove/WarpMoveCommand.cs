@@ -8,6 +8,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
 using Pulsar4X.Colonies;
 using Pulsar4X.Energy;
+using Pulsar4X.Fleets;
 
 namespace Pulsar4X.Engine.Orders
 {
@@ -340,7 +341,7 @@ namespace Pulsar4X.Engine.Orders
                     continue;
                 if (Target.TryGetDatablob<ColonyInfoDB>(out var colonyDB) && colonyDB.PlanetEntity == shipParent)
                     continue;
-                
+
                 var shipCommand = WarpMoveCommand.CreateCommandEZ(ship, Target, atDateTime);
 
                 _shipCommands.Add(shipCommand);

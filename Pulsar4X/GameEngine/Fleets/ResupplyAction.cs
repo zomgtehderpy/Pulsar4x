@@ -1,55 +1,55 @@
 using System;
+using Pulsar4X.Engine;
+using Pulsar4X.Engine.Orders;
 
-namespace Pulsar4X.Engine.Orders
+namespace Pulsar4X.Fleets;
+public class ResupplyAction : EntityCommand
 {
-    public class ResupplyAction : EntityCommand
+    public override string Name => "Resupply";
+    public override string Details => "Resupply the fleet, must be at a location where supplies are availablle.";
+        public override ActionLaneTypes ActionLanes { get; } = ActionLaneTypes.IneteractWithSelf | ActionLaneTypes.InteractWithEntitySameFleet;
+
+    public override bool IsBlocking => true;
+
+    private Entity _entityCommanding;
+    internal override Entity EntityCommanding
     {
-        public override string Name => "Resupply";
-        public override string Details => "Resupply the fleet, must be at a location where supplies are availablle.";
-         public override ActionLaneTypes ActionLanes { get; } = ActionLaneTypes.IneteractWithSelf | ActionLaneTypes.InteractWithEntitySameFleet;
+        get { return _entityCommanding; }
+    }
 
-        public override bool IsBlocking => true;
+    public override bool IsFinished()
+    {
+        return false;
+    }
 
-        private Entity _entityCommanding;
-        internal override Entity EntityCommanding
+    internal override void Execute(DateTime atDateTime)
+    {
+    }
+
+    internal override bool IsValidCommand(Game game)
+    {
+        return true;
+    }
+
+    public ResupplyAction() { }
+    public ResupplyAction(Entity commandingEntity)
+    {
+        _entityCommanding = commandingEntity;
+    }
+
+    public override EntityCommand Clone()
+    {
+        var command = new ResupplyAction(EntityCommanding)
         {
-            get { return _entityCommanding; }
-        }
+            UseActionLanes = this.UseActionLanes,
+            RequestingFactionGuid = this.RequestingFactionGuid,
+            EntityCommandingGuid = this.EntityCommandingGuid,
+            CreatedDate = this.CreatedDate,
+            ActionOnDate = this.ActionOnDate,
+            ActionedOnDate = this.ActionedOnDate,
+            IsRunning = this.IsRunning
+        };
 
-        public override bool IsFinished()
-        {
-            return false;
-        }
-
-        internal override void Execute(DateTime atDateTime)
-        {
-        }
-
-        internal override bool IsValidCommand(Game game)
-        {
-            return true;
-        }
-
-        public ResupplyAction() { }
-        public ResupplyAction(Entity commandingEntity)
-        {
-            _entityCommanding = commandingEntity;
-        }
-
-        public override EntityCommand Clone()
-        {
-            var command = new ResupplyAction(EntityCommanding)
-            {
-                UseActionLanes = this.UseActionLanes,
-                RequestingFactionGuid = this.RequestingFactionGuid,
-                EntityCommandingGuid = this.EntityCommandingGuid,
-                CreatedDate = this.CreatedDate,
-                ActionOnDate = this.ActionOnDate,
-                ActionedOnDate = this.ActionedOnDate,
-                IsRunning = this.IsRunning
-            };
-
-            return command;
-        }
+        return command;
     }
 }

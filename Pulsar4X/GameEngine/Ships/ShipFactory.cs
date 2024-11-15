@@ -5,6 +5,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Engine.Designs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine.Orders;
+using Pulsar4X.Fleets;
 
 namespace Pulsar4X.Engine
 {
@@ -138,10 +139,10 @@ namespace Pulsar4X.Engine
             // - Kill any officers on board
             // - Create wreckage
             // - Remove the ship entity from the game
-            
+
             var game = shipToDestroy.Manager.Game;
             var faction = game.Factions[shipToDestroy.FactionOwnerID];
-            
+
             // Remove the ship from its fleet
             if(faction.TryGetDatablob<FleetDB>(out var fleetDB))
             {
@@ -157,7 +158,7 @@ namespace Pulsar4X.Engine
                         shipToDestroy.FactionOwnerID,
                         belongsToFleet.OwningEntity,
                         shipToDestroy);
-                    
+
                     game.OrderHandler.HandleOrder(command);
                 }
             }
@@ -165,7 +166,7 @@ namespace Pulsar4X.Engine
             // Kill any officers on board
             // (currently just the commander)
             // TODO: check for additional people on board (passengers, officers, scientists etc)
-            if(shipToDestroy.TryGetDatablob<ShipInfoDB>(out var shipInfoDB) 
+            if(shipToDestroy.TryGetDatablob<ShipInfoDB>(out var shipInfoDB)
                 && shipToDestroy.Manager.TryGetEntityById(shipInfoDB.CommanderID, out var commanderEntity))
             {
                 CommanderFactory.DestroyCommander(commanderEntity);

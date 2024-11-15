@@ -1,8 +1,9 @@
 using Newtonsoft.Json;
+using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine.Orders;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Fleets
 {
     public class FleetDB : TreeHierarchyDB
     {
