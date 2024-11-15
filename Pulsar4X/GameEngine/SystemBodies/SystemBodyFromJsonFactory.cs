@@ -8,6 +8,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine.Sensors;
 using Pulsar4X.Extensions;
+using Pulsar4X.GeoSurveys;
 using Pulsar4X.Orbital;
 
 namespace Pulsar4X.Engine.Factories;

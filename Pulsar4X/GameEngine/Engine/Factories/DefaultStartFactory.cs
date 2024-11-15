@@ -12,6 +12,7 @@ using Pulsar4X.Engine.Designs;
 using Pulsar4X.Engine.Factories;
 using Pulsar4X.Factions;
 using Pulsar4X.Fleets;
+using Pulsar4X.GeoSurveys;
 
 namespace Pulsar4X.Engine
 {

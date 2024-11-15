@@ -1,10 +1,9 @@
 using Newtonsoft.Json;
 using Pulsar4X.Components;
-using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Interfaces;
 
-namespace Pulsar4X.Atb;
+namespace Pulsar4X.GeoSurveys;
 
 public class GeoSurveyAtb : IComponentDesignAttribute
 {

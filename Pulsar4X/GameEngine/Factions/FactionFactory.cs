@@ -10,6 +10,7 @@ using Pulsar4X.Engine.Factories;
 using Pulsar4X.Events;
 using Pulsar4X.Extensions;
 using Pulsar4X.Fleets;
+using Pulsar4X.GeoSurveys;
 using Pulsar4X.Interfaces;
 
 namespace Pulsar4X.Factions

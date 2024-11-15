@@ -12,6 +12,7 @@ using Pulsar4X.Engine.Orders;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Extensions;
 using Pulsar4X.Fleets;
+using Pulsar4X.GeoSurveys;
 
 namespace Pulsar4X.SDL2UI
 {
