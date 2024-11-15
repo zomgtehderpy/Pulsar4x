@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework.Constraints;
 using Pulsar4X.Components;
 using Pulsar4X.Orbital;
 using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 
-namespace Pulsar4X.Engine.Damage
+namespace Pulsar4X.Damage
 {
     public static class ComponentPlacement
     {
@@ -46,12 +45,12 @@ namespace Pulsar4X.Engine.Damage
             //this is related to the damageResistsBlueprints,
             //eventualy we need to read the types of materials the component is made up from
             //match those up with a resistance blueprint (the materials should prob have a field for that ID)
-            //calculate the ratios of each resistanceblueprint and do eg: 2 pix of stainless 5 pix of alu, 1 px of copper, repeat. 
+            //calculate the ratios of each resistanceblueprint and do eg: 2 pix of stainless 5 pix of alu, 1 px of copper, repeat.
             //other ways to do this is to have the resist blueprints (or componentblueprints) match to an actual 255 bit monocrome bitmap.
             //which would *look* good (eg make an engine look engine like etc) but the artist would have to match up the amounts of different material types
-            //or ignore that altogether. 
-            byte damageResistanceID = 255; 
-            
+            //or ignore that altogether.
+            byte damageResistanceID = 255;
+
             int imagedepth = 4;
             int size = imagedepth * width * height;
             int stride = width * imagedepth;
@@ -78,7 +77,7 @@ namespace Pulsar4X.Engine.Damage
             return bmp;
         }
 
-        
+
         public static RawBmp CreateShipBmp(EntityDamageProfileDB shipProfile)
         {
             // byte armorID = 255;//shipProfile.Armor.IDCode;

@@ -9,6 +9,7 @@ using Pulsar4X.Blueprints;
 using Pulsar4X.Engine.Damage;
 using Pulsar4X.Extensions;
 using Pulsar4X.Engine.Industry;
+using Pulsar4X.Damage;
 
 namespace Pulsar4X.Modding
 {

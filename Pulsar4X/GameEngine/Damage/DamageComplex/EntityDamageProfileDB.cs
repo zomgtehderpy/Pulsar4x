@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using Pulsar4X.Blueprints;
 using Pulsar4X.Components;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine.Designs;
-using Pulsar4X.Engine.Damage;
-using Pulsar4X.Orbital;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Damage
 {
     public class EntityDamageProfileDB : BaseDataBlob
     {
@@ -26,8 +23,8 @@ namespace Pulsar4X.Datablobs
         /// except we're only storing the guid here.
         /// </summary>
         public List<(string id, int count)> PlacementOrder;
-        
-        
+
+
         /// <summary>
         /// this allows us to encode the green value of the ShipDamageProfile to a component instance.
         /// it's really a single dimensional version of the ship design's List<(ComponentDesign design, int count)> Components
@@ -43,7 +40,7 @@ namespace Pulsar4X.Datablobs
         public RawBmp DamageProfile;
         public List<DamageFragment> DamageEvents = new List<DamageFragment>();
 
-        
+
         [JsonConstructor]
         private EntityDamageProfileDB()
         {

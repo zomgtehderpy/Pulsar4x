@@ -47,7 +47,7 @@ public class SimpleDamage
                 {
                     entityToDamage.Destroy();
                 }
-                
+
                 return new DamageResult()
                 {
                     Damage = damage,

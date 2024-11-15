@@ -6,6 +6,7 @@ using Pulsar4X.Engine.Designs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine.Orders;
 using Pulsar4X.Fleets;
+using Pulsar4X.Damage;
 
 namespace Pulsar4X.Engine
 {

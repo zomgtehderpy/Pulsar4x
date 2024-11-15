@@ -12,6 +12,7 @@ using Vector3 = Pulsar4X.Orbital.Vector3;
 using System.Linq;
 using Pulsar4X.Energy;
 using Pulsar4X.Factions;
+using Pulsar4X.Damage;
 
 namespace Pulsar4X.SDL2UI
 {

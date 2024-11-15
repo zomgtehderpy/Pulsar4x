@@ -1,18 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using Pulsar4X.Blueprints;
 using Pulsar4X.Orbital;
-using Pulsar4X.Components;
 using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
-using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine.Damage
+namespace Pulsar4X.Damage
 {
     [Flags]
     public enum Connections
@@ -43,8 +39,8 @@ namespace Pulsar4X.Engine.Damage
         //public float Kinetic;
         public float Density;
 
-        
-        public DamageResistBlueprint(byte iDCode, int hitPoints, float density) 
+
+        public DamageResistBlueprint(byte iDCode, int hitPoints, float density)
         {
             IDCode = iDCode;
             HitPoints = hitPoints;
@@ -53,7 +49,7 @@ namespace Pulsar4X.Engine.Damage
             Density = density; //kg/m^3
             if (DamageTools.DamageResistsLookupTable.ContainsKey(iDCode))
                 DamageTools.DamageResistsLookupTable[iDCode] = this;
-            else 
+            else
                 DamageTools.DamageResistsLookupTable.Add(IDCode, this);
         }
     }
@@ -73,9 +69,9 @@ namespace Pulsar4X.Engine.Damage
     {
         public static Dictionary<byte, DamageResistBlueprint> DamageResistsLookupTable = new Dictionary<byte, DamageResistBlueprint>()
         {
-           
+
         };
-        
+
 
         public static RawBmp LoadFromBitMap(string file)
         {
@@ -161,7 +157,7 @@ namespace Pulsar4X.Engine.Damage
 
             List<RawBmp> damageFrames = new List<RawBmp>();
             List<(byte id, int damageAmount)> damageToComponents = new List<(byte, int)>();
-            
+
             var fragmentMass = damage.Mass;
             (int x, int y) dpos = (0, 0);
             var dvel = damage.Velocity;
@@ -171,10 +167,10 @@ namespace Pulsar4X.Engine.Damage
             var pixelscale = 0.01;
             double startMomentum = damage.Momentum;
             double momentum = startMomentum;
-            
+
             double energy = damage.Energy;  //jules
-            
-            
+
+
             //We need to figure out where the incoming damage intersects with the ship's damage profile "image"
             var pwidth = damageProfile.DamageProfile.Width;
             var pwIndex = pwidth - 1;//zero based arrays
@@ -251,15 +247,15 @@ namespace Pulsar4X.Engine.Damage
                 if (px.a > 0)
                 {
                     DamageResistBlueprint damageresist = DamageResistsLookupTable[px.r];
-                   
+
                     double density = damageresist.Density / (px.a / 255f); //density / health
-                    
-                    
+
+
                     double volume3d = 0.002; //in meters from 2d area
                     double pixelMass = density * volume3d;         //1px = 1cm
-                    double time = 0.1;              // this is the time/ressolution in seconds  
+                    double time = 0.1;              // this is the time/ressolution in seconds
                     double secificHeat = energy / pixelMass * time;
-                    
+
                     double maxImpactDepth = dlen * dden / density;
                     double depthPercent = pixelscale / maxImpactDepth;
                     dlen -= (float)(damage.Length * depthPercent);
@@ -271,16 +267,16 @@ namespace Pulsar4X.Engine.Damage
                         damageToComponents.Add((px.g, 1));
                     }
                 }
-                
+
                 //this is the damage fragment
                 thisFrame.SetPixel(dpos.x, dpos.y, byte.MaxValue, byte.MaxValue, byte.MaxValue, (byte)momentum);
-                
+
                 //this is the entity being damaged.
                 thisFrame.SetPixel(savedpxloc.x, savedpxloc.y, savedpx.r, savedpx.g, savedpx.b, savedpx.a);
                 damageFrames.Add(thisFrame);
                 savedpxloc = dpos;
                 savedpx = px;
-                
+
                 double dt = 1 / dvel.Length();
                 pos.X += dvel.X * dt;
                 pos.Y += dvel.Y * dt;
@@ -299,7 +295,7 @@ namespace Pulsar4X.Engine.Damage
             };
             finalFrame.SetPixel(savedpxloc.x, savedpxloc.y, savedpx.r, savedpx.g, savedpx.b, savedpx.a);
             //damageProfile.DamageSlides.Add(damageFrames);
-            
+
             damageProfile.DamageEvents.Add(damage);
             damageProfile.DamageProfile = finalFrame;
             return (damageToComponents, damageFrames);
@@ -310,7 +306,7 @@ namespace Pulsar4X.Engine.Damage
 
             List<RawBmp> damageFrames = new List<RawBmp>();
             List<(byte id, int damageAmount)> damageToComponents = new List<(byte, int)>();
-            
+
             var fragmentMass = damage.Mass;
             (int x, int y) dpos = (0, 0);
             var dvel = damage.Velocity;
@@ -320,7 +316,7 @@ namespace Pulsar4X.Engine.Damage
             var pixelscale = 0.01;
             double startMomentum = damage.Momentum;
             double momentum = startMomentum;
-            
+
             //We need to figure out where the incoming damage intersects with the ship's damage profile "image"
             var pwidth = damageProfile.DamageProfile.Width;
             var pwIndex = pwidth - 1;//zero based arrays
@@ -410,16 +406,16 @@ namespace Pulsar4X.Engine.Damage
                         damageToComponents.Add((px.g, 1));
                     }
                 }
-                
+
                 //this is the damage fragment
                 thisFrame.SetPixel(dpos.x, dpos.y, byte.MaxValue, byte.MaxValue, byte.MaxValue, (byte)momentum);
-                
+
                 //this is the entity being damaged.
                 thisFrame.SetPixel(savedpxloc.x, savedpxloc.y, savedpx.r, savedpx.g, savedpx.b, savedpx.a);
                 damageFrames.Add(thisFrame);
                 savedpxloc = dpos;
                 savedpx = px;
-                
+
                 double dt = 1 / dvel.Length();
                 pos.X += dvel.X * dt;
                 pos.Y += dvel.Y * dt;
@@ -438,7 +434,7 @@ namespace Pulsar4X.Engine.Damage
             };
             finalFrame.SetPixel(savedpxloc.x, savedpxloc.y, savedpx.r, savedpx.g, savedpx.b, savedpx.a);
             //damageProfile.DamageSlides.Add(damageFrames);
-            
+
             damageProfile.DamageEvents.Add(damage);
             damageProfile.DamageProfile = finalFrame;
             return (damageToComponents, damageFrames);

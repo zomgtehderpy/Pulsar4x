@@ -11,6 +11,7 @@ using Pulsar4X.Engine.Industry;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Atb;
 using Pulsar4X.Factions;
+using Pulsar4X.Damage;
 
 namespace Pulsar4X.Engine.Designs
 {

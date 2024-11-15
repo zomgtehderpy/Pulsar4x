@@ -1,15 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Pulsar4X.Datablobs;
-using Pulsar4X.DataStructures;
+using Pulsar4X.Engine;
 using Pulsar4X.Engine.Damage;
 using Pulsar4X.Extensions;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Damage
 {
     internal static class DamageProcessor
     {
@@ -45,7 +40,7 @@ namespace Pulsar4X.Engine
             }
 
             if(entityDamageProfileDB == null) return;
-            
+
             var damages = DamageTools.DealDamageEnergyBeamSim(entityDamageProfileDB, damageFragment);
 
             foreach (var damage in damages.damageToComponents)
@@ -55,7 +50,7 @@ namespace Pulsar4X.Engine
 
             if(damageableEntity.TryGetDatablob<ComponentInstancesDB>(out var damagedComponentInstancesDB))
             {
-                
+
             }
 
             /*

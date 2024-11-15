@@ -14,6 +14,7 @@ using Pulsar4X.Orbital;
 using Pulsar4X.Extensions;
 using Pulsar4X.Factions;
 using Pulsar4X.Fleets;
+using Pulsar4X.Damage;
 
 namespace Pulsar4X.Engine.Designs
 {

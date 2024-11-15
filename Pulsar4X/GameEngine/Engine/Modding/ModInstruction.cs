@@ -2,6 +2,7 @@ using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Pulsar4X.Blueprints;
+using Pulsar4X.Damage;
 using Pulsar4X.Engine.Damage;
 using Pulsar4X.Engine.Industry;
 

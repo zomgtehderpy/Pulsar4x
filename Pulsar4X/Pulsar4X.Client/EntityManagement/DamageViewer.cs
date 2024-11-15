@@ -10,6 +10,7 @@ using Pulsar4X.DataStructures;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Orbital;
 using Pulsar4X.Factions;
+using Pulsar4X.Damage;
 
 
 namespace Pulsar4X.SDL2UI.Combat
