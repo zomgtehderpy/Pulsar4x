@@ -13,8 +13,9 @@ using Pulsar4X.Extensions;
 using Pulsar4X.Factions;
 using Pulsar4X.Fleets;
 using Pulsar4X.Damage;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine.Designs
+namespace Pulsar4X.Ships
 {
     [JsonObject]
     public class ShipDesign : ICargoable, IConstructableDesign, ISerializable

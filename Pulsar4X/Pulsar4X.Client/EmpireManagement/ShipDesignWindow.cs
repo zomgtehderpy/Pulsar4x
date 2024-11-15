@@ -17,6 +17,7 @@ using Pulsar4X.Atb;
 using Pulsar4X.Energy;
 using Pulsar4X.Factions;
 using Pulsar4X.Damage;
+using Pulsar4X.Ships;
 
 namespace Pulsar4X.SDL2UI
 {

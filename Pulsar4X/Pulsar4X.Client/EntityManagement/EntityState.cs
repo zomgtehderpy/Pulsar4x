@@ -11,6 +11,7 @@ using System.Diagnostics.CodeAnalysis;
 using Pulsar4X.Colonies;
 using Pulsar4X.Industry;
 using Pulsar4X.Sensors;
+using Pulsar4X.Ships;
 
 namespace Pulsar4X.SDL2UI
 {

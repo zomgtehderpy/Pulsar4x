@@ -1,5 +1,6 @@
 using Pulsar4X.Atb;
 using Pulsar4X.Engine.Designs;
+using Pulsar4X.Ships;
 
 namespace Pulsar4X.Datablobs;
 

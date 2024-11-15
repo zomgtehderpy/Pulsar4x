@@ -6,6 +6,7 @@ using Pulsar4X.Components;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine.Designs;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Ships;
 
 namespace Pulsar4X.Damage
 {

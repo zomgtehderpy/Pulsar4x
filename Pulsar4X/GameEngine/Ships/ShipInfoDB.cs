@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
-using Pulsar4X.Engine.Designs;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Ships
 {
     /// <summary>
     /// Holds all the generic information about a ship

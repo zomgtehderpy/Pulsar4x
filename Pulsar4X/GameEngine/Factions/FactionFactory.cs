@@ -14,6 +14,7 @@ using Pulsar4X.GeoSurveys;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Names;
 using Pulsar4X.People;
+using Pulsar4X.Ships;
 
 namespace Pulsar4X.Factions
 {

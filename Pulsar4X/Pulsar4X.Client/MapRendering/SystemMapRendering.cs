@@ -12,6 +12,7 @@ using Pulsar4X.Messaging;
 using Pulsar4X.JumpPoints;
 using Pulsar4X.Names;
 using Pulsar4X.Orbits;
+using Pulsar4X.Ships;
 
 namespace Pulsar4X.SDL2UI
 {

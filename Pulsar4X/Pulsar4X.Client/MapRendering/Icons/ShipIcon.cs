@@ -7,6 +7,7 @@ using SDL2;
 using Pulsar4X.Messaging;
 using System.Threading.Tasks;
 using Pulsar4X.Orbits;
+using Pulsar4X.Ships;
 
 namespace Pulsar4X.SDL2UI
 {

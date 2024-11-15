@@ -11,6 +11,7 @@ using Pulsar4X.Energy;
 using Pulsar4X.Fleets;
 using Pulsar4X.Names;
 using Pulsar4X.Orbits;
+using Pulsar4X.Ships;
 
 namespace Pulsar4X.Engine.Orders
 {

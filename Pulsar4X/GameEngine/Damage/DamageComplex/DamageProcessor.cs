@@ -4,6 +4,7 @@ using Pulsar4X.Engine;
 using Pulsar4X.Engine.Damage;
 using Pulsar4X.Extensions;
 using Pulsar4X.Orbits;
+using Pulsar4X.Ships;
 
 namespace Pulsar4X.Damage
 {

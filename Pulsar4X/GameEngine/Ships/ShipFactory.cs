@@ -2,16 +2,14 @@ using System;
 using System.Collections.Generic;
 using Pulsar4X.Orbital;
 using Pulsar4X.Datablobs;
-using Pulsar4X.Engine.Designs;
-using Pulsar4X.DataStructures;
-using Pulsar4X.Engine.Orders;
 using Pulsar4X.Fleets;
 using Pulsar4X.Damage;
 using Pulsar4X.Names;
 using Pulsar4X.Orbits;
 using Pulsar4X.People;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Ships
 {
     public static class ShipFactory
     {

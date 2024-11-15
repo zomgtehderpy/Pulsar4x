@@ -3,6 +3,7 @@ using ImGuiNET;
 using Pulsar4X.Engine;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
+using Pulsar4X.Ships;
 
 namespace Pulsar4X.SDL2UI
 {

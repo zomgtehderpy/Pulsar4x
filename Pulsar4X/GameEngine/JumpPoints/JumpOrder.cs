@@ -4,6 +4,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Engine.Orders;
 using Pulsar4X.Fleets;
+using Pulsar4X.Ships;
 
 namespace Pulsar4X.JumpPoints;
 
