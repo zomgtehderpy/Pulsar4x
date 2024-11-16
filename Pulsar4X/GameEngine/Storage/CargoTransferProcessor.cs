@@ -29,7 +29,7 @@ namespace Pulsar4X.Storage
         public void ProcessEntity(Entity entity, int deltaSeconds)
         {
             CargoTransferDB transferDB = entity.GetDataBlob<CargoTransferDB>();
-            SetTransferRate(entity, transferDB);
+            SetTransferRate(transferDB);
             for (int i = 0; i < transferDB.ItemsLeftToTransfer.Count; i++)
             {
                 (ICargoable item, long amount) itemsToXfer = transferDB.ItemsLeftToTransfer[i];
@@ -61,13 +61,23 @@ namespace Pulsar4X.Storage
                 long amountFrom = transferDB.CargoFromDB.RemoveCargoByUnit(cargoItem, countToTransferThisTick);
                 long amountTo = transferDB.CargoToDB.AddCargoByUnit(cargoItem, amountFrom);
 
+                if (amountTo < amountFrom)
+                {
+                    //if we can't put it into the amountTo entity, then give it back. 
+                    long amountBack = transferDB.CargoFromDB.AddCargoByUnit(cargoItem, amountTo);
+                    transferDB.ItemsLeftToTransfer[i] = (cargoItem, 0);
+                }
+                else
+                {
+                    long newAmount = transferDB.ItemsLeftToTransfer[i].amount - amountTo;
+                    transferDB.ItemsLeftToTransfer[i] = (cargoItem, newAmount);
+                }
+                
                 //update the total masses for these entites
                 transferDB.CargoFromDB.OwningEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal(transferDB.CargoFromDB);
                 transferDB.CargoToDB.OwningEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal(transferDB.CargoToDB);
-                UpdateFuelAndDeltaV(entity);
+                UpdateFuelAndDeltaV(transferDB.CargoFromDB.OwningEntity);
                 UpdateFuelAndDeltaV(transferDB.CargoToDB.OwningEntity);
-                long newAmount = transferDB.ItemsLeftToTransfer[i].amount - amountTo;
-                transferDB.ItemsLeftToTransfer[i] = (cargoItem, newAmount);
             }
 
         }
@@ -265,9 +275,9 @@ namespace Pulsar4X.Storage
             return (int)transferRate;
         }
 
-        internal static void SetTransferRate(Entity entity, CargoTransferDB transferDB)
+        internal static void SetTransferRate(CargoTransferDB transferDB)
         {
-            double dv_mps = CalcDVDifference_m(entity, transferDB.CargoToEntity);
+            double dv_mps = CalcDVDifference_m(transferDB.CargoFromEntity, transferDB.CargoToEntity);
             var rate = CalcTransferRate(dv_mps, transferDB.CargoFromDB, transferDB.CargoToDB);
             transferDB.TransferRateInKG = rate;
         }

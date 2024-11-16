@@ -96,7 +96,7 @@ namespace Pulsar4X.Storage
                 {
                     var fuelInfo = ship.GetFuelInfo(cargoLibrary);
                     ICargoable fuel = fuelInfo.Item1;
-                    long amountToMove = (long)ship.GetDataBlob<VolumeStorageDB>().GetFreeUnitSpace(fuel);
+                    long amountToMove = ship.GetDataBlob<VolumeStorageDB>().GetFreeUnitSpace(fuel);
                     var fuelAndAmount =(fuel, amountToMove);
                     var list = new List<(ICargoable, long)>();
                     list.Add(fuelAndAmount);

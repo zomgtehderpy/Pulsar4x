@@ -87,8 +87,8 @@ namespace Pulsar4X.Storage
                 _cargoTransferDB.ItemsLeftToTransfer = ItemICargoablesToTransfer;
                 _cargoTransferDB.OrderedToTransfer = ItemICargoablesToTransfer;
 
-                EntityCommanding.Manager.SetDataBlob(EntityCommanding.Id, _cargoTransferDB);
-                CargoTransferProcessor.SetTransferRate(EntityCommanding, _cargoTransferDB);
+                EntityCommanding.SetDataBlob(_cargoTransferDB);
+                CargoTransferProcessor.SetTransferRate(_cargoTransferDB);
                 IsRunning = true;
             }
         }
