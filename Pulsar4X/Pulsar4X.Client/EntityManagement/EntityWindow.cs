@@ -262,7 +262,41 @@ namespace Pulsar4X.SDL2UI
 
             foreach(var db in Entity.Manager.GetAllDataBlobsForEntity(Entity.Id))
             {
-                if(isGeoSurveyed && db is AtmosphereDB)
+                if( db is OrderableDB)
+                {
+                    var orderableDB = (OrderableDB)db;
+                    if (orderableDB.ActionList.Count == 0)
+                        continue;
+                    if (ImGui.CollapsingHeader("Orders", ImGuiTreeNodeFlags.DefaultOpen))
+                    {
+                        if (ImGui.BeginTable("OrdersTable", 2, Styles.TableFlags))
+                        {
+                            ImGui.TableSetupColumn("#", ImGuiTableColumnFlags.None, 0.1f);
+                            ImGui.TableSetupColumn("Order", ImGuiTableColumnFlags.None, 1f);
+                            ImGui.TableHeadersRow();
+
+                            var actions = orderableDB.ActionList.ToArray();
+                            for (int i = 0; i < actions.Length; i++)
+                            {
+                                ImGui.TableNextColumn();
+                                ImGui.Text((i + 1).ToString());
+                                ImGui.TableNextColumn();
+                                ImGui.Text(actions[i].Name);
+                                if (ImGui.IsItemHovered())
+                                {
+                                    ImGui.BeginTooltip();
+                                    ImGui.Text("IsRunning: " + actions[i].IsRunning);
+                                    ImGui.Text("IsFinished: " + actions[i].IsFinished());
+                                    ImGui.EndTooltip();
+                                }
+                            }
+
+                            ImGui.EndTable();
+                        }
+                        
+                    }
+                }
+                else if(isGeoSurveyed && db is AtmosphereDB)
                 {
                     ((AtmosphereDB)db).Display(EntityState, _uiState);
                 }

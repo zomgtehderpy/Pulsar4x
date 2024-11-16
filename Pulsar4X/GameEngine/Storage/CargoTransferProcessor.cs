@@ -65,7 +65,7 @@ namespace Pulsar4X.Storage
                 transferDB.CargoFromDB.OwningEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal(transferDB.CargoFromDB);
                 transferDB.CargoToDB.OwningEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal(transferDB.CargoToDB);
                 UpdateFuelAndDeltaV(entity);
-
+                UpdateFuelAndDeltaV(transferDB.CargoToDB.OwningEntity);
                 long newAmount = transferDB.ItemsLeftToTransfer[i].amount - amountTo;
                 transferDB.ItemsLeftToTransfer[i] = (cargoItem, newAmount);
             }
@@ -86,6 +86,7 @@ namespace Pulsar4X.Storage
             double amountSuccess = cargo.AddCargoByUnit(item, amount);
             MassVolumeDB mv = entity.GetDataBlob<MassVolumeDB>();
             mv.UpdateMassTotal(cargo);
+            UpdateFuelAndDeltaV(entity);
             return amountSuccess;
         }
 

@@ -172,6 +172,8 @@ public class MoveStateProcessor : IInstanceProcessor
 
     public static void ProcessForType(OrbitDB orbitDB, DateTime atDateTime)
     {
+        if(orbitDB.OwningEntity is null)
+            return;
         if(!orbitDB.OwningEntity.TryGetDatablob(out PositionDB stateDB))
         {
             stateDB = new PositionDB(orbitDB.Parent);
@@ -198,6 +200,8 @@ public class MoveStateProcessor : IInstanceProcessor
 
     public static void ProcessForType(OrbitUpdateOftenDB orbitDB, DateTime atDateTime)
     {
+        if(orbitDB.OwningEntity is null)
+            return;
         if(!orbitDB.OwningEntity.TryGetDatablob(out PositionDB stateDB))
         {
             stateDB = new PositionDB(orbitDB.Parent);
@@ -217,6 +221,8 @@ public class MoveStateProcessor : IInstanceProcessor
     {
         foreach (var movedb in moves)
         {
+            if(movedb.OwningEntity is null)
+                continue;
             if(!movedb.OwningEntity.TryGetDatablob(out PositionDB stateDB))
             {
                 stateDB = new PositionDB(movedb.SOIParent);
@@ -268,6 +274,8 @@ public class MoveStateProcessor : IInstanceProcessor
 
     public static void ProcessForType(NewtonMoveDB movedb, DateTime atDateTime)
     {
+        if(movedb.OwningEntity is null)
+            return;
         if(!movedb.OwningEntity.TryGetDatablob(out PositionDB stateDB))
         {
             stateDB = new PositionDB(movedb.SOIParent);
@@ -295,7 +303,8 @@ public class MoveStateProcessor : IInstanceProcessor
 
     public static void ProcessForType(WarpMovingDB warpdb, DateTime atDateTime)
     {
-
+        if(warpdb.OwningEntity is null)
+            return;
         if(!warpdb.OwningEntity.TryGetDatablob(out PositionDB stateDB))
         {
             stateDB = new PositionDB(warpdb._parentEnitity);

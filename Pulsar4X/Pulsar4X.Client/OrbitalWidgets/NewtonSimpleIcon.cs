@@ -76,13 +76,9 @@ namespace Pulsar4X.SDL2UI
             _positionDB = _parentPosDB;
             _myPosDB = entityState.Entity.GetDataBlob<PositionDB>();
             _userOrbitSettingsMtx = settings;
-            var parentMass = entityState.Entity.GetSOIParentEntity().GetDataBlob<MassVolumeDB>().MassTotal;
-            var myMass = entityState.Entity.GetDataBlob<MassVolumeDB>().MassDry;
-            var _sgp1 = UniversalConstants.Science.GravitationalConstant * (parentMass + myMass) / 3.347928976e33;
-
-            _sgp = GeneralMath.StandardGravitationalParameter(myMass + parentMass);
+            var soiParentEntity = entityState.Entity.GetSOIParentEntity();
+            _sgp = OrbitMath.SGP(entityState.Entity, soiParentEntity);
             _ke = _newtonMoveDB.CurrentTrajectory;
-
             UpdateUserSettings();
             OnPhysicsUpdate();
         }
