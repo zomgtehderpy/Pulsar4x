@@ -85,7 +85,7 @@ public class NewtonSimpleProcessor : IHotloopProcessor
 
             //remove fuel
             double fuelBurned = OrbitMath.TsiolkovskyFuelUse(massdb.MassTotal, thrustdb.ExhaustVelocity, moveDeltaV);
-            CargoTransferProcessor.AddRemoveCargoMass(entity, fuelType, fuelBurned);
+            CargoTransferProcessor.AddRemoveCargoMass(entity, fuelType, -fuelBurned);
 
             //tag as complete
             newtonSimplelMoveDB.IsComplete = true;

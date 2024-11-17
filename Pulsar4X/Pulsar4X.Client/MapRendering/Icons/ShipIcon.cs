@@ -247,8 +247,9 @@ namespace Pulsar4X.SDL2UI
             if(_entity is null || !_entity.IsValid) return;
 
             // FIXME: remove call to engine
-            var headingVector = MoveMath.GetAbsoluteState(_entity).velocity;
-            var heading = Math.Atan2(headingVector.Y, headingVector.X);
+            var headingVector = MoveMath.GetRelativeState(_entity).Velocity;
+            var heading = Angle.NormaliseRadians(Math.Atan2(headingVector.Y, headingVector.X));
+            var deg = Angle.ToDegrees(heading);
             Heading = (float)heading;
         }
 

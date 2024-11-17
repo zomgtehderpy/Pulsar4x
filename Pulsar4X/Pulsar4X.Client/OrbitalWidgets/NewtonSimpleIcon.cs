@@ -76,8 +76,7 @@ namespace Pulsar4X.SDL2UI
             _positionDB = _parentPosDB;
             _myPosDB = entityState.Entity.GetDataBlob<PositionDB>();
             _userOrbitSettingsMtx = settings;
-            var soiParentEntity = entityState.Entity.GetSOIParentEntity();
-            _sgp = OrbitMath.SGP(entityState.Entity, soiParentEntity);
+            _sgp = OrbitMath.SGP(_newtonMoveDB.SOIParent, entityState.Entity);
             _ke = _newtonMoveDB.CurrentTrajectory;
             UpdateUserSettings();
             OnPhysicsUpdate();
