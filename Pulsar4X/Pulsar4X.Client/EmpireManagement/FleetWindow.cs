@@ -579,7 +579,7 @@ namespace Pulsar4X.SDL2UI
                             var name = bodyState.Name;
                             if(ImGui.Button(name + "###geosurvey-button-" + name))
                             {
-                                var order = MoveToSystemBodyOrder.CreateCommand(_uiState.Faction.Id, SelectedFleet, bodyState.Entity);
+                                var order = WarpFleetTowardsTargetOrder.CreateCommand(SelectedFleet, bodyState.Entity);
                                 _uiState.Game.OrderHandler.HandleOrder(order);
 
                                 var order2 = GeoSurveyOrder.CreateCommand(_uiState.Faction.Id, SelectedFleet, bodyState.Entity);

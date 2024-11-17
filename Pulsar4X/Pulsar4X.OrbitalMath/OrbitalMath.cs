@@ -56,8 +56,8 @@ namespace Pulsar4X.Orbital
             {
                 p = angularSpeed * angularSpeed / standardGravParam;
                 eccentricity += 1.0E-15;
-                if (semiMajorAxis < 0)
-                    semiMajorAxis *= -1;//ensure semimajor axis is 0.
+                if (semiMajorAxis > 0)
+                    semiMajorAxis *= -1;//ensure semimajor axis is negative.
             }
 
             double semiMinorAxis = EllipseMath.SemiMinorAxis(semiMajorAxis, eccentricity);

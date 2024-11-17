@@ -169,9 +169,6 @@ namespace Pulsar4X.Engine.Orders
 
             var lowOrbit = OrbitMath.KeplerCircularFromPosition(sgp, lowOrbitPos, targetIntercept.eti);
             var lowOrbitState = OrbitMath.GetStateVectors(lowOrbit, targetIntercept.eti);
-            var targetEntityOrbitDb = targetEntity.GetDataBlob<OrbitDB>();
-            Vector3 insertionVector = OrbitProcessor.GetOrbitalInsertionVector(departureState.vel, targetEntityOrbitDb, targetIntercept.eti);
-            var deltaV = insertionVector - (Vector3)lowOrbitState.velocity;
 
             var cmd = new WarpMoveCommand()
             {
@@ -193,6 +190,10 @@ namespace Pulsar4X.Engine.Orders
 
                 case PositionDB.MoveTypes.Orbit:
                 {
+                    var targetEntityOrbitDb = targetEntity.GetDataBlob<OrbitDB>();
+                    Vector3 insertionVector = OrbitProcessor.GetOrbitalInsertionVector(departureState.vel, targetEntityOrbitDb, targetIntercept.eti);
+                    var deltaV = insertionVector - (Vector3)lowOrbitState.velocity;
+
                     cmd.EndpointRelitivePosition = lowOrbitPos;
                     cmd.MoveTypeAtDestination = PositionDB.MoveTypes.Orbit;
                     cmd.EndpointTargetOrbit = lowOrbit;
@@ -353,13 +354,13 @@ namespace Pulsar4X.Engine.Orders
             IsRunning = true;
         }
 
-        public static WarpFleetTowardsTargetOrder CreateCommand(Entity entity, Entity target)
+        public static WarpFleetTowardsTargetOrder CreateCommand(Entity fleet, Entity target)
         {
             var order = new WarpFleetTowardsTargetOrder()
             {
-                RequestingFactionGuid = entity.FactionOwnerID,
-                EntityCommandingGuid = entity.Id,
-                _entityCommanding = entity,
+                RequestingFactionGuid = fleet.FactionOwnerID,
+                EntityCommandingGuid = fleet.Id,
+                _entityCommanding = fleet,
                 Target = target,
             };
 
