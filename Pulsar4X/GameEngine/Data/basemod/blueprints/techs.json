@@ -186,7 +186,7 @@
           "tech-conventional-engine-min-size",
           "tech-conventional-engine-exhaust-velocity",
           "tech-conventional-engine-fuel-consumption",
-          "tech-nuclear-engine"
+          "tech-nuclear-solid-engine"
         ]
       }
     }
@@ -194,10 +194,10 @@
   {
     "Type": "Tech",
     "Payload": {
-      "UniqueID": "tech-nuclear-engine",
-      "Name": "Nuclear Thermal Engine Technology",
+      "UniqueID": "tech-nuclear-solid-engine",
+      "Name": "Nuclear Solid Core Engine Technology",
       "Description": "",
-      "MaxLevel": 1,
+      "MaxLevel": 5,
       "DataFormula": "5",
       "Category": "tech-category-power-propulsion",
       "CostFormula": "(1 + [Level]) * 2500",

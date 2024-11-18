@@ -85,6 +85,28 @@
   {
     "Type": "ProcessedMaterial",
     "Payload": {
+      "UniqueID": "hydrofiss",
+      "Name": "HydrogenNuke",
+      "Description": "Hydrogen for nuclear engines, includes fissile fuel.",
+      "CargoTypeID": "fuel-storage",
+      "MassPerUnit": 1,
+      "VolumePerUnit": 0.002777778,
+      "ResourceCosts": {
+        "hydrocarbons": 100,
+        "fissionables": 1
+      },
+      "IndustryPointCosts": 100,
+      "IndustryTypeID": "refining",
+      "WealthCost": 3,
+      "OutputAmount": 100,
+      "Formulas": {
+        "ExhaustVelocity": "7000"
+      }
+    }
+  },
+  {
+    "Type": "ProcessedMaterial",
+    "Payload": {
       "UniqueID": "plastic",
       "Name": "Plastic",
       "Description": "Rendered from Hydrocarbons",

@@ -26,7 +26,6 @@ public class JPSurveyProcessor : IInstanceProcessor
 
     internal override void ProcessEntity(Entity entity, DateTime atDateTime)
     {
-        // TODO: need to only get the survey points from ships that are at the survey location
         uint totalSurveyPoints = GetSurveyPoints(Fleet);
 
         if(Target.TryGetDatablob<JPSurveyableDB>(out var jpSurveyableDB))

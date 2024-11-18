@@ -79,6 +79,90 @@
         }
       ]
     }
+  },  
+  {
+    "Type": "ComponentTemplate",
+    "Payload": {
+      "UniqueID": "scntr-engine",
+      "Name": "Solid Core Nuclear Engine",
+      "Formulas": {
+        "Description": "A Newtonian Thruster",
+        "Mass": "Ability('Size') * 50",
+        "Volume": "[Mass] / 48",
+        "HTK": "Max(1, [Mass] / 100)",
+        "CrewReq": "0",
+        "ResearchCost": "[Mass] * 0.7",
+        "CreditCost": "[Mass]",
+        "BuildPointCost": "[Mass]"
+      },
+      "ResourceCost": {
+        "stainless-steel": "[Mass] * 0.15",
+        "titanium": "[Mass] * .25",
+        "graphite": "[Mass] * .3",
+        "tungsten": "[Mass] * .25",
+        "plastic": "[Mass] * .05"
+      },
+      "ComponentType": "Engine",
+      "MountType": "ShipComponent, ShipCargo, Fighter",
+      "CargoTypeID": "general-storage",
+      "IndustryTypeID": "component-construction",
+      "Attributes": [
+        {
+          "Name": "Size",
+          "DescriptionFormula": "'The size of the engine'",
+          "GuiHint": "GuiSelectionMaxMinInt",
+          "MaxFormula": "TechData('tech-conventional-engine-max-size')",
+          "MinFormula": "TechData('tech-conventional-engine-min-size')",
+          "StepFormula": "1",
+          "AttributeFormula": "36"
+        },
+        {
+          "Name": "Fuel Type",
+          "DescriptionFormula": "'The type of fuel the engine burns'",
+          "GuiHint": "None",
+          "GuidDictionary": {
+            "fuel-storage": "10"
+          },
+          "AttributeFormula": "GuidString('hydrofiss')"
+        },
+        {
+          "Name": "Exhaust Velocity",
+          "Units": "m/s",
+          "DescriptionFormula": "'Specific Impulse in m/s, can be increased by research'",
+          "GuiHint": "GuiTextDisplay",
+          "AttributeFormula": "7000 + TechData('tech-nuclear-solid-engine') * 250"
+        },
+        {
+          "Name": "Thrust",
+          "Units": "N",
+          "DescriptionFormula": "'The maximum thrust output of this engine'",
+          "GuiHint": "GuiTextDisplay",
+          "AttributeFormula": "Ability('Exhaust Velocity') * Ability('Fuel Consumption')"
+        },
+        {
+          "Name": "Fuel Consumption",
+          "Units": "kg/s",
+          "DescriptionFormula": "'Fuel Consumption per second'",
+          "GuiHint": "GuiTextDisplay",
+          "AttributeFormula": "[Mass] * 0.017"
+        },
+        {
+          "Name": "DataBlob",
+          "DescriptionFormula": "''",
+          "GuiHint": "None",
+          "AttributeFormula": "AtbConstrArgs(Ability('Exhaust Velocity'), Ability('Fuel Type'), Ability('Fuel Consumption'))",
+          "AttributeType": "Pulsar4X.Atb.NewtonionThrustAtb"
+        },
+        {
+          "Name": "Sensor Signature",
+          "Units": "unknown",
+          "DescriptionFormula": "''",
+          "GuiHint": "None",
+          "AttributeFormula": "AtbConstrArgs(3500, Ability('Thrust'))",
+          "AttributeType": "Pulsar4X.Sensors.SensorSignatureAtb"
+        }
+      ]
+    }
   },
   {
     "Type": "ComponentTemplate",
