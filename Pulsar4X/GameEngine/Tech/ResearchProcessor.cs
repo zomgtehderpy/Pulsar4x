@@ -1,16 +1,14 @@
-using NCalc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Components;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Factions;
 using Pulsar4X.People;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Technology
 {
     /// <summary>
     /// See also the Installation Processors for DoResearch

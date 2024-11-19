@@ -7,6 +7,7 @@ using Pulsar4X.Datablobs;
 using System.Linq;
 using Pulsar4X.Factions;
 using Pulsar4X.Names;
+using Pulsar4X.Technology;
 
 namespace Pulsar4X.SDL2UI
 {

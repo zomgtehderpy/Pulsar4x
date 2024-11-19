@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Pulsar4X.Interfaces;
 using Pulsar4X.Components;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Technology
 {
     public class  EntityResearchDB : BaseDataBlob, IAbilityDescription
     {

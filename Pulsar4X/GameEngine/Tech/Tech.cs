@@ -1,8 +1,9 @@
 using NCalc;
 using Pulsar4X.Blueprints;
 using Pulsar4X.Components;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Technology
 {
     public class Tech : TechBlueprint
     {

@@ -3,7 +3,6 @@ using Pulsar4X.Engine;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine.Orders;
-using Pulsar4X.Engine.Sensors;
 using Pulsar4X.Messaging;
 using System.Threading.Tasks;
 using Pulsar4X.DataStructures;
@@ -12,6 +11,7 @@ using Pulsar4X.Colonies;
 using Pulsar4X.Industry;
 using Pulsar4X.Sensors;
 using Pulsar4X.Ships;
+using Pulsar4X.Technology;
 
 namespace Pulsar4X.SDL2UI
 {

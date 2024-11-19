@@ -4,7 +4,7 @@ using Pulsar4X.Engine;
 using Pulsar4X.Interfaces;
 using Pulsar4X.People;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Technology
 {
     public class ResearchPointsAtbDB : IComponentDesignAttribute
     {

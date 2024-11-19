@@ -7,6 +7,7 @@ using Pulsar4X.DataStructures;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Factions;
+using Pulsar4X.Technology;
 
 namespace Pulsar4X.Components
 {

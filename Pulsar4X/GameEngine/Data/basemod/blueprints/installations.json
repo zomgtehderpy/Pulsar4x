@@ -107,7 +107,7 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Research Points'))",
-          "AttributeType": "Pulsar4X.Datablobs.ResearchPointsAtbDB"
+          "AttributeType": "Pulsar4X.Technology.ResearchPointsAtbDB"
         }
       ]
     }

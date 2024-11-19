@@ -11,6 +11,7 @@ using Pulsar4X.Factions;
 using Pulsar4X.Industry;
 using Pulsar4X.People;
 using Pulsar4X.Storage;
+using Pulsar4X.Technology;
 
 namespace Pulsar4X.SDL2UI
 {

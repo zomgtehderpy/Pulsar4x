@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Pulsar4X.DataStructures;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Technology
 {
     public class Scientist : TeamObject
     {
