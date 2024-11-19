@@ -23,7 +23,7 @@ namespace Pulsar4X.Engine
     /// in this state, the ship is unaffected by it's previous newtonion vector & gravity
     /// Acceleration is instant.
     /// Speed is shown relative to the parent star.
-    /// Cannot change its direction or speed untill exit.
+    /// Cannot change its direction or speed untill exit.**
     /// An exit should be able to be forced prematurly, but this should come at a cost.
     /// An exit should be able to be forced by outside (enemy) forces. *
     /// Possibly the cost should be handeled by having entering the translation state
@@ -53,7 +53,9 @@ namespace Pulsar4X.Engine
     /// so we'd need to give max speeds of more than that, and/or force homman transfers in one direction.
     /// could provide an interesting gameplay mechanic...
     ///
-    ///
+    /// **
+    ///NB I've alowed ships to come to zero speed warp when serveying a jump point grav anomaly, since these are still in space.
+    /// this may cause some problems we will have to see how it plays out.
     /// </summary>
     public class WarpMoveProcessor : IHotloopProcessor
     {

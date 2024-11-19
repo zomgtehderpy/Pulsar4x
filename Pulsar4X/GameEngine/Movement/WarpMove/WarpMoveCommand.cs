@@ -62,8 +62,7 @@ namespace Pulsar4X.Engine.Orders
         /// the orbit we want to be in at the target.
         /// </summary>
         public KeplerElements EndpointTargetOrbit;
-        public PositionDB.MoveTypes MoveTypeAtDestination;
-
+        
         public static WarpMoveCommand CreateCommand(
             Entity orderEntity,
             Entity targetEntity,
@@ -81,20 +80,12 @@ namespace Pulsar4X.Engine.Orders
                 EndpointRelitivePosition = endpointRelativePos,
                 TransitStartDateTime = transitStartDatetime,
             };
-            if (targetEntity.GetDataBlob<PositionDB>().MoveType == PositionDB.MoveTypes.None)
-            {
-                cmd.MoveTypeAtDestination = PositionDB.MoveTypes.None;
-            }
-            else
+            if (targetEntity.GetDataBlob<PositionDB>().MoveType != PositionDB.MoveTypes.None)
             {
                 var sgp = GeneralMath.StandardGravitationalParameter(targetEntity.GetDataBlob<MassVolumeDB>().MassTotal + orderEntity.GetDataBlob<MassVolumeDB>().MassTotal);
-                cmd.MoveTypeAtDestination = PositionDB.MoveTypes.Orbit;
                 cmd.EndpointTargetOrbit = OrbitMath.KeplerCircularFromPosition(sgp, endpointRelativePos, datetimeArrive.Item2);;
             }
-
             orderEntity.Manager.Game.OrderHandler.HandleOrder(cmd);
-
-
             return cmd;
         }
 
@@ -118,14 +109,9 @@ namespace Pulsar4X.Engine.Orders
                 EndpointTargetOrbit = insertonTargetOrbit,
                 TransitStartDateTime = transitStartDatetime,
             };
-            if (targetEntity.GetDataBlob<PositionDB>().MoveType == PositionDB.MoveTypes.None)
-            {
-                cmd.MoveTypeAtDestination = PositionDB.MoveTypes.None;
-            }
-            else
+            if (targetEntity.GetDataBlob<PositionDB>().MoveType != PositionDB.MoveTypes.None)
             {
                 var sgp = GeneralMath.StandardGravitationalParameter(targetEntity.GetDataBlob<MassVolumeDB>().MassTotal + orderEntity.GetDataBlob<MassVolumeDB>().MassTotal);
-                cmd.MoveTypeAtDestination = PositionDB.MoveTypes.Orbit;
                 cmd.EndpointTargetOrbit = OrbitMath.KeplerCircularFromPosition(sgp, targetOffsetPos_m, datetimeArrive.Item2);;
             }
 
@@ -160,16 +146,6 @@ namespace Pulsar4X.Engine.Orders
             else
                 departureState = MoveMath.GetAbsoluteState(orderEntity, transitStartDatetime);
 
-            var sgp = OrbitMath.SGP(targetEntity, orderEntity);
-            var lowOrbitRadius = OrbitMath.LowOrbitRadius(targetEntity);
-            var perpVec = Vector3.Normalise(new Vector3(departureState.vel.Y * -1, departureState.vel.X, 0));
-            var lowOrbitPos = perpVec * lowOrbitRadius;
-
-            (Vector3 pos, DateTime eti) targetIntercept  = WarpMath.GetInterceptPosition(orderEntity, targetEntity, transitStartDatetime, lowOrbitPos);
-
-            var lowOrbit = OrbitMath.KeplerCircularFromPosition(sgp, lowOrbitPos, targetIntercept.eti);
-            var lowOrbitState = OrbitMath.GetStateVectors(lowOrbit, targetIntercept.eti);
-
             var cmd = new WarpMoveCommand()
             {
                 RequestingFactionGuid = orderEntity.FactionOwnerID,
@@ -184,18 +160,22 @@ namespace Pulsar4X.Engine.Orders
             {
                 case PositionDB.MoveTypes.None: //this means it's a grav anomaly, jump point
                 {
-                    cmd.MoveTypeAtDestination = PositionDB.MoveTypes.None;
                     break;
                 }
-
                 case PositionDB.MoveTypes.Orbit:
                 {
+                    var sgp = OrbitMath.SGP(targetEntity, orderEntity);
+                    var lowOrbitRadius = OrbitMath.LowOrbitRadius(targetEntity);
+                    var perpVec = Vector3.Normalise(new Vector3(departureState.vel.Y * -1, departureState.vel.X, 0));
+                    var lowOrbitPos = perpVec * lowOrbitRadius;
+                    (Vector3 pos, DateTime eti) targetIntercept  = WarpMath.GetInterceptPosition(orderEntity, targetEntity, transitStartDatetime, lowOrbitPos);
+                    var lowOrbit = OrbitMath.KeplerCircularFromPosition(sgp, lowOrbitPos, targetIntercept.eti);
+                    var lowOrbitState = OrbitMath.GetStateVectors(lowOrbit, targetIntercept.eti);
                     var targetEntityOrbitDb = targetEntity.GetDataBlob<OrbitDB>();
                     Vector3 insertionVector = OrbitProcessor.GetOrbitalInsertionVector(departureState.vel, targetEntityOrbitDb, targetIntercept.eti);
                     var deltaV = insertionVector - (Vector3)lowOrbitState.velocity;
 
                     cmd.EndpointRelitivePosition = lowOrbitPos;
-                    cmd.MoveTypeAtDestination = PositionDB.MoveTypes.Orbit;
                     cmd.EndpointTargetOrbit = lowOrbit;
                     cmd.EndpointTargetExpendDeltaV = deltaV;
                     break;
@@ -267,7 +247,15 @@ namespace Pulsar4X.Engine.Orders
                     return;
 
                 _warpingDB = new WarpMovingDB(_entityCommanding, _targetEntity, EndpointRelitivePosition, EndpointTargetOrbit);
-                _warpingDB.EndpointTargetExpendDeltaV = EndpointTargetExpendDeltaV;
+                
+                //if we're already in a warp moving state,
+                //then we should carry over the SavedNewtonionVector.
+                //this will happen in the case of serveying grav anomalies. 
+                if (_entityCommanding.TryGetDatablob<WarpMovingDB>(out var warpMovingDB))
+                {
+                    _warpingDB.SavedNewtonionVector = warpMovingDB.SavedNewtonionVector;
+                }
+                
                 EntityCommanding.SetDataBlob(_warpingDB);
 
                 WarpMoveProcessor.StartNonNewtTranslation(EntityCommanding);

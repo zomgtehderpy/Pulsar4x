@@ -130,7 +130,7 @@
           "Units": "m/s",
           "DescriptionFormula": "'Specific Impulse in m/s, can be increased by research'",
           "GuiHint": "GuiTextDisplay",
-          "AttributeFormula": "7000 + TechData('tech-nuclear-solid-engine') * 250"
+          "AttributeFormula": "ExhaustVelocityLookup(Ability('Fuel Type')) + TechData('tech-nuclear-solid-engine') * 250"
         },
         {
           "Name": "Thrust",

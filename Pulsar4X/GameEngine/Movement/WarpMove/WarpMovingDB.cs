@@ -18,54 +18,58 @@ namespace Pulsar4X.Datablobs
     /// </summary>
     public class WarpMovingDB : BaseDataBlob
     {
+        
+        #region InWarpData
         [JsonProperty]
         public bool HasStarted { get; internal set; } = false;
 
         [JsonProperty]
         public DateTime LastProcessDateTime = new DateTime();
+        [JsonProperty]
+        public float Heading_Radians { get; internal set; }
+        
+        [JsonProperty]
+        public Vector3 CurrentNonNewtonionVectorMS { get; internal set; }
 
+        [JsonProperty]
+        internal Vector2 _position;
+        [JsonProperty]
+        internal Entity _parentEnitity;
+        
+        [JsonProperty]
+        internal bool IsAtTarget { get; set; }
+        
+        #endregion
+        
+        
+        #region StartPointData
+
+        [JsonProperty]
+        public DateTime EntryDateTime { get; internal set; }
         [JsonProperty]
         public Vector3 SavedNewtonionVector { get; internal set; }
 
         [JsonProperty]
         public Vector3 EntryPointAbsolute { get; internal set; }
+        
+        #endregion
+        
+        #region EndPointData
+        
+        [JsonProperty]
+        public DateTime PredictedExitTime { get; internal set; }
+        
         [JsonProperty]
         public Vector3 ExitPointAbsolute { get; internal set; }
 
         [JsonProperty]
         public Vector3 ExitPointrelative { get; internal set; }
-
-        [JsonProperty]
-        public float Heading_Radians { get; internal set; }
-        [JsonProperty]
-        public DateTime EntryDateTime { get; internal set; }
-        [JsonProperty]
-        public DateTime PredictedExitTime { get; internal set; }
-
-        [JsonProperty]
-        public Vector3 CurrentNonNewtonionVectorMS { get; internal set; }
-
-        internal Vector2 _position;
-        internal Entity _parentEnitity;
         public KeplerElements EndpointTargetOrbit { get; private set; }
-
-        /// <summary>
-        /// Newtonion Vector to burn once warp is complete.
-        /// </summary>
-        [JsonProperty]
-        internal Vector3 EndpointTargetExpendDeltaV { get; set; }
-
-        /// <summary>
-        /// when true, will attempt a newton circularization burn after warp, if ExpendDelaV is 0
-        /// </summary>
-        [JsonProperty]
-        internal bool AutoCirculariseAfterWarp { get; set; } = true;
-
-        [JsonProperty]
-        internal bool IsAtTarget { get; set; }
-
+        
         [JsonProperty]
         internal Entity? TargetEntity;
+        
+        
         [JsonIgnore] //don't store datablobs, we catch this on deserialization.
         internal PositionDB TargetPositionDB;
         public PositionDB GetTargetPosDB
@@ -73,6 +77,9 @@ namespace Pulsar4X.Datablobs
             get { return TargetPositionDB; }
         }
 
+        #endregion
+
+        
         public WarpMovingDB()
         {
         }
@@ -133,7 +140,6 @@ namespace Pulsar4X.Datablobs
             ExitPointAbsolute = db.ExitPointAbsolute;
             CurrentNonNewtonionVectorMS = db.CurrentNonNewtonionVectorMS;
             EndpointTargetOrbit = db.EndpointTargetOrbit;
-            EndpointTargetExpendDeltaV = db.EndpointTargetExpendDeltaV;
             IsAtTarget = db.IsAtTarget;
             TargetEntity = db.TargetEntity;
 
