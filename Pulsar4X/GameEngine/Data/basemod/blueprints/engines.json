@@ -50,7 +50,7 @@
           "DescriptionFormula": "'The type of fuel the engine burns'",
           "GuiHint": "GuiFuelTypeSelection",
           "GuidDictionary": {
-            "fuel-storage": "10"
+            "fuel-storage": "'conventional'"
           },
           "AttributeFormula": "GuidString('rp-1')"
         },
@@ -119,9 +119,9 @@
         {
           "Name": "Fuel Type",
           "DescriptionFormula": "'The type of fuel the engine burns'",
-          "GuiHint": "None",
+          "GuiHint": "GuiFuelTypeSelection",
           "GuidDictionary": {
-            "fuel-storage": "10"
+            "fuel-storage": "'ntr'"
           },
           "AttributeFormula": "GuidString('hydrofiss')"
         },

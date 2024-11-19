@@ -594,8 +594,9 @@ namespace Pulsar4X.SDL2UI
             var keys = new List<int>();
             var names = new List<string>();
 
-            foreach(var cargoType in attribute.GuidDictionary.Keys)
+            foreach(string cargoType in attribute.GuidDictionary.Keys)
             {
+                var fuelType = attribute.GuidDictionary[cargoType].StrResult;
                 string cargoTypeID = cargoType.ToString();
                 var cargos = uiState.Faction.GetDataBlob<FactionInfoDB>().Data.CargoGoods.GetAll().Where(c => c.Value.CargoTypeID.Equals(cargoTypeID));
                 foreach(var cargo in cargos)
@@ -603,7 +604,9 @@ namespace Pulsar4X.SDL2UI
                     if(cargo.Value is ProcessedMaterial
                         && ((ProcessedMaterial)cargo.Value).Formulas != null
                         && ((ProcessedMaterial)cargo.Value).Formulas.ContainsKey("ExhaustVelocity")
-                        && ((ProcessedMaterial)cargo.Value).Formulas["ExhaustVelocity"].IsNotNullOrEmpty())
+                        && ((ProcessedMaterial)cargo.Value).Formulas["ExhaustVelocity"].IsNotNullOrEmpty()
+                        && ((ProcessedMaterial)cargo.Value).Formulas.ContainsKey("FuelType")
+                        && ((ProcessedMaterial)cargo.Value).Formulas["FuelType"] == fuelType)
                     {
                         cargoTypesToDisplay.Add(cargo.Key, cargo.Value);
                         keys.Add(cargo.Key);

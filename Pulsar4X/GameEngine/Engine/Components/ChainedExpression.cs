@@ -19,12 +19,12 @@ namespace Pulsar4X.Components
 
         //this bool is used for tempory created ChainedExpressions that will not have dependants or be dependant. if these are alowed to be dependants they tend to change a dependee's dependant list while itterating.
         private bool _isDependant = true;
-        internal List<ChainedExpression> DependantExpressions = new List<ChainedExpression>();
+        public List<ChainedExpression> DependantExpressions = new List<ChainedExpression>();
 
         /// <summary>
         /// returns Result as an object. consider using IntResult or DResult
         /// </summary>
-        internal object Result { get; private set; }
+        public object Result { get; private set; }
 
         /// <summary>
         /// This should probilby be avoided, but can be usefull for another formula reading this one, doing another calc, then setting this result again.
@@ -37,7 +37,7 @@ namespace Pulsar4X.Components
         /// Returns Result as an Int. note that if the result was a double you will loose the fraction (ie 1.8 will be 1)
         /// Getting this will fire the Evaluate if Result is null (but won't know if it's old)
         /// </summary>
-        internal int IntResult
+        public int IntResult
         {
             get
             {
@@ -68,7 +68,7 @@ namespace Pulsar4X.Components
         /// Returns Result as a Long. note that if the result was a double you will loose the fraction (ie 1.8 will be 1)
         /// Getting this will fire the Evaluate if Result is null (but won't know if it's old)
         /// </summary>
-        internal long LongResult
+        public long LongResult
         {
             get
             {
@@ -99,7 +99,7 @@ namespace Pulsar4X.Components
         /// Returns Result as a double
         /// Getting this will fire the Evaluate if Result is null (but won't know if its old)
         /// </summary>
-        internal double DResult
+        public double DResult
         {
             get
             {
@@ -125,7 +125,7 @@ namespace Pulsar4X.Components
         }
 
 
-        internal bool BoolResult
+        public bool BoolResult
         {
             get{
                 switch (Result)
@@ -145,7 +145,7 @@ namespace Pulsar4X.Components
             }
         }
 
-        internal string StrResult
+        public string StrResult
         {
             get{
                 switch (Result)

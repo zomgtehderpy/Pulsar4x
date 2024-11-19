@@ -36,7 +36,8 @@
       "WealthCost": 3,
       "OutputAmount": 2,
       "Formulas": {
-        "ExhaustVelocity": "3510"
+        "ExhaustVelocity": "3510",
+        "FuelType": "conventional"
       }
     }
   },
@@ -57,7 +58,8 @@
       "WealthCost": 3,
       "OutputAmount": 2,
       "Formulas": {
-        "ExhaustVelocity": "3615"
+        "ExhaustVelocity": "3615",
+        "FuelType": "conventional"
       }
     }
   },
@@ -78,7 +80,8 @@
       "WealthCost": 3,
       "OutputAmount": 2,
       "Formulas": {
-        "ExhaustVelocity": "4462"
+        "ExhaustVelocity": "4462",
+        "FuelType": "conventional"
       }
     }
   },
@@ -100,7 +103,8 @@
       "WealthCost": 3,
       "OutputAmount": 100,
       "Formulas": {
-        "ExhaustVelocity": "7000"
+        "ExhaustVelocity": "7000",
+        "FuelType": "ntr"
       }
     }
   },
