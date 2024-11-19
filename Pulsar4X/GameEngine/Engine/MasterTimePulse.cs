@@ -50,7 +50,7 @@ namespace Pulsar4X.Engine
         private float _timeMultiplier = 1f;
 
         [JsonIgnore]
-        private TimeSpan _tickInterval = TimeSpan.FromMilliseconds(250);
+        private TimeSpan _tickInterval = TimeSpan.FromMilliseconds(100);
 
         [JsonProperty]
         public TimeSpan TickFrequency

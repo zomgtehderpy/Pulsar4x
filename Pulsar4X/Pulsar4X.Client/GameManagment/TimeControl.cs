@@ -14,11 +14,12 @@ namespace Pulsar4X.SDL2UI
 
         bool _isPaused = true;
         int _timeSpanValue = 1;
-        int _timeSpanType = 2;
+        int _timeSpanType = 3;
         new ImGuiWindowFlags _flags = ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoTitleBar;
 
-        string[] _timespanTypeSelection = new string[7]
+        string[] _timespanTypeSelection = new string[8]
         {
+            "Milliseconds",
             "Seconds",
             "Minutes",
             "Hours",
@@ -31,8 +32,8 @@ namespace Pulsar4X.SDL2UI
         bool _expanded;
 
         ImGuiTreeNodeFlags _xpanderFlags = ImGuiTreeNodeFlags.AllowItemOverlap;
-        float _freqTimeSpanValue = 0.5f;
-        int _freqSpanType = 0;
+        float _freqTimeSpanValue = 0.1f;
+        int _freqSpanType = 1;
 
         private TimeControl()
         {
@@ -126,24 +127,27 @@ namespace Pulsar4X.SDL2UI
             switch (_timeSpanType)
             {
                 case 0:
+                    _timeloop.Ticklength = TimeSpan.FromMilliseconds(_timeSpanValue);
+                    break;   
+                case 1:
                     _timeloop.Ticklength = TimeSpan.FromSeconds(_timeSpanValue);
                     break;
-                case 1:
+                case 2:
                     _timeloop.Ticklength = TimeSpan.FromMinutes(_timeSpanValue);
                     break;
-                case 2:
+                case 3:
                     _timeloop.Ticklength = TimeSpan.FromHours(_timeSpanValue);
                     break;
-                case 3:
+                case 4:
                     _timeloop.Ticklength = TimeSpan.FromDays(_timeSpanValue);
                     break;
-                case 4:
+                case 5:
                     _timeloop.Ticklength = TimeSpan.FromDays(_timeSpanValue * 7);
                     break;
-                case 5:
+                case 6:
                     _timeloop.Ticklength = TimeSpan.FromDays(_timeSpanValue * 30);
                     break;
-                case 6:
+                case 7:
                     _timeloop.Ticklength = TimeSpan.FromDays(_timeSpanValue * 365);
                     break;
             }
@@ -156,21 +160,24 @@ namespace Pulsar4X.SDL2UI
                     _timeSpanValue = (int)_timeloop.Ticklength.TotalSeconds;
                     break;
                 case 1:
-                    _timeSpanValue = (int)_timeloop.Ticklength.TotalMinutes;
+                    _timeSpanValue = (int)_timeloop.Ticklength.TotalSeconds;
                     break;
                 case 2:
-                    _timeSpanValue = (int)_timeloop.Ticklength.TotalHours;
+                    _timeSpanValue = (int)_timeloop.Ticklength.TotalMinutes;
                     break;
                 case 3:
-                    _timeSpanValue = (int)_timeloop.Ticklength.TotalDays;
+                    _timeSpanValue = (int)_timeloop.Ticklength.TotalHours;
                     break;
                 case 4:
-                    _timeSpanValue = (int)_timeloop.Ticklength.TotalDays / 7;
+                    _timeSpanValue = (int)_timeloop.Ticklength.TotalDays;
                     break;
                 case 5:
-                    _timeSpanValue = (int)_timeloop.Ticklength.TotalDays / 30;
+                    _timeSpanValue = (int)_timeloop.Ticklength.TotalDays / 7;
                     break;
                 case 6:
+                    _timeSpanValue = (int)_timeloop.Ticklength.TotalDays / 30;
+                    break;
+                case 7:
                     _timeSpanValue = (int)_timeloop.Ticklength.TotalDays / 365;
                     break;
             }
@@ -180,24 +187,27 @@ namespace Pulsar4X.SDL2UI
             switch (_freqSpanType)
             {
                 case 0:
-                    _timeloop.TickFrequency = TimeSpan.FromSeconds(_freqTimeSpanValue);
+                    _timeloop.TickFrequency = TimeSpan.FromMilliseconds(_freqTimeSpanValue);
                     break;
                 case 1:
-                    _timeloop.TickFrequency = TimeSpan.FromMinutes(_freqTimeSpanValue);
+                    _timeloop.TickFrequency = TimeSpan.FromSeconds(_freqTimeSpanValue);
                     break;
                 case 2:
-                    _timeloop.TickFrequency = TimeSpan.FromHours(_freqTimeSpanValue);
+                    _timeloop.TickFrequency = TimeSpan.FromMinutes(_freqTimeSpanValue);
                     break;
                 case 3:
-                    _timeloop.TickFrequency = TimeSpan.FromDays(_freqTimeSpanValue);
+                    _timeloop.TickFrequency = TimeSpan.FromHours(_freqTimeSpanValue);
                     break;
                 case 4:
-                    _timeloop.TickFrequency = TimeSpan.FromDays(_freqTimeSpanValue * 7);
+                    _timeloop.TickFrequency = TimeSpan.FromDays(_freqTimeSpanValue);
                     break;
                 case 5:
-                    _timeloop.TickFrequency = TimeSpan.FromDays(_freqTimeSpanValue * 30);
+                    _timeloop.TickFrequency = TimeSpan.FromDays(_freqTimeSpanValue * 7);
                     break;
                 case 6:
+                    _timeloop.TickFrequency = TimeSpan.FromDays(_freqTimeSpanValue * 30);
+                    break;
+                case 7:
                     _timeloop.TickFrequency = TimeSpan.FromDays(_freqTimeSpanValue * 365);
                     break;
             }
@@ -207,24 +217,27 @@ namespace Pulsar4X.SDL2UI
             switch (_freqSpanType)
             {
                 case 0:
-                    _freqTimeSpanValue = (float)_timeloop.TickFrequency.TotalSeconds;
+                    _freqTimeSpanValue = (float)_timeloop.TickFrequency.TotalMilliseconds;
                     break;
                 case 1:
-                    _freqTimeSpanValue = (float)_timeloop.TickFrequency.TotalMinutes;
+                    _freqTimeSpanValue = (float)_timeloop.TickFrequency.TotalSeconds;
                     break;
                 case 2:
-                    _freqTimeSpanValue = (float)_timeloop.TickFrequency.TotalHours;
+                    _freqTimeSpanValue = (float)_timeloop.TickFrequency.TotalMinutes;
                     break;
                 case 3:
-                    _freqTimeSpanValue = (float)_timeloop.TickFrequency.TotalDays;
+                    _freqTimeSpanValue = (float)_timeloop.TickFrequency.TotalHours;
                     break;
                 case 4:
-                    _freqTimeSpanValue = (float)_timeloop.TickFrequency.TotalDays / 7;
+                    _freqTimeSpanValue = (float)_timeloop.TickFrequency.TotalDays;
                     break;
                 case 5:
-                    _freqTimeSpanValue = (float)_timeloop.TickFrequency.TotalDays / 30;
+                    _freqTimeSpanValue = (float)_timeloop.TickFrequency.TotalDays / 7;
                     break;
                 case 6:
+                    _freqTimeSpanValue = (float)_timeloop.TickFrequency.TotalDays / 30;
+                    break;
+                case 7:
                     _freqTimeSpanValue = (float)_timeloop.TickFrequency.TotalDays / 365;
                     break;
             }
