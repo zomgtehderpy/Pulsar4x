@@ -44,7 +44,7 @@ public static class ShipDesignFromJson
         {
           DamageProfileDB = new EntityDamageProfileDB(shipComponents, (armor, armorThickness))
         };
-
+        design.Initialise(factionInfoDB);
         return design;
     }
 }

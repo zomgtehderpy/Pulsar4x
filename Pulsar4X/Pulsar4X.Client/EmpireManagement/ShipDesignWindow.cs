@@ -23,8 +23,10 @@ namespace Pulsar4X.SDL2UI
     {
         private bool ShowNoDesigns = false;
         private byte[] SelectedDesignName =  ImGuiSDL2CSHelper.BytesFromString("foo", 32);
-        private SafeList<ShipDesign> ExistingShipDesigns = new();
+        private List<string> _existingShipDesignNames = new();
+        private List<string> _existingShipDesignIDs = new();
         private string SelectedExistingDesignID = String.Empty;
+        private ShipDesign _workingDesign;
         private bool SelectedDesignObsolete;
         bool _imagecreated = false;
 
@@ -127,15 +129,21 @@ namespace Pulsar4X.SDL2UI
         {
             var designs = _factionInfoDB.ShipDesigns.Values.Where(d => !d.IsObsolete).ToList();
             designs.Sort((a, b) => a.Name.CompareTo(b.Name));
-            ExistingShipDesigns = new SafeList<ShipDesign>(designs);
+            _existingShipDesignNames = new List<string>();
+            _existingShipDesignIDs = new List<string>();
+            foreach (var design in designs)
+            {
+                _existingShipDesignIDs.Add(design.UniqueID);
+                _existingShipDesignNames.Add(design.Name);
+            }
 
-            if(ExistingShipDesigns.Count == 0)
+            if(_existingShipDesignNames.Count == 0)
             {
                 ShowNoDesigns = true;
                 return;
             }
-            if(SelectedExistingDesignID.IsNullOrEmpty() && ExistingShipDesigns.Count > 0)
-                Select(ExistingShipDesigns[0]);
+            if(SelectedExistingDesignID.IsNullOrEmpty() && _existingShipDesignNames.Count > 0)
+                Select(_factionInfoDB.ShipDesigns[_existingShipDesignIDs[0]]);
 
             ShowNoDesigns = false;
         }
@@ -160,13 +168,14 @@ namespace Pulsar4X.SDL2UI
 
         void Select(ShipDesign design)
         {
-            SelectedExistingDesignID = design.UniqueID;
-            SelectedDesignName = ImGuiSDL2CSHelper.BytesFromString(design.Name, 32);
-            SelectedComponents = design.Components;
-            SelectedDesignObsolete = design.IsObsolete;
-            _armor = design.Armor.type;
+            _workingDesign = design.Clone(_factionInfoDB);
+            SelectedExistingDesignID = _workingDesign.UniqueID;
+            SelectedDesignName = ImGuiSDL2CSHelper.BytesFromString(_workingDesign.Name, 32);
+            SelectedComponents = _workingDesign.Components;
+            SelectedDesignObsolete = _workingDesign.IsObsolete;
+            _armor = _workingDesign.Armor.type;
             _armorIndex = _armorSelection.IndexOf(_armor);
-            _armorThickness = design.Armor.thickness;
+            _armorThickness = _workingDesign.Armor.thickness;
             DesignChanged = true;
             UpdateShipStats();
         }
@@ -175,7 +184,7 @@ namespace Pulsar4X.SDL2UI
         {
             if (IsActive && ImGui.Begin("Ship Design", ref IsActive, _flags))
             {
-                if(ExistingShipDesigns.Count != _uiState.Faction.GetDataBlob<FactionInfoDB>().ShipDesigns.Values.Count)
+                if(_existingShipDesignNames.Count != _uiState.Faction.GetDataBlob<FactionInfoDB>().ShipDesigns.Values.Count)
                 {
                     RefreshExistingClasses();
                 }
@@ -229,33 +238,36 @@ namespace Pulsar4X.SDL2UI
 
                 if(name.IsNotNullOrEmpty())
                 {
-                    foreach (var shipclass in ExistingShipDesigns)
-                    {
-                        if (shipclass.Name.Equals(name))
-                        {
-                            if (shipclass.DesignVersion >= version)
-                                version = shipclass.DesignVersion + 1;
-                        }
-                    }
-                    var design = _factionInfoDB.ShipDesigns[SelectedExistingDesignID];
-                    design.Name = name;
-                    design.Components = SelectedComponents;
-                    if(_armor == null)
-                        throw new NullReferenceException();
 
-                    design.Armor = (_armor, _armorThickness);
-                    design.IsObsolete = SelectedDesignObsolete;
-                    if(design.IsObsolete)
+                    if(_existingShipDesignNames.Contains(name))
                     {
-                        // If the design is obsolete mark it is invalid so it can't be produced
-                        design.IsValid = false;
+                        if (_workingDesign.DesignVersion >= version)
+                            _workingDesign.DesignVersion += 1;
                     }
                     else
                     {
-                        design.IsValid = IsDesignValid();
+                        _workingDesign.Name = name;
+                    }
+                    
+                    if(_armor == null)
+                        throw new NullReferenceException();
+                    _workingDesign.Armor = (_armor, _armorThickness);
+                    _workingDesign.IsObsolete = SelectedDesignObsolete;
+                    
+                    _workingDesign.Initialise(_factionInfoDB);
+                    
+                    
+                    if(_workingDesign.IsObsolete)
+                    {
+                        // If the design is obsolete mark it is invalid so it can't be produced
+                        _workingDesign.IsValid = false;
+                    }
+                    else
+                    {
+                        _workingDesign.IsValid = IsDesignValid();
                     }
 
-                    if(design.IsObsolete)
+                    if(_workingDesign.IsObsolete)
                     {
                         SelectedExistingDesignID = String.Empty;
                     }
@@ -275,25 +287,40 @@ namespace Pulsar4X.SDL2UI
             if(ImGui.BeginChild("ComponentDesignSelection", new Vector2(Styles.LeftColumnWidth, windowContentSize.Y - 24f), true))
             {
                 DisplayHelpers.Header("Existing Designs", "Select an existing ship design to edit it.");
-
-                foreach(var design in ExistingShipDesigns)
+                ImGui.Columns(2);
+                ImGui.SetColumnWidth(0, Styles.LeftColumnWidth - 24);
+                ImGui.SetColumnWidth(1, 24);
+                for (int index = 0; index < _existingShipDesignNames.Count; index++)
                 {
-                    string name = design.Name;
-                    if (ImGui.Selectable(name + "###existing-design-" + design.UniqueID, design.UniqueID.Equals(SelectedExistingDesignID)))
+                    string? designID = _existingShipDesignIDs[index];
+                    string designName = _existingShipDesignNames[index];
+                    if (ImGui.Selectable(designName + "###existing-design-" + designID, designID.Equals(SelectedExistingDesignID)))
                     {
-                        Select(design);
+                        Select(_factionInfoDB.ShipDesigns[designID]);
                     }
-                    if(ImGui.BeginPopupContextItem())
+
+                    if (ImGui.BeginPopupContextItem())
                     {
-                        if(ImGui.MenuItem("Delete###delete-" + design.UniqueID))
+                        if (ImGui.MenuItem("Delete###delete-" + designID))
                         {
-                            _factionInfoDB.ShipDesigns.Remove(design.UniqueID);
+                            _factionInfoDB.ShipDesigns.Remove(designID);
                             SelectedExistingDesignID = String.Empty;
                             RefreshExistingClasses();
                         }
+                        if (ImGui.MenuItem("Obsolete###obsolete-" + designID))
+                        {
+                            _factionInfoDB.ShipDesigns[designID].IsObsolete = true;
+                            SelectedExistingDesignID = String.Empty;
+                            RefreshExistingClasses();
+                        }
+
                         ImGui.EndPopup();
                     }
+                    ImGui.NextColumn();
+                    ImGui.Text(_factionInfoDB.ShipDesigns[designID].DesignVersion.ToString());
+                    ImGui.NextColumn();
                 }
+                ImGui.Columns(0);
                 ImGui.EndChild();
             }
 

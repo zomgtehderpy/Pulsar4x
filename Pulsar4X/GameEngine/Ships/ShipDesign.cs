@@ -101,28 +101,6 @@ namespace Pulsar4X.Ships
         {
             if(id != null) UniqueID = id;
             _factionId = faction.OwningEntity.Id;
-            faction.ShipDesigns.Add(UniqueID, this);
-            faction.IndustryDesigns[UniqueID] = this;
-            Initialise(faction.Data.CargoGoods, name, components, armor);
-        }
-
-        // Fixme: needs to use the FactionDataStore somehow
-        // public ShipDesign(SerializationInfo info, StreamingContext context)
-        // {
-        //     if (info == null)
-        //         throw new ArgumentNullException("info");
-
-        //     UniqueID = (string)info.GetValue(nameof(UniqueID), typeof(string));
-        //     _factionGuid = (string)info.GetValue(nameof(_factionGuid), typeof(string));
-        //     var name = (string)info.GetValue(nameof(Name), typeof(string));
-        //     var components = (List<(ComponentDesign design, int count)>)info.GetValue(nameof(Components), typeof(List<(ComponentDesign design, int count)>));
-        //     var armor = ((ArmorBlueprint armorType, float thickness))info.GetValue(nameof(Armor), typeof((ArmorBlueprint armorType, float thickness)));
-
-        //     Initialise(name, components, armor);
-        // }
-
-        public void Initialise(CargoDefinitionsLibrary cargoLibrary, string name, List<(ComponentDesign design, int count)> components, (ArmorBlueprint armorType, float thickness) armor)
-        {
             Name = name;
             Components = components;
             Armor = armor;
@@ -144,12 +122,22 @@ namespace Pulsar4X.Ships
 
             }
             DamageProfileDB = new EntityDamageProfileDB(components, armor);
-            var armorMass = GetArmorMass(DamageProfileDB, cargoLibrary);
+            var armorMass = GetArmorMass(DamageProfileDB, faction.Data.CargoGoods);
             MassPerUnit += (long)Math.Round(armorMass);
             MineralCosts.ToList().ForEach(x => ResourceCosts[x.Key] = x.Value);
             MaterialCosts.ToList().ForEach(x => ResourceCosts[x.Key] = x.Value);
             ComponentCosts.ToList().ForEach(x => ResourceCosts[x.Key] = x.Value);
             IndustryPointCosts = (long)(MassPerUnit * 0.1);
+        }
+        
+        /// <summary>
+        /// this just stores the design in the factionInfo
+        /// </summary>
+        /// <param name="faction"></param>
+        public void Initialise(FactionInfoDB faction)
+        {
+            faction.ShipDesigns.Add(UniqueID, this);
+            faction.IndustryDesigns[UniqueID] = this;
         }
 
         public static double GetArmorMass(EntityDamageProfileDB damageProfile, CargoDefinitionsLibrary cargoLibrary)
@@ -191,6 +179,20 @@ namespace Pulsar4X.Ships
             info.AddValue(nameof(_factionId), _factionId);
             info.AddValue(nameof(Armor), Armor);
             info.AddValue(nameof(Components), Components);
+        }
+
+        /// <summary>
+        /// creates a clone of this object
+        /// </summary>
+        /// <returns></returns>
+        public ShipDesign Clone(FactionInfoDB faction)
+        {
+            var components = new List<(ComponentDesign design, int count)>(Components);
+            var armor = Armor;
+            var newDesign = new ShipDesign(faction, Name, components, armor);
+            
+            return newDesign;
+            
         }
     }
 }
