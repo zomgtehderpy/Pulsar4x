@@ -15,8 +15,9 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "gallicite": "60",
-        "corundium": "60"
+        "iron": "[Mass] * 0.75",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.05"
       },
       "ComponentType": "Facility",
       "MountType": "ShipCargo, PlanetInstallation",
@@ -38,18 +39,7 @@
             "titanium": "10",
             "tungsten": "10",
             "silicon": "10",
-            "graphite": "10",
-            "sorium": "10",
-            "duranium": "10",
-            "neutronium": "10",
-            "corbomite": "10",
-            "tritanium": "10",
-            "boronide": "10",
-            "uridium": "10",
-            "corundium": "10",
-            "mercassium": "10",
-            "vendarite": "10",
-            "gallicite": "10"
+            "graphite": "10"
           },
           "AttributeFormula": "AtbConstrArgs([GuidDict])",
           "AttributeType": "Pulsar4X.Industry.MineResourcesAtbDB"
@@ -73,8 +63,9 @@
         "BuildPointCost": "[Mass] / 2"
       },
       "ResourceCost": {
-        "duranium": "Ability('Size') / 100 * 60",
-        "mercassium": "Ability('Size') / 100 * 60"
+        "iron": "[Mass] * 0.75",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.05"
       },
       "ComponentType":"Facility",
       "MountType": "ShipCargo, PlanetInstallation",
@@ -128,8 +119,9 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "[Mass] * 0.05",
-        "copper": "[Mass] * 0.005"
+        "iron": "[Mass] * 0.75",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.05"
       },
       "ComponentType": "Facility",
       "MountType": "ShipCargo, PlanetInstallation",
@@ -180,10 +172,9 @@
         "BuildPointCost": "Ability('Size') * 20"
       },
       "ResourceCost": {
-        "iron": "[Mass] * 0.05",
-        "copper": "[Mass] * 0.005",
-        "aluminium": "[Mass] * 0.005",
-        "plastic": "[Mass] * 0.001"
+        "iron": "[Mass] * 0.75",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.05"
       },
       "ComponentType": "Facility",
       "MountType": "ShipCargo, PlanetInstallation",
@@ -251,8 +242,11 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "Ability('Slip Size') * 10",
-        "copper": "Ability('Slip Size') * 0.5"
+        "iron": "[Mass] * 0.5",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "stainless-steel": "[Mass] * 0.1"
       },
       "ComponentType":"Facility",
       "MountType": "ShipCargo, PlanetInstallation",
@@ -316,8 +310,11 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "60",
-        "copper": "60"
+        "iron": "[Mass] * 0.5",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "stainless-steel": "[Mass] * 0.1"
       },
       "ComponentType":"Facility",
       "MountType": "ShipCargo, PlanetInstallation",
@@ -359,8 +356,9 @@
         "BuildPointCost": "Ability('Storage Volume') * 4.5"
       },
       "ResourceCost": {
-        "iron": "Ability('Storage Volume') * 10",
-        "copper": "Ability('Storage Volume')"
+        "stainless-steel": "[Mass] * 0.5",
+        "aluminium": "[Mass] * 0.4",
+        "plastic": "[Mass] * 0.1"
       },
       "ComponentType":"Cargo Hold",
       "MountType": "ShipComponent, ShipCargo, PlanetInstallation",
@@ -442,8 +440,8 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "[Mass]",
-        "copper": "[Mass]"
+        "stainless-steel": "[Mass] * 0.75",
+        "aluminium": "[Mass] * 0.25"
       },
       "ComponentType":"Fuel Storage",
       "MountType": "ShipComponent, ShipCargo, PlanetInstallation, Fighter",
@@ -553,8 +551,11 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "60",
-        "copper": "60"
+        "iron": "[Mass] * 0.5",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "stainless-steel": "[Mass] * 0.1"
       },
       "ComponentType": "Facility",
       "MountType": "PlanetInstallation",
@@ -604,8 +605,11 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "duranium": "60",
-        "mercassium": "60"
+        "iron": "[Mass] * 0.5",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "stainless-steel": "[Mass] * 0.1"
       },
       "ComponentType":"Facility",
       "MountType": "PlanetInstallation",
@@ -687,7 +691,11 @@
         "BuildPointCost": "100"
       },
       "ResourceCost": {
-        "duranium": "100"
+        "iron": "[Mass] * 0.5",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "stainless-steel": "[Mass] * 0.1"
       },
       "ComponentType":"Infrastructure",
       "MountType": "ShipCargo, PlanetInstallation",
@@ -731,8 +739,11 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "duranium": "60",
-        "mercassium": "60"
+        "iron": "[Mass] * 0.5",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "stainless-steel": "[Mass] * 0.1"
       },
       "ComponentType":"Facility",
       "MountType": "ShipComponent, ShipCargo, PlanetInstallation",

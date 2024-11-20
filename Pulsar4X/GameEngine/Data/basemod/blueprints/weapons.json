@@ -15,7 +15,13 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "duranium": "[Mass]"
+        "aluminium": "[Mass] * 0.3",
+        "stainless-steel": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "copper": "[Mass] * 0.1",
+        "tungsten": "[Mass] * 0.2",
+        "titanium": "[Mass] * 0.1",
+        "graphite": "[Mass] * 0.1"
       },
       "ComponentType": "Weapon",
       "MountType": "ShipComponent, ShipCargo, PlanetInstallation",
@@ -237,7 +243,13 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "duranium": "[Mass]"
+        "aluminium": "[Mass] * 0.3",
+        "stainless-steel": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "copper": "[Mass] * 0.1",
+        "tungsten": "[Mass] * 0.2",
+        "titanium": "[Mass] * 0.1",
+        "graphite": "[Mass] * 0.1"
       },
       "ComponentType": "Weapon",
       "MountType": "ShipComponent, ShipCargo",

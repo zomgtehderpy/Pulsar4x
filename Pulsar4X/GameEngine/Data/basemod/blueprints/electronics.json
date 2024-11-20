@@ -133,7 +133,10 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "duranium": "[Mass]"
+        "stainless-steel": "[Mass] * 0.5",
+        "plastic": "[Mass] * 0.2",
+        "aluminium": "[Mass] * 0.1",
+        "copper": "[Mass] * 0.1"
       },
       "ComponentType": "Weapon",
       "MountType": "ShipComponent, ShipCargo",
@@ -215,9 +218,10 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "[Mass]",
-        "copper": "[Mass]",
-        "aluminium": "[Mass]"
+        "stainless-steel": "[Mass] * 0.4",
+        "plastic": "[Mass] * 0.2",
+        "aluminium": "[Mass] * 0.1",
+        "copper": "[Mass] * 0.3"
       },
       "ComponentType": "Science",
       "MountType": "ShipComponent, ShipCargo",
@@ -268,9 +272,10 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "[Mass]",
-        "copper": "[Mass]",
-        "aluminium": "[Mass]"
+        "stainless-steel": "[Mass] * 0.4",
+        "plastic": "[Mass] * 0.2",
+        "aluminium": "[Mass] * 0.1",
+        "copper": "[Mass] * 0.3"
       },
       "ComponentType": "Science",
       "MountType": "ShipComponent, ShipCargo",
