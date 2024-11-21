@@ -239,20 +239,25 @@ namespace Pulsar4X.SDL2UI
                 if(name.IsNotNullOrEmpty())
                 {
 
-                    if(_existingShipDesignNames.Contains(name))
+                    //we're using version 0 if the design is not built yet.
+                    if(_existingShipDesignNames.Contains(name) && _workingDesign.DesignVersion > 0)
                     {
-                        if (_workingDesign.DesignVersion >= version)
-                            _workingDesign.DesignVersion += 1;
+                        _workingDesign.DesignVersion += 1;
                     }
                     else
                     {
                         _workingDesign.Name = name;
+                        if (_factionInfoDB.ShipDesigns.ContainsKey(_workingDesign.UniqueID))
+                        {
+                            _factionInfoDB.ShipDesigns.Remove(_workingDesign.UniqueID);
+                        }
                     }
                     
                     if(_armor == null)
                         throw new NullReferenceException();
                     _workingDesign.Armor = (_armor, _armorThickness);
                     _workingDesign.IsObsolete = SelectedDesignObsolete;
+                    
                     
                     _workingDesign.Initialise(_factionInfoDB);
                     
@@ -317,7 +322,10 @@ namespace Pulsar4X.SDL2UI
                         ImGui.EndPopup();
                     }
                     ImGui.NextColumn();
-                    ImGui.Text(_factionInfoDB.ShipDesigns[designID].DesignVersion.ToString());
+                    string versionText = "P";
+                    if(_factionInfoDB.ShipDesigns[designID].DesignVersion > 0)
+                        versionText = _factionInfoDB.ShipDesigns[designID].DesignVersion.ToString();
+                    ImGui.Text(versionText);
                     ImGui.NextColumn();
                 }
                 ImGui.Columns(0);

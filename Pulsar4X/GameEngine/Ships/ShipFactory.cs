@@ -86,7 +86,9 @@ namespace Pulsar4X.Ships
 
         public static Entity CreateShip(ShipDesign shipDesign, Entity ownerFaction, OrbitDB orbit,  Entity parent, string? shipName = null)
         {
-
+            if (shipDesign.DesignVersion == 0) //we're using version 0 to indicate the design hasn't been built yet.
+                shipDesign.DesignVersion = 1;
+            
             var starsys = parent.Manager;
             var position = OrbitMath.GetPosition(orbit, parent.StarSysDateTime);
             List<BaseDataBlob> dataBlobs = new List<BaseDataBlob>();

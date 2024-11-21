@@ -6,7 +6,7 @@
       "Name": "Conventional Rocket Engine",
       "Formulas": {
         "Description": "A Newtonian Thruster",
-        "Mass": "Ability('Size') * 50",
+        "Mass": "Ability('Mass')",
         "Volume": "Max(1, [Mass] / 150)",
         "HTK": "Max(1, [Mass] / 100)",
         "CrewReq": "0",
@@ -15,7 +15,11 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "stainless-steel": "[Mass] * 8"
+        "stainless-steel": "[Mass] * 0.15",
+        "titanium": "[Mass] * .25",
+        "aluminium": "[Mass] * .3",
+        "tungsten": "[Mass] * .05",
+        "copper": "[Mass] * .25"
       },
       "ComponentType": "Engine",
       "MountType": "ShipComponent, ShipCargo, Fighter",
@@ -23,13 +27,14 @@
       "IndustryTypeID": "component-construction",
       "Attributes": [
         {
-          "Name": "Size",
-          "DescriptionFormula": "'The size of the engine'",
+          "Name": "Mass",
+          "Units": "kg",
+          "DescriptionFormula": "'The size of the engine in kg'",
           "GuiHint": "GuiSelectionMaxMinInt",
           "MaxFormula": "TechData('tech-conventional-engine-max-size')",
           "MinFormula": "TechData('tech-conventional-engine-min-size')",
           "StepFormula": "1",
-          "AttributeFormula": "150"
+          "AttributeFormula": "250"
         },
         {
           "Name": "Exhaust Velocity",
@@ -87,7 +92,7 @@
       "Name": "Solid Core Nuclear Engine",
       "Formulas": {
         "Description": "A Newtonian Thruster",
-        "Mass": "Ability('Size') * 50",
+        "Mass": "Ability('Mass')",
         "Volume": "[Mass] / 48",
         "HTK": "Max(1, [Mass] / 100)",
         "CrewReq": "0",
@@ -108,13 +113,14 @@
       "IndustryTypeID": "component-construction",
       "Attributes": [
         {
-          "Name": "Size",
-          "DescriptionFormula": "'The size of the engine'",
+          "Name": "Mass",
+          "Units": "kg",
+          "DescriptionFormula": "'The size of the engine in kg'",
           "GuiHint": "GuiSelectionMaxMinInt",
           "MaxFormula": "TechData('tech-conventional-engine-max-size')",
-          "MinFormula": "TechData('tech-conventional-engine-min-size')",
+          "MinFormula": "TechData('tech-conventional-engine-min-size') + 1400",
           "StepFormula": "1",
-          "AttributeFormula": "36"
+          "AttributeFormula": "2000"
         },
         {
           "Name": "Fuel Type",

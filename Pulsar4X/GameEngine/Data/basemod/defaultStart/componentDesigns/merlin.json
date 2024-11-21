@@ -3,6 +3,7 @@
   "name": "Merlin",
   "templateId": "conventional-engine",
   "attributes": [
-    { "key": "Size", "value": 30 }
+    { "key": "Mass", "value": 470 },
+    { "key": "Fuel Type", "value": "rp-1" }
   ]
 }

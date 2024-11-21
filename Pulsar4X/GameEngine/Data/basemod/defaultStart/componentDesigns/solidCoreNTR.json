@@ -1,8 +1,8 @@
 {
   "id": "default-design-NTR1.8",
-  "name": "NTR-1.8",
+  "name": "NERVA",
   "templateId": "scntr-engine",
   "attributes": [
-    { "key": "Size", "value": 36 }
+    { "key": "Mass", "value": 1800 }
   ]
 }

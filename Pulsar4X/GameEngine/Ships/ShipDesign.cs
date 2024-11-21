@@ -136,7 +136,7 @@ namespace Pulsar4X.Ships
         /// <param name="faction"></param>
         public void Initialise(FactionInfoDB faction)
         {
-            faction.ShipDesigns.Add(UniqueID, this);
+            faction.ShipDesigns[UniqueID] = this;
             faction.IndustryDesigns[UniqueID] = this;
         }
 
