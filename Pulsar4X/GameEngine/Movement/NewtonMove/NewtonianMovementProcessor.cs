@@ -7,6 +7,7 @@ using Pulsar4X.Industry;
 using Pulsar4X.Factions;
 using Pulsar4X.Orbits;
 using Pulsar4X.Storage;
+using Pulsar4X.Weapons;
 
 namespace Pulsar4X.Engine
 {

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Pulsar4X.Engine;
 using Pulsar4X.Engine.Auth;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Modding;
 using Pulsar4X.Orbital;
 using Pulsar4X.Components;
-using Pulsar4X.Engine.Designs;
 using Pulsar4X.Colonies;
 using Pulsar4X.Factions;
 using Pulsar4X.JumpPoints;

@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using Pulsar4X.Engine;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Components;
-using Pulsar4X.Engine.Damage;
-using Pulsar4X.Engine.Designs;
 using Pulsar4X.Factions;
 using Pulsar4X.Sensors;
+using Pulsar4X.Engine.Orders;
 
-namespace Pulsar4X.Engine.Orders
+namespace Pulsar4X.Weapons
 {
     public class SetWeaponsFireControlOrder : EntityCommand
     {

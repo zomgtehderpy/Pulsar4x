@@ -12,8 +12,9 @@ using Pulsar4X.Atb;
 using Pulsar4X.Factions;
 using Pulsar4X.Damage;
 using Pulsar4X.Storage;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine.Designs
+namespace Pulsar4X.Weapons
 {
     public class OrdnanceDesign : ICargoable, IConstructableDesign, ISerializable
     {

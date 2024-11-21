@@ -3,9 +3,8 @@ using System;
 using Pulsar4X.Components;
 using Pulsar4X.Interfaces;
 using Pulsar4X.DataStructures;
-using Pulsar4X.Atb;
 
-namespace Pulsar4X.Engine.Damage
+namespace Pulsar4X.Weapons
 {
     public class WeaponState : ComponentTreeHeirarchyAbilityState
     {
@@ -40,6 +39,6 @@ namespace Pulsar4X.Engine.Damage
             InternalMagCurAmount = db.InternalMagCurAmount;
 
         }
-        
+
     }
 }

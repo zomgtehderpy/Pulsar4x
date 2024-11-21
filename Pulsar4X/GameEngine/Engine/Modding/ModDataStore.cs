@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Pulsar4X.Blueprints;
 using Pulsar4X.Damage;
-using Pulsar4X.Engine.Damage;
 using Pulsar4X.Industry;
 
 namespace Pulsar4X.Modding

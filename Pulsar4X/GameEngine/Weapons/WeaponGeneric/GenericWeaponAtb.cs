@@ -1,9 +1,8 @@
-using Newtonsoft.Json;
 using Pulsar4X.Engine;
 using Pulsar4X.Components;
 using Pulsar4X.Interfaces;
 
-namespace Pulsar4X.Atb
+namespace Pulsar4X.Weapons
 {
     public class GenericWeaponAtb : IComponentDesignAttribute
     {
@@ -13,7 +12,7 @@ namespace Pulsar4X.Atb
         public int ReloadAmountPerSec;
         //amount of reload points for a single shot
         public int AmountPerShot;
-        //minimum amount of shots to be able to fire. eg simulate a magazine reload and burst fire. 
+        //minimum amount of shots to be able to fire. eg simulate a magazine reload and burst fire.
         public int MinShotsPerfire;
 
         private GenericWeaponAtb()

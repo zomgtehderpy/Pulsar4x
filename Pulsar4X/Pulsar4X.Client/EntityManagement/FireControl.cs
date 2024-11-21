@@ -4,18 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using ImGuiNET;
 using Pulsar4X.Engine;
-using Pulsar4X.Engine.Sensors;
-using Pulsar4X.Engine.Damage;
-using Pulsar4X.Engine.Designs;
-using Pulsar4X.Engine.Orders;
 using Pulsar4X.SDL2UI;
 using Vector2 = System.Numerics.Vector2;
-using Pulsar4X.Atb;
-using Pulsar4X.Components;
 using Pulsar4X.Datablobs;
-using Pulsar4X.Orbital;
 using Pulsar4X.Factions;
 using Pulsar4X.Storage;
+using Pulsar4X.Weapons;
 
 namespace Pulsar4X.ImGuiNetUI
 {

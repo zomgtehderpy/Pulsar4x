@@ -1,8 +1,9 @@
 using System;
+using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Orbital;
 
-namespace Pulsar4X.Datablobs;
+namespace Pulsar4X.Weapons;
 public class BeamInfoDB : BaseDataBlob
 {
     public enum BeamStates

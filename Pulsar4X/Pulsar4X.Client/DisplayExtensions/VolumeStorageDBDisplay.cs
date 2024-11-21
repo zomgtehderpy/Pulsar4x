@@ -3,7 +3,6 @@ using ImGuiNET;
 using Pulsar4X.Engine;
 using Pulsar4X.Industry;
 using Pulsar4X.Components;
-using Pulsar4X.Engine.Designs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine.Orders;
 using System;
@@ -11,6 +10,7 @@ using Pulsar4X.Colonies;
 using Pulsar4X.Factions;
 using Pulsar4X.Ships;
 using Pulsar4X.Storage;
+using Pulsar4X.Weapons;
 
 namespace Pulsar4X.SDL2UI
 {

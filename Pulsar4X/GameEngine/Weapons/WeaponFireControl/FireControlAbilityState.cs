@@ -1,7 +1,8 @@
 using Pulsar4X.Components;
+using Pulsar4X.Engine;
 using Pulsar4X.Names;
 
-namespace Pulsar4X.Engine.Damage
+namespace Pulsar4X.Weapons
 {
     /// <summary>
     /// Fire control instance ability state.

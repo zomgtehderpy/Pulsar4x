@@ -3,15 +3,12 @@ using System;
 using Pulsar4X.Engine;
 using Pulsar4X.Components;
 using Pulsar4X.Interfaces;
-using Pulsar4X.Engine.Designs;
-using Pulsar4X.Extensions;
 using Pulsar4X.DataStructures;
-using Pulsar4X.Engine.Damage;
 using System.Diagnostics.CodeAnalysis;
 using Pulsar4X.Orbital;
-using Pulsar4X.Weapons;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Weapons
 {
     public class GenericBeamWeaponAtbDB : IComponentDesignAttribute, IFireWeaponInstr
     {
@@ -71,7 +68,7 @@ namespace Pulsar4X.Datablobs
         {
 
             var beamLen = Math.Min(1, count * LenPerPulseInSeconds); //our beam can't be longer than the time period.
-            
+
             BeamWeaponProcessor.FireBeamWeapon(launchingEntity, tgtEntity, true, Energy, WaveLength ,BeamSpeed, beamLen);
         }
 

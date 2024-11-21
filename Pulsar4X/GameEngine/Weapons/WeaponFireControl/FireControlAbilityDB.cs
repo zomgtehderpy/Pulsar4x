@@ -1,17 +1,13 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Pulsar4X.Components;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Weapons
 {
     /// <summary>
     /// Other than giving an entity a datablob that says it can do fire control,
-    /// it just links component instsances for convenience.  
+    /// it just links component instsances for convenience.
     /// </summary>
     public class FireControlAbilityDB : BaseDataBlob
     {
@@ -27,7 +23,7 @@ namespace Pulsar4X.Datablobs
 
         FireControlAbilityDB(FireControlAbilityDB db)
         {
-            
+
         }
 
         public override object Clone()

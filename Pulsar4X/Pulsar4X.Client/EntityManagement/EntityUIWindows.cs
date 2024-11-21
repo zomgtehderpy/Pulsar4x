@@ -9,6 +9,7 @@ using Pulsar4X.Energy;
 using Pulsar4X.Factions;
 using Pulsar4X.JumpPoints;
 using Pulsar4X.Storage;
+using Pulsar4X.Weapons;
 
 
 namespace Pulsar4X.SDL2UI

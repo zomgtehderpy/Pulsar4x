@@ -16,6 +16,7 @@ using Pulsar4X.Damage;
 using Pulsar4X.Names;
 using Pulsar4X.Orbits;
 using Pulsar4X.Sensors;
+using Pulsar4X.Weapons;
 
 namespace Pulsar4X.SDL2UI
 {

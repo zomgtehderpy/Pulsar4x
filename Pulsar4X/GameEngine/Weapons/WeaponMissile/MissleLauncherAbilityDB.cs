@@ -1,8 +1,8 @@
 using Pulsar4X.Atb;
-using Pulsar4X.Engine.Designs;
+using Pulsar4X.Datablobs;
 using Pulsar4X.Ships;
 
-namespace Pulsar4X.Datablobs;
+namespace Pulsar4X.Weapons;
 
 public class MissileLaunchersAbilityDB : BaseDataBlob
 {

@@ -17,6 +17,7 @@ using Pulsar4X.People;
 using Pulsar4X.Ships;
 using Pulsar4X.Storage;
 using Pulsar4X.Technology;
+using Pulsar4X.Weapons;
 
 namespace Pulsar4X.Factions
 {

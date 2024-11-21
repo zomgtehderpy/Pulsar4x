@@ -6,13 +6,12 @@ using Pulsar4X.Components;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
 using Pulsar4X.Engine.Auth;
-using Pulsar4X.Engine.Designs;
-using Pulsar4X.Engine.Sensors;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Events;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Sensors;
 using Pulsar4X.Ships;
+using Pulsar4X.Weapons;
 
 namespace Pulsar4X.Factions
 {

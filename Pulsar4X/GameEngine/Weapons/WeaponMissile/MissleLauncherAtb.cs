@@ -1,11 +1,9 @@
 using Pulsar4X.Interfaces;
 using Pulsar4X.Components;
 using Pulsar4X.Engine;
-using Pulsar4X.Engine.Designs;
-using Pulsar4X.Engine.Damage;
 using Pulsar4X.DataStructures;
 
-namespace Pulsar4X.Atb
+namespace Pulsar4X.Weapons
 {
     public class MissileLauncherAtb : IComponentDesignAttribute, IFireWeaponInstr
     {

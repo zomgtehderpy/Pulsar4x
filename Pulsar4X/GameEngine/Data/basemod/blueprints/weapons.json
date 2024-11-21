@@ -215,14 +215,14 @@
           "DescriptionFormula": "'int magSize, int reloadPerSec, int amountPerShot, int minShotsPerfire\nAtbConstrArgs(Ability('Charge Period') * Ability('Power Input'), Ability('Power Input'), Ability('Pulse Energy'), 1)",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(2, 1, 2, 2)",
-          "AttributeType": "Pulsar4X.Atb.GenericWeaponAtb"
+          "AttributeType": "Pulsar4X.Weapons.GenericWeaponAtb"
         },
         {
           "Name": "genericBeamWpnAtbArgs",
           "DescriptionFormula": "'int range, double wavelength, int wattage",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Range'), Ability('Target Wavelength'), Ability('Pulse Energy'))",
-          "AttributeType": "Pulsar4X.Datablobs.GenericBeamWeaponAtbDB"
+          "AttributeType": "Pulsar4X.Weapons.GenericBeamWeaponAtbDB"
         }
       ]
     }
@@ -326,13 +326,13 @@
           "DescriptionFormula": "'int magSize, int reloadPerSec, int amountPerShot, int minShotsPerfire, WpnTypes type",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(120, 1, 120, 1)",
-          "AttributeType": "Pulsar4X.Atb.GenericWeaponAtb"
+          "AttributeType": "Pulsar4X.Weapons.GenericWeaponAtb"
         },
         {
           "Name": "dbargs",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Max Mass'), Ability('ROF'), Ability('Launch Force'))",
-          "AttributeType": "Pulsar4X.Atb.MissileLauncherAtb"
+          "AttributeType": "Pulsar4X.Weapons.MissileLauncherAtb"
         }
 
       ]

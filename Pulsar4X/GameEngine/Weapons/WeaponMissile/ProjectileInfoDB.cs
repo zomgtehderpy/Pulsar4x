@@ -1,7 +1,7 @@
-using System;
 using Newtonsoft.Json;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Weapons
 {
     public class ProjectileInfoDB : BaseDataBlob
     {

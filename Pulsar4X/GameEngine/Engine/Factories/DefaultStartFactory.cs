@@ -6,7 +6,6 @@ using Pulsar4X.Colonies;
 using Pulsar4X.Components;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Energy;
-using Pulsar4X.Engine.Designs;
 using Pulsar4X.Engine.Factories;
 using Pulsar4X.Factions;
 using Pulsar4X.Fleets;
@@ -20,6 +19,7 @@ using Pulsar4X.Sensors;
 using Pulsar4X.Ships;
 using Pulsar4X.Storage;
 using Pulsar4X.Technology;
+using Pulsar4X.Weapons;
 
 namespace Pulsar4X.Engine
 {

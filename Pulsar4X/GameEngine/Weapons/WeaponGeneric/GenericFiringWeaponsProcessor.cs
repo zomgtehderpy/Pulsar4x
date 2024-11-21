@@ -1,11 +1,9 @@
 using System;
-using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
-using Pulsar4X.Engine.Damage;
 using Pulsar4X.Engine.Orders;
 using Pulsar4X.Interfaces;
 
-namespace GameEngine.WeaponFireControl;
+namespace Pulsar4X.Weapons;
 
 public class GenericFiringWeaponsProcessor : IHotloopProcessor
 {

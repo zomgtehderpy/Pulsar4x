@@ -1,8 +1,7 @@
-using Pulsar4X.Engine.Designs;
 using Pulsar4X.Engine;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Pulsar4X.Interfaces
+namespace Pulsar4X.Weapons
 {
     public interface IFireWeaponInstr
     {

@@ -10,10 +10,10 @@ using Pulsar4X.Components;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Extensions;
 using Pulsar4X.Industry;
-using Pulsar4X.Engine.Designs;
 using Pulsar4X.Factions;
 using Pulsar4X.Storage;
 using Pulsar4X.Technology;
+using Pulsar4X.Weapons;
 
 namespace Pulsar4X.SDL2UI
 {

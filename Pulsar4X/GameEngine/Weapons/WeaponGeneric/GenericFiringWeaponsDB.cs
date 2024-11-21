@@ -1,20 +1,17 @@
 using System;
 using System.Collections.Generic;
-using Pulsar4X.Engine;
-using Pulsar4X.Interfaces;
-using Pulsar4X.Engine.Damage;
 using Pulsar4X.Components;
-using Pulsar4X.Atb;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Weapons
 {
     public class GenericFiringWeaponsDB : BaseDataBlob
     {
 
-        
+
         public string[] WpnIDs = new string[0];
         public int[] InternalMagSizes = new int[0];
-        public int[] InternalMagQty = new int[0]; //this is reload amount not shot amount. 
+        public int[] InternalMagQty = new int[0]; //this is reload amount not shot amount.
         public int[] ReloadAmountsPerSec = new int[0];
         public int[] AmountPerShot = new int[0];
         public int[] MinShotsPerfire = new int[0];
@@ -51,29 +48,29 @@ namespace Pulsar4X.Datablobs
             }
             if (weaponsToAdd.Count == 0)
                 return;
-            
+
             int count = WpnIDs.Length + weaponsToAdd.Count;
             int currentCount = WpnIDs.Length;
             int addCount = weaponsToAdd.Count;
-            
-            
+
+
             string[] wpnIDs = new string[count];
             int[] internalMagSizes = new int[count];
             int[] internalMagQty = new int[count];
             int[] reloadAmountsPerSec = new int[count];
             int[] amountPerShot = new int[count];
-            int[] minShotsPerfire = new int[count];  
+            int[] minShotsPerfire = new int[count];
             int[] shotsfireThisTick = new int[count];
             IFireWeaponInstr[] fireInstr = new IFireWeaponInstr[count];
             WeaponState[] wpnStates = new WeaponState[count];
             double[] launchForce =  new double[count];
-            
+
             FireControlAbilityState[] fcStates = new FireControlAbilityState[count];
-            
-            
+
+
             if(WpnIDs.Length > 0)
             {
-                Array.Copy(WpnIDs, wpnIDs, currentCount); //we can't blockcopy a non primitive. 
+                Array.Copy(WpnIDs, wpnIDs, currentCount); //we can't blockcopy a non primitive.
                 Array.Copy(FireControlStates, fcStates, currentCount);
                 Array.Copy(FireInstructions, fireInstr, currentCount);
                 Array.Copy(WeaponStates, wpnStates, currentCount);
@@ -91,10 +88,10 @@ namespace Pulsar4X.Datablobs
                 int thisIndex = i + offset;
                 GenericWeaponAtb wpnAtb = wpns[i].Design.GetAttribute<GenericWeaponAtb>();
                 var wpnState = wpns[i].GetAbilityState<WeaponState>();
-                
+
                 wpnIDs[thisIndex] = wpns[i].UniqueID;
                 internalMagSizes[thisIndex] = wpnAtb.InternalMagSize;
-                internalMagQty[thisIndex] = wpnState.InternalMagCurAmount; 
+                internalMagQty[thisIndex] = wpnState.InternalMagCurAmount;
                 reloadAmountsPerSec[thisIndex] = wpnAtb.ReloadAmountPerSec;
                 amountPerShot[thisIndex] = wpnAtb.AmountPerShot;
                 minShotsPerfire[thisIndex] = wpnAtb.MinShotsPerfire;
@@ -108,7 +105,7 @@ namespace Pulsar4X.Datablobs
                 {
                     launchForce[thisIndex] = 1;
                 }
-                
+
             }
 
             WpnIDs = wpnIDs;
@@ -123,14 +120,14 @@ namespace Pulsar4X.Datablobs
             ShotsFiredThisTick = shotsfireThisTick;
             LaunchForces = launchForce;
         }
-        
+
         internal void RemoveWeapons(string wpnId)
         {
             ComponentInstance[] wpnInstances = new ComponentInstance[1];
             wpnInstances[0]= OwningEntity.GetDataBlob<ComponentInstancesDB>().AllComponents[wpnId];
             RemoveWeapons(wpnInstances);
         }
-        
+
         internal void RemoveWeapons(string[] wpnIds)
         {
             ComponentInstance[] wpnInstances = new ComponentInstance[wpnIds.Length];
@@ -140,10 +137,10 @@ namespace Pulsar4X.Datablobs
             }
             RemoveWeapons(wpnInstances);
         }
-        
-        
+
+
         /// <summary>
-        /// removes weapons from the index. 
+        /// removes weapons from the index.
         /// </summary>
         /// <param name="wpns"></param>
         internal void RemoveWeapons(ComponentInstance[] wpns)
@@ -152,7 +149,7 @@ namespace Pulsar4X.Datablobs
             //bool[] keepOrRemove = new bool[WpnIDs.Length];
             List<(string id, int index)> wpnsToKeep = new List<(string, int)>();
             //List<int> removeIndexs;
-            
+
             for (int i = 0; i < WpnIDs.Length; i++)
             {
                 bool keep = true;
@@ -169,9 +166,9 @@ namespace Pulsar4X.Datablobs
                 if(keep)
                     wpnsToKeep.Add((WpnIDs[i], i));
             }
-            
+
             int count = wpnsToKeep.Count;
-            
+
             string[] wpnIDs = new string[count];
             int[] internalMagSizes = new int[count];
             int[] internalMagQty = new int[count];
@@ -181,7 +178,7 @@ namespace Pulsar4X.Datablobs
             IFireWeaponInstr[] fireInstr = new IFireWeaponInstr[count];
             double[] launchForce =  new double[count];
             FireControlAbilityState[] fcStates = new FireControlAbilityState[count];
-            WeaponState[] wpnStates = new WeaponState[count]; 
+            WeaponState[] wpnStates = new WeaponState[count];
             int newIndex = 0;
             foreach (var wpn in wpnsToKeep)
             {
@@ -198,7 +195,7 @@ namespace Pulsar4X.Datablobs
                 wpnStates[newIndex] = WeaponStates[oldIndex];
                 newIndex++;
             }
-            
+
             WpnIDs = wpnIDs;
             InternalMagSizes = internalMagSizes;
             InternalMagQty = internalMagQty;
@@ -212,13 +209,13 @@ namespace Pulsar4X.Datablobs
         }
 
         /// <summary>
-        /// Sets weapons, this will remove exsisting. 
+        /// Sets weapons, this will remove exsisting.
         /// </summary>
         /// <param name="wpns"></param>
         internal void SetWeapons(ComponentInstance[] wpns)
         {
             int count = wpns.Length;
-            
+
             string[] wpnIDs = new string[count];
             int[] internalMagSizes = new int[count];
             int[] internalMagQty = new int[count];
@@ -234,10 +231,10 @@ namespace Pulsar4X.Datablobs
             {
                 GenericWeaponAtb wpnAtb = wpns[i].Design.GetAttribute<GenericWeaponAtb>();
                 var wpnState = wpns[i].GetAbilityState<WeaponState>();
-                
+
                 wpnIDs[i] = wpns[i].UniqueID;
                 internalMagSizes[i] = wpnAtb.InternalMagSize;
-                internalMagQty[i] = wpnState.InternalMagCurAmount; 
+                internalMagQty[i] = wpnState.InternalMagCurAmount;
                 reloadAmountsPerSec[i] = wpnAtb.ReloadAmountPerSec;
                 amountPerShot[i] = wpnAtb.AmountPerShot;
                 minShotsPerfire[i] = wpnAtb.MinShotsPerfire;

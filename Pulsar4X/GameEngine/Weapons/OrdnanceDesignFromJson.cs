@@ -2,11 +2,10 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using Pulsar4X.Components;
-using Pulsar4X.Datablobs;
-using Pulsar4X.Engine.Designs;
+using Pulsar4X.Engine;
 using Pulsar4X.Factions;
 
-namespace Pulsar4X.Engine.Factories;
+namespace Pulsar4X.Weapons;
 
 public static class OrdnanceDesignFromJson
 {

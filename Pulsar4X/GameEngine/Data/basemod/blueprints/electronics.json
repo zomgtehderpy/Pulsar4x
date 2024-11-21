@@ -197,7 +197,7 @@
           "GuiHint": "None",
           "GuidDictionary": {},
           "AttributeFormula": "AtbConstrArgs(Ability('Range'), Ability('Tracking Speed'))",
-          "AttributeType": "Pulsar4X.Datablobs.BeamFireControlAtbDB"
+          "AttributeType": "Pulsar4X.Weapons.BeamFireControlAtbDB"
         }
       ]
     }
