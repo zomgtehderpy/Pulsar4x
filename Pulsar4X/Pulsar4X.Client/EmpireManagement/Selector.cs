@@ -8,6 +8,7 @@ using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
 using Pulsar4X.Factions;
 using Pulsar4X.Fleets;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.SDL2UI
 {

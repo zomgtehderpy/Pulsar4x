@@ -5,6 +5,7 @@ using Pulsar4X.Engine;
 using Pulsar4X.Names;
 using Pulsar4X.Orbits;
 using Pulsar4X.Galaxy;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.JumpPoints
 {

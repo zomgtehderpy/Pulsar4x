@@ -9,6 +9,7 @@ using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
 using Pulsar4X.GeoSurveys;
 using Pulsar4X.Industry;
+using Pulsar4X.Movement;
 using Pulsar4X.Names;
 using Pulsar4X.Orbital;
 using Pulsar4X.Orbits;

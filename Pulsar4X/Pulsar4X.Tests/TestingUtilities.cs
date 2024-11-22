@@ -13,6 +13,7 @@ using Pulsar4X.Orbits;
 using Pulsar4X.People;
 using Pulsar4X.Ships;
 using Pulsar4X.Galaxy;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.Tests
 {

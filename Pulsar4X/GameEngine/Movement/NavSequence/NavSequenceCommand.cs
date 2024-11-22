@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Generic;
-using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
+using Pulsar4X.Engine;
+using Pulsar4X.Engine.Orders;
 
-namespace Pulsar4X.Engine.Orders
+namespace Pulsar4X.Movement
 {
-    //This is the interface between the UI and the NavSequenceDB. 
+    //This is the interface between the UI and the NavSequenceDB.
     //We use this to add, remove, edit etc movement manuvers to the ship.
     public class NavSequenceCommand : EntityCommand
     {
@@ -18,9 +18,9 @@ namespace Pulsar4X.Engine.Orders
         public override ActionLaneTypes ActionLanes => ActionLaneTypes.Movement;
 
         private SafeList<Manuver> _manuvers = new SafeList<Manuver>();
-        
+
         public override bool IsBlocking { get; } = false;
-        
+
         Entity _entityCommanding;
         internal override Entity EntityCommanding { get { return _entityCommanding; } }
         internal override bool IsValidCommand(Game game)
@@ -36,8 +36,8 @@ namespace Pulsar4X.Engine.Orders
             navCommand._manuvers.Add(manuver);
             navCommand.Execute(entity.StarSysDateTime);
         }
-        
-        
+
+
         internal override void Execute(DateTime atDateTime)
         {
             if (!EntityCommanding.TryGetDatablob(out NavSequenceDB navDB))

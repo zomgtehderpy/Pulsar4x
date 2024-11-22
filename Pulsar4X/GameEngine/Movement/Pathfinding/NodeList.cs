@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Movement
 {
     /// <summary>
     /// The NodeList class represents a collection of nodes. Internally, it uses a Hashtable instance to provide

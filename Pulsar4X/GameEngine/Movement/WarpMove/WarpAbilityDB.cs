@@ -1,7 +1,6 @@
-using Pulsar4X.Interfaces;
-using Pulsar4X.Orbital;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Movement
 {
     public class WarpAbilityDB : BaseDataBlob, IAbilityDescription
     {
@@ -14,7 +13,7 @@ namespace Pulsar4X.Datablobs
         public double BubbleCreationCost { get; internal set; }
         public double BubbleSustainCost { get; internal set; }
         public double BubbleCollapseCost { get; internal set; }
-        
+
 
         public WarpAbilityDB()
         {

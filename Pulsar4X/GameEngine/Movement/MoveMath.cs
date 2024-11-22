@@ -1,12 +1,11 @@
 using System;
 using Pulsar4X.Colonies;
 using Pulsar4X.Engine;
-using Pulsar4X.Extensions;
 using Pulsar4X.Galaxy;
 using Pulsar4X.Orbital;
 using Pulsar4X.Orbits;
 
-namespace Pulsar4X.Datablobs;
+namespace Pulsar4X.Movement;
 
 /// <summary>
 /// Databolob/movetype agnostic position and movement math for entites

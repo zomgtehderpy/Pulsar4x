@@ -13,6 +13,7 @@ using Pulsar4X.Sensors;
 using Pulsar4X.Ships;
 using Pulsar4X.Technology;
 using Pulsar4X.Galaxy;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.SDL2UI
 {

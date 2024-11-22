@@ -1,9 +1,10 @@
 using System;
+using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Galaxy;
 using Pulsar4X.Orbital;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Movement
 {
     public class NewtonSimpleMoveDB : BaseDataBlob
     {

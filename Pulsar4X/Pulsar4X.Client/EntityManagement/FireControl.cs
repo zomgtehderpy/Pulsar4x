@@ -10,6 +10,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Factions;
 using Pulsar4X.Storage;
 using Pulsar4X.Weapons;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.ImGuiNetUI
 {

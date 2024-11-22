@@ -8,11 +8,11 @@ using Pulsar4X.Components;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Industry;
 using Pulsar4X.Interfaces;
-using Pulsar4X.Atb;
 using Pulsar4X.Factions;
 using Pulsar4X.Damage;
 using Pulsar4X.Storage;
 using Pulsar4X.Engine;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.Weapons
 {

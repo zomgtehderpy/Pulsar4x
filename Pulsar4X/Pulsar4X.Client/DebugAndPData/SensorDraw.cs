@@ -8,6 +8,7 @@ using Pulsar4X.Engine.Sensors;
 using Pulsar4X.Extensions;
 using Pulsar4X.Names;
 using Pulsar4X.Sensors;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.SDL2UI
 {

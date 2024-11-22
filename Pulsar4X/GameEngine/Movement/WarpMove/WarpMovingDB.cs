@@ -1,14 +1,12 @@
 using System;
-using System.Data.SqlClient;
 using System.Runtime.Serialization;
-using GameEngine.WarpMove;
 using Newtonsoft.Json;
 using Pulsar4X.Orbital;
 using Pulsar4X.Engine;
-using Pulsar4X.Extensions;
 using Pulsar4X.Orbits;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Movement
 {
 
 
@@ -18,7 +16,7 @@ namespace Pulsar4X.Datablobs
     /// </summary>
     public class WarpMovingDB : BaseDataBlob
     {
-        
+
         #region InWarpData
         [JsonProperty]
         public bool HasStarted { get; internal set; } = false;
@@ -27,7 +25,7 @@ namespace Pulsar4X.Datablobs
         public DateTime LastProcessDateTime = new DateTime();
         [JsonProperty]
         public float Heading_Radians { get; internal set; }
-        
+
         [JsonProperty]
         public Vector3 CurrentNonNewtonionVectorMS { get; internal set; }
 
@@ -35,13 +33,13 @@ namespace Pulsar4X.Datablobs
         internal Vector2 _position;
         [JsonProperty]
         internal Entity _parentEnitity;
-        
+
         [JsonProperty]
         internal bool IsAtTarget { get; set; }
-        
+
         #endregion
-        
-        
+
+
         #region StartPointData
 
         [JsonProperty]
@@ -51,25 +49,25 @@ namespace Pulsar4X.Datablobs
 
         [JsonProperty]
         public Vector3 EntryPointAbsolute { get; internal set; }
-        
+
         #endregion
-        
+
         #region EndPointData
-        
+
         [JsonProperty]
         public DateTime PredictedExitTime { get; internal set; }
-        
+
         [JsonProperty]
         public Vector3 ExitPointAbsolute { get; internal set; }
 
         [JsonProperty]
         public Vector3 ExitPointrelative { get; internal set; }
         public KeplerElements EndpointTargetOrbit { get; private set; }
-        
+
         [JsonProperty]
         internal Entity? TargetEntity;
-        
-        
+
+
         [JsonIgnore] //don't store datablobs, we catch this on deserialization.
         internal PositionDB TargetPositionDB;
         public PositionDB GetTargetPosDB
@@ -79,7 +77,7 @@ namespace Pulsar4X.Datablobs
 
         #endregion
 
-        
+
         public WarpMovingDB()
         {
         }

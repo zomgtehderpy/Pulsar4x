@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using ImGuiNET;
-using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
 using Pulsar4X.Orbital;
@@ -10,12 +9,12 @@ using Pulsar4X.SDL2UI;
 using Pulsar4X.SDL2UI.ManuverNodes;
 using Vector2 = System.Numerics.Vector2;
 using Vector3 = Pulsar4X.Orbital.Vector3;
-using Pulsar4X.Engine.Orders;
 using Pulsar4X.Factions;
 using Pulsar4X.Names;
 using Pulsar4X.Orbits;
 using Pulsar4X.Storage;
 using Pulsar4X.Galaxy;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.ImGuiNetUI.EntityManagement
 {

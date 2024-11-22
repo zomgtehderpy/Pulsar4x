@@ -1,9 +1,9 @@
 using System;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Interfaces;
-using Pulsar4X.Engine.Sensors;
 using Pulsar4X.Colonies;
 using Pulsar4X.Engine;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.Sensors
 {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Pulsar4X.Orbital;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Datablobs;
-using Pulsar4X.Extensions;
 using Pulsar4X.Engine;
 using Pulsar4X.Damage;
 using Pulsar4X.Events;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.Weapons;
 
@@ -54,7 +54,7 @@ public class BeamWeaponProcessor : IHotloopProcessor
         switch(beamInfo.BeamState)
         {
             case BeamInfoDB.BeamStates.Fired:
-                
+
                 var tgtPos = beamInfo.TargetEntity.GetDataBlob<PositionDB>().AbsolutePosition;
                 var vectorToTarget = state.AbsolutePosition - tgtPos;
                 var timeToTarget = WeaponUtils.TimeToTarget(vectorToTarget, beamInfo.VelocityVector.Length());
@@ -201,7 +201,7 @@ public class BeamWeaponProcessor : IHotloopProcessor
         var nowTime = launchingEntity.StarSysDateTime;
         var ourAbsPos = launchingEntity.GetDataBlob<PositionDB>().AbsolutePosition;
         var targetFuturePosTime =WeaponUtils.PredictTargetPositionAndTime(ourAbsPos, nowTime, targetEntity, beamVelocity);
-        
+
         var normVector = Vector3.Normalise(targetFuturePosTime.pos - ourAbsPos);
         var absVector =  normVector * beamVelocity;
         var startPos = (PositionDB)launchingEntity.GetDataBlob<PositionDB>().Clone();

@@ -4,8 +4,9 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
 using Pulsar4X.Orbits;
 using Pulsar4X.Galaxy;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Movement
 {
     public static class InterceptCalcs
     {

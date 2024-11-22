@@ -71,7 +71,7 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Exhaust Velocity'), Ability('Fuel Type'), Ability('Fuel Consumption'))",
-          "AttributeType": "Pulsar4X.Atb.NewtonionThrustAtb"
+          "AttributeType": "Pulsar4X.Movement.NewtonionThrustAtb"
         },
 
         {
@@ -84,7 +84,7 @@
         }
       ]
     }
-  },  
+  },
   {
     "Type": "ComponentTemplate",
     "Payload": {
@@ -157,7 +157,7 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Exhaust Velocity'), Ability('Fuel Type'), Ability('Fuel Consumption'))",
-          "AttributeType": "Pulsar4X.Atb.NewtonionThrustAtb"
+          "AttributeType": "Pulsar4X.Movement.NewtonionThrustAtb"
         },
         {
           "Name": "Sensor Signature",
@@ -247,7 +247,7 @@
           "Name": "db",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Engine Power'), 'electricity', Ability('Bubble Creation Energy Cost'), Ability('Bubble Sustain Energy Cost'), -Ability('Bubble Collapse Energy Returned'))",
-          "AttributeType": "Pulsar4X.Atb.WarpDriveAtb"
+          "AttributeType": "Pulsar4X.Movement.WarpDriveAtb"
         }
       ]
     }

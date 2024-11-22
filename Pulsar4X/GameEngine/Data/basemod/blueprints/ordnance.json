@@ -277,7 +277,7 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Exhaust Velocity'), 'rp-1', Ability('Fuel Consumption'))",
-          "AttributeType": "Pulsar4X.Atb.NewtonionThrustAtb"
+          "AttributeType": "Pulsar4X.Movement.NewtonionThrustAtb"
         },
         {
           "Name": "Sensor Signature",

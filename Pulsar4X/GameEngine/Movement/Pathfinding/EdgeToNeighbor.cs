@@ -1,4 +1,4 @@
-﻿namespace Pulsar4X.Engine
+﻿namespace Pulsar4X.Movement
 {
     /// <summary>
     /// EdgeToNeighbor represents an edge eminating from one Node to its neighbor.  The EdgeToNeighbor

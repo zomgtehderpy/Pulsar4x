@@ -1,6 +1,7 @@
+using Pulsar4X.Engine;
 using Pulsar4X.JumpPoints;
 
-namespace Pulsar4X.Engine.Orders
+namespace Pulsar4X.Movement
 {
     public class MoveToNearestAnomalyAction : MoveToNearestAction
     {

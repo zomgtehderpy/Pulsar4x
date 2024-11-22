@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameEngine.WarpMove;
 using Newtonsoft.Json;
 using Pulsar4X.Orbital;
-using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
 using Pulsar4X.Colonies;
 using Pulsar4X.Energy;
@@ -13,8 +11,10 @@ using Pulsar4X.Names;
 using Pulsar4X.Orbits;
 using Pulsar4X.Ships;
 using Pulsar4X.Galaxy;
+using Pulsar4X.Engine.Orders;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine.Orders
+namespace Pulsar4X.Movement
 {
     public class WarpMoveCommand : EntityCommand
     {

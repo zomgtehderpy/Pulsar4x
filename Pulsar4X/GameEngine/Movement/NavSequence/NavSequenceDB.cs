@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using Pulsar4X.Orbital;
 using Pulsar4X.Engine;
-using Pulsar4X.Interfaces;
-using Pulsar4X.Extensions;
-using Pulsar4X.Engine.Orders;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Movement
 {
 
     public struct Manuver
@@ -40,7 +38,7 @@ namespace Pulsar4X.Datablobs
             CurrentActivity = db.CurrentActivity;
             ManuverNodes = new List<Manuver>(db.ManuverNodes);
         }
-        
+
         internal void AddManuver(Manuver.ManuverType type, DateTime startDate, Entity StartParent, KeplerElements startKE, DateTime endDate, Entity EndParent, KeplerElements endKE)
         {
             var node = new Manuver()
@@ -68,7 +66,7 @@ namespace Pulsar4X.Datablobs
             startParentSubpulse.AddEntityInterupt(startDate, nameof(NavSequenceProcessor), OwningEntity);
             endParentSubpulse.AddEntityInterupt(endDate, nameof(NavSequenceProcessor), OwningEntity);
         }
-        
+
         public override object Clone()
         {
             return new NavSequenceDB(this);

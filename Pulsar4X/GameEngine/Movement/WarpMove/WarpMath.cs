@@ -7,7 +7,7 @@ using Pulsar4X.Galaxy;
 using Pulsar4X.Orbital;
 using Pulsar4X.Orbits;
 
-namespace GameEngine.WarpMove;
+namespace Pulsar4X.Movement;
 
 public static class WarpMath
 {

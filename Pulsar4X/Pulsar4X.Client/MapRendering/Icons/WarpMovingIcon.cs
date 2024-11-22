@@ -1,8 +1,7 @@
 ﻿using System;
-using Pulsar4X.Engine;
-using Pulsar4X.Datablobs;
 using Pulsar4X.Orbital;
 using SDL2;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.SDL2UI
 {

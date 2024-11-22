@@ -1,11 +1,11 @@
 ﻿using ImGuiNET;
 using ImGuiSDL2CS;
 using Pulsar4X.Engine;
-using Pulsar4X.Datablobs;
 using Pulsar4X.Orbital;
 using SDL2;
 using Point = SDL2.SDL.SDL_Point;
 using Vector2 = Pulsar4X.Orbital.Vector2;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -66,7 +66,7 @@ namespace Pulsar4X.SDL2UI
         double MAX_ZOOMLEVEL = 1.496e+11;
 
         /// <summary>
-        /// Construct a new Camera class within the Graphic Control Viewport. 
+        /// Construct a new Camera class within the Graphic Control Viewport.
         /// </summary>
         public Camera(ImGuiSDL2CSWindow viewPort)
         {
@@ -93,7 +93,7 @@ namespace Pulsar4X.SDL2UI
             else if (entity.HasDataBlob<PositionDB>())
             {
                 _entityPosDB = entity.GetDataBlob<PositionDB>();
-                _camWorldPos_m = new Orbital.Vector3(); //zero on it. 
+                _camWorldPos_m = new Orbital.Vector3(); //zero on it.
                 IsPinnedToEntity = true;
                 PinnedEntityGuid = entity.Id;
             }
@@ -106,7 +106,7 @@ namespace Pulsar4X.SDL2UI
                 _camWorldPos_m = entity.GetDataBlob<PositionDB>().AbsolutePosition;
             }
         }
-        
+
         public Orbital.Vector2 ViewCoordinateV2_m(Orbital.Vector2 worldCoord_m)
         {
             //we're converting to AU here because zoom works best at AU...
@@ -116,12 +116,12 @@ namespace Pulsar4X.SDL2UI
 
             return viewCoord;
         }
-        
+
         public Orbital.Vector2 ViewCoordinateV2_m(Orbital.Vector3 worldCoord_m)
         {
             return ViewCoordinateV2_m((Vector2)worldCoord_m);
         }
-        
+
         public Point ViewCoordinate_m(Orbital.Vector2 worldCoord_m)
         {
             Orbital.Vector2 coordinate = ViewCoordinateV2_m(worldCoord_m);
@@ -132,26 +132,26 @@ namespace Pulsar4X.SDL2UI
         {
             return ViewCoordinate_m((Vector2)worldCoord_m);
         }
-        
+
         public Point ViewCoordinate_AU(Orbital.Vector3 worldCoord_AU)
         {
             // Since this method uses AU anyway, might as well return it
             return ViewCoordinate_m(Distance.AuToMt(worldCoord_AU));
         }
-        
-        
+
+
         public Orbital.Vector2 ViewCoordinateV2_AU(Orbital.Vector2 worldCoord_AU)
         {
             // Since this method uses AU anyway, might as well return it
             return ViewCoordinateV2_m(Distance.AuToMt(worldCoord_AU));
         }
-        
+
         public Orbital.Vector2 ViewCoordinateV2_AU(Orbital.Vector3 worldCoord_AU)
         {
             // Since this method  uses AU anyway, might as well return it
 			return ViewCoordinateV2_m(Distance.AuToMt(worldCoord_AU));
 		}
-        
+
         public Orbital.Vector3 MouseWorldCoordinate_m()
         {
 			Orbital.Vector2 mouseCoord = new Orbital.Vector2(ImGui.GetMousePos());
@@ -164,9 +164,9 @@ namespace Pulsar4X.SDL2UI
         {
             return Distance.MToAU(MouseWorldCoordinate_m());
         }
-        
+
         /// <summary>
-        /// returns the worldCoordinate of a given View Coordinate 
+        /// returns the worldCoordinate of a given View Coordinate
         /// </summary>
         /// <param name="viewCoordinate"></param>
         /// <returns></returns>
@@ -207,7 +207,7 @@ namespace Pulsar4X.SDL2UI
         {
             return dist / ZoomLevel;
         }
-        
+
         /// <summary>
         /// Returns the Distance in World-Coordinates
         /// </summary>
@@ -236,7 +236,7 @@ namespace Pulsar4X.SDL2UI
         /// </summary>
         public void WorldOffset_m(double xOffset, double yOffset)
         {
-            
+
             _camWorldPos_m.X += (float)(xOffset * UniversalConstants.Units.MetersPerAu / ZoomLevel);
             _camWorldPos_m.Y += (float)(-yOffset * UniversalConstants.Units.MetersPerAu / ZoomLevel);
         }
@@ -277,7 +277,7 @@ namespace Pulsar4X.SDL2UI
         }
 
         /// <summary>
-        /// returns a matrix scaled to zoom. is not translated to camera position. 
+        /// returns a matrix scaled to zoom. is not translated to camera position.
         /// </summary>
         /// <returns>The zoom matrix.</returns>
         public Matrix GetZoomMatrix()
@@ -314,7 +314,7 @@ namespace Pulsar4X.SDL2UI
 
     /// <summary>
     /// Cursor crosshair.
-    /// Primarily made to debug a problem with getting the world coordinate of the mouse cursor. 
+    /// Primarily made to debug a problem with getting the world coordinate of the mouse cursor.
     /// </summary>
     class CursorCrosshair : Icon
     {

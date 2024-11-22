@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Movement
 {
     /// <summary>
     /// The Graph class represents a graph, which is composed of a collection of nodes and edges. This Graph class

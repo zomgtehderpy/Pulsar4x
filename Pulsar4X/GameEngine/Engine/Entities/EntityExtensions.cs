@@ -1,10 +1,7 @@
 using Pulsar4X.Orbital;
 using System;
-using Pulsar4X.Components;
-using Pulsar4X.Atb;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
-using Pulsar4X.Interfaces;
 using System.Collections.Generic;
 using System.Reflection;
 using Pulsar4X.Colonies;
@@ -17,6 +14,7 @@ using Pulsar4X.Orbits;
 using Pulsar4X.Ships;
 using Pulsar4X.Storage;
 using Pulsar4X.Galaxy;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.Extensions
 {

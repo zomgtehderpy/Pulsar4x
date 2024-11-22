@@ -6,7 +6,7 @@ using Pulsar4X.Engine;
 using Pulsar4X.Orbits;
 using Pulsar4X.Galaxy;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Movement
 {
     /// <summary>
     /// This gets added to an entity when it's doing a newton thrust manuver.

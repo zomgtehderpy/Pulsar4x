@@ -6,6 +6,7 @@ using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
 using Pulsar4X.Names;
 using Pulsar4X.Galaxy;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.JumpPoints
 {

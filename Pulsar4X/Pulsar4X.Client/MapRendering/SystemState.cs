@@ -10,6 +10,7 @@ using Pulsar4X.DataStructures;
 using System.Linq;
 using Pulsar4X.Colonies;
 using Pulsar4X.Names;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.SDL2UI
 {

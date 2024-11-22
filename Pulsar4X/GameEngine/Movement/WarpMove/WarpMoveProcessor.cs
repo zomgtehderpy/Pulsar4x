@@ -1,15 +1,14 @@
 using System;
-using System.Collections.Generic;
 using Pulsar4X.Orbital;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Interfaces;
-using Pulsar4X.Engine.Orders;
 using Pulsar4X.Extensions;
 using Pulsar4X.Energy;
 using Pulsar4X.Orbits;
 using Pulsar4X.Galaxy;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Movement
 {
     /// <summary>
     /// Translate move processor.

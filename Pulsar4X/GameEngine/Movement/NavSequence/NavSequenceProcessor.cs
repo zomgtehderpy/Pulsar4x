@@ -5,8 +5,9 @@ using Pulsar4X.Extensions;
 using Pulsar4X.Orbital;
 using Pulsar4X.Names;
 using Pulsar4X.Galaxy;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Movement
 {
     public class NavSequenceProcessor : IInstanceProcessor
     {

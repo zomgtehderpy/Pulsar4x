@@ -1,14 +1,13 @@
 ﻿using NUnit.Framework;
-using Pulsar4X.Atb;
 using Pulsar4X.Components;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Modding;
-using GameEngine.WarpMove;
 using Pulsar4X.Energy;
 using Pulsar4X.Factions;
 using Pulsar4X.Ships;
 using Pulsar4X.Galaxy;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.Tests
 {

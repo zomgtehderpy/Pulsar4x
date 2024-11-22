@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using GameEngine.WarpMove;
 using ImGuiNET;
 using ImGuiSDL2CS;
 using Pulsar4X.Engine;
@@ -10,12 +9,12 @@ using Pulsar4X.Components;
 using Pulsar4X.Blueprints;
 using Pulsar4X.Extensions;
 using Pulsar4X.DataStructures;
-using Pulsar4X.Atb;
 using Pulsar4X.Energy;
 using Pulsar4X.Factions;
 using Pulsar4X.Damage;
 using Pulsar4X.Ships;
 using Pulsar4X.Storage;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -252,16 +251,16 @@ namespace Pulsar4X.SDL2UI
                             _factionInfoDB.ShipDesigns.Remove(_workingDesign.UniqueID);
                         }
                     }
-                    
+
                     if(_armor == null)
                         throw new NullReferenceException();
                     _workingDesign.Armor = (_armor, _armorThickness);
                     _workingDesign.IsObsolete = SelectedDesignObsolete;
-                    
-                    
+
+
                     _workingDesign.Initialise(_factionInfoDB);
-                    
-                    
+
+
                     if(_workingDesign.IsObsolete)
                     {
                         // If the design is obsolete mark it is invalid so it can't be produced

@@ -9,6 +9,7 @@ using Pulsar4X.Factions;
 using Pulsar4X.GeoSurveys;
 using Pulsar4X.Industry;
 using Pulsar4X.Galaxy;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.SDL2UI;
 public class SystemTreeViewer : PulsarGuiWindow

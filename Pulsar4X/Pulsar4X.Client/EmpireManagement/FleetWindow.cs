@@ -17,6 +17,7 @@ using Pulsar4X.Names;
 using Pulsar4X.Ships;
 using Pulsar4X.Storage;
 using Pulsar4X.Galaxy;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.SDL2UI
 {

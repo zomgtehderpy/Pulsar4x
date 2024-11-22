@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Pulsar4X.Datablobs;
+using Pulsar4X.Engine;
 using Pulsar4X.Factions;
 using Pulsar4X.JumpPoints;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Movement
 {
     public class PathfindingManager
     {

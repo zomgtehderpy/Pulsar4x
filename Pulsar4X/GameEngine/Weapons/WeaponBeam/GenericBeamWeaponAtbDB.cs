@@ -7,6 +7,7 @@ using Pulsar4X.DataStructures;
 using System.Diagnostics.CodeAnalysis;
 using Pulsar4X.Orbital;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.Weapons
 {
