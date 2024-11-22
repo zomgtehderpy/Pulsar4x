@@ -35,7 +35,7 @@ public class SystemMapHotKeys : IHotKeyHandler
             }
             else if(e.key.keysym.sym == SDL.SDL_Keycode.SDLK_3)
             {
-                EconomicsWindow.GetInstance().ToggleActive();
+                ColonyManagementWindow.GetInstance().ToggleActive();
             }
             else if(e.key.keysym.sym == SDL.SDL_Keycode.SDLK_4)
             {
