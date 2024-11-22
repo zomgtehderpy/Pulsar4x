@@ -1,11 +1,9 @@
 using Pulsar4X.Blueprints;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
-using Pulsar4X.Orbital;
 using System;
-using System.Collections.Generic;
 
-namespace Pulsar4X.Extensions
+namespace Pulsar4X.Galaxy
 {
     /// <summary>
     /// Information on the calculations can be found here:

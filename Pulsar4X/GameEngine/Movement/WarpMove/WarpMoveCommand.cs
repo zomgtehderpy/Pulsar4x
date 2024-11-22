@@ -12,6 +12,7 @@ using Pulsar4X.Fleets;
 using Pulsar4X.Names;
 using Pulsar4X.Orbits;
 using Pulsar4X.Ships;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Engine.Orders
 {
@@ -62,7 +63,7 @@ namespace Pulsar4X.Engine.Orders
         /// the orbit we want to be in at the target.
         /// </summary>
         public KeplerElements EndpointTargetOrbit;
-        
+
         public static WarpMoveCommand CreateCommand(
             Entity orderEntity,
             Entity targetEntity,
@@ -247,15 +248,15 @@ namespace Pulsar4X.Engine.Orders
                     return;
 
                 _warpingDB = new WarpMovingDB(_entityCommanding, _targetEntity, EndpointRelitivePosition, EndpointTargetOrbit);
-                
+
                 //if we're already in a warp moving state,
                 //then we should carry over the SavedNewtonionVector.
-                //this will happen in the case of serveying grav anomalies. 
+                //this will happen in the case of serveying grav anomalies.
                 if (_entityCommanding.TryGetDatablob<WarpMovingDB>(out var warpMovingDB))
                 {
                     _warpingDB.SavedNewtonionVector = warpMovingDB.SavedNewtonionVector;
                 }
-                
+
                 EntityCommanding.SetDataBlob(_warpingDB);
 
                 WarpMoveProcessor.StartNonNewtTranslation(EntityCommanding);

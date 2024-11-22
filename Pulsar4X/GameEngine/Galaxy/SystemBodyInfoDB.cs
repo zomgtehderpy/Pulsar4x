@@ -5,8 +5,9 @@ using Pulsar4X.Engine;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Names;
 using Pulsar4X.Sensors;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Galaxy
 {
     /// <summary>
     /// SystemBodyInfoDB defines an entity as having properties like planets/asteroids/coments.

@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using Pulsar4X.Blueprints;
-using Pulsar4X.Datablobs;
-using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
-using Pulsar4X.Extensions;
 using Pulsar4X.Modding;
 using Pulsar4X.People;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Tests
 {

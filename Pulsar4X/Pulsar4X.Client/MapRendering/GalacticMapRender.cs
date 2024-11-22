@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using ImGuiSDL2CS;
 using SDL2;
 using Pulsar4X.Datablobs;
-using System.Data;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Names;
 using Pulsar4X.Orbits;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.SDL2UI
 {

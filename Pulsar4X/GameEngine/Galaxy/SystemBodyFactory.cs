@@ -7,13 +7,13 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Extensions;
 using Pulsar4X.Modding;
-using Pulsar4X.Engine.Sensors;
 using Pulsar4X.Industry;
 using Pulsar4X.Names;
 using Pulsar4X.Orbits;
 using Pulsar4X.Sensors;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Galaxy
 {
     public class SystemBodyFactory
     {

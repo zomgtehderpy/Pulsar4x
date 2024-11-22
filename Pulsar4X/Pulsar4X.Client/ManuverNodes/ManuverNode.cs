@@ -8,6 +8,7 @@ using Pulsar4X.Orbital;
 using Pulsar4X.Factions;
 using Pulsar4X.Orbits;
 using Pulsar4X.Storage;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.SDL2UI.ManuverNodes;
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Pulsar4X.Orbital;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Sensors
 {

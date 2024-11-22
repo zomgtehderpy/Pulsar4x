@@ -8,6 +8,7 @@ using Pulsar4X.Factions;
 using Pulsar4X.Orbits;
 using Pulsar4X.Storage;
 using Pulsar4X.Weapons;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Engine
 {

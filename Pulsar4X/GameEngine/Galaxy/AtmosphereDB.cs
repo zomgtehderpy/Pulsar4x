@@ -1,10 +1,10 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using Pulsar4X.Blueprints;
 using System;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Galaxy
 {
     public class AtmosphereDB : BaseDataBlob
     {

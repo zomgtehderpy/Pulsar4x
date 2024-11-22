@@ -3,8 +3,9 @@ using System;
 using Pulsar4X.Orbital;
 using Pulsar4X.Sensors;
 using Pulsar4X.Storage;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Galaxy
 {
     public class MassVolumeDB : BaseDataBlob, ISensorCloneMethod
     {

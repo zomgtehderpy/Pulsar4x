@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Numerics;
-using Antlr.Runtime;
 using ImGuiNET;
 using Pulsar4X.Engine;
 using Pulsar4X.Datablobs;
-using Pulsar4X.Extensions;
-using Pulsar4X.Engine.Orders;
 using Pulsar4X.Orbital;
 using Vector2 = Pulsar4X.Orbital.Vector2;
 using Vector3 = Pulsar4X.Orbital.Vector3;
 using Pulsar4X.Orbits;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.SDL2UI
 {

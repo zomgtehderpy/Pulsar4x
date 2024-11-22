@@ -3,6 +3,7 @@ using Pulsar4X.Orbital;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
 using Pulsar4X.Orbits;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Engine
 {

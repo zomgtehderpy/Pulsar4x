@@ -18,6 +18,7 @@ using Pulsar4X.ImGuiNetUI.ManuverNodes;
 using static Pulsar4X.SDL2UI.SystemViewPreferences;
 using Pulsar4X.Factions;
 using Pulsar4X.Damage;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.SDL2UI
 {

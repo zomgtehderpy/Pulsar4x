@@ -10,8 +10,8 @@ using Pulsar4X.Interfaces;
 using Pulsar4X.Engine.Orders;
 using System.Runtime.CompilerServices;
 using Pulsar4X.Events;
-using Pulsar4X.Datablobs;
 using Pulsar4X.Factions;
+using Pulsar4X.Galaxy;
 [assembly: InternalsVisibleTo("Pulsar4X.Tests")]
 
 namespace Pulsar4X.Engine

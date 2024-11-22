@@ -1,8 +1,8 @@
-using System;
 using Newtonsoft.Json;
+using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Galaxy
 {
     public class AsteroidDamageDB : BaseDataBlob
     {

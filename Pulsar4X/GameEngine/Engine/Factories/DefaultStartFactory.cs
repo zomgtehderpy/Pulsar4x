@@ -9,6 +9,7 @@ using Pulsar4X.Energy;
 using Pulsar4X.Engine.Factories;
 using Pulsar4X.Factions;
 using Pulsar4X.Fleets;
+using Pulsar4X.Galaxy;
 using Pulsar4X.GeoSurveys;
 using Pulsar4X.JumpPoints;
 using Pulsar4X.Logistics;

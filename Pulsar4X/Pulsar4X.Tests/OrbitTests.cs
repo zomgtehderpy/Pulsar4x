@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using GameEngine.WarpMove;
 using NUnit.Framework;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Orbital;
-using Pulsar4X.Extensions;
-using Pulsar4X.Orbital.Helpers;
 using Pulsar4X.Orbits;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Tests
 {

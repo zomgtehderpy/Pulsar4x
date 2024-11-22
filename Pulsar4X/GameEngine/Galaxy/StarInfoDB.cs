@@ -6,8 +6,9 @@ using Pulsar4X.Engine;
 using System.Collections.Generic;
 using Pulsar4X.Names;
 using Pulsar4X.Sensors;
+using Pulsar4X.Datablobs;
 
-namespace Pulsar4X.Datablobs
+namespace Pulsar4X.Galaxy
 {
     public class StarInfoDB : BaseDataBlob, ISensorCloneMethod
     {

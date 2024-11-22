@@ -6,6 +6,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Interfaces;
 using System.Numerics;
 using System.Collections.Generic;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.SDL2UI
 {

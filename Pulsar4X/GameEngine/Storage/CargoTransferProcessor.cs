@@ -5,6 +5,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Engine;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Storage
 {
@@ -63,7 +64,7 @@ namespace Pulsar4X.Storage
 
                 if (amountTo < amountFrom)
                 {
-                    //if we can't put it into the amountTo entity, then give it back. 
+                    //if we can't put it into the amountTo entity, then give it back.
                     long amountBack = transferDB.CargoFromDB.AddCargoByUnit(cargoItem, amountTo);
                     transferDB.ItemsLeftToTransfer[i] = (cargoItem, 0);
                 }
@@ -72,7 +73,7 @@ namespace Pulsar4X.Storage
                     long newAmount = transferDB.ItemsLeftToTransfer[i].amount - amountTo;
                     transferDB.ItemsLeftToTransfer[i] = (cargoItem, newAmount);
                 }
-                
+
                 //update the total masses for these entites
                 transferDB.CargoFromDB.OwningEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal(transferDB.CargoFromDB);
                 transferDB.CargoToDB.OwningEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal(transferDB.CargoToDB);

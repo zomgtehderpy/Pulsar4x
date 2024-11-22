@@ -12,6 +12,7 @@ using Pulsar4X.Industry;
 using Pulsar4X.People;
 using Pulsar4X.Storage;
 using Pulsar4X.Technology;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.SDL2UI
 {

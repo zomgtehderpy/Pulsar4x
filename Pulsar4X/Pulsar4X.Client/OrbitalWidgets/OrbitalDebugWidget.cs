@@ -8,6 +8,7 @@ using Pulsar4X.Interfaces;
 using Pulsar4X.Extensions;
 using SDL2;
 using Pulsar4X.Orbits;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.SDL2UI
 {

@@ -1,5 +1,6 @@
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
+using Pulsar4X.Galaxy;
 using System.Collections.Generic;
 
 namespace Pulsar4X.Factions

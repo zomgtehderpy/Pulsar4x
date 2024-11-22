@@ -6,6 +6,7 @@ using Pulsar4X.Interfaces;
 using Pulsar4X.Extensions;
 using Pulsar4X.Events;
 using Pulsar4X.Engine;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Orbits
 {

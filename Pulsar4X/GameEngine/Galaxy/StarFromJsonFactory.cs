@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Pulsar4X.Blueprints;
 using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
-using Pulsar4X.Engine.Sensors;
+using Pulsar4X.Engine;
 using Pulsar4X.Names;
 using Pulsar4X.Orbits;
 
-namespace Pulsar4X.Engine.Factories;
+namespace Pulsar4X.Galaxy;
 
 public static class StarFromJsonFactory
 {

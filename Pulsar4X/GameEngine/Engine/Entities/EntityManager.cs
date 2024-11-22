@@ -9,6 +9,7 @@ using Pulsar4X.Engine.Sensors;
 using Pulsar4X.Extensions;
 using System.Reflection;
 using Pulsar4X.Messaging;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Engine
 {

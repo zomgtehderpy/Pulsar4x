@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Pulsar4X.Blueprints;
-using Pulsar4X.DataStructures;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Galaxy
 {
     public class GalaxyFactory
     {

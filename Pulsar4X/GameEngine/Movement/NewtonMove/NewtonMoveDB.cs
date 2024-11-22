@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Pulsar4X.Orbital;
 using Pulsar4X.Engine;
 using Pulsar4X.Orbits;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Datablobs
 {

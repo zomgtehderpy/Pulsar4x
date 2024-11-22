@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using Pulsar4X.Orbital;
 using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
+using Pulsar4X.Engine;
 
-namespace Pulsar4X.Engine
+namespace Pulsar4X.Galaxy
 {
     public static class AtmosphereProcessor
     {

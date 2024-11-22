@@ -6,6 +6,7 @@ using Pulsar4X.Orbital;
 using SDL2;
 using System.Linq;
 using Pulsar4X.Orbits;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.SDL2UI
 {

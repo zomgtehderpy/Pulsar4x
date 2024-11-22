@@ -8,6 +8,7 @@ using Pulsar4X.Names;
 using Pulsar4X.Orbits;
 using Pulsar4X.People;
 using Pulsar4X.Engine;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Ships
 {
@@ -88,7 +89,7 @@ namespace Pulsar4X.Ships
         {
             if (shipDesign.DesignVersion == 0) //we're using version 0 to indicate the design hasn't been built yet.
                 shipDesign.DesignVersion = 1;
-            
+
             var starsys = parent.Manager;
             var position = OrbitMath.GetPosition(orbit, parent.StarSysDateTime);
             List<BaseDataBlob> dataBlobs = new List<BaseDataBlob>();

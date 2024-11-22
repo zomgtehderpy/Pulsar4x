@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Pulsar4X.DataStructures;
-using Pulsar4X.Datablobs;
+using Pulsar4X.Galaxy;
 using Pulsar4X.Orbital;
 
 namespace Pulsar4X.Blueprints
@@ -336,7 +336,7 @@ namespace Pulsar4X.Blueprints
 		public double HomeworldMineralAmmount { get; set; }
 
 		/// <summary>
-		/// Defines the chance of all minerals 
+		/// Defines the chance of all minerals
 		/// </summary>
 		public float BaseMineralChance { get; set; }
 

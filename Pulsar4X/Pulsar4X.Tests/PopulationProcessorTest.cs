@@ -8,8 +8,8 @@ using Pulsar4X.Components;
 using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
-using Pulsar4X.Extensions;
 using Pulsar4X.Factions;
+using Pulsar4X.Galaxy;
 using Pulsar4X.Names;
 using Pulsar4X.People;
 

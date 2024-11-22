@@ -9,6 +9,7 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
 using Pulsar4X.Engine.Orders;
 using Pulsar4X.Orbits;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.SDL2UI
 {

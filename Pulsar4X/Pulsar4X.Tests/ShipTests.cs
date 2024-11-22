@@ -8,6 +8,7 @@ using GameEngine.WarpMove;
 using Pulsar4X.Energy;
 using Pulsar4X.Factions;
 using Pulsar4X.Ships;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Tests
 {
