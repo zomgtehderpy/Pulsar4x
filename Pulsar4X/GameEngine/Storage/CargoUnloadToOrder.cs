@@ -78,6 +78,7 @@ namespace Pulsar4X.Storage
         {
             if (!IsRunning)
             {
+                /*
                 _cargoTransferDB = new CargoTransferDB();
                 _cargoTransferDB.CargoToEntity = sendToEntity;
                 _cargoTransferDB.CargoToDB = sendToEntity.GetDataBlob<VolumeStorageDB>();
@@ -89,7 +90,7 @@ namespace Pulsar4X.Storage
 
                 EntityCommanding.SetDataBlob(_cargoTransferDB);
                 CargoTransferProcessor.SetTransferRate(_cargoTransferDB);
-                IsRunning = true;
+                IsRunning = true;*/
             }
         }
 
@@ -117,11 +118,13 @@ namespace Pulsar4X.Storage
 
         long AmountLeftToXfer()
         {
+            
             long amount = 0;
+            /*
             foreach (var tup in _cargoTransferDB.ItemsLeftToTransfer)
             {
                 amount += tup.Item2;
-            }
+            }*/
             return amount;
         }
 

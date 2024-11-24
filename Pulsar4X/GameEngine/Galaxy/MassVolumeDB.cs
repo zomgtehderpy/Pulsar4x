@@ -116,7 +116,7 @@ namespace Pulsar4X.Galaxy
         /// <returns></returns>
         public static MassVolumeDB NewFromMassAndDensity(double mass, double density)
         {
-            var mvDB = new MassVolumeDB {MassDry = mass, DensityDry_gcm = density, Volume_km3 = CalculateVolume_Km3_FromMassAndDesity(mass, density), RadiusInAU = CalculateRadius_Au(mass, density)};
+            var mvDB = new MassVolumeDB {MassDry = mass, DensityDry_gcm = density, Volume_km3 = MassVolumeProcessor.CalculateVolume_Km3_FromMassAndDesity(mass, density), RadiusInAU = CalculateRadius_Au(mass, density)};
             mvDB.MassTotal = mass;
             return mvDB;
         }
@@ -150,11 +150,6 @@ namespace Pulsar4X.Galaxy
             return new MassVolumeDB(this);
         }
 
-        public static double CalculateDryMass(double volume, double density)
-        {
-            return density * volume;
-        }
-
         /// <summary>
         /// Note that this does not update the density. density is dry.
         /// </summary>
@@ -163,6 +158,7 @@ namespace Pulsar4X.Galaxy
         {
             MassTotal = MassDry + cargo.TotalStoredMass;
         }
+
         /// <summary>
         /// Note that this does not update the density. density is dry.
         /// </summary>
@@ -171,19 +167,6 @@ namespace Pulsar4X.Galaxy
             UpdateMassTotal(OwningEntity.GetDataBlob<VolumeStorageDB>());
         }
 
-        /// <summary>
-        /// Calculates the volume given mass and density.
-        /// </summary>
-        /// <param name="mass">Mass in Kg</param>
-        /// <param name="density">Density in Kg/cm^3</param>
-        /// <returns>Volume_km3 in Km^3</returns>
-        public static double CalculateVolume_Km3_FromMassAndDesity(double mass, double density)
-        {
-            double volumeInCm3 = mass / density;
-
-            // now return after converting to Km^3
-            return volumeInCm3 * 1.0e-15;
-        }
 
         /// <summary>
         /// Calculates volume in Km^3 from a radius in Au.

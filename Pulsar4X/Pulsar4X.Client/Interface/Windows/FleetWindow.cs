@@ -657,7 +657,7 @@ namespace Pulsar4X.SDL2UI
                                 var order = WarpFleetTowardsTargetOrder.CreateCommand(SelectedFleet, colony.Entity);
                                 _uiState.Game.OrderHandler.HandleOrder(order);
 
-                                 CargoLoadFromOrder.CreateRefuelFleetCommand(colony.Entity,  SelectedFleet );
+                                 CargoTransferOrder.CreateRefuelFleetCommand(colony.Entity,  SelectedFleet );
                                 //_uiState.Game.OrderHandler.HandleOrder(order2);
 
                             }

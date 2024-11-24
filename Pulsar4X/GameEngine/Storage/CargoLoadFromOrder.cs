@@ -122,15 +122,8 @@ namespace Pulsar4X.Storage
                     cargoFromEntity.Manager.Game.OrderHandler.HandleOrder(loadCmd);
                 }
             }
-
-
-
         }
-
-
-
-
-
+        
         internal override void Execute(DateTime atDateTime)
         {
             //this needs to happen on a given trigger,ie a finished move command.

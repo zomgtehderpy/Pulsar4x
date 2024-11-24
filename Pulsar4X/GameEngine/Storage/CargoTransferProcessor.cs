@@ -29,61 +29,46 @@ namespace Pulsar4X.Storage
 
         public void ProcessEntity(Entity entity, int deltaSeconds)
         {
-            CargoTransferDB transferDB = entity.GetDataBlob<CargoTransferDB>();
-            SetTransferRate(transferDB);
-            for (int i = 0; i < transferDB.ItemsLeftToTransfer.Count; i++)
-            {
-                (ICargoable item, long amount) itemsToXfer = transferDB.ItemsLeftToTransfer[i];
-                ICargoable cargoItem = itemsToXfer.item;
-                long amountToXfer = itemsToXfer.amount;
-
-                string cargoTypeID = cargoItem.CargoTypeID;
-                double itemMassPerUnit = cargoItem.MassPerUnit;
-
-                if (!transferDB.CargoToDB.TypeStores.ContainsKey(cargoTypeID))
-                {
-                    //string errmsg = "This entity cannot store this type of cargo";
-                    //StaticRefLib.EventLog.AddGameEntityErrorEvent(entity, errmsg);
-                }
-
-                var toCargoTypeStore = transferDB.CargoToDB.TypeStores[cargoTypeID]; //reference to the cargoType store we're pushing to.
-                var toCargoItemAndAmount = toCargoTypeStore.CurrentStoreInUnits; //reference to dictionary holding the cargo we want to send too
-                var fromCargoTypeStore = transferDB.CargoFromDB.TypeStores[cargoTypeID]; //reference to the cargoType store we're pulling from.
-                var fromCargoItemAndAmount = fromCargoTypeStore.CurrentStoreInUnits; //reference to dictionary we want to pull cargo from.
-
-                //the transfer speed is mass based, not unit based.
-                double totalMassToTransfer = itemMassPerUnit * amountToXfer;
-                double massToTransferThisTick = Math.Min(totalMassToTransfer, transferDB.TransferRateInKG * deltaSeconds); //only the amount that can be transfered in this timeframe.
-
-                //TODO: this wont handle objects that have a larger unit mass than the availible transferRate,
-                //but maybe that makes for a game mechanic
-                long countToTransferThisTick = (long)(massToTransferThisTick / itemMassPerUnit);
-
-                long amountFrom = transferDB.CargoFromDB.RemoveCargoByUnit(cargoItem, countToTransferThisTick);
-                long amountTo = transferDB.CargoToDB.AddCargoByUnit(cargoItem, amountFrom);
-
-                if (amountTo < amountFrom)
-                {
-                    //if we can't put it into the amountTo entity, then give it back.
-                    long amountBack = transferDB.CargoFromDB.AddCargoByUnit(cargoItem, amountTo);
-                    transferDB.ItemsLeftToTransfer[i] = (cargoItem, 0);
-                }
-                else
-                {
-                    long newAmount = transferDB.ItemsLeftToTransfer[i].amount - amountTo;
-                    transferDB.ItemsLeftToTransfer[i] = (cargoItem, newAmount);
-                }
-
-                //update the total masses for these entites
-                transferDB.CargoFromDB.OwningEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal(transferDB.CargoFromDB);
-                transferDB.CargoToDB.OwningEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal(transferDB.CargoToDB);
-                UpdateFuelAndDeltaV(transferDB.CargoFromDB.OwningEntity);
-                UpdateFuelAndDeltaV(transferDB.CargoToDB.OwningEntity);
-            }
-
+            ProcessEntity(entity.GetDataBlob<CargoTransferDB>(), deltaSeconds);
         }
 
 
+        public void ProcessEntity(CargoTransferDB transferDB, int deltaSeconds)
+        {
+            var transferData = transferDB.TransferData;
+            var transferRange = transferDB.ParentStorageDB.TransferRangeDv_mps;
+            var transferRate = transferDB.ParentStorageDB.TransferRateInKgHr;
+            double dv_mps = CalcDVDifference_m(transferDB.PrimaryEntity, transferDB.SecondaryEntity);
+            
+            if(dv_mps > transferRange)
+                return;//early out if we're out of range. 
+            
+            
+            double massTransferable = transferRate * deltaSeconds;
+            //each of the items to transfer...
+            for (int i = 0; i < transferData.ItemMassLeftToMove.Count; i++)
+            {
+                (ICargoable item, double mass) xferItems = transferData.ItemMassLeftToMove[i];
+                ICargoable cargoItem = xferItems.item;
+                //string cargoTypeID = cargoItem.CargoTypeID;
+                double itemMassPerUnit = cargoItem.MassPerUnit;
+                double netMass = xferItems.mass;
+                var massToXfer = Math.Min(massTransferable, netMass);
+                
+                var massMoved1 = AddRemoveCargoMass(transferData.PrimaryStorageDB, cargoItem, massToXfer);
+                var massMoved2 = AddRemoveCargoMass(transferData.SecondaryStorageDB, cargoItem, massMoved1 * -1);
+                var massLeft = xferItems.mass += massMoved2;
+                transferData.ItemMassLeftToMove[i] = (cargoItem, massLeft);
+                long itemsLeft = (long)Math.Ceiling(transferData.ItemMassLeftToMove[i].amount / itemMassPerUnit);
+                transferData.ItemsLeftToMove[i] = (cargoItem, itemsLeft);
+                massTransferable -= Math.Abs(massMoved2);
+                
+                
+                
+                if(massTransferable <= 0)
+                    break;//early out of loop if we've hit the limit of mass moveable this tick.
+            }
+        }
 
         /// <summary>
         /// Add cargo and updates the entites MassTotal
@@ -132,7 +117,20 @@ namespace Pulsar4X.Storage
             UpdateFuelAndDeltaV(entity);
             return amountSuccess;
         }
-
+        /// <summary>
+        /// Add or Removes cargo and updates the entites MassTotal
+        /// </summary>
+        /// <param name="storeDB"></param>
+        /// <param name="item"></param>
+        /// <param name="amountInMass"></param>
+        internal static double AddRemoveCargoMass(VolumeStorageDB storeDB, ICargoable item, double amountInMass)
+        {
+            double amountSuccess = storeDB.AddRemoveCargoByMass(item, amountInMass);
+            MassVolumeDB mv = storeDB.OwningEntity.GetDataBlob<MassVolumeDB>();
+            mv.UpdateMassTotal(storeDB);
+            UpdateFuelAndDeltaV(storeDB.OwningEntity);
+            return amountSuccess;
+        }
         /// <summary>
         /// Add or Removes cargo and updates the entites MassTotal
         /// </summary>
@@ -275,13 +273,7 @@ namespace Pulsar4X.Storage
                 transferRate = 0;
             return (int)transferRate;
         }
-
-        internal static void SetTransferRate(CargoTransferDB transferDB)
-        {
-            double dv_mps = CalcDVDifference_m(transferDB.CargoFromEntity, transferDB.CargoToEntity);
-            var rate = CalcTransferRate(dv_mps, transferDB.CargoFromDB, transferDB.CargoToDB);
-            transferDB.TransferRateInKG = rate;
-        }
+        
 
         public static (double bestDVRange, double bestRate) GetBestRangeRate(Entity from, Entity to)
         {
@@ -327,13 +319,12 @@ namespace Pulsar4X.Storage
 
         public int ProcessManager(EntityManager manager, int deltaSeconds)
         {
-            List<Entity> entitysWithCargoTransfers = manager.GetAllEntitiesWithDataBlob<CargoTransferDB>();
-            foreach(var entity in entitysWithCargoTransfers)
+            List<CargoTransferDB> dblist = manager.GetAllDataBlobsOfType<CargoTransferDB>();
+            foreach(var db in dblist)
             {
-                ProcessEntity(entity, deltaSeconds);
+                ProcessEntity(db, deltaSeconds);
             }
-
-            return entitysWithCargoTransfers.Count;
+            return dblist.Count;
         }
     }
 

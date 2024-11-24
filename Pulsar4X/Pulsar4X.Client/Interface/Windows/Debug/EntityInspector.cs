@@ -9,6 +9,7 @@ using Pulsar4X.Orbital;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Industry;
 using Pulsar4X.Components;
+using Pulsar4X.DataStructures;
 using Pulsar4X.Extensions;
 using Pulsar4X.Factions;
 using Pulsar4X.Names;
@@ -130,6 +131,7 @@ namespace Pulsar4X.SDL2UI
                     value = GetValue(memberInfo, obj);
                     if(value == null)
                         continue;
+                    Type valueType = value.GetType();
                     if (typeof(ICollection).IsAssignableFrom(value.GetType()))
                     {
                         var items = (ICollection?)GetValue(memberInfo, obj);
@@ -216,6 +218,36 @@ namespace Pulsar4X.SDL2UI
                             ImGui.Text("Count: " + itemsCount);
                             ImGui.NextColumn();
                         }
+                    }
+                    else if (typeof(SafeList<Object>).IsAssignableFrom(value.GetType()))
+                    {
+                        var items = (IEnumerable?)GetValue(memberInfo, obj);
+                        if(items == null) continue;
+                        //int itemsCount = items.Count;
+                        ImGui.Text(memberInfo.Name);
+                        
+                        if (ImGui.TreeNode(memberInfo.Name))
+                        {
+                            ImGui.NextColumn();
+                            //ImGui.Text("Count: " + itemsCount);
+                            ImGui.NextColumn();
+                            //_numLines += itemsCount;
+                            lock (items)//TODO: IDK the best way to fix this.
+                            {
+                                foreach (var item in items)
+                                {
+                                    RecursiveReflection(item);
+                                }
+                            }
+
+                            ImGui.TreePop();
+                        }/*
+                        else
+                        {
+                            ImGui.NextColumn();
+                            //ImGui.Text("Count: " + itemsCount);
+                            ImGui.NextColumn();
+                        }*/
                     }
                     else if (typeof(KeplerElements).IsAssignableFrom(value.GetType()))
                     {
