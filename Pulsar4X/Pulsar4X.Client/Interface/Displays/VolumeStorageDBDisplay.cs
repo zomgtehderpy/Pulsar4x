@@ -49,8 +49,12 @@ namespace Pulsar4X.SDL2UI
                         {
                             ICargoable cargoType = cargoables[id];
                             var volumeStored = storage.GetVolumeStored(cargoType);
-                            var massStored = storage.GetMassStored(cargoType);
+                            
+                            var massStored = storage.GetMassStored(cargoType, true);
+                            var massStoredLessEscro = storage.GetMassStored(cargoType, false);
                             var itemsStored = value;
+                            var itemsStoredIncEscro = storage.GetUnitsStored(cargoType, true);
+                            var itemsInEscro = VolumeStorageDBExtensions.GetUnitCountInEscro(storage, cargoType);
 
                             ImGui.TableNextColumn();
                             if(ImGui.Selectable(cargoType.Name, false, ImGuiSelectableFlags.SpanAllColumns)) {}
@@ -89,6 +93,7 @@ namespace Pulsar4X.SDL2UI
                             if(ImGui.IsItemHovered())
                             {
                                 ImGui.BeginTooltip();
+                                ImGui.Text("+" + Stringify.Number(itemsInEscro) + " in escro");
                                 ImGui.Text("Mass: " + Stringify.Mass(massStored) + " (" + Stringify.Mass(cargoType.MassPerUnit) + " each)");
                                 ImGui.Text("Volume: " + Stringify.Volume(volumeStored) + " (" + Stringify.Volume(cargoType.VolumePerUnit, "#.#####") + " each)");
                                 ImGui.EndTooltip();

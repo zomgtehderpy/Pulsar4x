@@ -61,7 +61,7 @@ public class NewtonSimpleProcessor : IHotloopProcessor
         var fuelTypeID = thrustdb.FuelType;
         var fuelType = cargoLib.GetAny(fuelTypeID);
         var storage = entity.GetDataBlob<VolumeStorageDB>();
-        var fuelMass = storage.GetMassStored(fuelType);
+        var fuelMass = storage.GetMassStored(fuelType, false);
 
         var currentOrbit = newtonSimplelMoveDB.CurrentTrajectory;
         var targetOrbit = newtonSimplelMoveDB.TargetTrajectory;

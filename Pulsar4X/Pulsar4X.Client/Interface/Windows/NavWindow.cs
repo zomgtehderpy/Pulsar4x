@@ -169,7 +169,7 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
             if(_fuelType == null)
                 throw new NullReferenceException();
 
-            _fuelMass = _orderEntity.GetDataBlob<VolumeStorageDB>().GetUnitsStored(_fuelType);
+            _fuelMass = _orderEntity.GetDataBlob<VolumeStorageDB>().GetMassStored(_fuelType, false);
         }
 
 

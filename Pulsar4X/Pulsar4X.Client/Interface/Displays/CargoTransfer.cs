@@ -198,9 +198,9 @@ namespace Pulsar4X.SDL2UI
                 var newxferDict = new Dictionary<ICargoable, long>();
                 foreach (var order in orders)
                 {
-                    if (order is CargoUnloadToOrder)
+                    if (order is CargoTransferOrder)
                     {
-                        var xferOrder = (CargoUnloadToOrder)order;
+                        var xferOrder = (CargoTransferOrder)order;
                         foreach (var tuple in xferOrder.ItemICargoablesToTransfer.ToArray())
                         {
                             if (!newxferDict.ContainsKey(tuple.item))
@@ -225,6 +225,17 @@ namespace Pulsar4X.SDL2UI
             {
                 if(item.Value < 0)
                     listToMove.Add((item.Key, item.Value * -1));
+            }
+            return listToMove;
+        }
+
+        internal List<(ICargoable, long)> GetAllToMove()
+        {
+            var listToMove = new List<(ICargoable, long)>();
+
+            foreach (var item in _cargoToMoveUI)
+            {
+                listToMove.Add((item.Key, item.Value));
             }
             return listToMove;
         }
@@ -334,7 +345,7 @@ namespace Pulsar4X.SDL2UI
 
                         var volumePerItem = cargoItem.VolumePerUnit;
                         var volumeStored = _volStorageDB.GetVolumeStored(cargoItem);
-                        var massStored = _volStorageDB.GetMassStored(cargoItem);
+                        var massStored = _volStorageDB.GetMassStored(cargoItem, true);
 
                         bool isSelected = selectedCargo == cargoItem;
                         if (ImGui.Selectable(cname, isSelected))
@@ -618,6 +629,14 @@ namespace Pulsar4X.SDL2UI
                 || CargoListRight == null)
                 throw new NullReferenceException();
 
+
+            CargoTransferOrder.CreateCommands(
+                _uiState.Faction.Id,
+                _selectedEntityLeft.Entity,
+                _selectedEntityRight.Entity,
+                CargoListLeft.GetAllToMove()
+                );
+            /*
             //create order for items to go to right
             CargoUnloadToOrder.CreateCommand(
                 _uiState.Faction.Id,
@@ -630,7 +649,7 @@ namespace Pulsar4X.SDL2UI
                 _uiState.Faction.Id,
                 _selectedEntityRight.Entity,
                 _selectedEntityLeft.Entity,
-                CargoListRight.GetAllToMoveOut());
+                CargoListRight.GetAllToMoveOut());*/
 
             CargoListLeft.ClearUINumbers();
             CargoListRight.ClearUINumbers();

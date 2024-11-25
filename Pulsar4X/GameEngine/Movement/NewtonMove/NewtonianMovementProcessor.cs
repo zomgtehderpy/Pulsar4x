@@ -364,7 +364,7 @@ namespace Pulsar4X.Movement
             if(parentEntity.HasDataBlob<VolumeStorageDB>())
             {
                 var cargo = parentEntity.GetDataBlob<VolumeStorageDB>();
-                fuelMass = cargo.GetMassStored(fuel);
+                fuelMass = cargo.GetMassStored(fuel, false);
             }
             db.SetFuel(fuelMass, totalMass);
         }

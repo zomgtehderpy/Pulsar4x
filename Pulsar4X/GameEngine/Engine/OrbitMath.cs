@@ -146,7 +146,7 @@ namespace Pulsar4X.Engine
 
             if(fuelType == null) throw new NullReferenceException("fuelType cannot be null");
 
-            var fuelMass = entity.GetDataBlob<VolumeStorageDB>().GetMassStored(fuelType);
+            var fuelMass = entity.GetDataBlob<VolumeStorageDB>().GetMassStored(fuelType, false);
 
             var massCargoDry = massDry + cargoMass;
             var massTotal = massCargoDry + fuelMass;
@@ -174,7 +174,7 @@ namespace Pulsar4X.Engine
             if(fuelType == null) throw new NullReferenceException("fuelType cannot be null");
             var storage = entity.GetDataBlob<VolumeStorageDB>();
             var totalCargo = storage.TotalStoredMass;
-            var fuelMass = storage.GetMassStored(fuelType);
+            var fuelMass = storage.GetMassStored(fuelType, false);
             var dryCargo = totalCargo - fuelMass;
             var massCargoDry = massDry + dryCargo;
             var massTotal = massCargoDry + fuelMass;

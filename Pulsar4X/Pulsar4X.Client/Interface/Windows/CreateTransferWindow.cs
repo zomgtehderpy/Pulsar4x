@@ -84,7 +84,7 @@ public class CreateTransferWindow : PulsarGuiWindow
                             {
                                 itemsToTransfer.Add((item.Key, item.Value.Item1));
                             }
-                            CargoUnloadToOrder.CreateCommand(_uiState.Faction.Id, TransferLeft, TransferRight, itemsToTransfer);
+                            CargoTransferOrder.CreateCommands(_uiState.Faction.Id, TransferLeft, TransferRight, itemsToTransfer);
                         }
                     }
                 }

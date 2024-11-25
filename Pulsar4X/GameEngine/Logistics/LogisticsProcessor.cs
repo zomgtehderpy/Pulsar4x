@@ -347,7 +347,7 @@ public static class LogisticsCycle
                     var manuverState = Manuvers(ship, currentSOIParent, source, curstate);
                     curstate = manuverState.endState;
 
-                    CargoLoadFromOrder.CreateCommand(shipOwner, source, ship, tradeItems);
+                    CargoTransferOrder.CreateCommands(shipOwner, source, ship, tradeItems);
 
 
                     var smass = sourceSOIParent.GetDataBlob<MassVolumeDB>().MassTotal;
@@ -362,7 +362,7 @@ public static class LogisticsCycle
                     //moveto destination.
 
                     Manuvers(ship, sourceSOIParent, destin, curstate);
-                    CargoUnloadToOrder.CreateCommand(shipOwner, ship, destin, tradeItems);
+                    CargoTransferOrder.CreateCommands(shipOwner, ship, destin, tradeItems);
 
                 }
 

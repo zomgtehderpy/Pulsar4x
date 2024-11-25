@@ -473,7 +473,7 @@ namespace Pulsar4X.SDL2UI
                     ImGui.TableNextColumn();
                     if (_volStorageDB != null && _factionInfoDB != null)
                     {
-                        var stored = _volStorageDB.GetUnitsStored(cargoItem);
+                        var stored = _volStorageDB.GetUnitsStored(cargoItem, false);
                         if(stored < totalCost)
                         {
                             if(_factionInfoDB.IndustryDesigns.ContainsKey(cargoItem.UniqueID))

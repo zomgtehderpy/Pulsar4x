@@ -260,7 +260,7 @@ namespace Pulsar4X.Industry
                         continue;
                     }
                 }
-                var numStored = stockpile.GetUnitsStored(cargoItem);
+                var numStored = stockpile.GetUnitsStored(cargoItem, false);
                 var numReq = kvp.Value - numStored;
                 if (numReq > 0)
                 {

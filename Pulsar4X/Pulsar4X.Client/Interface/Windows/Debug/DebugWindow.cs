@@ -19,6 +19,7 @@ using Pulsar4X.Sensors;
 using Pulsar4X.Weapons;
 using Pulsar4X.Galaxy;
 using Pulsar4X.Movement;
+using Pulsar4X.Storage;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -260,24 +261,42 @@ namespace Pulsar4X.SDL2UI
                             }
 
                         }
+                        if (SelectedEntity.HasDataBlob<VolumeStorageDB>())
+                        {
+                            if (ImGui.CollapsingHeader("VolumeStorageDB: ###VolStorDBHeader", ImGuiTreeNodeFlags.CollapsingHeader))
+                            {
+                                VolumeStorageDB storeDB = SelectedEntity.GetDataBlob<VolumeStorageDB>();
+                                ImGui.Indent();
+                                storeDB.Display(_selectedEntityState, _uiState);
+                                ImGui.Text("Total Stored Mass inc. escro: " + Stringify.Mass(storeDB.TotalStoredMass));
+                                ImGui.Text("Transfer Range: " + Stringify.Velocity(storeDB.TransferRangeDv_mps));
+                                ImGui.Text("Transfer Rate: " + Stringify.Mass(storeDB.TransferRateInKgHr));
+                                double totalMassIncEscro = 0;
+                                double totalMassLesEscro = 0;
+                                double totalVolumeIncEscro = 0;
+                                double totalVolumeLesEscro = 0;
+                                long totalCountIncEscro = 0;
+                                long totalCountLesEscro = 0;
+                                foreach (var store in storeDB.TypeStores)
+                                {
+                                    foreach (var icargoable in store.Value.GetCargoables().Values)
+                                    {
+                                        totalMassIncEscro += VolumeStorageDBExtensions.GetMassStored(storeDB, icargoable, true);
+                                        totalMassLesEscro += VolumeStorageDBExtensions.GetMassStored(storeDB, icargoable, false);
+                                        totalCountIncEscro += VolumeStorageDBExtensions.GetUnitsStored(storeDB, icargoable, true);
+                                        totalCountLesEscro += VolumeStorageDBExtensions.GetUnitsStored(storeDB, icargoable, false);
+                                    }
+                                    
+                                }
+                                ImGui.Text("Total Units Inc Escro: " + Stringify.Number(totalCountIncEscro));
+                                ImGui.Text("Total Units less Escro: " + Stringify.Number(totalCountLesEscro));
+                                ImGui.Text("Total Mass Inc Escro: " + Stringify.Number(totalMassIncEscro));
+                                ImGui.Text("Total Mass less Escro: " + Stringify.Number(totalMassIncEscro));
+                                ImGui.Unindent();
+                            }
+                        }
                         if (SelectedEntity.HasDataBlob<OrbitDB>() || SelectedEntity.HasDataBlob<OrbitUpdateOftenDB>())
                         {
-
-                            if (ImGui.Checkbox("Draw SOI", ref _drawSOI))
-                            {
-                                SimpleCircle cir;
-                                if (_drawSOI)
-                                {
-                                    var soiradius = SelectedEntity.GetSOI_AU();
-                                    var colour = new SDL2.SDL.SDL_Color() { r = 0, g = 255, b = 0, a = 100 };
-                                    cir = new SimpleCircle(SelectedEntity.GetDataBlob<PositionDB>(), soiradius, colour);
-
-                                    _uiState.SelectedSysMapRender?.UIWidgets.Add(nameof(cir), cir);
-                                }
-                                else
-                                    _uiState.SelectedSysMapRender?.UIWidgets.Remove(nameof(cir));
-                            }
-
                             if (ImGui.CollapsingHeader("OrbitDB: ###OrbitDBHeader", ImGuiTreeNodeFlags.CollapsingHeader))
                             {
 
@@ -392,6 +411,20 @@ namespace Pulsar4X.SDL2UI
                                 ImGui.Text("thrustvec3: " + thrustvec3);
                                 ImGui.Text("trhustvec4: " + thrustvec4);
 
+                            }
+                            if (ImGui.Checkbox("Draw SOI", ref _drawSOI))
+                            {
+                                SimpleCircle cir;
+                                if (_drawSOI)
+                                {
+                                    var soiradius = SelectedEntity.GetSOI_AU();
+                                    var colour = new SDL2.SDL.SDL_Color() { r = 0, g = 255, b = 0, a = 100 };
+                                    cir = new SimpleCircle(SelectedEntity.GetDataBlob<PositionDB>(), soiradius, colour);
+
+                                    _uiState.SelectedSysMapRender?.UIWidgets.Add(nameof(cir), cir);
+                                }
+                                else
+                                    _uiState.SelectedSysMapRender?.UIWidgets.Remove(nameof(cir));
                             }
                         }
 

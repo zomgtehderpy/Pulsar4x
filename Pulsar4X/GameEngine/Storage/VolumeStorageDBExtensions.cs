@@ -6,35 +6,7 @@ namespace Pulsar4X.Storage
     public static class VolumeStorageDBExtensions
     {
 
-        public static void SetEscro(VolumeStorageDB volStorage, CargoTransferObject cargoTransferData)
-        {
-            volStorage.EscroItems.Add(cargoTransferData);
-            for (int index = 0; index < cargoTransferData.OrderedToTransfer.Count; index++)
-            {
-                (ICargoable item, long amount) tuple = cargoTransferData.OrderedToTransfer[index];
-                var cargoItem = tuple.item;
-                var unitAmount = tuple.amount;
-                TypeStore store = volStorage.TypeStores[cargoItem.CargoTypeID];
 
-                if (volStorage == cargoTransferData.PrimaryStorageDB)
-                    unitAmount *= -1; //primary entity, negitive item amounts move out of this this entity
-
-                if (unitAmount > 0) //if we're removing items
-                {
-                    if (store.CurrentStoreInUnits.ContainsKey(cargoItem.ID))
-                    {
-                        long amountInStore = store.CurrentStoreInUnits[cargoItem.ID];
-                        long amountToRemove = Math.Min(unitAmount, amountInStore);
-                        store.CurrentStoreInUnits[cargoItem.ID] -= amountToRemove;
-                        cargoTransferData.ItemsLeftToMove[index] = (cargoItem,amountToRemove);
-                    }
-                    else
-                    {
-                        //in this case we're trying to remove items that don't exist. not sure how we should handle this yet.
-                    }
-                }
-            }
-        }
 
 
         /// <summary>
@@ -238,7 +210,7 @@ namespace Pulsar4X.Storage
         /// </summary>
         /// <param name="cargoItem"></param>
         /// <returns></returns>
-        public static double GetMassStored(this VolumeStorageDB db,ICargoable cargoItem)
+        public static double GetMassStored(this VolumeStorageDB db,ICargoable cargoItem, bool includeEscro)
         {
             if (!db.TypeStores.ContainsKey(cargoItem.CargoTypeID))
                 return 0.0;
@@ -246,7 +218,29 @@ namespace Pulsar4X.Storage
                 return 0.0;
             long units = Math.Max(0, db.TypeStores[cargoItem.CargoTypeID].CurrentStoreInUnits[cargoItem.ID]);
 
+            if (includeEscro)
+            {
+                units += GetUnitCountInEscro(db, cargoItem);
+            }
+            
             return units * cargoItem.MassPerUnit;
+        }
+
+        public static long GetUnitCountInEscro(VolumeStorageDB db, ICargoable cargoItem)
+        {
+            long unitCount = 0;
+            foreach (var transferData in db.EscroItems)
+            {
+                foreach (var tup in transferData.ItemsLeftToMove)
+                {
+                    if (tup.item.ID == cargoItem.ID)
+                    {
+                        unitCount += tup.amount;
+                        break;
+                    }
+                }   
+            }
+            return unitCount;
         }
 
         /// <summary>
@@ -270,14 +264,15 @@ namespace Pulsar4X.Storage
         /// </summary>
         /// <param name="cargoItem"></param>
         /// <returns></returns>
-        public static long GetUnitsStored(this VolumeStorageDB db,ICargoable cargoItem)
+        public static long GetUnitsStored(this VolumeStorageDB db,ICargoable cargoItem, bool includeEscro)
         {
             if (!db.TypeStores.ContainsKey(cargoItem.CargoTypeID))
                 return 0;
             if (!db.TypeStores[cargoItem.CargoTypeID].CurrentStoreInUnits.ContainsKey(cargoItem.ID))
                 return 0;
             long units = Math.Max(0, db.TypeStores[cargoItem.CargoTypeID].CurrentStoreInUnits[cargoItem.ID]);
-
+            if(includeEscro)
+                units += GetUnitCountInEscro(db, cargoItem);
             return units;
         }
 
@@ -311,6 +306,7 @@ namespace Pulsar4X.Storage
 
         /// <summary>
         /// Returns the amount of free mass for a given cargoType
+        /// escro items are included in this
         /// (volume = mass / density)
         /// </summary>
         /// <param name="cargoItem"></param>
@@ -324,6 +320,7 @@ namespace Pulsar4X.Storage
 
         /// <summary>
         /// Returns the amount of free space in units for a given cargoItem
+        /// escro items are included in this
         /// (space = freeVolume / VolumePerUnit)
         /// </summary>
         /// <param name="cargoItem"></param>
