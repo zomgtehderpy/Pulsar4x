@@ -88,8 +88,8 @@ namespace Pulsar4X.SDL2UI.Combat
 
         private void Init(Entity damageableEntity)
         {
-            var db = damageableEntity.GetDataBlob<EntityDamageProfileDB>();
-            if (db != null)
+            
+            if(damageableEntity.TryGetDatablob<EntityDamageProfileDB>(out var  db))
             {
                 _selectedEntity = damageableEntity;
                 _profile = damageableEntity.GetDataBlob<EntityDamageProfileDB>();
