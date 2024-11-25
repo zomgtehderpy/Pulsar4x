@@ -5,6 +5,7 @@ using Pulsar4X.Engine;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
 using Pulsar4X.Colonies;
+using Pulsar4X.Damage;
 using Pulsar4X.Factions;
 using Pulsar4X.GeoSurveys;
 using Pulsar4X.Industry;
@@ -167,9 +168,12 @@ namespace Pulsar4X.SDL2UI
                 {
                     var cargoLibrary = Entity.GetFactionOwner.GetDataBlob<FactionInfoDB>().Data.CargoGoods;
                     var (fuelType, fuelPercent) = Entity.GetFuelInfo(cargoLibrary);
+                    string fuelStr = "Fuel (" + (fuelPercent * 100) + "%) ";
+                    if (Entity.TryGetDatablob<NewtonThrustAbilityDB>(out var newtDB))
+                        fuelStr += Stringify.Velocity(newtDB.DeltaV) + " Δv";
                     var size = ImGui.GetContentRegionAvail();
                     ImGui.PushStyleColor(ImGuiCol.PlotHistogram, Styles.SelectedColor);
-                    ImGui.ProgressBar((float)fuelPercent, new Vector2(size.X, 24), "Fuel (" + (fuelPercent * 100) + "%)");
+                    ImGui.ProgressBar((float)fuelPercent, new Vector2(size.X, 24), fuelStr);
                     ImGui.PopStyleColor();
                     if (ImGui.IsItemHovered())
                     {
@@ -271,10 +275,11 @@ namespace Pulsar4X.SDL2UI
                         continue;
                     if (ImGui.CollapsingHeader("Orders", ImGuiTreeNodeFlags.DefaultOpen))
                     {
-                        if (ImGui.BeginTable("OrdersTable", 2, Styles.TableFlags))
+                        if (ImGui.BeginTable("OrdersTable", 3, Styles.TableFlags))
                         {
-                            ImGui.TableSetupColumn("#", ImGuiTableColumnFlags.None, 0.1f);
-                            ImGui.TableSetupColumn("Order", ImGuiTableColumnFlags.None, 1f);
+                            ImGui.TableSetupColumn("#", ImGuiTableColumnFlags.None, 0.02f);
+                            ImGui.TableSetupColumn("Order", ImGuiTableColumnFlags.None, 0.2f);
+                            ImGui.TableSetupColumn("Details", ImGuiTableColumnFlags.None, 0.7f);
                             ImGui.TableHeadersRow();
 
                             var actions = orderableDB.ActionList.ToArray();
@@ -291,6 +296,10 @@ namespace Pulsar4X.SDL2UI
                                     ImGui.Text("IsFinished: " + actions[i].IsFinished());
                                     ImGui.EndTooltip();
                                 }
+                                ImGui.TableNextColumn();
+                                ImGui.Text(actions[i].Details);
+                                
+                                
                             }
 
                             ImGui.EndTable();

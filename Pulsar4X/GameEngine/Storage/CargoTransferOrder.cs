@@ -118,8 +118,8 @@ public class CargoTransferOrder : EntityCommand
         {
             CargoTransferDB transferDB = new CargoTransferDB(_transferData);
             transferDB.ParentStorageDB = EntityCommanding.GetDataBlob<VolumeStorageDB>();
-            
             EntityCommanding.SetDataBlob(transferDB);
+            VolumeStorageDBExtensions.SetEscro(transferDB.ParentStorageDB, _transferData);
 
             IsRunning = true;
         }

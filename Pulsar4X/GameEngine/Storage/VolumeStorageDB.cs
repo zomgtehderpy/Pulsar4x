@@ -9,11 +9,17 @@ namespace Pulsar4X.Storage
     public class VolumeStorageDB : BaseDataBlob, IAbilityDescription
     {
         public Dictionary<string, TypeStore> TypeStores = new Dictionary<string, TypeStore>();
+
+        public List<CargoTransferObject> EscroItems { get; } = new();
+        
+        /// <summary>
+        /// This includes Escro Items.
+        /// </summary>
         public double TotalStoredMass { get; internal set; } = 0;
 
-        public int TransferRateInKgHr { get; set; } = 500;
+        public int TransferRateInKgHr { get; internal set; } = 500;
 
-        public double TransferRangeDv_mps { get; set; } = 100;
+        public double TransferRangeDv_mps { get; internal set; } = 100;
 
         [JsonConstructor]
         internal VolumeStorageDB()

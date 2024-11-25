@@ -55,16 +55,38 @@ namespace Pulsar4X.Storage
                 double netMass = xferItems.mass;
                 var massToXfer = Math.Min(massTransferable, netMass);
                 
-                var massMoved1 = AddRemoveCargoMass(transferData.PrimaryStorageDB, cargoItem, massToXfer);
-                var massMoved2 = AddRemoveCargoMass(transferData.SecondaryStorageDB, cargoItem, massMoved1 * -1);
-                var massLeft = xferItems.mass += massMoved2;
+                
+                //remove from transferData (escro)
+                //mass is a double here to signify larger objects taking longer to move 
+                var massLeft = xferItems.mass += massToXfer;
                 transferData.ItemMassLeftToMove[i] = (cargoItem, massLeft);
-                long itemsLeft = (long)Math.Ceiling(transferData.ItemMassLeftToMove[i].amount / itemMassPerUnit);
+                //we use Floor here to signify whole part items not fully moved yet. 
+                int itemsMoved = (int)Math.Floor(massToXfer / itemMassPerUnit);
+                //long itemsLeft = (long)Math.Ceiling(transferData.ItemMassLeftToMove[i].amount / itemMassPerUnit);
+                long itemsLeft = transferData.ItemsLeftToMove[i].amount - itemsMoved;
                 transferData.ItemsLeftToMove[i] = (cargoItem, itemsLeft);
-                massTransferable -= Math.Abs(massMoved2);
+
+
+                //if we're ADDING to the PRIMARY
+                if (itemsMoved > 0)
+                {
+                    transferData.PrimaryStorageDB.AddCargoByUnit(cargoItem, itemsMoved);
+                }
+                else //We're Removing from the Secondary
+                {
+                    //update mass and volume of secondary entity store.
+                    double volumeStoring = itemsMoved * cargoItem.VolumePerUnit;
+                    double massStoring = itemsMoved * cargoItem.MassPerUnit;
+                    TypeStore store = transferData.SecondaryStorageDB.TypeStores[cargoItem.CargoTypeID];
+                    store.FreeVolume += volumeStoring;
+                    transferData.SecondaryStorageDB.TotalStoredMass += massStoring;
+                }
                 
                 
-                
+                massTransferable -= Math.Abs(massToXfer);
+                transferDB.OwningEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal();
+                UpdateFuelAndDeltaV(transferDB.OwningEntity);
+
                 if(massTransferable <= 0)
                     break;//early out of loop if we've hit the limit of mass moveable this tick.
             }
@@ -131,6 +153,9 @@ namespace Pulsar4X.Storage
             UpdateFuelAndDeltaV(storeDB.OwningEntity);
             return amountSuccess;
         }
+
+
+        
         /// <summary>
         /// Add or Removes cargo and updates the entites MassTotal
         /// </summary>

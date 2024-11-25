@@ -10,30 +10,6 @@ namespace Pulsar4X.Storage
 {
 
     //this object is shared between two CargoTransferDB.
-    public class CargoTransferObject
-    {
-        internal VolumeStorageDB PrimaryStorageDB { get; private set; }
-        internal VolumeStorageDB SecondaryStorageDB { get; private set; }
-
-        internal List<(ICargoable item, long amount)> OrderedToTransfer { get; private set; }
-        internal List<(ICargoable item, long amount)> ItemsLeftToMove { get; private set; }
-        internal List<(ICargoable item, double amount)> ItemMassLeftToMove { get; private set; }
-        
-        internal CargoTransferObject(Entity primary, Entity secondary, List<(ICargoable item, long amount)> itemsToTransfer)
-        {
-            PrimaryStorageDB = primary.GetDataBlob<VolumeStorageDB>();
-            SecondaryStorageDB = secondary.GetDataBlob<VolumeStorageDB>();
-            OrderedToTransfer = itemsToTransfer;
-            ItemsLeftToMove = new List<(ICargoable item, long amount)>(itemsToTransfer);
-            ItemMassLeftToMove = new List<(ICargoable item, double amount)>();
-            foreach (var tuple in itemsToTransfer)
-            {
-                ICargoable cargoItem = tuple.item;
-                double itemMassPerUnit = cargoItem.MassPerUnit;
-                ItemMassLeftToMove.Add((cargoItem, (long)(tuple.amount * itemMassPerUnit)));
-            }
-        }
-    }
 
     /// <summary>
     /// this datablob is active on an entity that is or will be transfering cargo.
