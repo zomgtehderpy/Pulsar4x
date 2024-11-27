@@ -138,7 +138,7 @@ namespace Pulsar4X.SDL2UI
                 return true;
             }
             //if entity can target
-            else if (_entityState.Entity.HasDataBlob<VolumeStorageDB>() && T == typeof(CargoTransfer))
+            else if (_entityState.Entity.HasDataBlob<VolumeStorageDB>() && T == typeof(CargoTransferWindow))
             {
                 return true;
             }
@@ -230,9 +230,9 @@ namespace Pulsar4X.SDL2UI
 
                 }
                 //Menu is cargo menu
-                else if (T == typeof(CargoTransfer))
+                else if (T == typeof(CargoTransferWindow))
                 {
-                    var instance = CargoTransfer.GetInstance(_state.Faction.GetDataBlob<FactionInfoDB>().Data, _entityState);
+                    var instance = CargoTransferWindow.GetInstance(_state.Faction.GetDataBlob<FactionInfoDB>().Data, _entityState);
                     instance.ToggleActive();
                     _state.ActiveWindow = instance;
                 }
@@ -298,7 +298,7 @@ namespace Pulsar4X.SDL2UI
             else if (T == typeof(FireControl)) returnval = FireControl.GetInstance(_entityState).GetActive();
             //else if (T == typeof(RenameWindow)) returnval = RenameWindow.GetInstance(_entityState).GetActive();
             else if (T == typeof(NavWindow)) returnval = NavWindow.GetInstance(_entityState).GetActive();
-            else if (T == typeof(CargoTransfer)) returnval = CargoTransfer.GetInstance(_state.Faction.GetDataBlob<FactionInfoDB>().Data, _entityState).GetActive();
+            else if (T == typeof(CargoTransferWindow)) returnval = CargoTransferWindow.GetInstance(_state.Faction.GetDataBlob<FactionInfoDB>().Data, _entityState).GetActive();
             else if (T == typeof(ColonyPanel)) returnval = ColonyPanel.GetInstance(_state.Faction.GetDataBlob<FactionInfoDB>().Data, _entityState).GetActive();
             // Instance Windows
             else if (T == typeof(OrdersListWindow)) returnval = OrdersListWindow.GetInstance(_entityState, _state).GetActive();

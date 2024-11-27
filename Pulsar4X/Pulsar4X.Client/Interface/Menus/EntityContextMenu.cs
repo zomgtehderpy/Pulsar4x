@@ -40,7 +40,7 @@ namespace Pulsar4X.SDL2UI
             ContextButton(typeof(PinCameraBlankMenuHelper));
             ContextButton(typeof(RenameWindow));
             ContextButton(typeof(FireControl));
-            ContextButton(typeof(CargoTransfer));
+            ContextButton(typeof(CargoTransferWindow));
             ContextButton(typeof(ColonyPanel));
             ContextButton(typeof(PlanetaryWindow));
             ContextButton(typeof(GotoSystemBlankMenuHelper));

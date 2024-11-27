@@ -14,11 +14,11 @@ public class CargoTransferObject
     /// </summary>
     internal VolumeStorageDB SecondaryStorageDB { get; private set; }
 
-    internal List<(ICargoable item, long amount)> OrderedToTransfer { get; private set; }
+    internal IReadOnlyList<(ICargoable item, long amount)> OrderedToTransfer { get; private set; }
     internal List<(ICargoable item, long amount)> ItemsLeftToMove { get; private set; }
     internal List<(ICargoable item, double amount)> ItemMassLeftToMove { get; private set; }
         
-    internal CargoTransferObject(Entity primary, Entity secondary, List<(ICargoable item, long amount)> itemsToTransfer)
+    internal CargoTransferObject(Entity primary, Entity secondary, IReadOnlyList<(ICargoable item, long amount)> itemsToTransfer)
     {
         PrimaryStorageDB = primary.GetDataBlob<VolumeStorageDB>();
         SecondaryStorageDB = secondary.GetDataBlob<VolumeStorageDB>();

@@ -93,7 +93,7 @@ namespace Pulsar4X.SDL2UI
                     NewStandardButton(typeof(RenameWindow), _uiState.Img_Rename(), "Renames the entity");
 
                     NewCondtionalButton(typeof(PowerGenWindow), _uiState.Img_Power(), "Shows power stats");
-                    NewCondtionalButton(typeof(CargoTransfer), _uiState.Img_Cargo(), "Shows cargo");
+                    NewCondtionalButton(typeof(CargoTransferWindow), _uiState.Img_Cargo(), "Shows cargo");
                     NewCondtionalButton(typeof(ColonyPanel), _uiState.Img_Industry(), "Opens Industry menu");
                     NewCondtionalButton(typeof(FireControl), _uiState.Img_Firecon(), "Opens firecontrol menu");
 

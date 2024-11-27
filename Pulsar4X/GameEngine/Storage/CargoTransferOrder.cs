@@ -15,11 +15,11 @@ namespace Pulsar4X.Storage;
 
 public class CargoTransferOrder : EntityCommand
 {
-    public List<(string ID, long amount)> ItemsGuidsToTransfer;
+    //public List<(string ID, long amount)> ItemsGuidsToTransfer;
 
     [JsonIgnore]
-    public List<(ICargoable item, long amount)> ItemICargoablesToTransfer = new List<(ICargoable item, long amount)>();
-    
+    public IReadOnlyList<(ICargoable item, long amount)> ItemICargoablesToTransfer = new List<(ICargoable item, long amount)>();
+    public bool IsPrimaryEntity { get; private set; }
 
     public override ActionLaneTypes ActionLanes => ActionLaneTypes.Movement | ActionLaneTypes.InteractWithExternalEntity;
 
@@ -42,7 +42,7 @@ public class CargoTransferOrder : EntityCommand
 
     internal override Entity EntityCommanding { get { return _entityCommanding; } }
 
-    private CargoTransferObject _transferData;
+    private CargoTransferObject _transferData { get; }
 
     [JsonIgnore]
     Entity factionEntity;
@@ -53,34 +53,29 @@ public class CargoTransferOrder : EntityCommand
         _transferData = transferData;
     }
     
-    public static void CreateCommands(int faction, Entity entityOne, Entity entityTwo, List<(ICargoable item, long amount)> itemsToMove )
+    public static void CreateCommands(int faction, Entity primaryEntity, Entity secondaryEntity, List<(ICargoable item, long amount)> itemsToMove )
     {
-        List<(string item, long amount)> itemGuidAmounts = new ();
-        foreach (var tup in itemsToMove)
-        {
-            itemGuidAmounts.Add((tup.item.UniqueID, tup.amount));
-        }
-
-        CargoTransferObject cargoData = new(entityOne, entityTwo, itemsToMove);
+        var itemsList = itemsToMove.AsReadOnly();
+        CargoTransferObject cargoData = new(primaryEntity, secondaryEntity, itemsList);
         var cmd1 = new CargoTransferOrder(cargoData)
         {
             RequestingFactionGuid = faction,
-            EntityCommandingGuid = entityOne.Id,
-            CreatedDate = entityOne.Manager.ManagerSubpulses.StarSysDateTime,
-            ItemsGuidsToTransfer = itemGuidAmounts,
-            ItemICargoablesToTransfer = itemsToMove,
+            EntityCommandingGuid = primaryEntity.Id,
+            CreatedDate = primaryEntity.Manager.ManagerSubpulses.StarSysDateTime,
+            ItemICargoablesToTransfer = itemsList,
+            IsPrimaryEntity = true,
         };
-        entityOne.Manager.Game.OrderHandler.HandleOrder(cmd1);
+        primaryEntity.Manager.Game.OrderHandler.HandleOrder(cmd1);
         
         var cmd2 = new CargoTransferOrder(cargoData)
         {
             RequestingFactionGuid = faction,
-            EntityCommandingGuid = entityTwo.Id,
-            CreatedDate = entityOne.Manager.ManagerSubpulses.StarSysDateTime,
-            ItemsGuidsToTransfer = itemGuidAmounts,
-            ItemICargoablesToTransfer = itemsToMove
+            EntityCommandingGuid = secondaryEntity.Id,
+            CreatedDate = primaryEntity.Manager.ManagerSubpulses.StarSysDateTime,
+            ItemICargoablesToTransfer = itemsToMove,
+            IsPrimaryEntity = false
         };
-        entityTwo.Manager.Game.OrderHandler.HandleOrder(cmd2);
+        secondaryEntity.Manager.Game.OrderHandler.HandleOrder(cmd2);
     }
 
     public static void CreateRefuelFleetCommand(Entity cargoFromEntity, Entity fleet)
@@ -151,7 +146,7 @@ public class CargoTransferOrder : EntityCommand
         }
         return amount;
     }
-
+    
     public override EntityCommand Clone()
     {
         throw new NotImplementedException();

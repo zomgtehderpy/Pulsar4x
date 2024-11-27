@@ -75,12 +75,12 @@ namespace Pulsar4X.SDL2UI
                 ImGui.SameLine();
                 if(ImGui.ImageButton(_uiState.Img_Cargo(), ButtonSize))
                 {
-                    var instance = CargoTransfer.GetInstance(_uiState.Faction.GetDataBlob<FactionInfoDB>().Data, EntityState);
+                    var instance = CargoTransferWindow.GetInstance(_uiState.Faction.GetDataBlob<FactionInfoDB>().Data, EntityState);
                     instance.ToggleActive();
                     _uiState.ActiveWindow = instance;
                 }
                 if (ImGui.IsItemHovered())
-                    ImGui.SetTooltip(GlobalUIState.NamesForMenus[typeof(CargoTransfer)]);
+                    ImGui.SetTooltip(GlobalUIState.NamesForMenus[typeof(CargoTransferWindow)]);
                 ImGui.PopID();
             }
 

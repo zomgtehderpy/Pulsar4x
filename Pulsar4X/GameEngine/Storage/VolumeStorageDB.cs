@@ -5,7 +5,9 @@ using Pulsar4X.Datablobs;
 
 namespace Pulsar4X.Storage
 {
-
+/// <summary>
+/// TODO: this needs to be made threadsafe for reading form the ui!
+/// </summary>
     public class VolumeStorageDB : BaseDataBlob, IAbilityDescription
     {
         public Dictionary<string, TypeStore> TypeStores = new Dictionary<string, TypeStore>();
@@ -72,7 +74,13 @@ namespace Pulsar4X.Storage
     {
         public double MaxVolume;
         internal double FreeVolume;
+        /// <summary>
+        /// Key is ICargoable.ID
+        /// </summary>
         public SafeDictionary<int, long> CurrentStoreInUnits = new ();
+        /// <summary>
+        /// Key is ICargoable.ID
+        /// </summary>
         internal Dictionary<int, ICargoable> Cargoables =  new ();
         public TypeStore(double maxVolume)
         {
@@ -89,8 +97,7 @@ namespace Pulsar4X.Storage
         {
             return CurrentStoreInUnits.ContainsKey(cargoID);
         }
-
-
+        
         public TypeStore Clone()
         {
             TypeStore clone = new TypeStore(MaxVolume);

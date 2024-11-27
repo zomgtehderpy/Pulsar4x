@@ -43,7 +43,7 @@ namespace Pulsar4X.SDL2UI
             {typeof(ChangeCurrentOrbitWindow), "Change current orbit"},
             {typeof(FireControl), "Fire Control" },
             {typeof(RenameWindow), "Rename"},
-            {typeof(CargoTransfer), "Cargo"},
+            {typeof(CargoTransferWindow), "Cargo"},
             {typeof(ColonyLogisticsDisplay), "Logistics"},
             {typeof(LogiShipWindow), "Logistics"},
             {typeof(ColonyPanel), "Economy"},
