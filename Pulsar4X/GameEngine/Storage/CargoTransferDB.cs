@@ -37,11 +37,7 @@ namespace Pulsar4X.Storage
         /// <returns></returns>
         public List<(ICargoable item, long unitCount)> GetItemsToTransfer()
         {
-            ICollection  ic = TransferData.ItemsLeftToMove;
-            lock (ic.SyncRoot)
-            {
-                return new List<(ICargoable item, long unitCount)>(TransferData.ItemsLeftToMove);
-            }
+            return new List<(ICargoable item, long unitCount)>(TransferData.ItemsLeftToMove);
         }
 
         public CargoTransferDB(CargoTransferObject transferObject)
