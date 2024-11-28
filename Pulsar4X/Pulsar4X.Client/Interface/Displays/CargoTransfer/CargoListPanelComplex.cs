@@ -58,9 +58,9 @@ public class CargoListPanelComplex
 
 
 
-        if (_entityState.Entity.HasDataBlob<CargoTransferDB>())
+        if (_entityState.Entity.TryGetDatablob<CargoTransferDB>(out var db))
         {
-            var itemsToXfer = _entityState.Entity.GetDataBlob<CargoTransferDB>().GetItemsToTransfer();
+            var itemsToXfer = db.GetItemsToTransfer();
             var newxferDict = new Dictionary<ICargoable, long>();
             foreach (var tuple in itemsToXfer)
             {
@@ -69,6 +69,7 @@ public class CargoListPanelComplex
             _cargoToMoveDatablob = newxferDict;
         }
 
+        /*
         if (_entityState.Entity.HasDataBlob<OrderableDB>())
         {
             var orders = _entityState.Entity.GetDataBlob<OrderableDB>().ActionList.ToArray();
@@ -80,7 +81,7 @@ public class CargoListPanelComplex
                     var xferOrder = (CargoTransferOrder)order;
 
                     bool isPrimary = xferOrder.IsPrimaryEntity;
-                    foreach (var tuple in xferOrder.ItemICargoablesToTransfer)
+                    foreach (var tuple in xferOrder.)
                     {
                         var cargoItem = tuple.item;
                         var cargoAmount = tuple.amount;
@@ -95,7 +96,7 @@ public class CargoListPanelComplex
             }
 
             _cargoToMoveOrders = newxferDict;
-        }
+        }*/
         UpdateTotalMoving();
 
     }
@@ -149,21 +150,21 @@ public class CargoListPanelComplex
     public void UpdateTotalMoving()
     {
         var newDict = new Dictionary<ICargoable, long>();
-        /*
+        
         foreach (var kvp in _cargoToMoveDatablob)
         {
             if(!newDict.ContainsKey(kvp.Key))
                 newDict.Add(kvp.Key, kvp.Value);
             else
                 newDict[kvp.Key] += kvp.Value;
-        }*/
+        }/*
         foreach (var kvp in _cargoToMoveOrders)
         {
             if(!newDict.ContainsKey(kvp.Key))
                 newDict.Add(kvp.Key, kvp.Value);
             else
                 newDict[kvp.Key] += kvp.Value;
-        }
+        }*/
         foreach (var kvp in _cargoToMoveUI)
         {
             if(!newDict.ContainsKey(kvp.Key))
@@ -189,7 +190,7 @@ public class CargoListPanelComplex
 
         ImGui.BeginChild(_entityState.Name, new Vector2(360, 200), true);
         ImGui.Text(_entityState.Name);
-        ImGui.Text("Transfer Rate: " + _volStorageDB.TransferRateInKgHr);
+        ImGui.Text("Transfer Rate: " + _volStorageDB.TransferRate);
         ImGui.Text("At DeltaV < " + Stringify.Velocity(_volStorageDB.TransferRangeDv_mps));
 
         foreach (var typeStoreKVP in _stores)

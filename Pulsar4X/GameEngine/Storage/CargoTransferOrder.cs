@@ -15,10 +15,7 @@ namespace Pulsar4X.Storage;
 
 public class CargoTransferOrder : EntityCommand
 {
-    //public List<(string ID, long amount)> ItemsGuidsToTransfer;
-
-    [JsonIgnore]
-    public IReadOnlyList<(ICargoable item, long amount)> ItemICargoablesToTransfer = new List<(ICargoable item, long amount)>();
+    
     public bool IsPrimaryEntity { get; private set; }
 
     public override ActionLaneTypes ActionLanes => ActionLaneTypes.Movement | ActionLaneTypes.InteractWithExternalEntity;
@@ -62,7 +59,6 @@ public class CargoTransferOrder : EntityCommand
             RequestingFactionGuid = faction,
             EntityCommandingGuid = primaryEntity.Id,
             CreatedDate = primaryEntity.Manager.ManagerSubpulses.StarSysDateTime,
-            ItemICargoablesToTransfer = itemsList,
             IsPrimaryEntity = true,
         };
         primaryEntity.Manager.Game.OrderHandler.HandleOrder(cmd1);
@@ -72,7 +68,6 @@ public class CargoTransferOrder : EntityCommand
             RequestingFactionGuid = faction,
             EntityCommandingGuid = secondaryEntity.Id,
             CreatedDate = primaryEntity.Manager.ManagerSubpulses.StarSysDateTime,
-            ItemICargoablesToTransfer = itemsToMove,
             IsPrimaryEntity = false
         };
         secondaryEntity.Manager.Game.OrderHandler.HandleOrder(cmd2);
@@ -114,7 +109,7 @@ public class CargoTransferOrder : EntityCommand
             CargoTransferDB transferDB = new CargoTransferDB(_transferData);
             transferDB.ParentStorageDB = EntityCommanding.GetDataBlob<VolumeStorageDB>();
             EntityCommanding.SetDataBlob(transferDB);
-             CargoTransferProcessor.SetEscro(transferDB.ParentStorageDB, _transferData);
+             
 
             IsRunning = true;
         }
@@ -140,9 +135,13 @@ public class CargoTransferOrder : EntityCommand
     long AmountLeftToXfer()
     {
         long amount = 0;
-        foreach (var tup in _transferData.ItemsLeftToMove)
+        foreach (var tup in _transferData.EscroHeldInPrimary)
         {
-            amount += tup.amount;
+            amount += tup.count;
+        }
+        foreach (var tup in _transferData.EscroHeldInSecondary)
+        {
+            amount += tup.count;
         }
         return amount;
     }

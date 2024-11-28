@@ -13,7 +13,6 @@ namespace Pulsar4X.Storage
 
     /// <summary>
     /// this datablob is active on an entity that is or will be transfering cargo.
-    /// this datablob should be on the entity that is SENDING cargo, not RECEVING 
     /// </summary>
     public class CargoTransferDB : BaseDataBlob
     {
@@ -32,12 +31,27 @@ namespace Pulsar4X.Storage
 
         /// <summary>
         /// Threadsafe gets items left to transfer. don't call this every ui frame!
-        /// (or you could cause deadlock slowdowns with the processing)
+        /// (or you could cause deadlock slowdowns with the processing)tr
         /// </summary>
         /// <returns></returns>
         public List<(ICargoable item, long unitCount)> GetItemsToTransfer()
         {
-            return new List<(ICargoable item, long unitCount)>(TransferData.ItemsLeftToMove);
+             List<(ICargoable item, long unitCount)> list = new();
+             foreach (var item in TransferData.EscroHeldInPrimary)
+             {
+                 var count = item.count;
+                 if (OwningEntity == PrimaryEntity)
+                     count *= -1;
+                 list.Add((item.item, count));
+             }
+             foreach (var item in TransferData.EscroHeldInSecondary)
+             {
+                 var count = item.count;
+                 if (OwningEntity == SecondaryEntity)
+                     count *= -1;
+                 list.Add((item.item, count));
+             }
+             return list;
         }
 
         public CargoTransferDB(CargoTransferObject transferObject)

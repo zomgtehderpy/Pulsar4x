@@ -59,13 +59,13 @@ namespace Pulsar4X.Storage
                     var atbdata = design.GetAttribute<StorageTransferRateAtb>();
                     if (instance.HealthPercent() > 0.75)
                     {
-                        transferRate += atbdata.TransferRate_kgh;
+                        transferRate += atbdata.TransferRate_kgs;
                         transferRange += atbdata.TransferRange_ms;
                         i++;
                     }
                 }
 
-                cargoStorageDB.TransferRateInKgHr = (int)(transferRate / i);
+                cargoStorageDB.TransferRate = (int)(transferRate / i);
                 cargoStorageDB.TransferRangeDv_mps = transferRange / i;
             }
         }

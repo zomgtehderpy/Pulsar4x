@@ -103,7 +103,7 @@ namespace Pulsar4X.SDL2UI
 
                         ImGui.Columns(2);
                         DisplayHelpers.PrintRow("Total Mass in Storage", Stringify.Mass(storage.TotalStoredMass));
-                        DisplayHelpers.PrintRow("Transfer Rate", storage.TransferRateInKgHr.ToString() + " kg/hr");
+                        DisplayHelpers.PrintRow("Transfer Rate", storage.TransferRate.ToString() + " kg/hr");
                         DisplayHelpers.PrintRow("Transfer Range", storage.TransferRangeDv_mps.ToString("0.#") + " dV m/s", tooltipOne: "This is confusing as hell :D", separator: false);
                         ImGui.Columns(1);
                         storage.Display(entityState, uiState, ImGuiTreeNodeFlags.None);

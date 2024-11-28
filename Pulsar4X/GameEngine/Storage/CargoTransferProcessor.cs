@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Pulsar4X.DataStructures;
 using Pulsar4X.Orbital;
 using Pulsar4X.Extensions;
 using Pulsar4X.Interfaces;
@@ -45,61 +46,56 @@ namespace Pulsar4X.Storage
         {
             var transferData = transferDB.TransferData;
             var transferRange = transferDB.ParentStorageDB.TransferRangeDv_mps;
-            var transferRate = transferDB.ParentStorageDB.TransferRateInKgHr;
+            var transferRate = transferDB.ParentStorageDB.TransferRate;
             double dv_mps = CalcDVDifference_m(transferDB.PrimaryEntity, transferDB.SecondaryEntity);
             
-            if(dv_mps > transferRange)
-                return;//early out if we're out of range. 
-            
-            
+
             double massTransferable = transferRate * deltaSeconds;
-            //each of the items to transfer...
-            for (int i = 0; i < transferData.ItemMassLeftToMove.Count; i++)
-            {
-                (ICargoable item, double mass) xferItems = transferData.ItemMassLeftToMove[i];
-                ICargoable cargoItem = xferItems.item;
-                //string cargoTypeID = cargoItem.CargoTypeID;
-                double itemMassPerUnit = cargoItem.MassPerUnit;
-                double netMass = xferItems.mass;
-                var massToXfer = Math.Min(massTransferable, netMass);
-                
-                
-                //remove from transferData (escro)
-                //mass is a double here to signify larger objects taking longer to move 
-                var massLeft = xferItems.mass += massToXfer;
-                transferData.ItemMassLeftToMove[i] = (cargoItem, massLeft);
-                //we use Floor here to signify whole part items not fully moved yet. 
-                int itemsMoved = (int)Math.Floor(massToXfer / itemMassPerUnit);
-                //long itemsLeft = (long)Math.Ceiling(transferData.ItemMassLeftToMove[i].amount / itemMassPerUnit);
-                long itemsLeft = transferData.ItemsLeftToMove[i].amount - itemsMoved;
-                transferData.ItemsLeftToMove[i] = (cargoItem, itemsLeft);
+            if(dv_mps > transferRange || massTransferable <=0)
+                return;//early out if we're out of range or no more mass to move.
+            
+            massTransferable -= MoveFromEscro(transferData.EscroHeldInPrimary, transferData.SecondaryStorageDB, transferData.PrimaryStorageDB, massTransferable);
+            massTransferable -= MoveFromEscro(transferData.EscroHeldInSecondary, transferData.PrimaryStorageDB, transferData.SecondaryStorageDB, massTransferable);
 
+            transferDB.PrimaryEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal();
+            transferDB.SecondaryEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal();
+            UpdateFuelAndDeltaV(transferDB.PrimaryEntity);
+            UpdateFuelAndDeltaV(transferDB.SecondaryEntity);
 
-                //if we're ADDING to the PRIMARY
-                if (itemsMoved > 0)
-                {
-                    transferData.PrimaryStorageDB.AddCargoByUnit(cargoItem, itemsMoved);
-                }
-                else //We're Removing from the Secondary
-                {
-                    //update mass and volume of secondary entity store.
-                    double volumeStoring = itemsMoved * cargoItem.VolumePerUnit;
-                    double massStoring = itemsMoved * cargoItem.MassPerUnit;
-                    TypeStore store = transferData.SecondaryStorageDB.TypeStores[cargoItem.CargoTypeID];
-                    store.FreeVolume += volumeStoring;
-                    transferData.SecondaryStorageDB.TotalStoredMass += massStoring;
-                }
-                
-                
-                massTransferable -= Math.Abs(massToXfer);
-                transferDB.OwningEntity.GetDataBlob<MassVolumeDB>().UpdateMassTotal();
-                UpdateFuelAndDeltaV(transferDB.OwningEntity);
-
-                if(massTransferable <= 0)
-                    break;//early out of loop if we've hit the limit of mass moveable this tick.
-            }
         }
 
+        private double MoveFromEscro(SafeList<(ICargoable item, long count, double mass)> escroList, VolumeStorageDB moveTo, VolumeStorageDB moveFrom, double massTransferable)
+        {
+            double totalMassXfered = 0;
+            for (int index = 0; index < escroList.Count; index++)
+            {
+                (ICargoable cargoItem, long count, double mass) tuple = escroList[index];
+                var cargoItem = tuple.cargoItem;
+                double itemMassPerUnit = cargoItem.MassPerUnit;
+                double massToXfer = Math.Min(massTransferable, tuple.mass);
+                //we use Floor here to signify whole part items not fully moved yet. 
+                int countToXfer = (int)Math.Floor(massToXfer / itemMassPerUnit);
+                
+                double massLeft = tuple.mass - massToXfer;
+                long itemsLeft = tuple.count - countToXfer;
+                escroList[index] = (cargoItem,itemsLeft, massLeft);
+                
+                //add items to cargo of seconddary entity store
+                moveTo.AddCargoByUnit(cargoItem, countToXfer);
+                
+                //update mass and volume of primary entity store.
+                double volumeStoring = countToXfer * cargoItem.VolumePerUnit;
+                double massStoring = countToXfer * cargoItem.MassPerUnit;
+                TypeStore store = moveFrom.TypeStores[cargoItem.CargoTypeID];
+                store.FreeVolume += volumeStoring;
+                moveFrom.TotalStoredMass += massStoring;
+                
+                massTransferable -= massToXfer;
+                totalMassXfered += massToXfer;
+            }
+            return totalMassXfered;
+        }
+        
         /// <summary>
         /// Add cargo and updates the entites MassTotal
         /// </summary>
@@ -277,25 +273,25 @@ namespace Pulsar4X.Storage
             double maxRange;
             double maxXferAtMaxRange;
             double bestXferRange_ms = Math.Min(fromDVRange, toDVRange);
-            double maxXferAtBestRange = from.TransferRateInKgHr + to.TransferRateInKgHr;
+            double maxXferAtBestRange = from.TransferRate + to.TransferRate;
 
             double transferRate;
 
             if (from.TransferRangeDv_mps > to.TransferRangeDv_mps)
             {
                 maxRange = fromDVRange;
-                if (from.TransferRateInKgHr > to.TransferRateInKgHr)
-                    maxXferAtMaxRange = from.TransferRateInKgHr;
+                if (from.TransferRate > to.TransferRate)
+                    maxXferAtMaxRange = from.TransferRate;
                 else
-                    maxXferAtMaxRange = to.TransferRateInKgHr;
+                    maxXferAtMaxRange = to.TransferRate;
             }
             else
             {
                 maxRange = toDVRange;
-                if (to.TransferRateInKgHr > from.TransferRateInKgHr)
-                    maxXferAtMaxRange = to.TransferRateInKgHr;
+                if (to.TransferRate > from.TransferRate)
+                    maxXferAtMaxRange = to.TransferRate;
                 else
-                    maxXferAtMaxRange = from.TransferRateInKgHr;
+                    maxXferAtMaxRange = from.TransferRate;
             }
 
             if (dvDifference_mps < bestXferRange_ms)
@@ -315,7 +311,7 @@ namespace Pulsar4X.Storage
             var fromDVRange = fromdb.TransferRangeDv_mps;
             var toDVRange = todb.TransferRangeDv_mps;
             double bestXferRange_ms = Math.Min(fromDVRange, toDVRange);
-            double maxXferAtBestRange = fromdb.TransferRateInKgHr + todb.TransferRateInKgHr;
+            double maxXferAtBestRange = fromdb.TransferRate + todb.TransferRate;
             return (maxXferAtBestRange, bestXferRange_ms);
         }
 
@@ -331,52 +327,21 @@ namespace Pulsar4X.Storage
             if (fromdb.TransferRangeDv_mps > todb.TransferRangeDv_mps)
             {
                 maxRange = fromDVRange;
-                if (fromdb.TransferRateInKgHr > todb.TransferRateInKgHr)
-                    maxXferAtMaxRange = fromdb.TransferRateInKgHr;
+                if (fromdb.TransferRate > todb.TransferRate)
+                    maxXferAtMaxRange = fromdb.TransferRate;
                 else
-                    maxXferAtMaxRange = todb.TransferRateInKgHr;
+                    maxXferAtMaxRange = todb.TransferRate;
             }
             else
             {
                 maxRange = toDVRange;
-                if (todb.TransferRateInKgHr > fromdb.TransferRateInKgHr)
-                    maxXferAtMaxRange = todb.TransferRateInKgHr;
+                if (todb.TransferRate > fromdb.TransferRate)
+                    maxXferAtMaxRange = todb.TransferRate;
                 else
-                    maxXferAtMaxRange = fromdb.TransferRateInKgHr;
+                    maxXferAtMaxRange = fromdb.TransferRate;
             }
 
             return(maxRange, maxXferAtMaxRange);
-        }
-
-        public static void SetEscro(VolumeStorageDB volStorage, CargoTransferObject cargoTransferData)
-        {
-            volStorage.EscroItems.Add(cargoTransferData);
-            for (int index = 0; index < cargoTransferData.OrderedToTransfer.Count; index++)
-            {
-                (ICargoable item, long amount) tuple = cargoTransferData.OrderedToTransfer[index];
-                var cargoItem = tuple.item;
-                var unitAmount = tuple.amount;
-                TypeStore store = volStorage.TypeStores[cargoItem.CargoTypeID];
-
-                if (volStorage == cargoTransferData.PrimaryStorageDB)
-                    unitAmount *= -1; //primary entity, negitive item amounts move out of this this entity
-
-                if (unitAmount > 0) //if we're removing items
-                {
-                    if (store.CurrentStoreInUnits.ContainsKey(cargoItem.ID))
-                    {
-                        long amountInStore = store.CurrentStoreInUnits[cargoItem.ID];
-                        long amountToRemove = Math.Min(unitAmount, amountInStore);
-                        store.CurrentStoreInUnits[cargoItem.ID] -= amountToRemove;
-                        cargoTransferData.ItemsLeftToMove[index] = (cargoItem,amountToRemove);
-                    }
-                    else
-                    {
-                        //in this case we're trying to remove items that don't exist. not sure how we should handle this yet.
-                        cargoTransferData.ItemsLeftToMove[index] = (cargoItem,0);
-                    }
-                }
-            }
         }
     }
 }

@@ -270,7 +270,7 @@ namespace Pulsar4X.SDL2UI
                                 storeDB.Display(_selectedEntityState, _uiState);
                                 ImGui.Text("Total Stored Mass inc. escro: " + Stringify.Mass(storeDB.TotalStoredMass));
                                 ImGui.Text("Transfer Range: " + Stringify.Velocity(storeDB.TransferRangeDv_mps));
-                                ImGui.Text("Transfer Rate: " + Stringify.Mass(storeDB.TransferRateInKgHr));
+                                ImGui.Text("Transfer Rate: " + Stringify.Mass(storeDB.TransferRate));
                                 double totalMassIncEscro = 0;
                                 double totalMassLesEscro = 0;
                                 double totalVolumeIncEscro = 0;

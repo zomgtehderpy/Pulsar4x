@@ -12,14 +12,17 @@ namespace Pulsar4X.Storage
     {
         public Dictionary<string, TypeStore> TypeStores = new Dictionary<string, TypeStore>();
 
-        public List<CargoTransferObject> EscroItems { get; } = new();
+        internal List<CargoTransferObject> EscroItems { get; } = new();
         
         /// <summary>
         /// This includes Escro Items.
         /// </summary>
         public double TotalStoredMass { get; internal set; } = 0;
 
-        public int TransferRateInKgHr { get; internal set; } = 500;
+        /// <summary>
+        /// kg per second.
+        /// </summary>
+        public int TransferRate { get; internal set; } = 5;
 
         public double TransferRangeDv_mps { get; internal set; } = 100;
 
@@ -43,7 +46,7 @@ namespace Pulsar4X.Storage
             }
             TotalStoredMass = db.TotalStoredMass;
             TransferRangeDv_mps = db.TransferRangeDv_mps;
-            TransferRateInKgHr = db.TransferRateInKgHr;
+            TransferRate = db.TransferRate;
         }
 
         public override object Clone()

@@ -11,17 +11,17 @@ public class StorageTransferRateAtb : IComponentDesignAttribute
     /// <summary>
     /// Gets or sets the transfer rate.
     /// </summary>
-    /// <value>The transfer rate in Kg/h</value>
-    public int TransferRate_kgh { get; internal set; }
+    /// <value>The transfer rate in Kg/s</value>
+    public int TransferRate_kgs { get; internal set; }
     /// <summary>
     /// Gets or sets the transfer range.
     /// </summary>
     /// <value>DeltaV in m/s, Low Earth Orbit is about 10000m/s</value>
     public double TransferRange_ms { get; internal set; }
 
-    public StorageTransferRateAtb(double rate_kgh, double rangeDV_ms)
+    public StorageTransferRateAtb(double rate_kgs, double rangeDV_ms)
     {
-        TransferRate_kgh = (int)rate_kgh;
+        TransferRate_kgs = (int)rate_kgs;
         TransferRange_ms = rangeDV_ms;
     }
 
@@ -48,6 +48,6 @@ public class StorageTransferRateAtb : IComponentDesignAttribute
 
     public string AtbDescription()
     {
-        return "Adds " + TransferRate_kgh + " kg per hour at " + TransferRange_ms + " m/s Dv";
+        return "Adds " + TransferRate_kgs + " kg per hour at " + TransferRange_ms + " m/s Dv";
     }
 }

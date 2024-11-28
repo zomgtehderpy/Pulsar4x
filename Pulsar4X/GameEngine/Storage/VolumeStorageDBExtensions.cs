@@ -231,12 +231,15 @@ namespace Pulsar4X.Storage
             long unitCount = 0;
             foreach (var transferData in db.EscroItems)
             {
-                foreach (var tup in transferData.ItemsLeftToMove)
+                if(db.OwningEntity == transferData.PrimaryStorageDB.OwningEntity)//I think this is wrong
                 {
-                    if (tup.item.ID == cargoItem.ID)
+                    foreach (var tup in transferData.EscroHeldInPrimary)
                     {
-                        unitCount += tup.amount;
-                        break;
+                        if (tup.item.ID == cargoItem.ID)
+                        {
+                            unitCount += tup.count;
+                            break;
+                        }
                     }
                 }   
             }
