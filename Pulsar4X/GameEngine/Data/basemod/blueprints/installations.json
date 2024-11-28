@@ -15,8 +15,9 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "gallicite": "60",
-        "corundium": "60"
+        "iron": "[Mass] * 0.75",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.05"
       },
       "ComponentType": "Facility",
       "MountType": "ShipCargo, PlanetInstallation",
@@ -35,20 +36,13 @@
             "lithium": "10",
             "chromium": "10",
             "fissionables": "10",
-            "sorium": "10",
-            "duranium": "10",
-            "neutronium": "10",
-            "corbomite": "10",
-            "tritanium": "10",
-            "boronide": "10",
-            "uridium": "10",
-            "corundium": "10",
-            "mercassium": "10",
-            "vendarite": "10",
-            "gallicite": "10"
+            "titanium": "10",
+            "tungsten": "10",
+            "silicon": "10",
+            "graphite": "10"
           },
           "AttributeFormula": "AtbConstrArgs([GuidDict])",
-          "AttributeType": "Pulsar4X.Datablobs.MineResourcesAtbDB"
+          "AttributeType": "Pulsar4X.Industry.MineResourcesAtbDB"
         }
       ]
     }
@@ -69,8 +63,9 @@
         "BuildPointCost": "[Mass] / 2"
       },
       "ResourceCost": {
-        "duranium": "Ability('Size') / 100 * 60",
-        "mercassium": "Ability('Size') / 100 * 60"
+        "iron": "[Mass] * 0.75",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.05"
       },
       "ComponentType":"Facility",
       "MountType": "ShipCargo, PlanetInstallation",
@@ -103,7 +98,7 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Research Points'))",
-          "AttributeType": "Pulsar4X.Datablobs.ResearchPointsAtbDB"
+          "AttributeType": "Pulsar4X.Technology.ResearchPointsAtbDB"
         }
       ]
     }
@@ -124,8 +119,9 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "[Mass] * 0.05",
-        "copper": "[Mass] * 0.005"
+        "iron": "[Mass] * 0.75",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.05"
       },
       "ComponentType": "Facility",
       "MountType": "ShipCargo, PlanetInstallation",
@@ -155,7 +151,7 @@
             "refining": "Ability('Refinery Points')"
           },
           "AttributeFormula": "AtbConstrArgs([GuidDict])",
-          "AttributeType": "Pulsar4X.Atb.IndustryAtb"
+          "AttributeType": "Pulsar4X.Industry.IndustryAtb"
         }
       ]
     }
@@ -176,10 +172,9 @@
         "BuildPointCost": "Ability('Size') * 20"
       },
       "ResourceCost": {
-        "iron": "[Mass] * 0.05",
-        "copper": "[Mass] * 0.005",
-        "aluminium": "[Mass] * 0.005",
-        "plastic": "[Mass] * 0.001"
+        "iron": "[Mass] * 0.75",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.05"
       },
       "ComponentType": "Facility",
       "MountType": "ShipCargo, PlanetInstallation",
@@ -226,7 +221,7 @@
             "ordnance-construction": "Ability('Ordnance Construction Points')"
           },
           "AttributeFormula": "AtbConstrArgs([GuidDict])",
-          "AttributeType": "Pulsar4X.Atb.IndustryAtb"
+          "AttributeType": "Pulsar4X.Industry.IndustryAtb"
         }
       ]
     }
@@ -247,8 +242,11 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "Ability('Slip Size') * 10",
-        "copper": "Ability('Slip Size') * 0.5"
+        "iron": "[Mass] * 0.5",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "stainless-steel": "[Mass] * 0.1"
       },
       "ComponentType":"Facility",
       "MountType": "ShipCargo, PlanetInstallation",
@@ -291,7 +289,7 @@
             "ship-assembly": "Ability('Ship Assembly Points')"
           },
           "AttributeFormula": "AtbConstrArgs([GuidDict], Ability('Slip Size'))",
-          "AttributeType": "Pulsar4X.Atb.IndustryAtb"
+          "AttributeType": "Pulsar4X.Industry.IndustryAtb"
         }
       ]
     }
@@ -312,8 +310,11 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "60",
-        "copper": "60"
+        "iron": "[Mass] * 0.5",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "stainless-steel": "[Mass] * 0.1"
       },
       "ComponentType":"Facility",
       "MountType": "ShipCargo, PlanetInstallation",
@@ -355,8 +356,9 @@
         "BuildPointCost": "Ability('Storage Volume') * 4.5"
       },
       "ResourceCost": {
-        "iron": "Ability('Storage Volume') * 10",
-        "copper": "Ability('Storage Volume')"
+        "stainless-steel": "[Mass] * 0.5",
+        "aluminium": "[Mass] * 0.4",
+        "plastic": "[Mass] * 0.1"
       },
       "ComponentType":"Cargo Hold",
       "MountType": "ShipComponent, ShipCargo, PlanetInstallation",
@@ -382,11 +384,11 @@
         },
         {
           "Name": "Cargo Transfer Rate",
-          "DescriptionFormula": "'How much cargo can be transfered per hour in kg.'",
+          "DescriptionFormula": "'How much cargo can be transfered per second in kg.'",
           "GuiHint": "GuiSelectionMaxMinInt",
           "GuidDictionary": {},
-          "MaxFormula": "100000",
-          "MinFormula": "100",
+          "MaxFormula": "1000",
+          "MinFormula": "1",
           "StepFormula": "100",
           "AttributeFormula": "1000"
         },
@@ -402,7 +404,7 @@
         },
         {
           "Name": "Transfer Rate",
-          "Units": "kg/hr",
+          "Units": "kg/s",
           "DescriptionFormula": "'The rate at which cargo can be loaded an unloaded from the hold'",
           "GuiHint": "GuiTextDisplay",
           "AttributeFormula": "Ability('Cargo Transfer Rate') * ((-0.5 / 10000) * Ability('Storage Volume') + 1)"
@@ -411,13 +413,13 @@
           "Name": "DBargsStor",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs('general-storage', Ability('Storage Volume'))",
-          "AttributeType": "Pulsar4X.Atb.VolumeStorageAtb"
+          "AttributeType": "Pulsar4X.Storage.CargoStorageAtb"
         },
         {
           "Name": "DBArgsXfer",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Transfer Rate'), Ability('Transfer Range'))",
-          "AttributeType": "Pulsar4X.Atb.StorageTransferRateAtb"
+          "AttributeType": "Pulsar4X.Storage.CargoTransferAtb"
         }
       ]
     }
@@ -438,8 +440,8 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "[Mass]",
-        "copper": "[Mass]"
+        "stainless-steel": "[Mass] * 0.75",
+        "aluminium": "[Mass] * 0.25"
       },
       "ComponentType":"Fuel Storage",
       "MountType": "ShipComponent, ShipCargo, PlanetInstallation, Fighter",
@@ -473,7 +475,7 @@
           "Name": "DBargs",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs('fuel-storage', Ability('Tank Volume'))",
-          "AttributeType": "Pulsar4X.Atb.VolumeStorageAtb"
+          "AttributeType": "Pulsar4X.Storage.CargoStorageAtb"
         }
       ]
     }
@@ -528,7 +530,7 @@
           "Name": "DBargs",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs('fuel-storage', Ability('Tank Volume'))",
-          "AttributeType": "Pulsar4X.Atb.VolumeStorageAtb"
+          "AttributeType": "Pulsar4X.Storage.CargoStorageAtb"
         }
       ]
     }
@@ -549,8 +551,11 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "60",
-        "copper": "60"
+        "iron": "[Mass] * 0.5",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "stainless-steel": "[Mass] * 0.1"
       },
       "ComponentType": "Facility",
       "MountType": "PlanetInstallation",
@@ -600,8 +605,11 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "duranium": "60",
-        "mercassium": "60"
+        "iron": "[Mass] * 0.5",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "stainless-steel": "[Mass] * 0.1"
       },
       "ComponentType":"Facility",
       "MountType": "PlanetInstallation",
@@ -627,13 +635,13 @@
         },
         {
           "Name": "Cargo Transfer Rate",
-          "DescriptionFormula": "'How much cargo can be transfered per hour in kg.'",
+          "DescriptionFormula": "'How much cargo can be transfered per secong in kg.'",
           "GuiHint": "GuiSelectionMaxMin",
           "GuidDictionary": {},
-          "MaxFormula": "1000000",
-          "MinFormula": "100",
-          "StepFormula": "100",
-          "AttributeFormula": "50000"
+          "MaxFormula": "10000",
+          "MinFormula": "1",
+          "StepFormula": "10",
+          "AttributeFormula": "500"
         },
         {
           "Name": "Transfer Range",
@@ -656,13 +664,13 @@
           "Name": "DBargsTransfer",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Cargo Transfer Rate'), Ability('Transfer Range'))",
-          "AttributeType": "Pulsar4X.Datablobs.StorageTransferRateAtbDB"
+          "AttributeType": "Pulsar4X.Datablobs.CargoTransferAtbDB"
         },
         {
           "Name": "DBargsStorage",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs('general-storage', Ability('Total Cargo Stored'))",
-          "AttributeType": "Pulsar4X.Atb.VolumeStorageAtb"
+          "AttributeType": "Pulsar4X.Storage.CargoStorageAtb"
         }
       ]
     }
@@ -683,7 +691,11 @@
         "BuildPointCost": "100"
       },
       "ResourceCost": {
-        "duranium": "100"
+        "iron": "[Mass] * 0.5",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "stainless-steel": "[Mass] * 0.1"
       },
       "ComponentType":"Infrastructure",
       "MountType": "ShipCargo, PlanetInstallation",
@@ -706,7 +718,7 @@
           "Name": "DBargs",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(GuidString('general-storage'), Ability('Storage Amount'))",
-          "AttributeType": "Pulsar4X.Atb.VolumeStorageAtb"
+          "AttributeType": "Pulsar4X.Storage.CargoStorageAtb"
         }
       ]
     }
@@ -727,8 +739,11 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "duranium": "60",
-        "mercassium": "60"
+        "iron": "[Mass] * 0.5",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "stainless-steel": "[Mass] * 0.1"
       },
       "ComponentType":"Facility",
       "MountType": "ShipComponent, ShipCargo, PlanetInstallation",
@@ -737,13 +752,13 @@
       "Attributes": [
         {
           "Name": "Cargo Transfer Rate",
-          "DescriptionFormula": "'How much cargo can be transfered per hour in kg.'",
+          "DescriptionFormula": "'How much cargo can be transfered per second in kg.'",
           "GuiHint": "GuiSelectionMaxMin",
           "GuidDictionary": {},
-          "MaxFormula": "1000000",
-          "MinFormula": "100",
-          "StepFormula": "100",
-          "AttributeFormula": "50000"
+          "MaxFormula": "10000",
+          "MinFormula": "1",
+          "StepFormula": "10",
+          "AttributeFormula": "500"
         },
         {
           "Name": "Transfer Range",
@@ -759,7 +774,7 @@
           "Name": "db",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Cargo Transfer Rate'), Ability('Transfer Range'))",
-          "AttributeType": "Pulsar4X.Atb.StorageTransferRateAtb"
+          "AttributeType": "Pulsar4X.Storage.CargoTransferAtb"
         }
       ]
     }

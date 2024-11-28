@@ -112,7 +112,7 @@
           "DescriptionFormula": "'(double peakWaveLength, double bandwidth, double bestSensitivity, double worstSensitivity, double resolution, double scanTime)'",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Ideal Detection Wavelength'), Ability('Detection Bandwidth'), Ability('Sensitivity at Ideal Wavelength'), Ability('Sensitivity at Worst Wavelength'), Ability('Resolution'), Ability('Scan Time'))",
-          "AttributeType": "Pulsar4X.Datablobs.SensorReceiverAtbDB"
+          "AttributeType": "Pulsar4X.Sensors.SensorReceiverAtbDB"
         }
       ]
     }
@@ -121,7 +121,7 @@
     "Type": "ComponentTemplate",
     "Payload": {
       "UniqueID": "beam-fire-control",
-      "Name": "BeamFireControl",
+      "Name": "Laser Weapon Turret",
       "Formulas": {
         "Description": "",
         "Mass": "Ability('Mass')",
@@ -133,7 +133,10 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "duranium": "[Mass]"
+        "stainless-steel": "[Mass] * 0.5",
+        "plastic": "[Mass] * 0.2",
+        "aluminium": "[Mass] * 0.1",
+        "copper": "[Mass] * 0.1"
       },
       "ComponentType": "Weapon",
       "MountType": "ShipComponent, ShipCargo",
@@ -194,7 +197,7 @@
           "GuiHint": "None",
           "GuidDictionary": {},
           "AttributeFormula": "AtbConstrArgs(Ability('Range'), Ability('Tracking Speed'))",
-          "AttributeType": "Pulsar4X.Datablobs.BeamFireControlAtbDB"
+          "AttributeType": "Pulsar4X.Weapons.BeamFireControlAtbDB"
         }
       ]
     }
@@ -215,9 +218,10 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "[Mass]",
-        "copper": "[Mass]",
-        "aluminium": "[Mass]"
+        "stainless-steel": "[Mass] * 0.4",
+        "plastic": "[Mass] * 0.2",
+        "aluminium": "[Mass] * 0.1",
+        "copper": "[Mass] * 0.3"
       },
       "ComponentType": "Science",
       "MountType": "ShipComponent, ShipCargo",
@@ -247,7 +251,7 @@
           "GuiHint": "None",
           "GuidDictionary": {},
           "AttributeFormula": "AtbConstrArgs(Ability('Survey Speed'))",
-          "AttributeType": "Pulsar4X.Atb.GeoSurveyAtb"
+          "AttributeType": "Pulsar4X.GeoSurveys.GeoSurveyAtb"
         }
       ]
     }
@@ -268,9 +272,10 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "[Mass]",
-        "copper": "[Mass]",
-        "aluminium": "[Mass]"
+        "stainless-steel": "[Mass] * 0.4",
+        "plastic": "[Mass] * 0.2",
+        "aluminium": "[Mass] * 0.1",
+        "copper": "[Mass] * 0.3"
       },
       "ComponentType": "Science",
       "MountType": "ShipComponent, ShipCargo",
@@ -300,7 +305,7 @@
           "GuiHint": "None",
           "GuidDictionary": {},
           "AttributeFormula": "AtbConstrArgs(Ability('Survey Speed'))",
-          "AttributeType": "Pulsar4X.Atb.GravSurveyAtb"
+          "AttributeType": "Pulsar4X.JumpPoints.GravSurveyAtb"
         }
       ]
     }

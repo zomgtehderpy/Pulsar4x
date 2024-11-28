@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <FileUpgradeFlags>40</FileUpgradeFlags>
     <OldToolsVersion>Current</OldToolsVersion>
     <ApplicationIcon>Resources\pulsaricon.ico</ApplicationIcon>
     <Nullable>enable</Nullable>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Linux_x64' ">
@@ -251,9 +251,6 @@
     <Content Include="Resources\ImgTest.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="OrbitalWidgets\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Resources\CancelIco.bmp">

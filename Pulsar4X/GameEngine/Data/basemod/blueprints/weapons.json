@@ -15,7 +15,13 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "duranium": "[Mass]"
+        "aluminium": "[Mass] * 0.3",
+        "stainless-steel": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "copper": "[Mass] * 0.1",
+        "tungsten": "[Mass] * 0.2",
+        "titanium": "[Mass] * 0.1",
+        "graphite": "[Mass] * 0.1"
       },
       "ComponentType": "Weapon",
       "MountType": "ShipComponent, ShipCargo, PlanetInstallation",
@@ -85,7 +91,7 @@
         {
           "Name": "Duty Cycle",
           "Units": "%",
-          "DescriptionFormula": "'What percentage of the lasers charge perioid is spent firing '",
+          "DescriptionFormula": "'What percentage of the lasers charge period is spent firing '",
           "GuiHint": "GuiSelectionMaxMin",
           "MaxFormula": "1",
           "MinFormula": "0",
@@ -206,17 +212,17 @@
         },
         {
           "Name": "genericWpnAtbArgs",
-          "DescriptionFormula": "'int magSize, int reloadPerSec, int amountPerShot, int minShotsPerfire",
+          "DescriptionFormula": "'int magSize, int reloadPerSec, int amountPerShot, int minShotsPerfire\nAtbConstrArgs(Ability('Charge Period') * Ability('Power Input'), Ability('Power Input'), Ability('Pulse Energy'), 1)",
           "GuiHint": "None",
-          "AttributeFormula": "AtbConstrArgs(Ability('Charge Period') * Ability('Power Input'), Ability('Power Input'), Ability('Pulse Energy'), 1)",
-          "AttributeType": "Pulsar4X.Atb.GenericWeaponAtb"
+          "AttributeFormula": "AtbConstrArgs(2, 1, 2, 2)",
+          "AttributeType": "Pulsar4X.Weapons.GenericWeaponAtb"
         },
         {
           "Name": "genericBeamWpnAtbArgs",
           "DescriptionFormula": "'int range, double wavelength, int wattage",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Range'), Ability('Target Wavelength'), Ability('Pulse Energy'))",
-          "AttributeType": "Pulsar4X.Datablobs.GenericBeamWeaponAtbDB"
+          "AttributeType": "Pulsar4X.Weapons.GenericBeamWeaponAtbDB"
         }
       ]
     }
@@ -237,7 +243,13 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "duranium": "[Mass]"
+        "aluminium": "[Mass] * 0.3",
+        "stainless-steel": "[Mass] * 0.1",
+        "plastic": "[Mass] * 0.1",
+        "copper": "[Mass] * 0.1",
+        "tungsten": "[Mass] * 0.2",
+        "titanium": "[Mass] * 0.1",
+        "graphite": "[Mass] * 0.1"
       },
       "ComponentType": "Weapon",
       "MountType": "ShipComponent, ShipCargo",
@@ -314,13 +326,13 @@
           "DescriptionFormula": "'int magSize, int reloadPerSec, int amountPerShot, int minShotsPerfire, WpnTypes type",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(120, 1, 120, 1)",
-          "AttributeType": "Pulsar4X.Atb.GenericWeaponAtb"
+          "AttributeType": "Pulsar4X.Weapons.GenericWeaponAtb"
         },
         {
           "Name": "dbargs",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Max Mass'), Ability('ROF'), Ability('Launch Force'))",
-          "AttributeType": "Pulsar4X.Atb.MissileLauncherAtb"
+          "AttributeType": "Pulsar4X.Weapons.MissileLauncherAtb"
         }
 
       ]

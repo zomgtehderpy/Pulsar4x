@@ -1,26 +1,31 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Pulsar4X.Engine;
 using Pulsar4X.Engine.Auth;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Modding;
 using Pulsar4X.Orbital;
 using Pulsar4X.Components;
-using Pulsar4X.Engine.Designs;
+using Pulsar4X.Colonies;
+using Pulsar4X.Factions;
+using Pulsar4X.JumpPoints;
+using Pulsar4X.Names;
+using Pulsar4X.Orbits;
+using Pulsar4X.People;
+using Pulsar4X.Ships;
+using Pulsar4X.Galaxy;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.Tests
 {
     internal static class TestingUtilities
     {
 
-        
+
         public static Entity BasicSol(EntityManager mgr)
         {
             double parentMass = 1.989e30;
             BaseDataBlob[] parentblobs = new BaseDataBlob[4];
-            parentblobs[0] = new PositionDB(mgr.ManagerGuid) { AbsolutePosition = Vector3.Zero };
+            parentblobs[0] = new PositionDB() { AbsolutePosition = Vector3.Zero };
             parentblobs[1] = MassVolumeDB.NewFromMassAndRadius_m(parentMass, 696342000.0 );
             parentblobs[2] = new OrbitDB();
             parentblobs[3] = new NameDB();
@@ -33,7 +38,7 @@ namespace Pulsar4X.Tests
         {
             double parentMass = 5.97237e24;
             BaseDataBlob[] parentblobs = new BaseDataBlob[4];
-            parentblobs[0] = new PositionDB(mgr.ManagerGuid) { AbsolutePosition = Vector3.Zero };
+            parentblobs[0] = new PositionDB() { AbsolutePosition = Vector3.Zero };
             parentblobs[1] = new MassVolumeDB() { MassDry = parentMass };
             parentblobs[2] = new OrbitDB();
             parentblobs[3] = new NameDB();
@@ -145,7 +150,7 @@ namespace Pulsar4X.Tests
 
             StarSystemFactory starfac = new StarSystemFactory(Game);
             Sol = starfac.CreateSol(Game);
-            Earth = NameLookup.GetFirstEntityWithName(Sol, "Earth"); //Sol.Entities[3]; //should be fourth entity created 
+            Earth = NameLookup.GetFirstEntityWithName(Sol, "Earth"); //Sol.Entities[3]; //should be fourth entity created
              EarthColony = ColonyFactory.CreateColony(HumanFaction, HumanSpecies, Earth);
              var humondatastore = HumanFaction.GetDataBlob<FactionInfoDB>().Data;
             DefaultEngineDesign = DefaultStartFactory.DefaultThrusterDesign(HumanFaction, humondatastore);

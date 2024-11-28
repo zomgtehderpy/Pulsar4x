@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 using Pulsar4X.Engine;
-using Pulsar4X.Datablobs;
 using Pulsar4X.Modding;
 using Pulsar4X.Orbital;
+using Pulsar4X.Orbits;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Tests
 {
 
-    // Test: Time --> EllipticMeanAnomaly --> EccentricAnomaly --> TrueAnomaly --> *(position, velocity)* 
-    // Test: Time <-- EllipticMeanAnomaly <-- EccentricAnomaly <-- TrueAnomaly <-----------| 
+    // Test: Time --> EllipticMeanAnomaly --> EccentricAnomaly --> TrueAnomaly --> *(position, velocity)*
+    // Test: Time <-- EllipticMeanAnomaly <-- EccentricAnomaly <-- TrueAnomaly <-----------|
 
-    // Test: Time --> HyperbolicMeanAnomaly --> HyperbolicAnomaly --> TrueAnomaly --> *(position, velocity)* 
-    // Test: Time <-- HyperbolicMeanAnomaly <-- HyperbolicAnomaly <-- TrueAnomaly <-----------| 
+    // Test: Time --> HyperbolicMeanAnomaly --> HyperbolicAnomaly --> TrueAnomaly --> *(position, velocity)*
+    // Test: Time <-- HyperbolicMeanAnomaly <-- HyperbolicAnomaly <-- TrueAnomaly <-----------|
     public class OrbitFuzzTesting
     {
         private static Game _game = InitializeGame();
@@ -66,7 +65,7 @@ namespace Pulsar4X.Tests
                  parentBody,
                  parentMassDB.MassDry,
                  2.2e14,          //halleysBodyMass
-                 17.834,     //halleysSemiMajAxis 
+                 17.834,     //halleysSemiMajAxis
                  0.96714,     //halleysEccentricity
                  0,
                  0, //halleysLoAN
@@ -80,7 +79,7 @@ namespace Pulsar4X.Tests
                     parentBody,
                     parentMassDB.MassDry,
                     2.2e14,          //halleysBodyMass
-                    17.834,     //halleysSemiMajAxis 
+                    17.834,     //halleysSemiMajAxis
                     0.96714,     //halleysEccentricity
                     0,
                     0, //halleysLoAN
@@ -94,7 +93,7 @@ namespace Pulsar4X.Tests
                     parentBody,
                     parentMassDB.MassDry,
                     2.2e14,          //halleysBodyMass
-                    17.834,     //halleysSemiMajAxis 
+                    17.834,     //halleysSemiMajAxis
                     0.96714,     //halleysEccentricity
                     0,
                     0, //halleysLoAN
@@ -106,12 +105,12 @@ namespace Pulsar4X.Tests
             /* THIS IS an INVALID test, for 2d orbits, LoAN should be 0!
             (
                 OrbitDB.FromAsteroidFormat( //elliptical orbit
-                    parentBody, 
-                    parentMassDB.MassDry, 
+                    parentBody,
+                    parentMassDB.MassDry,
                     2.2e14,          //halleysBodyMass
-                    17.834,     //halleysSemiMajAxis 
+                    17.834,     //halleysSemiMajAxis
                     0.96714,     //halleysEccentricity
-                    0, 
+                    0,
                     58.42, //halleysLoAN
                     111.33, //halleysAoP
                     38.38,     //halleysMeanAnomaly at Epoch
@@ -119,11 +118,11 @@ namespace Pulsar4X.Tests
                 "Elliptical 2d 58.42 LoAN and 111.33 aop Orbit"
             ),*/
             (
-             OrbitDB.FromAsteroidFormat( //elliptical 2d retrograde orbit. 
+             OrbitDB.FromAsteroidFormat( //elliptical 2d retrograde orbit.
                  parentBody,
                  parentMassDB.MassDry,
                  2.2e14,             //halleysBodyMass
-                 17.834,         //halleysSemiMajAxis , 
+                 17.834,         //halleysSemiMajAxis ,
                  0.96714,         //halleysEccentricity
                  72.26,
                  0, //halleysLoAN
@@ -133,11 +132,11 @@ namespace Pulsar4X.Tests
              "Elliptical 2d retrograde Orbit"
             ),
             (
-             OrbitDB.FromAsteroidFormat( //elliptical 3d orbit. 
+             OrbitDB.FromAsteroidFormat( //elliptical 3d orbit.
                  parentBody,
                  parentMassDB.MassDry,
                  2.2e14,            //halleysBodyMass
-                 17.834,     //halleysSemiMajAxis , 
+                 17.834,     //halleysSemiMajAxis ,
                  0.96714,     //halleysEccentricity
                  72.26,     //halleys3dInclination, note retrograde orbit (> 90degrees)
                  58.42, //halleysLoAN
@@ -147,11 +146,11 @@ namespace Pulsar4X.Tests
              "Elliptical 3d Orbit"
             ),
             (
-             OrbitDB.FromAsteroidFormat( //elliptical retrograde 3d orbit. 
+             OrbitDB.FromAsteroidFormat( //elliptical retrograde 3d orbit.
                  parentBody,
                  parentMassDB.MassDry,
                  2.2e14,            //halleysBodyMass
-                 17.834,     //halleysSemiMajAxis , 
+                 17.834,     //halleysSemiMajAxis ,
                  0.96714,     //halleysEccentricity
                  162.26,     //halleys3dInclination, note retrograde orbit (> 90degrees)
                  58.42, //halleysLoAN
@@ -165,7 +164,7 @@ namespace Pulsar4X.Tests
                     parentBody,
                     parentMassDB.MassDry,
                     2.2e14,          //halleysBodyMass
-                    -17.834,     //halleysSemiMajAxis 
+                    -17.834,     //halleysSemiMajAxis
                     1.3,     //Hyperbolic Eccentricity
                     0,
                     0, //halleysLoAN
@@ -179,7 +178,7 @@ namespace Pulsar4X.Tests
                     parentBody,
                     parentMassDB.MassDry,
                     2.2e14,          //halleysBodyMass
-                    -17.834,     //halleysSemiMajAxis 
+                    -17.834,     //halleysSemiMajAxis
                     1.3,     //Hyperbolic Eccentricity
                     0,
                     0, //halleysLoAN
@@ -187,13 +186,13 @@ namespace Pulsar4X.Tests
                     38.38,     //halleysMeanAnomaly at Epoch
                     new System.DateTime(1994, 2, 17)),
                 "Hyperbolic 2d 0 LoAN, 90 aop Trajectory"
-            ),            
+            ),
             (
               OrbitDB.FromAsteroidFormat( //Hyperbolic orbit
                   parentBody,
                   parentMassDB.MassDry,
                   2.2e14,          //halleysBodyMass
-                  -17.834,     //halleysSemiMajAxis 
+                  -17.834,     //halleysSemiMajAxis
                   1.3,     //Hyperbolic Eccentricity
                   180,
                   0, //halleysLoAN
@@ -201,13 +200,13 @@ namespace Pulsar4X.Tests
                   38.38,     //halleysMeanAnomaly at Epoch
                   new System.DateTime(1994, 2, 17)),
               "Hyperbolic 2d 0 LoAN, 0 aop retrograde Trajectory"
-          ),            
+          ),
             (
                 OrbitDB.FromAsteroidFormat( //Hyperbolic orbit
                     parentBody,
                     parentMassDB.MassDry,
                     2.2e14,          //halleysBodyMass
-                    -17.834,     //halleysSemiMajAxis 
+                    -17.834,     //halleysSemiMajAxis
                     1.3,     //Hyperbolic Eccentricity
                     180,
                     0, //halleysLoAN
@@ -215,7 +214,7 @@ namespace Pulsar4X.Tests
                     38.38,     //halleysMeanAnomaly at Epoch
                     new System.DateTime(1994, 2, 17)),
                 "Hyperbolic 2d 0 LoAN, 90 aop retrograde Trajectory"
-            ), 
+            ),
 
         };
 
@@ -292,14 +291,14 @@ namespace Pulsar4X.Tests
                 var pos = OrbitMath.GetPosition(orbitDB, segmentDatetime);
                 var vel = OrbitMath.InstantaneousOrbitalVelocityVector_m(orbitDB, segmentDatetime);
 
-                //calculate value, and inversion and compare. 
+                //calculate value, and inversion and compare.
                 double M1;
                 if (o_e < 1)
                 {
                     //calculate mean anomaly the easy way
                     double o_M = OrbitMath.GetMeanAnomalyFromTime(o_M0, o_n, timeSinceEpoch.TotalSeconds); //orbitProcessor uses this calc directly
 
-                    //calculate it back the hard way. 
+                    //calculate it back the hard way.
                     OrbitMath.TryGetEccentricAnomaly(o_e, o_M, out double o_E); //OrbitMath.GetEccentricAnomaly(orbitDB, o_M);
                     M1 = OrbitMath.GetEllipticMeanAnomaly(o_e, o_E);
                     double t1 = OrbitMath.TimeFromEllipticMeanAnomaly(o_M0, M1, o_n);
@@ -440,38 +439,38 @@ namespace Pulsar4X.Tests
                 //testing differences between different position functions
                 Assert.Multiple(() =>
                 {
-                    string message = i + " Position Length compare: \n" +
+                    string message = i + " RelativePosition Length compare: \n" +
                                      "Expected: " + o_pos.Length() + "\n" +
                                      "But was:  " + pos1.Length();
                     Assert.AreEqual(o_pos.Length(), pos1.Length(), epsilonLen, message);
-                    message = i + "Position X compare: \n" +
+                    message = i + "RelativePosition X compare: \n" +
                              "Expected: " + o_pos.X + "\n" +
                              "But was:  " + pos1.X;
                     Assert.AreEqual(o_pos.X, pos1.X, epsilonLen, message);
-                    message = i + "Position Y compare: \n" +
+                    message = i + "RelativePosition Y compare: \n" +
                                "Expected: " + o_pos.Y + "\n" +
                                "But was:  " + pos1.Y;
                     Assert.AreEqual(o_pos.Y, pos1.Y, epsilonLen, message);
-                    message = i + "Position Z compare: \n" +
+                    message = i + "RelativePosition Z compare: \n" +
                               "Expected: " + o_pos.Z + "\n" +
                               "But was:  " + pos1.Z;
                     Assert.AreEqual(o_pos.Z, pos1.Z, epsilonLen, message);
                 });
                 Assert.Multiple(() =>
                 {
-                    string message = i + " Position Length compare: \n" +
+                    string message = i + " RelativePosition Length compare: \n" +
                                      "Expected: " + o_pos.Length() + "\n" +
                                      "But was:  " + pos2.Length();
                     Assert.AreEqual(o_pos.Length(), pos2.Length(), epsilonLen, message);
-                    message = i + "Position X compare: \n" +
+                    message = i + "RelativePosition X compare: \n" +
                               "Expected: " + o_pos.X + "\n" +
                               "But was:  " + pos2.X;
                     Assert.AreEqual(o_pos.X, pos2.X, epsilonLen, message);
-                    message = i + "Position Y compare: \n" +
+                    message = i + "RelativePosition Y compare: \n" +
                                "Expected: " + o_pos.Y + "\n" +
                                "But was:  " + pos2.Y;
                     Assert.AreEqual(o_pos.Y, pos2.Y, epsilonLen, message);
-                    message = i + "Position Z compare: \n" +
+                    message = i + "RelativePosition Z compare: \n" +
                               "Expected: " + o_pos.Z + "\n" +
                               "But was:  " + pos2.Z;
                     Assert.AreEqual(o_pos.Z, pos2.Z, epsilonLen, message);

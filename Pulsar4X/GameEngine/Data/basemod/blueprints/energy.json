@@ -64,7 +64,7 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs('fissile-fuels', Ability('Fuel Consumption'), 'electricity', Ability('Power Output'), Ability('Lifetime'))",
-          "AttributeType": "Pulsar4X.Atb.EnergyGenerationAtb"
+          "AttributeType": "Pulsar4X.Energy.EnergyGenerationAtb"
         },
         {
           "Name": "Sensor Signature",
@@ -72,7 +72,7 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(1700, Ability('Power Output') * 0.1 * [Mass])",
-          "AttributeType": "Pulsar4X.Atb.SensorSignatureAtb"
+          "AttributeType": "Pulsar4X.Sensors.SensorSignatureAtb"
         }
       ]
     }
@@ -124,7 +124,7 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs('electricity', Ability('Energy Storage'))",
-          "AttributeType": "Pulsar4X.Atb.EnergyStoreAtb"
+          "AttributeType": "Pulsar4X.Energy.EnergyStoreAtb"
         }
       ]
     }
@@ -236,7 +236,7 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(GuidString('fissile-fuels'), Ability('Fuel Consumption'), GuidString('electricity'), Ability('Power Output'), Ability('Operational Lifetime'))",
-          "AttributeType": "Pulsar4X.Atb.EnergyGenerationAtb"
+          "AttributeType": "Pulsar4X.Energy.EnergyGenerationAtb"
         },
         {
           "Name": "Sensor Signature",
@@ -244,7 +244,7 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(1700, Ability('Power Output') * 0.1 * [Mass])",
-          "AttributeType": "Pulsar4X.Atb.SensorSignatureAtb"
+          "AttributeType": "Pulsar4X.Sensors.SensorSignatureAtb"
         }
       ]
     }
@@ -390,7 +390,7 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(GuidString('fissile-fuels'), Ability('Fuel Consumption'), GuidString('electricity'), Ability('Power Output'), Ability('Operational Lifetime'))",
-          "AttributeType": "Pulsar4X.Atb.EnergyGenerationAtb"
+          "AttributeType": "Pulsar4X.Energy.EnergyGenerationAtb"
         },
         {
           "Name": "Sensor Signature",
@@ -398,7 +398,7 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(1700, Ability('Power Output') * 0.1 * [Mass])",
-          "AttributeType": "Pulsar4X.Atb.SensorSignatureAtb"
+          "AttributeType": "Pulsar4X.Sensors.SensorSignatureAtb"
         }
       ]
     }

@@ -18,9 +18,9 @@ namespace Pulsar4X.SDL2UI
 
     public class PulsarMainWindow : ImGuiSDL2CSWindow
     {
-        private const string OrgName = "Pulsar4X";
-        private const string AppName = "Pulsar4X";
-        private const string PreferencesFile = "preferences.ini";
+        public const string OrgName = "Pulsar4X";
+        public const string AppName = "Pulsar4X";
+        public const string PreferencesFile = "preferences.ini";
         private readonly GlobalUIState _state;
 
         Vector3 backColor;
@@ -68,7 +68,7 @@ namespace Pulsar4X.SDL2UI
                         SDL.SDL_MaximizeWindow(_Handle);
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 // It's just a preferences file, continue on
             }
@@ -171,6 +171,9 @@ namespace Pulsar4X.SDL2UI
 
         public unsafe override void ImGuiLayout()
         {
+            //because the nameIcons are IMGUI not SDL we draw them here.
+            _state.GalacticMap.DrawNameIcons();
+
             if (_state.ShowImgDbg)
             {
                 ImGui.NewLine();
@@ -256,17 +259,14 @@ namespace Pulsar4X.SDL2UI
                 item.Display();
             }
 
-            //because the nameIcons are IMGUI not SDL we draw them here.
-            _state.GalacticMap.DrawNameIcons();
-
-            // var dispsize = ImGui.GetIO().DisplaySize;
-            // var pos = new System.Numerics.Vector2(0, dispsize.Y - ImGui.GetFrameHeightWithSpacing());
-            // ImGui.SetNextWindowPos(pos, ImGuiCond.Always);
-            // var flags = ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBackground | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoSavedSettings | ImGuiWindowFlags.NoFocusOnAppearing | ImGuiWindowFlags.NoNav;
-            // if (ImGui.Begin("GitHash", flags))
-            // {
-            //     ImGui.Text(AssemblyInfo.GetGitHash());
-            // }
+            var dispsize = ImGui.GetIO().DisplaySize;
+            var pos = new System.Numerics.Vector2(0, dispsize.Y - ImGui.GetFrameHeightWithSpacing());
+            ImGui.SetNextWindowPos(pos, ImGuiCond.Always);
+            var flags = ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBackground | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoSavedSettings | ImGuiWindowFlags.NoFocusOnAppearing | ImGuiWindowFlags.NoNav;
+            if (ImGui.Begin("GitHash", flags))
+            {
+                ImGui.Text("Version: " + AssemblyInfo.GetGitHash());
+            }
         }
     }
 }

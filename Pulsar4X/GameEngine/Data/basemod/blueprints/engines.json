@@ -6,7 +6,7 @@
       "Name": "Conventional Rocket Engine",
       "Formulas": {
         "Description": "A Newtonian Thruster",
-        "Mass": "Ability('Size') * 50",
+        "Mass": "Ability('Mass')",
         "Volume": "Max(1, [Mass] / 150)",
         "HTK": "Max(1, [Mass] / 100)",
         "CrewReq": "0",
@@ -15,7 +15,11 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "stainless-steel": "[Mass] * 8"
+        "stainless-steel": "[Mass] * 0.15",
+        "titanium": "[Mass] * .25",
+        "aluminium": "[Mass] * .3",
+        "tungsten": "[Mass] * .05",
+        "copper": "[Mass] * .25"
       },
       "ComponentType": "Engine",
       "MountType": "ShipComponent, ShipCargo, Fighter",
@@ -23,13 +27,14 @@
       "IndustryTypeID": "component-construction",
       "Attributes": [
         {
-          "Name": "Size",
-          "DescriptionFormula": "'The size of the engine'",
+          "Name": "Mass",
+          "Units": "kg",
+          "DescriptionFormula": "'The size of the engine in kg'",
           "GuiHint": "GuiSelectionMaxMinInt",
           "MaxFormula": "TechData('tech-conventional-engine-max-size')",
           "MinFormula": "TechData('tech-conventional-engine-min-size')",
           "StepFormula": "1",
-          "AttributeFormula": "150"
+          "AttributeFormula": "250"
         },
         {
           "Name": "Exhaust Velocity",
@@ -50,7 +55,7 @@
           "DescriptionFormula": "'The type of fuel the engine burns'",
           "GuiHint": "GuiFuelTypeSelection",
           "GuidDictionary": {
-            "fuel-storage": "10"
+            "fuel-storage": "'conventional'"
           },
           "AttributeFormula": "GuidString('rp-1')"
         },
@@ -66,7 +71,7 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Exhaust Velocity'), Ability('Fuel Type'), Ability('Fuel Consumption'))",
-          "AttributeType": "Pulsar4X.Atb.NewtonionThrustAtb"
+          "AttributeType": "Pulsar4X.Movement.NewtonionThrustAtb"
         },
 
         {
@@ -75,7 +80,92 @@
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(3500, Ability('Thrust'))",
-          "AttributeType": "Pulsar4X.Atb.SensorSignatureAtb"
+          "AttributeType": "Pulsar4X.Sensors.SensorSignatureAtb"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "ComponentTemplate",
+    "Payload": {
+      "UniqueID": "scntr-engine",
+      "Name": "Solid Core Nuclear Engine",
+      "Formulas": {
+        "Description": "A Newtonian Thruster",
+        "Mass": "Ability('Mass')",
+        "Volume": "[Mass] / 48",
+        "HTK": "Max(1, [Mass] / 100)",
+        "CrewReq": "0",
+        "ResearchCost": "[Mass] * 0.7",
+        "CreditCost": "[Mass]",
+        "BuildPointCost": "[Mass]"
+      },
+      "ResourceCost": {
+        "stainless-steel": "[Mass] * 0.15",
+        "titanium": "[Mass] * .25",
+        "graphite": "[Mass] * .3",
+        "tungsten": "[Mass] * .25",
+        "plastic": "[Mass] * .05"
+      },
+      "ComponentType": "Engine",
+      "MountType": "ShipComponent, ShipCargo, Fighter",
+      "CargoTypeID": "general-storage",
+      "IndustryTypeID": "component-construction",
+      "Attributes": [
+        {
+          "Name": "Mass",
+          "Units": "kg",
+          "DescriptionFormula": "'The size of the engine in kg'",
+          "GuiHint": "GuiSelectionMaxMinInt",
+          "MaxFormula": "TechData('tech-conventional-engine-max-size')",
+          "MinFormula": "TechData('tech-conventional-engine-min-size') + 1400",
+          "StepFormula": "1",
+          "AttributeFormula": "2000"
+        },
+        {
+          "Name": "Fuel Type",
+          "DescriptionFormula": "'The type of fuel the engine burns'",
+          "GuiHint": "GuiFuelTypeSelection",
+          "GuidDictionary": {
+            "fuel-storage": "'ntr'"
+          },
+          "AttributeFormula": "GuidString('hydrofiss')"
+        },
+        {
+          "Name": "Exhaust Velocity",
+          "Units": "m/s",
+          "DescriptionFormula": "'Specific Impulse in m/s, can be increased by research'",
+          "GuiHint": "GuiTextDisplay",
+          "AttributeFormula": "ExhaustVelocityLookup(Ability('Fuel Type')) + TechData('tech-nuclear-solid-engine') * 250"
+        },
+        {
+          "Name": "Thrust",
+          "Units": "N",
+          "DescriptionFormula": "'The maximum thrust output of this engine'",
+          "GuiHint": "GuiTextDisplay",
+          "AttributeFormula": "Ability('Exhaust Velocity') * Ability('Fuel Consumption')"
+        },
+        {
+          "Name": "Fuel Consumption",
+          "Units": "kg/s",
+          "DescriptionFormula": "'Fuel Consumption per second'",
+          "GuiHint": "GuiTextDisplay",
+          "AttributeFormula": "[Mass] * 0.017"
+        },
+        {
+          "Name": "DataBlob",
+          "DescriptionFormula": "''",
+          "GuiHint": "None",
+          "AttributeFormula": "AtbConstrArgs(Ability('Exhaust Velocity'), Ability('Fuel Type'), Ability('Fuel Consumption'))",
+          "AttributeType": "Pulsar4X.Movement.NewtonionThrustAtb"
+        },
+        {
+          "Name": "Sensor Signature",
+          "Units": "unknown",
+          "DescriptionFormula": "''",
+          "GuiHint": "None",
+          "AttributeFormula": "AtbConstrArgs(3500, Ability('Thrust'))",
+          "AttributeType": "Pulsar4X.Sensors.SensorSignatureAtb"
         }
       ]
     }
@@ -157,7 +247,7 @@
           "Name": "db",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Engine Power'), 'electricity', Ability('Bubble Creation Energy Cost'), Ability('Bubble Sustain Energy Cost'), -Ability('Bubble Collapse Energy Returned'))",
-          "AttributeType": "Pulsar4X.Atb.WarpDriveAtb"
+          "AttributeType": "Pulsar4X.Movement.WarpDriveAtb"
         }
       ]
     }

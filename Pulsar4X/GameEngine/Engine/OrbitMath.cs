@@ -1,9 +1,12 @@
 using System;
 using Pulsar4X.Orbital;
-using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
-using Pulsar4X.Modding;
 using Pulsar4X.Events;
+using Pulsar4X.Factions;
+using Pulsar4X.Orbits;
+using Pulsar4X.Storage;
+using Pulsar4X.Galaxy;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.Engine
 {
@@ -16,7 +19,7 @@ namespace Pulsar4X.Engine
     /// Some simular functions with simular inputs left in for future performance testing (ie one of the two might be slightly more performant).
     /// </summary>
     ///
-    
+
     public class OrbitMath : OrbitalMath
     {
 
@@ -36,7 +39,7 @@ namespace Pulsar4X.Engine
                 planetEntity.GetDataBlob<MassVolumeDB>().MassDry, payload
             );
         }
-                
+
         /// <summary>
         /// Mass of fuel burned for a given DV change.
         /// </summary>
@@ -69,9 +72,9 @@ namespace Pulsar4X.Engine
             //var totalMass = entity.GetDataBlob<MassVolumeDB>().MassTotal;
             var parentMass = entity.GetSOIParentEntity().GetDataBlob<MassVolumeDB>().MassTotal;
 
-            //var cargoMass = entity.GetDataBlob<VolumeStorageDB>().TotalStoredMass;
-            //var fuelMass = entity.GetDataBlob<VolumeStorageDB>().GetMassStored(fuelType);
-            var fuelMassMax = entity.GetDataBlob<VolumeStorageDB>().GetMassMax(fuelType);
+            //var cargoMass = entity.GetDataBlob<CargoStorageDB>().TotalStoredMass;
+            //var fuelMass = entity.GetDataBlob<CargoStorageDB>().GetMassStored(fuelType);
+            var fuelMassMax = entity.GetDataBlob<CargoStorageDB>().GetMassMax(fuelType);
             var massTotal = massDry + fuelMassMax;
             //var sgp = OrbitMath.CalculateStandardGravityParameterInM3S2(massTotal, parentMass);
 
@@ -98,7 +101,7 @@ namespace Pulsar4X.Engine
             //var totalMass = entity.GetDataBlob<MassVolumeDB>().MassTotal;
             var parentMass = entity.GetSOIParentEntity().GetDataBlob<MassVolumeDB>().MassTotal;
 
-            var fuelMassMax = entity.GetDataBlob<VolumeStorageDB>().GetMassMax(fuelType);
+            var fuelMassMax = entity.GetDataBlob<CargoStorageDB>().GetMassMax(fuelType);
             var massCargoDry = massDry + cargoMass;
             var massTotal = massCargoDry + fuelMassMax;
 
@@ -143,7 +146,7 @@ namespace Pulsar4X.Engine
 
             if(fuelType == null) throw new NullReferenceException("fuelType cannot be null");
 
-            var fuelMass = entity.GetDataBlob<VolumeStorageDB>().GetMassStored(fuelType);
+            var fuelMass = entity.GetDataBlob<CargoStorageDB>().GetMassStored(fuelType, false);
 
             var massCargoDry = massDry + cargoMass;
             var massTotal = massCargoDry + fuelMass;
@@ -151,10 +154,38 @@ namespace Pulsar4X.Engine
             return TsiolkovskyRocketEquation(massTotal, massCargoDry, exhaustVelocity);
 
         }
-        
+
+        /// <summary>
+        /// deltaV this ship has right now.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="cargoMass">non volitile cargo</param>
+        /// <returns></returns>
+        public static double GetDV(Entity entity)
+        {
+            var exhaustVelocity = entity.GetDataBlob<NewtonThrustAbilityDB>().ExhaustVelocity;
+            var massDry = entity.GetDataBlob<MassVolumeDB>().MassDry;
+            var parentMass = entity.GetSOIParentEntity().GetDataBlob<MassVolumeDB>().MassTotal;
+
+            var cargoLib = entity.GetFactionOwner.GetDataBlob<FactionInfoDB>().Data.CargoGoods;
+            var fuelTypeID = entity.GetDataBlob<NewtonThrustAbilityDB>().FuelType;
+            var fuelType = cargoLib.GetAny(fuelTypeID);
+
+            if(fuelType == null) throw new NullReferenceException("fuelType cannot be null");
+            var storage = entity.GetDataBlob<CargoStorageDB>();
+            var totalCargo = storage.TotalStoredMass;
+            var fuelMass = storage.GetMassStored(fuelType, false);
+            var dryCargo = totalCargo - fuelMass;
+            var massCargoDry = massDry + dryCargo;
+            var massTotal = massCargoDry + fuelMass;
+
+            return TsiolkovskyRocketEquation(massTotal, massCargoDry, exhaustVelocity);
+
+        }
+
         /// <summary>
         /// Currently this only calculates the change in velocity from 0 to planet radius +* 0.33333.
-        /// TODO: add gravity drag and atmosphere drag, and tech improvements for such.  
+        /// TODO: add gravity drag and atmosphere drag, and tech improvements for such.
         /// </summary>
         /// <param name="planetRadiusInM"></param>
         /// <param name="planetMassDryInKG"></param>
@@ -173,19 +204,19 @@ namespace Pulsar4X.Engine
             return fuelCost;
         }
 
-        
-        
+
+
         #endregion
 
 
-        #region Position And Velocity
-        
-        
+        #region RelativePosition And Velocity
+
+
         public static Vector3 GetPosition(OrbitDB orbit, DateTime atDateTime)
         {
             return GetPosition(orbit, GetTrueAnomaly(orbit, atDateTime));
         }
-        
+
         public static Vector3 GetPosition(OrbitDB orbit, double trueAnomaly)
         {
             if (orbit.IsStationary)
@@ -195,6 +226,23 @@ namespace Pulsar4X.Engine
             return OrbitalMath.GetPosition(orbit.SemiMajorAxis, orbit.Eccentricity, orbit.LongitudeOfAscendingNode, orbit.ArgumentOfPeriapsis, orbit.Inclination, trueAnomaly);
         }
 
+        public static Vector3 GetAbsolutePosition(OrbitDB orbit, DateTime atDateTime)
+        {
+            var ta = GetTrueAnomaly(orbit, atDateTime);
+            if (orbit.Parent == null)//if we're the parent sun
+                return OrbitMath.GetPosition(orbit, ta);
+            //else if we're a child
+            Vector3 rootPos = GetAbsolutePosition((OrbitDB)orbit.ParentDB, atDateTime);
+
+            if (orbit.IsStationary)
+            {
+                return rootPos;
+            }
+
+            return rootPos + GetPosition(orbit, ta);
+
+        }
+
 
         public static (Vector3 pos, Vector3 Velocity) GetStateVectors(OrbitDB orbitDB, DateTime atTime)
         {
@@ -202,7 +250,7 @@ namespace Pulsar4X.Engine
             var vel = OrbitMath.InstantaneousOrbitalVelocityVector_m(orbitDB, atTime);
             return (pos, vel);
         }
-                
+
         /// <summary>
         /// Parent relative velocity vector.
         /// </summary>
@@ -211,7 +259,7 @@ namespace Pulsar4X.Engine
         /// <param name="atDateTime">At date time.</param>
         public static Vector3 InstantaneousOrbitalVelocityVector_m(OrbitDB orbit, DateTime atDateTime)
         {
-            var position = orbit.GetPosition(atDateTime);
+            var position = GetPosition(orbit, atDateTime);
             var sma = orbit.SemiMajorAxis;
             if (orbit.GravitationalParameter_m3S2 == 0 || sma == 0)
                 return new Vector3(); //so we're not returning NaN;
@@ -224,7 +272,7 @@ namespace Pulsar4X.Engine
             double loAN = orbit.LongitudeOfAscendingNode;
             return ParentLocalVeclocityVector(sgp, position, sma, e, trueAnomaly, aoP, i, loAN);
         }
-        
+
         /// <summary>
         /// basicaly the radius of the planet * 1.1
         /// in future we may have this dependant on atmosphere (thickness and or gravity?)
@@ -246,7 +294,7 @@ namespace Pulsar4X.Engine
 
         #region TrueAnomaly
 
-                
+
         public static double GetTrueAnomaly(OrbitDB orbit, DateTime time)
         {
             TimeSpan timeSinceEpoch = time - orbit.Epoch;
@@ -276,7 +324,7 @@ namespace Pulsar4X.Engine
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="orbit"></param>
         /// <param name="currentMeanAnomaly"></param>
@@ -293,7 +341,7 @@ namespace Pulsar4X.Engine
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="orbit"></param>
         /// <param name="currentHyperbolicAnomaly"></param>
@@ -311,7 +359,7 @@ namespace Pulsar4X.Engine
 
 
         #endregion
-        
+
 
         #region Time
 
@@ -332,7 +380,7 @@ namespace Pulsar4X.Engine
             }
             return orbitDB.Epoch + TimeSpan.FromSeconds(t_s);
         }
-        
+
         /// <summary>
         /// Time for a burn manuver in seconds
         /// </summary>
@@ -353,6 +401,19 @@ namespace Pulsar4X.Engine
         #endregion
 
 
+        /// <summary>
+        /// Standard Gravitational Parameter.
+        /// </summary>
+        /// <param name="parent">Parent Entity</param>
+        /// <param name="child">Child Entity</param>
+        /// <returns></returns>
+        public static double SGP(Entity parent, Entity child)
+        {
+            var mass = parent.GetDataBlob<MassVolumeDB>().MassTotal;
+            mass += child.GetDataBlob<MassVolumeDB>().MassTotal;
+            return mass * UniversalConstants.Science.GravitationalConstant;
+
+        }
 
         /// <summary>
         /// returns the SOI radius of *this* orbital body,
@@ -365,9 +426,25 @@ namespace Pulsar4X.Engine
         {
             return GetSOI(orbit.SemiMajorAxis, orbit._myMass, orbit._parentMass);
         }
-        
-        
-        
+
+        public static OrbitDB FindSOIForOrbit(OrbitDB orbit, Vector3 AbsolutePosition)
+        {
+            var soi = orbit.SOI_m;
+            var pos = orbit.OwningEntity.GetDataBlob<PositionDB>();
+            if (AbsolutePosition.GetDistanceTo_m(pos) < soi)
+            {
+                foreach (OrbitDB? subOrbit in orbit.ChildrenDBs)
+                {
+                    if(subOrbit == null) continue;
+                    var suborbitb = FindSOIForOrbit(subOrbit, AbsolutePosition);
+                    if (suborbitb != null)
+                        return suborbitb;
+                }
+            }
+
+            return null;
+        }
+
         public static KeplerElements KeplerFromOrbitDB(OrbitDB orbitDB)
         {
             var entity = orbitDB.OwningEntity;
@@ -375,7 +452,7 @@ namespace Pulsar4X.Engine
             if(entity == null) throw new NullReferenceException("orbitDB.OwningEntity cannot be null");
 
             var sgp = orbitDB.GravitationalParameter_m3S2;
-            var state = entity.GetRelativeState();
+            var state = MoveMath.GetRelativeState(entity);
             var epoch = entity.StarSysDateTime;
             return KeplerFromPositionAndVelocity(sgp, state.pos, state.Velocity, epoch);
 

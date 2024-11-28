@@ -126,7 +126,7 @@
       "Name": "Rocket Engine Maximum Size",
       "Description": "Research into better cooling allows larger engine sizes",
       "MaxLevel": 20,
-      "DataFormula": "250 + [Level] * 25",
+      "DataFormula": "8400 + [Level] * 100",
       "Category": "tech-category-power-propulsion",
       "CostFormula": "(1 + [Level]) * 500"
     }
@@ -137,8 +137,8 @@
       "UniqueID": "tech-conventional-engine-min-size",
       "Name": "Rocket Engine Minimum Size",
       "Description": "Research into miniaturization allows smaller engine sizes",
-      "MaxLevel": 20,
-      "DataFormula": "Max(1, 100 - [Level] * 5)",
+      "MaxLevel": 10,
+      "DataFormula": "100 - [Level] * 5",
       "Category": "tech-category-power-propulsion",
       "CostFormula": "(1 + [Level]) * 500"
     }
@@ -186,7 +186,7 @@
           "tech-conventional-engine-min-size",
           "tech-conventional-engine-exhaust-velocity",
           "tech-conventional-engine-fuel-consumption",
-          "tech-nuclear-engine"
+          "tech-nuclear-solid-engine"
         ]
       }
     }
@@ -194,10 +194,10 @@
   {
     "Type": "Tech",
     "Payload": {
-      "UniqueID": "tech-nuclear-engine",
-      "Name": "Nuclear Thermal Engine Technology",
+      "UniqueID": "tech-nuclear-solid-engine",
+      "Name": "Nuclear Solid Core Engine Technology",
       "Description": "",
-      "MaxLevel": 1,
+      "MaxLevel": 5,
       "DataFormula": "5",
       "Category": "tech-category-power-propulsion",
       "CostFormula": "(1 + [Level]) * 2500",

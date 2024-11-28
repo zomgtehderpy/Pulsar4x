@@ -3,21 +3,22 @@ using System;
 using System.Diagnostics;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.Engine
 {
-    [DebuggerDisplay("{NameDB.DefaultName} - {Guid.ToString()}")]
+    [DebuggerDisplay("{NameDB.DefaultName} - {ID.ToString()}")]
     [JsonObject(MemberSerialization.OptIn)]
     public class StarSystem : EntityManager
     {
         private Random RNG;
 
         [PublicAPI]
-        public string Guid
+        public string ID
         {
             get
             {
-                return ManagerGuid;
+                return ManagerID;
             }
         }
 
@@ -49,11 +50,11 @@ namespace Pulsar4X.Engine
             return next;
         }
 
-        public bool RNGNexBool(float chance)
+        public bool RNGNextBool(float chance)
         {
             return RNG.NextDouble() < chance;
         }
-        public bool RNGNexBool(double chance)
+        public bool RNGNextBool(double chance)
         {
             return RNG.NextDouble() < chance;
         }
@@ -82,7 +83,7 @@ namespace Pulsar4X.Engine
             RNG = new Random(seed);
 
             if(systemID.IsNotNullOrEmpty())
-                ManagerGuid = systemID;
+                ManagerID = systemID;
 
             game.Systems.Add(this);
         }

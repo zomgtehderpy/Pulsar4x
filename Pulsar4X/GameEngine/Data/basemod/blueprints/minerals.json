@@ -187,5 +187,49 @@
         "Terrestrial": 1.0
       }
     }
+  },
+  {
+    "Type": "Mineral",
+    "Payload": {
+      "UniqueID": "graphite",
+      "Name": "Graphite",
+      "Description": "A naturally-occurring mineral in large deposits.",
+      "CargoTypeID": "general-storage",
+      "MassPerUnit": 1.0,
+      "VolumePerUnit": 0.00044,
+      "Abundance": {
+        "Asteroid": 0.5,
+        "Comet": 0.3,
+        "DwarfPlanet": 0.3,
+        "GasDwarf": 0.0,
+        "GasGiant": 0.0,
+        "IceGiant": 0.2,
+        "Moon": 0.6,
+        "Terrestrial": 1.0
+      }
+    }
+  },
+  {
+    "Type": "Mineral",
+    "Payload": {
+      "UniqueID": "tungsten",
+      "Name": "Tungsten",
+      "Description": "A naturally-occurring mineral.",
+      "CargoTypeID": "general-storage",
+      "MassPerUnit": 1.0,
+      "VolumePerUnit": 0.052,
+      "Abundance": {
+        "Asteroid": 0.5,
+        "Comet": 0.3,
+        "DwarfPlanet": 0.3,
+        "GasDwarf": 0.0,
+        "GasGiant": 0.0,
+        "IceGiant": 0.2,
+        "Moon": 0.6,
+        "Terrestrial": 0.5
+      }
+    }
   }
+  
+  
 ]

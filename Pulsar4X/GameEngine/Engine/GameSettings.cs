@@ -50,12 +50,12 @@ namespace Pulsar4X.Engine
         /// when true, end of warp will put the entity on the same Newtonion trajectory that it had when it started warp.
         /// when false the ship will just get dropped into a circular orbit. 
         /// </summary>
-        public bool StrictNewtonion { get; set; } = false;
+        public bool StrictNewtonion { get; set; } = true;
         /// <summary>
         /// when true ships saved Newtonion trajectory will be ralative to their immediate SOI parent,
         /// when false it will be ralitive to the root star (ie the absolute velocity). 
         /// </summary>
-        public bool UseRelativeVelocity { get; set; } = false;
+        public bool UseRelativeVelocity { get; set; } = true;
 
         #endregion
         

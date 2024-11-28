@@ -1,14 +1,17 @@
 ﻿using NUnit.Framework;
-using Pulsar4X.Orbital;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.IO;
 using Pulsar4X.Engine;
 using Pulsar4X.Engine.Auth;
 using Pulsar4X.Modding;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Colonies;
+using Pulsar4X.Names;
+using Pulsar4X.Orbits;
+using Pulsar4X.People;
+using Pulsar4X.Storage;
+using Pulsar4X.Galaxy;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.Tests
 {
@@ -85,7 +88,7 @@ namespace Pulsar4X.Tests
             Assert.AreSame(_game.GlobalManager, testEntity.Manager);
 
             // Create entity with existing datablobs:
-            var dataBlobs = new List<BaseDataBlob> {new OrbitDB(), new ColonyInfoDB(_pop1, Entity.InvalidEntity), new PositionDB(0,0,0,""), new NameDB("TE-CE-1")};
+            var dataBlobs = new List<BaseDataBlob> {new OrbitDB(), new ColonyInfoDB(_pop1, Entity.InvalidEntity), new PositionDB(0,0,0), new NameDB("TE-CE-1")};
             testEntity = Entity.Create();
             _game.GlobalManager.AddEntity(testEntity, dataBlobs);
             Assert.IsTrue(testEntity.IsValid);
@@ -167,7 +170,7 @@ namespace Pulsar4X.Tests
             Assert.AreEqual(0, testList.Count);  // should have 0 datablobs.
 
             Assert.IsFalse(testEntity.IsValid);
-            
+
             // Now try to remove the entity. Again.
             Assert.Catch<InvalidOperationException>(testEntity.Destroy);
         }
@@ -315,7 +318,7 @@ namespace Pulsar4X.Tests
             testEntity.SetDataBlob(new ColonyInfoDB(_pop1, Entity.InvalidEntity));
 
             Assert.True(testEntity.HasDataBlob<OrbitDB>(), "This entity should have an OrbitDB");
-            Assert.False(testEntity.HasDataBlob<VolumeStorageDB>(), "This entity should NOT have a VolumeStorageDB");
+            Assert.False(testEntity.HasDataBlob<CargoStorageDB>(), "This entity should NOT have a CargoStorageDB");
         }
 
         #region Extra Init Stuff
@@ -334,16 +337,16 @@ namespace Pulsar4X.Tests
             _game.GlobalManager.AddEntity(testEntity);
             testEntity.SetDataBlob(new OrbitDB());
             testEntity.SetDataBlob(new ColonyInfoDB(_pop1, Entity.InvalidEntity));
-            testEntity.SetDataBlob(new PositionDB(0, 0, 0, ""));
+            testEntity.SetDataBlob(new PositionDB(0, 0, 0));
             testEntity.SetDataBlob(new NameDB("TE-1"));
 
             // Create an entity with a DataBlobList.
-            var dataBlobs = new List<BaseDataBlob> { new OrbitDB(), new PositionDB(0,0,0,""), new NameDB("TE-2") };
+            var dataBlobs = new List<BaseDataBlob> { new OrbitDB(), new PositionDB(0,0,0), new NameDB("TE-2") };
             var entity = Entity.Create();
             _game.GlobalManager.AddEntity(entity, dataBlobs);
 
             // Create one more, just for kicks.
-            dataBlobs = new List<BaseDataBlob> { new OrbitDB(), new ColonyInfoDB(_pop2, Entity.InvalidEntity), new PositionDB(0, 0, 0, ""), new NameDB("TE-3") };
+            dataBlobs = new List<BaseDataBlob> { new OrbitDB(), new ColonyInfoDB(_pop2, Entity.InvalidEntity), new PositionDB(0, 0, 0), new NameDB("TE-3") };
             entity = Entity.Create();
             _game.GlobalManager.AddEntity(entity, dataBlobs);
 

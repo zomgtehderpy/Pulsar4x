@@ -1,13 +1,26 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using Pulsar4X.Blueprints;
+using Pulsar4X.Colonies;
 using Pulsar4X.Components;
-using Pulsar4X.Datablobs;
-using Pulsar4X.Engine.Designs;
+using Pulsar4X.Energy;
 using Pulsar4X.Engine.Factories;
+using Pulsar4X.Factions;
+using Pulsar4X.Fleets;
+using Pulsar4X.Galaxy;
+using Pulsar4X.GeoSurveys;
+using Pulsar4X.JumpPoints;
+using Pulsar4X.Logistics;
+using Pulsar4X.Movement;
+using Pulsar4X.Names;
+using Pulsar4X.Orbits;
+using Pulsar4X.People;
+using Pulsar4X.Sensors;
+using Pulsar4X.Ships;
+using Pulsar4X.Storage;
+using Pulsar4X.Technology;
+using Pulsar4X.Weapons;
 
 namespace Pulsar4X.Engine
 {
@@ -75,11 +88,11 @@ namespace Pulsar4X.Engine
                     var from = (string?)pair["from"];
                     var to = (string?)pair["to"];
 
-                    var fromSystem = game.Systems.First(s => s.Guid.Equals(from));
+                    var fromSystem = game.Systems.First(s => s.ID.Equals(from));
                     var gravityRoot = fromSystem.GetFirstEntityWithDataBlob<StarInfoDB>().GetDataBlob<PositionDB>().Root;
                     var fromJP = JPFactory.CreateJumpPoint(starSystemFactory, fromSystem, gravityRoot);
 
-                    var toSystem = game.Systems.First(s => s.Guid.Equals(to));
+                    var toSystem = game.Systems.First(s => s.ID.Equals(to));
                     gravityRoot = toSystem.GetFirstEntityWithDataBlob<StarInfoDB>().GetDataBlob<PositionDB>().Root;
                     var toJP = JPFactory.CreateJumpPoint(starSystemFactory, toSystem, gravityRoot);
 
@@ -94,7 +107,7 @@ namespace Pulsar4X.Engine
                 var faction = FactionFactory.LoadFromJson(game, Path.Combine(rootDirectory, factionToLoad.ToString()));
 
                 faction.FactionOwnerID = faction.Id;
-                faction.GetDataBlob<FactionInfoDB>().KnownSystems.Add(startingSystem.Guid);
+                faction.GetDataBlob<FactionInfoDB>().KnownSystems.Add(startingSystem.ID);
 
                 // TODO: allow the json to set this
                 if(playerFaction == null)
@@ -115,7 +128,7 @@ namespace Pulsar4X.Engine
             }
 
             ComponentDesigner.StartResearched = false;
-            return (playerFaction, startingSystem.Guid);
+            return (playerFaction, startingSystem.ID);
         }
 
         public static Entity DefaultHumans(Game game, string name)
@@ -136,7 +149,7 @@ namespace Pulsar4X.Engine
 
             // Set the faction entity to own itself so it can issue orders to itself
             factionEntity.FactionOwnerID = factionEntity.Id;
-            factionInfoDB.KnownSystems.Add(startingSystem.Guid);
+            factionInfoDB.KnownSystems.Add(startingSystem.ID);
             factionEntity.GetDataBlob<NameDB>().SetName(factionEntity.Id, "UEF");
 
             earth.GetDataBlob<GeoSurveyableDB>().GeoSurveyStatus[factionEntity.Id] = 0;
@@ -212,7 +225,7 @@ namespace Pulsar4X.Engine
             marsColony.AddComponent(LogisticsOffice(factionEntity, factionDataStore));
             ReCalcProcessor.ReCalcAbilities(marsColony);
 
-            var earthCargo = colonyEntity.GetDataBlob<VolumeStorageDB>();
+            var earthCargo = colonyEntity.GetDataBlob<CargoStorageDB>();
             var rawSorium = factionDataStore.CargoGoods["sorium"];
 
             var iron = factionDataStore.CargoGoods["iron"];

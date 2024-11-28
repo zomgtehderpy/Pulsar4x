@@ -1,24 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using Pulsar4X.DataStructures;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.Engine
 {
-    public enum PulseActionEnum
-    {
-        JumpOutProcessor,
-        JumpInProcessor,
-        EconProcessor,
-        OrbitProcessor,
-        OrderProcessor,
-        BalisticMoveProcessor,
-        MoveOnlyProcessor,
-        SomeOtherProcessor
-    }
-
     internal static class PulseActionDictionary
     {
         [ThreadStatic]

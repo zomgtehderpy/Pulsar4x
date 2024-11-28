@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Pulsar4X.Modding;
 using Pulsar4X.Engine;
-using Pulsar4X.Engine.Industry;
-using Pulsar4X.Interfaces;
-using Pulsar4X.Datablobs;
-using Pulsar4X.Extensions;
+using Pulsar4X.Industry;
+using Pulsar4X.Storage;
 
 namespace Pulsar4X.Tests
 {
@@ -209,13 +207,13 @@ namespace Pulsar4X.Tests
         {
             var cookies = SetupCookieTradeGood();
 
-            var cookiePile = new VolumeStorageDB();
+            var cookiePile = new CargoStorageDB();
             cookiePile.TypeStores.Add(cookies.CargoTypeID, new TypeStore(100));
             var added = cookiePile.AddCargoByUnit(cookies, 99);
 
 
-            var storedCookies = cookiePile.GetUnitsStored(cookies);
-            var storedCookieMass = cookiePile.GetMassStored(cookies);
+            var storedCookies = cookiePile.GetUnitsStored(cookies, true);
+            var storedCookieMass = cookiePile.GetMassStored(cookies, true);
             var storedCookieVolume = cookiePile.GetVolumeStored(cookies);
 
 
@@ -225,8 +223,8 @@ namespace Pulsar4X.Tests
             Assert.AreEqual(99, storedCookieVolume);
 
             var addMore = cookiePile.AddCargoByUnit(cookies, 100);
-            var storedCookies2 = cookiePile.GetUnitsStored(cookies);
-            var storedCookieMass2 = cookiePile.GetMassStored(cookies);
+            var storedCookies2 = cookiePile.GetUnitsStored(cookies, true);
+            var storedCookieMass2 = cookiePile.GetMassStored(cookies, true);
             var storedCookieVolume2 = cookiePile.GetVolumeStored(cookies);
             Assert.AreEqual(1, addMore);
             Assert.AreEqual( 100, storedCookies2);

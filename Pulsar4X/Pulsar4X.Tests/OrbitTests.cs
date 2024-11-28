@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using GameEngine.WarpMove;
 using NUnit.Framework;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Orbital;
-using Pulsar4X.Extensions;
-using Pulsar4X.Orbital.Helpers;
+using Pulsar4X.Orbits;
+using Pulsar4X.Galaxy;
+using Pulsar4X.Movement;
 
 namespace Pulsar4X.Tests
 {
     [TestFixture, Description("Tests kepler form velocity")]
     public class OrbitTests
     {
-        private EntityManager _entityManager; 
+        private EntityManager _entityManager;
         const double Tolerance = 1e-14;
 
 
@@ -67,7 +66,7 @@ namespace Pulsar4X.Tests
             Vector3 velocity = new Vector3() { Y = 54000 };
 
             BaseDataBlob[] parentblobs = new BaseDataBlob[3];
-            parentblobs[0] = new PositionDB(_entityManager.ManagerGuid) { AbsolutePosition = Vector3.Zero };
+            parentblobs[0] = new PositionDB() { AbsolutePosition = Vector3.Zero };
             parentblobs[1] = new MassVolumeDB() { MassDry = parentMass };
             parentblobs[2] = new OrbitDB();
             Entity parentEntity = Entity.Create();
@@ -392,7 +391,7 @@ namespace Pulsar4X.Tests
             KeplerElements ke_m = OrbitMath.KeplerFromPositionAndVelocity(sgp_m, position_InMeters, velocity_InMetersSec, new DateTime());
 
             BaseDataBlob[] parentblobs = new BaseDataBlob[3];
-            parentblobs[0] = new PositionDB(_entityManager.ManagerGuid) { AbsolutePosition = Vector3.Zero };
+            parentblobs[0] = new PositionDB() { AbsolutePosition = Vector3.Zero };
             parentblobs[1] = new MassVolumeDB() { MassDry = parentMass };
             parentblobs[2] = new OrbitDB();
             Entity parentEntity = Entity.Create();
@@ -524,7 +523,7 @@ namespace Pulsar4X.Tests
             double parentMass = 1.989e30; //solar mass.
 
             BaseDataBlob[] parentblobs = new BaseDataBlob[3];
-            parentblobs[0] = new PositionDB(_entityManager.ManagerGuid) { AbsolutePosition = Vector3.Zero };
+            parentblobs[0] = new PositionDB() { AbsolutePosition = Vector3.Zero };
             parentblobs[1] = new MassVolumeDB() { MassDry = parentMass };
             parentblobs[2] = new OrbitDB();
             Entity parentEntity = Entity.Create();
@@ -549,7 +548,7 @@ namespace Pulsar4X.Tests
 
             var intercept_m = WarpMath.GetInterceptPosition_m(currentPos_m, nonNewtSpeed_m, targetOrbit ,currentDateTime);
 
-            var futurePos1_m = targetOrbit.GetAbsolutePosition_m(intercept_m.Item2);
+            var futurePos1_m = OrbitMath.GetAbsolutePosition(targetOrbit ,intercept_m.Item2);
 
             var futurePos2_m =  intercept_m.Item1;
 
@@ -580,37 +579,39 @@ namespace Pulsar4X.Tests
 
             Vector3 absolutePosition = new Vector3(0, Distance.AuToMt(8.52699302490434E-05), 0);
 
-			PositionDB pos1 = new PositionDB(_entityManager.ManagerGuid, parentEntity) { AbsolutePosition = absolutePosition };
+			PositionDB pos1 = new PositionDB(parentEntity) { AbsolutePosition = absolutePosition };
             var newt1 = new NewtonMoveDB(parentEntity, new Vector3(-10.0, 0, 0)){ ManuverDeltaV = new Vector3(0,1,0)};
             BaseDataBlob[] objBlobs1 = new BaseDataBlob[4];
             objBlobs1[0] = pos1;
             objBlobs1[1] = new MassVolumeDB() { MassDry = 10000 };
-            objBlobs1[2] = new NewtonThrustAbilityDB(_entityManager.ManagerGuid);
+            objBlobs1[2] = new NewtonThrustAbilityDB(_entityManager.ManagerID);
             objBlobs1[3] = newt1;
             Entity objEntity1 = Entity.Create();
             _entityManager.AddEntity(objEntity1, objBlobs1);
 
 
-            PositionDB pos2 = new PositionDB(_entityManager.ManagerGuid, parentEntity) { AbsolutePosition = absolutePosition };
+            PositionDB pos2 = new PositionDB(parentEntity) { AbsolutePosition = absolutePosition };
             var newt2 = new NewtonMoveDB(parentEntity, new Vector3(-10.0, 0, 0)){ ManuverDeltaV = new Vector3(0,1,0)};
             BaseDataBlob[] objBlobs2 = new BaseDataBlob[4];
             objBlobs2[0] = pos2;
             objBlobs2[1] = new MassVolumeDB() { MassDry = 10000 };
-            objBlobs2[2] = new NewtonThrustAbilityDB(_entityManager.ManagerGuid);
+            objBlobs2[2] = new NewtonThrustAbilityDB(_entityManager.ManagerID);
             objBlobs2[3] = newt2;
             Entity objEntity2 = Entity.Create();
             _entityManager.AddEntity(objEntity2, objBlobs2);
 
-            var seconds = 100;
-            for (int i = 0; i < seconds; i++)
+            var nowTime = DateTime.Now;
+            var timeSpan = TimeSpan.FromSeconds(1);
+            for (int i = 0; i < 100; i++)
             {
-                NewtonionMovementProcessor.NewtonMove(newt1, 1);
+                NewtonionMovementProcessor.NewtonMove(newt1, nowTime);
 
+                nowTime += timeSpan;
                 //this is a hacky way to allow us to increment each second,
                 //since the above method looks at the manager datetime and we're not updating that.
                 newt1.LastProcessDateTime -= TimeSpan.FromSeconds(1);
             }
-            NewtonionMovementProcessor.NewtonMove(newt2, seconds);
+            NewtonionMovementProcessor.NewtonMove(newt2, nowTime);
             var distance1 = (pos1.RelativePosition.Length());
             var distance2 = (pos2.RelativePosition.Length());
 

@@ -8,15 +8,15 @@ using Pulsar4X.Engine.Auth;
 using Pulsar4X.Engine.Sensors;
 using Pulsar4X.Extensions;
 using System.Reflection;
-using Pulsar4X.Events;
 using Pulsar4X.Messaging;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Engine
 {
     public class EntityManager
     {
         [JsonProperty]
-        public string ManagerGuid { get; internal set; }
+        public string ManagerID { get; internal set; }
 
         [JsonIgnore]
         public Game Game { get;  internal set; }
@@ -68,6 +68,12 @@ namespace Pulsar4X.Engine
         [PublicAPI]
         public static readonly EntityManager InvalidManager = new EntityManager();
 
+        /// <summary>
+        /// Used to filter the entities that we should consider valid targets
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public delegate bool FilterEntities(Entity entity);
 
 
         #region Constructors
@@ -116,14 +122,14 @@ namespace Pulsar4X.Engine
         {
             Game = game;
 
-            if (ManagerGuid.IsNullOrEmpty())
+            if (ManagerID.IsNullOrEmpty())
             {
-                ManagerGuid = Guid.NewGuid().ToString();
+                ManagerID = Guid.NewGuid().ToString();
             }
 
-            if (!game.GlobalManagerDictionary.ContainsKey(ManagerGuid))
+            if (!game.GlobalManagerDictionary.ContainsKey(ManagerID))
             {
-                game.GlobalManagerDictionary.Add(ManagerGuid, this);
+                game.GlobalManagerDictionary.Add(ManagerID, this);
             }
         }
 
@@ -131,7 +137,7 @@ namespace Pulsar4X.Engine
 
         #region Entity Management Functions
 
-        public void AddEntity(Entity entity, IEnumerable<BaseDataBlob>? dataBlobs = null)
+        public async void AddEntity(Entity entity, IEnumerable<BaseDataBlob>? dataBlobs = null)
         {
             if (_entities.ContainsKey(entity.Id))
                 throw new ArgumentException($"Entity with ID {entity.Id} already exists");
@@ -156,11 +162,11 @@ namespace Pulsar4X.Engine
             entity.IsValid = true;
 
             // Update listeners
-            MessagePublisher.Instance.Publish(
+            await MessagePublisher.Instance.Publish(
                 Message.Create(
                     MessageTypes.EntityAdded,
                     entity.Id,
-                    ManagerGuid
+                    ManagerID
                 ));
         }
 
@@ -202,7 +208,7 @@ namespace Pulsar4X.Engine
             return _entities.ContainsKey(entityID);
         }
 
-        internal void TagEntityForRemoval(Entity entity)
+        internal async void TagEntityForRemoval(Entity entity)
         {
             //check we've not already tagged this.
             if (!_entitiesTaggedForRemoval.Contains(entity))
@@ -216,11 +222,11 @@ namespace Pulsar4X.Engine
                 entity.IsValid = false;
                 ManagerSubpulses.RemoveEntity(entity);
                 _entitiesTaggedForRemoval.Add(entity);
-                MessagePublisher.Instance.Publish(
+                await MessagePublisher.Instance.Publish(
                     Message.Create(
                         MessageTypes.EntityRemoved,
                         entity.Id,
-                        ManagerGuid
+                        ManagerID
                     ));
             }
         }
@@ -233,38 +239,34 @@ namespace Pulsar4X.Engine
         {
             foreach (var entity in _entitiesTaggedForRemoval)
             {
-                foreach (var storeEntry in _datablobStores)
+                foreach (var (type, dictionary) in _datablobStores)
                 {
-                    storeEntry.Value.Remove(entity.Id);
+                    if(dictionary.ContainsKey(entity.Id))
+                        dictionary[entity.Id].OnRemovedFromEntity();
+
+                    dictionary.Remove(entity.Id);
                 }
                 foreach (var (key, value) in _factionSensorContacts)
                 {
                     value.RemoveContact(entity.Id);
                 }
 
-                //remove each of the datablobs.
-                foreach (var db in entity.GetAllDataBlobs())
+                if(entity.FactionOwnerID == Game.NeutralFactionId)
                 {
-                    var type = db.GetType();
-                    if (_datablobStores.ContainsKey(type))
+                    foreach(var (factionId, factionContactList) in _factionNeutralContacts)
                     {
-                        // var blob = _datablobStores[type][entity.Id];
-                        // blob.OwningEntity = null;
-                        _datablobStores[type].Remove(entity.Id);
+                        factionContactList.Remove(entity.Id);
                     }
                 }
+
                 //actualy remove it from the manager here.
                 if (!_entities.Remove(entity.Id))
                 {
                     throw new KeyNotFoundException($"Entity with ID {entity.Id} not found in manager.");
                 }
-                // entity.Manager = null;
-                // entity.FactionOwnerID = -1;
-                Event e = Event.Create(EventType.EntityDestroyed, StarSysDateTime, "Entity Removed From Manager", entity.FactionOwnerID, ManagerGuid, entity.Id);
-                EventManager.Instance.Publish(e);
 
             }
-            _entitiesTaggedForRemoval = new List<Entity>();
+            _entitiesTaggedForRemoval.Clear();
         }
 
         public List<BaseDataBlob> GetAllDataBlobsForEntity(int entityID)
@@ -272,9 +274,9 @@ namespace Pulsar4X.Engine
             var dataBlobs = new List<BaseDataBlob>();
             foreach(var storeEntry in _datablobStores)
             {
-                if(storeEntry.Value.ContainsKey(entityID))
+                if(storeEntry.Value.TryGetValue(entityID, out var value))
                 {
-                    dataBlobs.Add(storeEntry.Value[entityID]);
+                    dataBlobs.Add(value);
                 }
             }
 
@@ -314,7 +316,7 @@ namespace Pulsar4X.Engine
             Type blobType = typeof(T);
 
             if(!_datablobStores.ContainsKey(blobType) || !_datablobStores[blobType].ContainsKey(entityID))
-                throw new KeyNotFoundException($"BlobType {blobType} not found in Manager: {ManagerGuid}");
+                throw new KeyNotFoundException($"BlobType {blobType} not found in Manager: {ManagerID}");
 
             return (T)_datablobStores[blobType][entityID];
         }
@@ -335,7 +337,36 @@ namespace Pulsar4X.Engine
             return _datablobStores[type].ContainsKey(entityID);
         }
 
-        internal void SetDataBlob<T>(int entityId, T dataBlob, bool updateListeners = true) where T : BaseDataBlob
+        internal bool TryGetDataBlob(int entityID, Type blobType, out object? value)
+        {
+            if(_datablobStores.TryGetValue(blobType, out var dataStore))
+            {
+                if(dataStore.TryGetValue(entityID, out var dataBlob))
+                {
+                    value = dataBlob;
+                    return true;
+                }
+                value = null;
+                return false;
+            }
+
+            value = null;
+            return false;
+        }
+
+        internal bool TryGetDataBlob<T>(int entityID, out T? value) where T : BaseDataBlob
+        {
+            Type blobType = typeof(T);
+            if (TryGetDataBlob(entityID, blobType, out object? objValue))
+            {
+                value = objValue as T;
+                return value != null;
+            }
+            value = null;
+            return false;
+        }
+
+        internal async void SetDataBlob<T>(int entityId, T dataBlob, bool updateListeners = true) where T : BaseDataBlob
         {
             if (dataBlob is null)
                 throw new ArgumentNullException(nameof(dataBlob));
@@ -356,31 +387,32 @@ namespace Pulsar4X.Engine
                 var message = Message.Create(
                         MessageTypes.DBAdded,
                         entityId,
-                        ManagerGuid,
+                        ManagerID,
                         null,
                         dataBlob);
 
-                MessagePublisher.Instance.Publish(message);
+                await MessagePublisher.Instance.Publish(message);
             }
         }
 
-        public void RemoveDatablob<T>(int entityId) where T : BaseDataBlob
+        public async void RemoveDatablob<T>(int entityId) where T : BaseDataBlob
         {
             var type = typeof(T);
             if (_datablobStores.ContainsKey(type))
             {
                 var blob = _datablobStores[type][entityId];
+                blob.OnRemovedFromEntity();
                 blob.OwningEntity = null;
                 _datablobStores[type].Remove(entityId);
 
                 var message = Message.Create(
                         MessageTypes.DBRemoved,
                         entityId,
-                        ManagerGuid,
+                        ManagerID,
                         null,
                         blob);
 
-                MessagePublisher.Instance.Publish(message);
+                await MessagePublisher.Instance.Publish(message);
             }
         }
 
@@ -429,7 +461,6 @@ namespace Pulsar4X.Engine
         /// <para></para>
         /// DO NOT ASSUME THE ORDER OF THE RETURNED LIST!
         /// </summary>
-        /// <exception cref="KeyNotFoundException">Thrown when T is not derived from BaseDataBlob.</exception>
         [NotNull]
         public List<Entity> GetAllEntitiesWithDataBlob<T>() where T : BaseDataBlob
         {
@@ -440,58 +471,6 @@ namespace Pulsar4X.Engine
             }
 
             return new List<Entity>();
-        }
-
-        public List<Entity> GetAllEntitiesWithDataBlob<T>(int factionId) where T : BaseDataBlob
-        {
-            var type = typeof(T);
-            if(!_datablobStores.TryGetValue(type, out var blobStore))
-            {
-                return new List<Entity>();
-            }
-
-            var list = new List<Entity>();
-            var contacts = _factionSensorContacts[factionId];
-
-            foreach(var contactId in contacts.GetAllContactIds())
-            {
-                if(blobStore.ContainsKey(contactId))
-                    list.Add(_entities[contactId]);
-            }
-
-            if(!_factionNeutralContacts.ContainsKey(factionId))
-                SetupDefaultNeutralEntitiesForFaction(factionId);
-
-            foreach(var neutralId in _factionNeutralContacts[factionId])
-            {
-                if(blobStore.ContainsKey(neutralId))
-                    list.Add(_entities[neutralId]);
-            }
-
-            return list;
-        }
-
-        /// <summary>
-        /// Returns a list of all the entities in this manager that the faction knows about.
-        /// Either through their sensor contacts or because the entities belong to the faction.
-        /// </summary>
-        /// <param name="factionId">The Id of the faction</param>
-        /// <returns>List of entities</returns>
-        public List<Entity> GetEntitiesAvailableToFaction(int factionId)
-        {
-            var list = new List<Entity>();
-
-            // Add all the factions sensor contacts
-            var factionContacts = _factionSensorContacts[factionId];
-            foreach(var contactId in factionContacts.GetAllContactIds())
-            {
-                list.Add(_entities[contactId]);
-            }
-
-            // Add all the entities that belong to the faction
-            list.AddRange(GetEntitiesByFaction(factionId));
-
-            return list;
         }
 
         /// <summary>
@@ -555,24 +534,12 @@ namespace Pulsar4X.Engine
         [PublicAPI]
         public bool TryGetEntityById(int entityId, out Entity entity)
         {
-            if(_entities.ContainsKey(entityId))
+            if(_entities.TryGetValue(entityId, out entity))
             {
-                entity = _entities[entityId];
                 return true;
             }
-
             entity = Entity.InvalidEntity;
             return false;
-        }
-
-        public List<Entity> GetEntitiesByFaction(int factionId)
-        {
-            return _entities.Values.Where(e => e.FactionOwnerID == factionId).ToList();
-        }
-
-        public List<Entity> GetNeutralEntities()
-        {
-            return _entities.Values.Where(e => e.FactionOwnerID == Game.NeutralFactionId).ToList();
         }
 
         public Entity GetFirstEntityWithDataBlob<T>() where T : BaseDataBlob
@@ -591,48 +558,35 @@ namespace Pulsar4X.Engine
             return _factionSensorContacts[factionId];
         }
 
-        /// <summary>
-        /// Return any entities the faction knows about that aren't
-        /// owned by the faction and aren't sensor contacts
-        /// </summary>
-        /// <param name="factionId"></param>
-        /// <returns></returns>
-        public List<int> GetNonOwnedEntititesForFaction(int factionId)
-        {
-            SetupDefaultNeutralEntitiesForFaction(factionId);
-
-            return _factionNeutralContacts[factionId];
-        }
-
-        public void HideNeutralEntityFromFaction(int factionId, int entityId)
+        public async void HideNeutralEntityFromFaction(int factionId, int entityId)
         {
             SetupDefaultNeutralEntitiesForFaction(factionId);
 
             _factionNeutralContacts[factionId].Remove(entityId);
 
-            MessagePublisher.Instance.Publish(
+            await MessagePublisher.Instance.Publish(
                 Message.Create(
                     MessageTypes.EntityHidden,
                     entityId,
-                    ManagerGuid,
+                    ManagerID,
                     factionId));
         }
 
-        public void ShowNeutralEntityToFaction(int factionId, int entityId)
+        public async void ShowNeutralEntityToFaction(int factionId, int entityId)
         {
             SetupDefaultNeutralEntitiesForFaction(factionId);
 
             _factionNeutralContacts[factionId].Add(entityId);
 
-            MessagePublisher.Instance.Publish(
+            await MessagePublisher.Instance.Publish(
                 Message.Create(
                     MessageTypes.EntityRevealed,
                     entityId,
-                    ManagerGuid,
+                    ManagerID,
                     factionId));
         }
 
-        private void SetupDefaultNeutralEntitiesForFaction(int factionId)
+        public void SetupDefaultNeutralEntitiesForFaction(int factionId)
         {
             if(!_factionNeutralContacts.ContainsKey(factionId))
             {
@@ -689,6 +643,52 @@ namespace Pulsar4X.Engine
 
             entity = Entity.InvalidEntity;
             return false;
+        }
+
+        public List<Entity> GetFilteredEntities(EntityFilter entityFilter, int factionId)
+        {
+            return GetFilteredEntities(entityFilter, factionId, null, FilterLogic.And);
+        }
+
+        public List<Entity> GetFilteredEntities(EntityFilter entityFilter, int factionId, FilterEntities filter)
+        {
+            return GetFilteredEntities(entityFilter, factionId, null, FilterLogic.And, filter);
+        }
+
+        public List<Entity> GetFilteredEntities(EntityFilter entityFilter, int factionId, Type? datablobFilter = null)
+        {
+            return GetFilteredEntities(entityFilter, factionId, datablobFilter == null ? null : new List<Type>() { datablobFilter });
+        }
+
+        public List<Entity> GetFilteredEntities(EntityFilter entityFilter, int factionId, List<Type>? datablobFilter = null, FilterLogic filterLogic = FilterLogic.And, FilterEntities? filter = null)
+        {
+            if(factionId == Game.GameMasterFaction.Id) return _entities.Values.ToList();
+
+            return _entities.Values.Where(entity =>
+                ((entityFilter.HasFlag(EntityFilter.Friendly) && entity.FactionOwnerID == factionId) ||
+                (entityFilter.HasFlag(EntityFilter.Neutral) && entity.FactionOwnerID == Game.NeutralFactionId && EvaluateNeutralEntity(entity, factionId)) ||
+                (entityFilter.HasFlag(EntityFilter.Hostile) && entity.FactionOwnerID != factionId && entity.FactionOwnerID != Game.NeutralFactionId && EvaluateSensorContact(entity, factionId))) &&
+                (datablobFilter == null || datablobFilter.Count == 0 || EvaluateDataBlobs(entity, datablobFilter, filterLogic)) &&
+                (filter == null || filter(entity)))
+                .ToList();
+        }
+
+        private bool EvaluateNeutralEntity(Entity entity, int factionId)
+        {
+            return (_factionNeutralContacts.ContainsKey(factionId) && _factionNeutralContacts[factionId].Contains(entity.Id)) ||
+                EvaluateSensorContact(entity, factionId);
+        }
+
+        private bool EvaluateDataBlobs(Entity entity, List<Type> dataTypes, FilterLogic logic)
+        {
+            var results = dataTypes.Select(type => entity.HasDataBlob(type)).ToList();
+
+            return logic == FilterLogic.And ? results.All(x => x) : results.Any(x => x);
+        }
+
+        private bool EvaluateSensorContact(Entity entity, int factionId)
+        {
+            return _factionSensorContacts.ContainsKey(factionId) && _factionSensorContacts[factionId].SensorContactExists(entity.Id);
         }
 
         private bool AreAllDataBlobDependenciesPresent(Type type, int entityId, HashSet<Type> visitedTypes, int depth)

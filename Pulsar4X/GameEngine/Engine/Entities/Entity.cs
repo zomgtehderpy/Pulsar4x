@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 using Pulsar4X.Components;
 using Pulsar4X.Datablobs;
-using Pulsar4X.Messaging;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.Engine;
 
@@ -27,6 +27,13 @@ public class Entity : IHasDataBlobs, IEquatable<Entity>
     {
         int entityId = EntityIDGenerator.GenerateUniqueID();
         return new Entity(entityId);
+    }
+
+    public static Entity Create(int factionId)
+    {
+        var entity = Create();
+        entity.FactionOwnerID = factionId;
+        return entity;
     }
 
     public static readonly Entity InvalidEntity = new Entity(-1);
@@ -54,12 +61,22 @@ public class Entity : IHasDataBlobs, IEquatable<Entity>
         return Manager.HasDataBlob(Id, type);
     }
 
+    public bool TryGetDataBlob(Type type, [NotNullWhen(true)]out object? value)
+    {
+        if(Manager.TryGetDataBlob(Id, type, out value))
+        {
+            return value != null;
+        }
+
+        value = null;
+        return false;
+    }
+
     public bool TryGetDatablob<T>([NotNullWhen(true)] out T? value) where T : BaseDataBlob
     {
-        if(Manager.HasDataBlob<T>(Id))
+        if (Manager.TryGetDataBlob<T>(Id, out value))
         {
-            value = Manager.GetDataBlob<T>(Id);
-            return true;
+            return value != null;
         }
 
         value = null;
@@ -156,7 +173,7 @@ public class Entity : IHasDataBlobs, IEquatable<Entity>
         return other != null
             && this.Id == other.Id
             && this.FactionOwnerID == other.FactionOwnerID
-            && this.Manager.ManagerGuid.Equals(other.Manager.ManagerGuid);
+            && this.Manager.ManagerID.Equals(other.Manager.ManagerID);
     }
 
     [JsonIgnore]
