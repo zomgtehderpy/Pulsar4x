@@ -108,7 +108,7 @@ public class CreateTransferWindow : PulsarGuiWindow
 
     private void DisplayStorageList(Entity entity)
     {
-        if(entity.TryGetDatablob<VolumeStorageDB>(out var leftVolumeStorageDB))
+        if(entity.TryGetDatablob<CargoStorageDB>(out var leftVolumeStorageDB))
         {
             ImGui.Text(entity.GetName(_uiState.Faction.Id));
             ImGui.Separator();
@@ -194,7 +194,7 @@ public class CreateTransferWindow : PulsarGuiWindow
 
         // Setup the target list
         var systemState = _uiState.StarSystemStates[TransferLeft.Manager.ManagerID];
-        var allFriendlyStorageInSystem = systemState.GetFilteredEntities(DataStructures.EntityFilter.Friendly, _uiState.Faction.Id, typeof(VolumeStorageDB));
+        var allFriendlyStorageInSystem = systemState.GetFilteredEntities(DataStructures.EntityFilter.Friendly, _uiState.Faction.Id, typeof(CargoStorageDB));
 
         ImGui.Text("Select a Transfer Partner");
         ImGui.Separator();

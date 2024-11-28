@@ -72,9 +72,9 @@ namespace Pulsar4X.Engine
             //var totalMass = entity.GetDataBlob<MassVolumeDB>().MassTotal;
             var parentMass = entity.GetSOIParentEntity().GetDataBlob<MassVolumeDB>().MassTotal;
 
-            //var cargoMass = entity.GetDataBlob<VolumeStorageDB>().TotalStoredMass;
-            //var fuelMass = entity.GetDataBlob<VolumeStorageDB>().GetMassStored(fuelType);
-            var fuelMassMax = entity.GetDataBlob<VolumeStorageDB>().GetMassMax(fuelType);
+            //var cargoMass = entity.GetDataBlob<CargoStorageDB>().TotalStoredMass;
+            //var fuelMass = entity.GetDataBlob<CargoStorageDB>().GetMassStored(fuelType);
+            var fuelMassMax = entity.GetDataBlob<CargoStorageDB>().GetMassMax(fuelType);
             var massTotal = massDry + fuelMassMax;
             //var sgp = OrbitMath.CalculateStandardGravityParameterInM3S2(massTotal, parentMass);
 
@@ -101,7 +101,7 @@ namespace Pulsar4X.Engine
             //var totalMass = entity.GetDataBlob<MassVolumeDB>().MassTotal;
             var parentMass = entity.GetSOIParentEntity().GetDataBlob<MassVolumeDB>().MassTotal;
 
-            var fuelMassMax = entity.GetDataBlob<VolumeStorageDB>().GetMassMax(fuelType);
+            var fuelMassMax = entity.GetDataBlob<CargoStorageDB>().GetMassMax(fuelType);
             var massCargoDry = massDry + cargoMass;
             var massTotal = massCargoDry + fuelMassMax;
 
@@ -146,7 +146,7 @@ namespace Pulsar4X.Engine
 
             if(fuelType == null) throw new NullReferenceException("fuelType cannot be null");
 
-            var fuelMass = entity.GetDataBlob<VolumeStorageDB>().GetMassStored(fuelType, false);
+            var fuelMass = entity.GetDataBlob<CargoStorageDB>().GetMassStored(fuelType, false);
 
             var massCargoDry = massDry + cargoMass;
             var massTotal = massCargoDry + fuelMass;
@@ -172,7 +172,7 @@ namespace Pulsar4X.Engine
             var fuelType = cargoLib.GetAny(fuelTypeID);
 
             if(fuelType == null) throw new NullReferenceException("fuelType cannot be null");
-            var storage = entity.GetDataBlob<VolumeStorageDB>();
+            var storage = entity.GetDataBlob<CargoStorageDB>();
             var totalCargo = storage.TotalStoredMass;
             var fuelMass = storage.GetMassStored(fuelType, false);
             var dryCargo = totalCargo - fuelMass;

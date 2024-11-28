@@ -318,7 +318,7 @@ namespace Pulsar4X.Tests
             testEntity.SetDataBlob(new ColonyInfoDB(_pop1, Entity.InvalidEntity));
 
             Assert.True(testEntity.HasDataBlob<OrbitDB>(), "This entity should have an OrbitDB");
-            Assert.False(testEntity.HasDataBlob<VolumeStorageDB>(), "This entity should NOT have a VolumeStorageDB");
+            Assert.False(testEntity.HasDataBlob<CargoStorageDB>(), "This entity should NOT have a CargoStorageDB");
         }
 
         #region Extra Init Stuff

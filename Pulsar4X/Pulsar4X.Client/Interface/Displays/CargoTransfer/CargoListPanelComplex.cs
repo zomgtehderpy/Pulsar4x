@@ -16,7 +16,7 @@ public class CargoListPanelComplex
 {
     FactionDataStore _staticData;
     EntityState _entityState;
-    VolumeStorageDB _volStorageDB;
+    CargoStorageDB _volStorageDB;
     Dictionary<string, TypeStore> _stores = new ();
     Dictionary<ICargoable, long> _cargoToMove = new ();
     Dictionary<ICargoable, long> _cargoToMoveUI = new ();
@@ -32,7 +32,7 @@ public class CargoListPanelComplex
     {
         _staticData = staticData;
         _entityState = entity;
-        _volStorageDB = entity.Entity.GetDataBlob<VolumeStorageDB>();
+        _volStorageDB = entity.Entity.GetDataBlob<CargoStorageDB>();
         HeadersIsOpenDict = headersOpenDict;
 
         Update();

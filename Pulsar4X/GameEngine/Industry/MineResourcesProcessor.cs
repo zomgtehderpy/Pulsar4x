@@ -51,7 +51,7 @@ namespace Pulsar4X.Industry
         {
             Dictionary<int, long> actualMiningRates = colonyEntity.GetDataBlob<MiningDB>().ActualMiningRate;
             Dictionary<int, MineralDeposit> planetMinerals = colonyEntity.GetDataBlob<ColonyInfoDB>().PlanetEntity.GetDataBlob<MineralsDB>().Minerals;
-            VolumeStorageDB stockpile = colonyEntity.GetDataBlob<VolumeStorageDB>();
+            CargoStorageDB stockpile = colonyEntity.GetDataBlob<CargoStorageDB>();
 
             foreach (var kvp in actualMiningRates)
             {

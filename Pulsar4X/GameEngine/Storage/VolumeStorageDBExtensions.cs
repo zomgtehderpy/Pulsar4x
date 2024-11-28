@@ -16,7 +16,7 @@ namespace Pulsar4X.Storage
         /// <param name="cargoItem"></param>
         /// <param name="volume">negitive to remove cargo</param>
         /// <returns>amount of volume successfuly added or removed</returns>
-        internal static double AddRemoveCargoByVolume(this VolumeStorageDB db, ICargoable cargoItem, double volume)
+        internal static double AddRemoveCargoByVolume(this CargoStorageDB db, ICargoable cargoItem, double volume)
         {
             //check we're actualy capable of
             if (!db.TypeStores.ContainsKey(cargoItem.CargoTypeID))
@@ -58,7 +58,7 @@ namespace Pulsar4X.Storage
         /// <param name="cargoItem"></param>
         /// <param name="mass">negitive to remove</param>
         /// <returns>amount succesfully added or removed</returns>
-        internal static double AddRemoveCargoByMass(this VolumeStorageDB db, ICargoable cargoItem, double mass)
+        internal static double AddRemoveCargoByMass(this CargoStorageDB db, ICargoable cargoItem, double mass)
         {
             //check we're actualy capable of
 
@@ -103,7 +103,7 @@ namespace Pulsar4X.Storage
         /// <param name="cargoItem"></param>
         /// <param name="count"></param>
         /// <returns>amount succesfully added</returns>
-        internal static long AddCargoByUnit(this VolumeStorageDB db, ICargoable cargoItem, long count)
+        internal static long AddCargoByUnit(this CargoStorageDB db, ICargoable cargoItem, long count)
         {
             //check we're actualy capable of
 
@@ -152,7 +152,7 @@ namespace Pulsar4X.Storage
         /// <param name="cargoItem"></param>
         /// <param name="count"></param>
         /// <returns>amount successfuly removed</returns>
-        internal static long RemoveCargoByUnit(this VolumeStorageDB db, ICargoable cargoItem, long count)
+        internal static long RemoveCargoByUnit(this CargoStorageDB db, ICargoable cargoItem, long count)
         {
             //check we're actualy capable of
             if (!db.TypeStores.ContainsKey(cargoItem.CargoTypeID))
@@ -194,7 +194,7 @@ namespace Pulsar4X.Storage
         /// <param name="db"></param>
         /// <param name="cargoItem"></param>
         /// <returns></returns>
-        public static double GetVolumeStored(this VolumeStorageDB db, ICargoable cargoItem)
+        public static double GetVolumeStored(this CargoStorageDB db, ICargoable cargoItem)
         {
             if (!db.TypeStores.ContainsKey(cargoItem.CargoTypeID))
                 return 0.0;
@@ -210,7 +210,7 @@ namespace Pulsar4X.Storage
         /// </summary>
         /// <param name="cargoItem"></param>
         /// <returns></returns>
-        public static double GetMassStored(this VolumeStorageDB db,ICargoable cargoItem, bool includeEscro)
+        public static double GetMassStored(this CargoStorageDB db,ICargoable cargoItem, bool includeEscro)
         {
             if (!db.TypeStores.ContainsKey(cargoItem.CargoTypeID))
                 return 0.0;
@@ -226,14 +226,22 @@ namespace Pulsar4X.Storage
             return units * cargoItem.MassPerUnit;
         }
 
-        public static long GetUnitCountInEscro(VolumeStorageDB db, ICargoable cargoItem)
+        public static long GetUnitCountInEscro(CargoStorageDB db, ICargoable cargoItem)
         {
             long unitCount = 0;
             foreach (var transferData in db.EscroItems)
             {
-                if(db.OwningEntity == transferData.PrimaryStorageDB.OwningEntity)//I think this is wrong
+                if(db.OwningEntity == transferData.PrimaryStorageDB.OwningEntity || db.OwningEntity == transferData.SecondaryStorageDB.OwningEntity)//I think this is wrong
                 {
                     foreach (var tup in transferData.EscroHeldInPrimary)
+                    {
+                        if (tup.item.ID == cargoItem.ID)
+                        {
+                            unitCount += tup.count;
+                            break;
+                        }
+                    }
+                    foreach (var tup in transferData.EscroHeldInSecondary)
                     {
                         if (tup.item.ID == cargoItem.ID)
                         {
@@ -251,7 +259,7 @@ namespace Pulsar4X.Storage
         /// </summary>
         /// <param name="cargoItem"></param>
         /// <returns></returns>
-        public static double GetMassMax(this VolumeStorageDB db,ICargoable cargoItem)
+        public static double GetMassMax(this CargoStorageDB db,ICargoable cargoItem)
         {
             if (!db.TypeStores.ContainsKey(cargoItem.CargoTypeID))
                 return 0.0;
@@ -267,7 +275,7 @@ namespace Pulsar4X.Storage
         /// </summary>
         /// <param name="cargoItem"></param>
         /// <returns></returns>
-        public static long GetUnitsStored(this VolumeStorageDB db,ICargoable cargoItem, bool includeEscro)
+        public static long GetUnitsStored(this CargoStorageDB db,ICargoable cargoItem, bool includeEscro)
         {
             if (!db.TypeStores.ContainsKey(cargoItem.CargoTypeID))
                 return 0;
@@ -285,7 +293,7 @@ namespace Pulsar4X.Storage
         /// </summary>
         /// <param name="cargoItem"></param>
         /// <returns></returns>
-        public static double GetFreeMass(this VolumeStorageDB db, ICargoable cargoItem)
+        public static double GetFreeMass(this CargoStorageDB db, ICargoable cargoItem)
         {
             var type = cargoItem.CargoTypeID;
             if (!db.TypeStores.ContainsKey(type))
@@ -299,7 +307,7 @@ namespace Pulsar4X.Storage
         /// </summary>
         /// <param name="cargoItem"></param>
         /// <returns></returns>
-        public static double GetFreeVolume(this VolumeStorageDB db, ICargoable cargoItem)
+        public static double GetFreeVolume(this CargoStorageDB db, ICargoable cargoItem)
         {
             var type = cargoItem.CargoTypeID;
             if (!db.TypeStores.ContainsKey(type))
@@ -314,7 +322,7 @@ namespace Pulsar4X.Storage
         /// </summary>
         /// <param name="cargoItem"></param>
         /// <returns></returns>
-        public static double GetFreeVolume(this VolumeStorageDB db, string cargoType)
+        public static double GetFreeVolume(this CargoStorageDB db, string cargoType)
         {
             if (!db.TypeStores.ContainsKey(cargoType))
                 return 0;
@@ -328,7 +336,7 @@ namespace Pulsar4X.Storage
         /// </summary>
         /// <param name="cargoItem"></param>
         /// <returns></returns>
-        public static int GetFreeUnitSpace(this VolumeStorageDB db, ICargoable cargoItem)
+        public static int GetFreeUnitSpace(this CargoStorageDB db, ICargoable cargoItem)
         {
             var type = cargoItem.CargoTypeID;
             if (!db.TypeStores.ContainsKey(type))
@@ -343,7 +351,7 @@ namespace Pulsar4X.Storage
         /// </summary>
         /// <param name="typeID">cargo typeID</param>
         /// <param name="volumeChange">positive to add volume, negitive to remove volume</param>
-        public static void ChangeMaxVolume(this VolumeStorageDB db, string typeID, double volumeChange, CargoDefinitionsLibrary cargoLibrary)
+        public static void ChangeMaxVolume(this CargoStorageDB db, string typeID, double volumeChange, CargoDefinitionsLibrary cargoLibrary)
         {
             var type = db.TypeStores[typeID];
             type.MaxVolume += volumeChange;
@@ -367,7 +375,7 @@ namespace Pulsar4X.Storage
             }
         }
 
-        internal static bool HasSpecificEntity(this VolumeStorageDB storeDB, CargoAbleTypeDB item)
+        internal static bool HasSpecificEntity(this CargoStorageDB storeDB, CargoAbleTypeDB item)
         {
             if (storeDB.TypeStores[item.CargoTypeID].Cargoables.ContainsKey(item.ID))
                 return true;

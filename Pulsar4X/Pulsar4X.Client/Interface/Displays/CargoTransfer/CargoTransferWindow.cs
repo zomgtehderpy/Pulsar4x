@@ -100,7 +100,7 @@ namespace Pulsar4X.SDL2UI
             _hasCargoAbilityRight = false;
             _transferRate = 0;
             _isSelectingRight = false;
-            if(_selectedEntityLeft != null && _selectedEntityLeft.Entity.HasDataBlob<VolumeStorageDB>())
+            if(_selectedEntityLeft != null && _selectedEntityLeft.Entity.HasDataBlob<CargoStorageDB>())
             {
                 CargoListLeft = new CargoListPanelComplex(_staticData, _selectedEntityLeft, headersOpenDict);
                 _hasCargoAbilityLeft = true;
@@ -116,7 +116,7 @@ namespace Pulsar4X.SDL2UI
                     _selectedEntityRight = _uiState.LastClickedEntity;
                     _isSelectingRight = false;
                 }
-                if (_selectedEntityRight != null && _selectedEntityLeft != null && _selectedEntityLeft.Entity.HasDataBlob<VolumeStorageDB>())
+                if (_selectedEntityRight != null && _selectedEntityLeft != null && _selectedEntityLeft.Entity.HasDataBlob<CargoStorageDB>())
                 {
                     if (!_hasCargoAbilityRight)
                         CargoListRight = new CargoListPanelComplex(_staticData, _selectedEntityRight, headersOpenDict);
@@ -129,10 +129,10 @@ namespace Pulsar4X.SDL2UI
 
         internal void Set2ndCargo(EntityState entity)
         {
-            if (_selectedEntityLeft != null && _selectedEntityLeft.Entity.HasDataBlob<VolumeStorageDB>())
+            if (_selectedEntityLeft != null && _selectedEntityLeft.Entity.HasDataBlob<CargoStorageDB>())
             {
                 _selectedEntityRight = entity;
-                if (_staticData != null && entity.Entity.HasDataBlob<VolumeStorageDB>())
+                if (_staticData != null && entity.Entity.HasDataBlob<CargoStorageDB>())
                 {
                     CargoListRight = new CargoListPanelComplex(_staticData, _selectedEntityRight, headersOpenDict);
 
@@ -175,8 +175,8 @@ namespace Pulsar4X.SDL2UI
             }
             else
             {
-                var cargoDBLeft = _selectedEntityLeft.Entity.GetDataBlob<VolumeStorageDB>();
-                var cargoDBRight = _selectedEntityRight.Entity.GetDataBlob<VolumeStorageDB>();
+                var cargoDBLeft = _selectedEntityLeft.Entity.GetDataBlob<CargoStorageDB>();
+                var cargoDBRight = _selectedEntityRight.Entity.GetDataBlob<CargoStorageDB>();
                 _dvMaxRangeDiff_ms = Math.Max(cargoDBLeft.TransferRangeDv_mps, cargoDBRight.TransferRangeDv_mps);
                 _dvDifference_ms = (double)dvDif;
                 _transferRate = CargoTransferProcessor.CalcTransferRate(_dvDifference_ms,

@@ -16,7 +16,7 @@ namespace Pulsar4X.SDL2UI
         private EntityState? _entityState;
         private Entity? _selectedEntity;
         private LogiShipperDB? _tradeshipDB;
-        private VolumeStorageDB? _cargoDB;
+        private CargoStorageDB? _cargoDB;
 
         private SetLogisticsOrder.Changes? _changes;
         private double _changeMass = 1;
@@ -55,8 +55,8 @@ namespace Pulsar4X.SDL2UI
                 else
                     _tradeshipDB = null;
 
-                if(_selectedEntity.HasDataBlob<VolumeStorageDB>())
-                    _cargoDB = _selectedEntity.GetDataBlob<VolumeStorageDB>();
+                if(_selectedEntity.HasDataBlob<CargoStorageDB>())
+                    _cargoDB = _selectedEntity.GetDataBlob<CargoStorageDB>();
                 else
                     _cargoDB = null;
 

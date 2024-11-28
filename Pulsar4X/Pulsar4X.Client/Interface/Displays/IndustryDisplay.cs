@@ -36,7 +36,7 @@ namespace Pulsar4X.SDL2UI
         private IConstructableDesign? _lastClickedDesign;
         private Entity? Entity;
         private IndustryAbilityDB? _industryDB;
-        private VolumeStorageDB? _volStorageDB;
+        private CargoStorageDB? _volStorageDB;
         private IndustryJob? _selectedExistingConJob
         {
             get

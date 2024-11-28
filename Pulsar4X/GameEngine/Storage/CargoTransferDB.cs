@@ -21,7 +21,7 @@ namespace Pulsar4X.Storage
         internal Entity PrimaryEntity { get; set; }
         internal Entity SecondaryEntity { get; set; }
         [JsonIgnore]
-        internal VolumeStorageDB ParentStorageDB { get; set; }
+        internal CargoStorageDB ParentStorageDB { get; set; }
         
         /// <summary>
         /// This object is shared between two datablobs/entites 

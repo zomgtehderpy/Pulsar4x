@@ -20,7 +20,7 @@ namespace Pulsar4X.Interfaces
         long IndustryPointCosts { get; }
         string IndustryTypeID { get; }
         ushort OutputAmount { get; }
-        void OnConstructionComplete(Entity industryEntity, VolumeStorageDB storage, string productionLine, IndustryJob batchJob, IConstructableDesign designInfo);
+        void OnConstructionComplete(Entity industryEntity, CargoStorageDB storage, string productionLine, IndustryJob batchJob, IConstructableDesign designInfo);
 
     }
 }

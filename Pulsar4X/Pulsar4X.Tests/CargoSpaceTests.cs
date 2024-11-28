@@ -207,7 +207,7 @@ namespace Pulsar4X.Tests
         {
             var cookies = SetupCookieTradeGood();
 
-            var cookiePile = new VolumeStorageDB();
+            var cookiePile = new CargoStorageDB();
             cookiePile.TypeStores.Add(cookies.CargoTypeID, new TypeStore(100));
             var added = cookiePile.AddCargoByUnit(cookies, 99);
 

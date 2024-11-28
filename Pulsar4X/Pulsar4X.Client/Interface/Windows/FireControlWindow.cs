@@ -408,11 +408,11 @@ namespace Pulsar4X.ImGuiNetUI
 
             foreach (var cargoType in ctypes)
             {
-                if(!_orderEntityState.HasDataBlob<VolumeStorageDB>())
+                if(!_orderEntityState.HasDataBlob<CargoStorageDB>())
                     continue;
-                if (_orderEntityState.GetDataBlob<VolumeStorageDB>().TypeStores.ContainsKey(cargoType))
+                if (_orderEntityState.GetDataBlob<CargoStorageDB>().TypeStores.ContainsKey(cargoType))
                 {
-                    var shipOrdnances = _orderEntityState.GetDataBlob<VolumeStorageDB>().TypeStores[cargoType].CurrentStoreInUnits;
+                    var shipOrdnances = _orderEntityState.GetDataBlob<CargoStorageDB>().TypeStores[cargoType].CurrentStoreInUnits;
 
                     foreach (var ordType in shipOrdnances)
                         _storedOrdnance[ordType.Key] = ordType.Value;

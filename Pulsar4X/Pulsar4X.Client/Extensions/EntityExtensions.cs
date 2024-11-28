@@ -14,7 +14,7 @@ namespace Pulsar4X.SDL2UI
             if(!entity.HasDataBlob<ColonyInfoDB>()) return false;
             if(!entity.HasDataBlob<MiningDB>()) return false;
             if(!entity.GetDataBlob<ColonyInfoDB>().PlanetEntity.HasDataBlob<MineralsDB>()) return false;
-            if(!entity.HasDataBlob<VolumeStorageDB>()) return false;
+            if(!entity.HasDataBlob<CargoStorageDB>()) return false;
 
             return true;
         }

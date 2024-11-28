@@ -85,7 +85,7 @@ public class CargoTransferOrder : EntityCommand
             {
                 var fuelInfo = ship.GetFuelInfo(cargoLibrary);
                 ICargoable fuel = fuelInfo.Item1;
-                long amountToMove = ship.GetDataBlob<VolumeStorageDB>().GetFreeUnitSpace(fuel);
+                long amountToMove = ship.GetDataBlob<CargoStorageDB>().GetFreeUnitSpace(fuel);
                 var fuelAndAmount =(fuel, amountToMove);
                 var list = new List<(ICargoable, long)>();
                 list.Add(fuelAndAmount);
@@ -107,7 +107,7 @@ public class CargoTransferOrder : EntityCommand
         if (!IsRunning)
         {
             CargoTransferDB transferDB = new CargoTransferDB(_transferData);
-            transferDB.ParentStorageDB = EntityCommanding.GetDataBlob<VolumeStorageDB>();
+            transferDB.ParentStorageDB = EntityCommanding.GetDataBlob<CargoStorageDB>();
             EntityCommanding.SetDataBlob(transferDB);
              
 

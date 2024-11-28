@@ -361,9 +361,9 @@ namespace Pulsar4X.Movement
             ProcessedMaterial fuel = factionDataStore.CargoGoods.GetMaterial(ft);
 
             double fuelMass = 0;
-            if(parentEntity.HasDataBlob<VolumeStorageDB>())
+            if(parentEntity.HasDataBlob<CargoStorageDB>())
             {
-                var cargo = parentEntity.GetDataBlob<VolumeStorageDB>();
+                var cargo = parentEntity.GetDataBlob<CargoStorageDB>();
                 fuelMass = cargo.GetMassStored(fuel, false);
             }
             db.SetFuel(fuelMass, totalMass);

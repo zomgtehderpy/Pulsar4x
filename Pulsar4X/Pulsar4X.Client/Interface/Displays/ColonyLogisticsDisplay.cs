@@ -27,7 +27,7 @@ namespace Pulsar4X.SDL2UI
         private EntityState _entityState;
         private Entity _selectedEntity;
         private LogiBaseDB? _logisticsDB;
-        private VolumeStorageDB? _volStorageDB;
+        private CargoStorageDB? _volStorageDB;
         private Dictionary<string, TypeStore>? _stores;
         private FactionDataStore _staticData;
         private bool isEnabled;
@@ -71,7 +71,7 @@ namespace Pulsar4X.SDL2UI
             if (entityState.HasDataBlob(typeof(OrderableDB)))
             {
                 _selectedEntity.TryGetDatablob<LogiBaseDB>(out _logisticsDB);
-                _selectedEntity.TryGetDatablob<VolumeStorageDB>(out _volStorageDB);
+                _selectedEntity.TryGetDatablob<CargoStorageDB>(out _volStorageDB);
 
                 Update();
             }

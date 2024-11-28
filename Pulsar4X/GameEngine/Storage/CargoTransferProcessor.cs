@@ -64,7 +64,7 @@ namespace Pulsar4X.Storage
 
         }
 
-        private double MoveFromEscro(SafeList<(ICargoable item, long count, double mass)> escroList, VolumeStorageDB moveTo, VolumeStorageDB moveFrom, double massTransferable)
+        private double MoveFromEscro(SafeList<(ICargoable item, long count, double mass)> escroList, CargoStorageDB moveTo, CargoStorageDB moveFrom, double massTransferable)
         {
             double totalMassXfered = 0;
             for (int index = 0; index < escroList.Count; index++)
@@ -104,7 +104,7 @@ namespace Pulsar4X.Storage
         /// <param name="amountInMass"></param>
         internal static double AddCargoItems(Entity entity, ICargoable item, int amount)
         {
-            VolumeStorageDB cargo = entity.GetDataBlob<VolumeStorageDB>();
+            CargoStorageDB cargo = entity.GetDataBlob<CargoStorageDB>();
             double amountSuccess = cargo.AddCargoByUnit(item, amount);
             MassVolumeDB mv = entity.GetDataBlob<MassVolumeDB>();
             mv.UpdateMassTotal(cargo);
@@ -120,7 +120,7 @@ namespace Pulsar4X.Storage
         /// <param name="amountInMass"></param>
         internal static double RemoveCargoItems(Entity entity, ICargoable item, int amount)
         {
-            VolumeStorageDB cargo = entity.GetDataBlob<VolumeStorageDB>();
+            CargoStorageDB cargo = entity.GetDataBlob<CargoStorageDB>();
             double amountSuccess = cargo.RemoveCargoByUnit(item, amount);
             MassVolumeDB mv = entity.GetDataBlob<MassVolumeDB>();
             mv.UpdateMassTotal(cargo);
@@ -136,7 +136,7 @@ namespace Pulsar4X.Storage
         /// <param name="amountInMass"></param>
         internal static double AddRemoveCargoMass(Entity entity, ICargoable item, double amountInMass)
         {
-            VolumeStorageDB cargo = entity.GetDataBlob<VolumeStorageDB>();
+            CargoStorageDB cargo = entity.GetDataBlob<CargoStorageDB>();
             double amountSuccess = cargo.AddRemoveCargoByMass(item, amountInMass);
             MassVolumeDB mv = entity.GetDataBlob<MassVolumeDB>();
             mv.UpdateMassTotal(cargo);
@@ -149,7 +149,7 @@ namespace Pulsar4X.Storage
         /// <param name="storeDB"></param>
         /// <param name="item"></param>
         /// <param name="amountInMass"></param>
-        internal static double AddRemoveCargoMass(VolumeStorageDB storeDB, ICargoable item, double amountInMass)
+        internal static double AddRemoveCargoMass(CargoStorageDB storeDB, ICargoable item, double amountInMass)
         {
             double amountSuccess = storeDB.AddRemoveCargoByMass(item, amountInMass);
             MassVolumeDB mv = storeDB.OwningEntity.GetDataBlob<MassVolumeDB>();
@@ -168,7 +168,7 @@ namespace Pulsar4X.Storage
         /// <param name="amountInVolume"></param>
         internal static double AddRemoveCargoVolume(Entity entity, ICargoable item, double amountInVolume)
         {
-            VolumeStorageDB cargo = entity.GetDataBlob<VolumeStorageDB>();
+            CargoStorageDB cargo = entity.GetDataBlob<CargoStorageDB>();
             double amountSuccess = cargo.AddRemoveCargoByVolume(item, amountInVolume);
             MassVolumeDB mv = entity.GetDataBlob<MassVolumeDB>();
             mv.UpdateMassTotal(cargo);
@@ -182,7 +182,7 @@ namespace Pulsar4X.Storage
                 return;
             if (!entity.TryGetDatablob(out MassVolumeDB massdb))
                 return;
-            if(!entity.TryGetDatablob(out VolumeStorageDB storedb))
+            if(!entity.TryGetDatablob(out CargoStorageDB storedb))
                 return;
 
             var cargoLib = entity.GetFactionCargoDefinitions();
@@ -263,7 +263,7 @@ namespace Pulsar4X.Storage
         /// <param name="dvDifference_mps">Dv difference in m/s</param>
         /// <param name="from">From.</param>
         /// <param name="to">To.</param>
-        public static int CalcTransferRate(double dvDifference_mps, VolumeStorageDB from, VolumeStorageDB to)
+        public static int CalcTransferRate(double dvDifference_mps, CargoStorageDB from, CargoStorageDB to)
         {
             //var from = transferDB.CargoFromDB;
             //var to = transferDB.CargoToDB;
@@ -306,8 +306,8 @@ namespace Pulsar4X.Storage
 
         public static (double bestDVRange, double bestRate) GetBestRangeRate(Entity from, Entity to)
         {
-            var fromdb = from.GetDataBlob<VolumeStorageDB>();
-            var todb = to.GetDataBlob<VolumeStorageDB>();
+            var fromdb = from.GetDataBlob<CargoStorageDB>();
+            var todb = to.GetDataBlob<CargoStorageDB>();
             var fromDVRange = fromdb.TransferRangeDv_mps;
             var toDVRange = todb.TransferRangeDv_mps;
             double bestXferRange_ms = Math.Min(fromDVRange, toDVRange);
@@ -317,8 +317,8 @@ namespace Pulsar4X.Storage
 
         public static (double maxDVRange, double lowRate) GetMaxRangeRate(Entity from, Entity to)
         {
-            var fromdb = from.GetDataBlob<VolumeStorageDB>();
-            var todb = to.GetDataBlob<VolumeStorageDB>();
+            var fromdb = from.GetDataBlob<CargoStorageDB>();
+            var todb = to.GetDataBlob<CargoStorageDB>();
             var fromDVRange = fromdb.TransferRangeDv_mps;
             var toDVRange = todb.TransferRangeDv_mps;
             double maxRange;

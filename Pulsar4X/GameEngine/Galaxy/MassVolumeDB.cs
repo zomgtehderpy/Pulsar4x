@@ -153,8 +153,8 @@ namespace Pulsar4X.Galaxy
         /// <summary>
         /// Note that this does not update the density. density is dry.
         /// </summary>
-        /// <param name="cargo">optional VolumeStorageDB, saves time looking it up</param>
-        public void UpdateMassTotal(VolumeStorageDB cargo)
+        /// <param name="cargo">optional CargoStorageDB, saves time looking it up</param>
+        public void UpdateMassTotal(CargoStorageDB cargo)
         {
             MassTotal = MassDry + cargo.TotalStoredMass;
         }
@@ -164,7 +164,7 @@ namespace Pulsar4X.Galaxy
         /// </summary>
         public void UpdateMassTotal()
         {
-            UpdateMassTotal(OwningEntity.GetDataBlob<VolumeStorageDB>());
+            UpdateMassTotal(OwningEntity.GetDataBlob<CargoStorageDB>());
         }
 
 

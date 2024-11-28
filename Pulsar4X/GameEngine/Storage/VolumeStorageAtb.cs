@@ -17,14 +17,14 @@ public class VolumeStorageAtb : IComponentDesignAttribute
 
     public void OnComponentInstallation(Entity parentEntity, ComponentInstance componentInstance)
     {
-        if (!parentEntity.HasDataBlob<VolumeStorageDB>())
+        if (!parentEntity.HasDataBlob<CargoStorageDB>())
         {
-            var newdb = new VolumeStorageDB(StoreTypeID, MaxVolume);
+            var newdb = new CargoStorageDB(StoreTypeID, MaxVolume);
             parentEntity.SetDataBlob(newdb);
         }
         else
         {
-            var db = parentEntity.GetDataBlob<VolumeStorageDB>();
+            var db = parentEntity.GetDataBlob<CargoStorageDB>();
             if (db.TypeStores.ContainsKey(StoreTypeID))
             {
                 db.TypeStores[StoreTypeID].MaxVolume += MaxVolume;

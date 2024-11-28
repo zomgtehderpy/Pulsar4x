@@ -27,9 +27,9 @@ public class StorageTransferRateAtb : IComponentDesignAttribute
 
     public void OnComponentInstallation(Entity parentEntity, ComponentInstance componentInstance)
     {
-        if (!parentEntity.HasDataBlob<VolumeStorageDB>())
+        if (!parentEntity.HasDataBlob<CargoStorageDB>())
         {
-            var newdb = new VolumeStorageDB();
+            var newdb = new CargoStorageDB();
             parentEntity.SetDataBlob(newdb);
         }
         var cargoLibrary = parentEntity.GetFactionOwner.GetDataBlob<FactionInfoDB>().Data.CargoGoods;

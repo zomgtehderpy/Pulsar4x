@@ -164,12 +164,12 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
 
             var parentMass = soiParent.GetDataBlob<MassVolumeDB>().MassTotal;
             _sgp = GeneralMath.StandardGravitationalParameter(_totalMass + parentMass);
-            _cargoMass = _orderEntity.GetDataBlob<VolumeStorageDB>().TotalStoredMass;
+            _cargoMass = _orderEntity.GetDataBlob<CargoStorageDB>().TotalStoredMass;
 
             if(_fuelType == null)
                 throw new NullReferenceException();
 
-            _fuelMass = _orderEntity.GetDataBlob<VolumeStorageDB>().GetMassStored(_fuelType, false);
+            _fuelMass = _orderEntity.GetDataBlob<CargoStorageDB>().GetMassStored(_fuelType, false);
         }
 
 

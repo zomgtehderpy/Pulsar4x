@@ -55,7 +55,7 @@ namespace Pulsar4X.Components
         public Dictionary<Type, IComponentDesignAttribute> AttributesByType = new();
         public float AspectRatio = 1f;
 
-        public void OnConstructionComplete(Entity industryEntity, VolumeStorageDB storage, string productionLine, IndustryJob batchJob, IConstructableDesign designInfo)
+        public void OnConstructionComplete(Entity industryEntity, CargoStorageDB storage, string productionLine, IndustryJob batchJob, IConstructableDesign designInfo)
         {
             var industryDB = industryEntity.GetDataBlob<IndustryAbilityDB>();
             batchJob.NumberCompleted++;

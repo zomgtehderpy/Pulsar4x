@@ -43,7 +43,7 @@ namespace Pulsar4X.Movement
 
         /// <summary>
         /// removes deltaV and correct amount of fuel.
-        /// does NOT update the ships total mass or remove fuel from VolumeStorageDB
+        /// does NOT update the ships total mass or remove fuel from CargoStorageDB
         /// ***USE CargoTransferProcessor.AddRemoveCargoMass instead of this!***
         /// </summary>
         /// <param name="dv"></param>

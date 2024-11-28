@@ -10,11 +10,11 @@ public class CargoTransferObject
     /// <summary>
     /// positive amounts move INTO this entity, negitive amounts move OUT from this entity
     /// </summary>
-    internal VolumeStorageDB PrimaryStorageDB { get; private set; }
+    internal CargoStorageDB PrimaryStorageDB { get; private set; }
     /// <summary>
     /// positive amounts move OUT from this entity, negitive amounts move INTO this entity.
     /// </summary>
-    internal VolumeStorageDB SecondaryStorageDB { get; private set; }
+    internal CargoStorageDB SecondaryStorageDB { get; private set; }
 
     internal IReadOnlyList<(ICargoable item, long amount)> OrderedToTransfer { get; private set; }
 
@@ -24,8 +24,8 @@ public class CargoTransferObject
         
     internal CargoTransferObject(Entity primary, Entity secondary, IReadOnlyList<(ICargoable item, long amount)> itemsToTransfer)
     {
-        PrimaryStorageDB = primary.GetDataBlob<VolumeStorageDB>();
-        SecondaryStorageDB = secondary.GetDataBlob<VolumeStorageDB>();
+        PrimaryStorageDB = primary.GetDataBlob<CargoStorageDB>();
+        SecondaryStorageDB = secondary.GetDataBlob<CargoStorageDB>();
         OrderedToTransfer = itemsToTransfer;
         
         PrimaryStorageDB.EscroItems.Add(this);

@@ -138,7 +138,7 @@ namespace Pulsar4X.SDL2UI
                 return true;
             }
             //if entity can target
-            else if (_entityState.Entity.HasDataBlob<VolumeStorageDB>() && T == typeof(CargoTransferWindow))
+            else if (_entityState.Entity.HasDataBlob<CargoStorageDB>() && T == typeof(CargoTransferWindow))
             {
                 return true;
             }
@@ -157,7 +157,7 @@ namespace Pulsar4X.SDL2UI
                 return true;
             }
             else if (
-                _entityState.Entity.HasDataBlob<VolumeStorageDB>() &&
+                _entityState.Entity.HasDataBlob<CargoStorageDB>() &&
                 _entityState.Entity.HasDataBlob<NewtonThrustAbilityDB>() &&
                 T == typeof(LogiShipWindow))
             {

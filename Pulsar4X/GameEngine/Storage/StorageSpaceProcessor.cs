@@ -8,7 +8,7 @@ namespace Pulsar4X.Storage
     {
        internal static void RecalcVolumeCapacityAndRates(Entity parentEntity, CargoDefinitionsLibrary cargoLibrary)
         {
-            VolumeStorageDB cargoStorageDB = parentEntity.GetDataBlob<VolumeStorageDB>();
+            CargoStorageDB cargoStorageDB = parentEntity.GetDataBlob<CargoStorageDB>();
             Dictionary<string, double> calculatedMaxStorage = new ();
 
             var instancesDB = parentEntity.GetDataBlob<ComponentInstancesDB>();

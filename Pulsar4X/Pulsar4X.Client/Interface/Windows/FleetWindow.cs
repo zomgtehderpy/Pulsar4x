@@ -647,7 +647,7 @@ namespace Pulsar4X.SDL2UI
 
                         foreach(var colony in colonyList)
                         {
-                            if(!colony.Entity.TryGetDatablob<VolumeStorageDB>(out var storageDB)) continue;
+                            if(!colony.Entity.TryGetDatablob<CargoStorageDB>(out var storageDB)) continue;
 
                             var name = colony.Name;
                             if(ImGui.Button(name + "###refuelAt-button-" + name))

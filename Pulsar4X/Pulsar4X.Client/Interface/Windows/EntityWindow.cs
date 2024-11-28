@@ -68,7 +68,7 @@ namespace Pulsar4X.SDL2UI
                 ImGui.SetTooltip(GlobalUIState.NamesForMenus[typeof(PinCameraBlankMenuHelper)]);
             ImGui.PopID();
             /*
-            if(Entity.HasDataBlob<VolumeStorageDB>())
+            if(Entity.HasDataBlob<CargoStorageDB>())
             {
                 // Cargo Transfer
                 ImGui.PushID(1);
@@ -149,7 +149,7 @@ namespace Pulsar4X.SDL2UI
                     ImGui.SetTooltip("Open planetary window");
             }
 
-            if(Entity.HasDataBlob<VolumeStorageDB>() && Entity.HasDataBlob<NewtonThrustAbilityDB>())
+            if(Entity.HasDataBlob<CargoStorageDB>() && Entity.HasDataBlob<NewtonThrustAbilityDB>())
             {
                 ImGui.SameLine();
                 bool buttonresult = ImGui.SmallButton(GlobalUIState.NamesForMenus[typeof(LogiShipWindow)]);
@@ -164,7 +164,7 @@ namespace Pulsar4X.SDL2UI
         {
             if(ImGui.CollapsingHeader("Info", ImGuiTreeNodeFlags.DefaultOpen))
             {
-                if(Entity.HasDataBlob<ShipInfoDB>() && Entity.HasDataBlob<VolumeStorageDB>())
+                if(Entity.HasDataBlob<ShipInfoDB>() && Entity.HasDataBlob<CargoStorageDB>())
                 {
                     var cargoLibrary = Entity.GetFactionOwner.GetDataBlob<FactionInfoDB>().Data.CargoGoods;
                     var (fuelType, fuelPercent) = Entity.GetFuelInfo(cargoLibrary);
@@ -319,9 +319,9 @@ namespace Pulsar4X.SDL2UI
                 {
                     ((ComponentInstancesDB)db).Display(EntityState, _uiState);
                 }
-                else if(db is VolumeStorageDB)
+                else if(db is CargoStorageDB)
                 {
-                    ((VolumeStorageDB)db).Display(EntityState, _uiState);
+                    ((CargoStorageDB)db).Display(EntityState, _uiState);
                 }
                 // else if(db is EnergyGenAbilityDB && ImGui.CollapsingHeader("Power", ImGuiTreeNodeFlags.DefaultOpen))
                 // {

@@ -26,7 +26,7 @@ namespace Pulsar4X.Weapons
                 targetEntityOrbit = targetEntity.GetDataBlob<OrbitUpdateOftenDB>();
 
             //MissileLauncherAtb launcherAtb;
-            VolumeStorageDB cargo = launchingEntity.GetDataBlob<VolumeStorageDB>();
+            CargoStorageDB cargo = launchingEntity.GetDataBlob<CargoStorageDB>();
 
             long numMis = cargo.TypeStores[missileDesign.CargoTypeID].CurrentStoreInUnits[missileDesign.ID];
             if (numMis < 1)

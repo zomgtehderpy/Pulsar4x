@@ -16,7 +16,7 @@ namespace Pulsar4X.SDL2UI
 {
     public static class VolumeStorageDBDisplay
     {
-        public static void Display(this VolumeStorageDB storage, EntityState entityState, GlobalUIState uiState, ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags.DefaultOpen)
+        public static void Display(this CargoStorageDB storage, EntityState entityState, GlobalUIState uiState, ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags.DefaultOpen)
         {
             foreach(var (sid, storageType) in storage.TypeStores)
             {
@@ -109,9 +109,9 @@ namespace Pulsar4X.SDL2UI
             }
         }
 
-        private static void AddContextMenu(VolumeStorageDB volumeStorageDB, ComponentInstance component, GlobalUIState uiState)
+        private static void AddContextMenu(CargoStorageDB cargoStorageDB, ComponentInstance component, GlobalUIState uiState)
         {
-            if(volumeStorageDB.OwningEntity == null) throw new InvalidOperationException($"OwningEntity for {volumeStorageDB} cannot be null");
+            if(cargoStorageDB.OwningEntity == null) throw new InvalidOperationException($"OwningEntity for {cargoStorageDB} cannot be null");
 
             ImGui.PushID(component.Design.UniqueID.ToString());
             if(ImGui.BeginPopupContextItem("###" + component.Design.UniqueID))
@@ -120,18 +120,18 @@ namespace Pulsar4X.SDL2UI
                 ImGui.Separator();
 
                 bool canInstall = false;
-                if(volumeStorageDB.OwningEntity.HasDataBlob<ColonyInfoDB>()
+                if(cargoStorageDB.OwningEntity.HasDataBlob<ColonyInfoDB>()
                     && component.Design.ComponentMountType.HasFlag(ComponentMountType.PlanetInstallation))
                     {
                         canInstall = true;
                     }
-                else if(volumeStorageDB.OwningEntity.HasDataBlob<ShipInfoDB>()
+                else if(cargoStorageDB.OwningEntity.HasDataBlob<ShipInfoDB>()
                     && component.Design.ComponentMountType.HasFlag(ComponentMountType.ShipComponent))
                     {
                         canInstall = true;
                     }
 
-                if(canInstall && !volumeStorageDB.TypeStores.ContainsKey(component.CargoTypeID))
+                if(canInstall && !cargoStorageDB.TypeStores.ContainsKey(component.CargoTypeID))
                 {
                     canInstall = false;
                 }

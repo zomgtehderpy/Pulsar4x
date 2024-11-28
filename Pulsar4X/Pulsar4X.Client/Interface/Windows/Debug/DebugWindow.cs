@@ -261,11 +261,11 @@ namespace Pulsar4X.SDL2UI
                             }
 
                         }
-                        if (SelectedEntity.HasDataBlob<VolumeStorageDB>())
+                        if (SelectedEntity.HasDataBlob<CargoStorageDB>())
                         {
-                            if (ImGui.CollapsingHeader("VolumeStorageDB: ###VolStorDBHeader", ImGuiTreeNodeFlags.CollapsingHeader))
+                            if (ImGui.CollapsingHeader("CargoStorageDB: ###VolStorDBHeader", ImGuiTreeNodeFlags.CollapsingHeader))
                             {
-                                VolumeStorageDB storeDB = SelectedEntity.GetDataBlob<VolumeStorageDB>();
+                                CargoStorageDB storeDB = SelectedEntity.GetDataBlob<CargoStorageDB>();
                                 ImGui.Indent();
                                 storeDB.Display(_selectedEntityState, _uiState);
                                 ImGui.Text("Total Stored Mass inc. escro: " + Stringify.Mass(storeDB.TotalStoredMass));

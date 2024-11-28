@@ -39,7 +39,7 @@ namespace Pulsar4X.Logistics
 
         internal override void OnSetToEntity()
         {
-            var cdb = base.OwningEntity.GetDataBlob<VolumeStorageDB>();
+            var cdb = base.OwningEntity.GetDataBlob<CargoStorageDB>();
             TradeSpace = new Dictionary<string, double>();
             foreach(var kvp in cdb.TypeStores)
             {

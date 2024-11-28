@@ -31,7 +31,7 @@ namespace Pulsar4X.Industry
             VolumePerUnit = blueprint.VolumePerUnit;
         }
 
-        public void OnConstructionComplete(Entity industryEntity, VolumeStorageDB storage, string productionLine, IndustryJob batchJob, IConstructableDesign designInfo)
+        public void OnConstructionComplete(Entity industryEntity, CargoStorageDB storage, string productionLine, IndustryJob batchJob, IConstructableDesign designInfo)
         {
             var industryDB = industryEntity.GetDataBlob<IndustryAbilityDB>();
             ProcessedMaterial material = (ProcessedMaterial)designInfo;

@@ -89,9 +89,9 @@ namespace Pulsar4X.Industry
 
         internal static void ConstructStuff(Entity industryEntity)
         {
-            if(!industryEntity.TryGetDatablob<VolumeStorageDB>(out var stockpile))
+            if(!industryEntity.TryGetDatablob<CargoStorageDB>(out var stockpile))
             {
-                throw new Exception("Tried to ConstructStuff on an entity with no VolumeStorageDB");
+                throw new Exception("Tried to ConstructStuff on an entity with no CargoStorageDB");
             }
 
             if(!industryEntity.Manager.Game.Factions.ContainsKey(industryEntity.FactionOwnerID))
@@ -198,7 +198,7 @@ namespace Pulsar4X.Industry
             }
         }
 
-        internal static void ConsumeResources(VolumeStorageDB fromCargo, ref IDictionary<string, long> toUse)
+        internal static void ConsumeResources(CargoStorageDB fromCargo, ref IDictionary<string, long> toUse)
         {
             foreach (var kvp in toUse.ToArray())
             {
@@ -235,9 +235,9 @@ namespace Pulsar4X.Industry
 
         public static void AutoAddSubJobs(Entity industryEntity, IndustryJob job)
         {
-            if(!industryEntity.TryGetDatablob<VolumeStorageDB>(out var stockpile))
+            if(!industryEntity.TryGetDatablob<CargoStorageDB>(out var stockpile))
             {
-                throw new Exception("Tried to ConstructStuff on an entity with no VolumeStorageDB");
+                throw new Exception("Tried to ConstructStuff on an entity with no CargoStorageDB");
             }
             if(!industryEntity.TryGetDatablob<IndustryAbilityDB>(out var industryDB))
             {

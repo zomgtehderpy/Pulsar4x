@@ -14,7 +14,7 @@ public class CargoListPanelSimple : UpdateWindowState
 {
     FactionDataStore _staticData;
     EntityState _entityState;
-    VolumeStorageDB _volStorageDB;
+    CargoStorageDB _volStorageDB;
     Dictionary<string, TypeStore> _stores = new Dictionary<string, TypeStore>();
 
     public CargoListPanelSimple(FactionDataStore staticData, EntityState entity)
@@ -22,7 +22,7 @@ public class CargoListPanelSimple : UpdateWindowState
         _staticData = staticData;
         _entityState = entity;
 
-        _volStorageDB = entity.Entity.GetDataBlob<VolumeStorageDB>();
+        _volStorageDB = entity.Entity.GetDataBlob<CargoStorageDB>();
         if(_entityState.Entity.Manager != null)
             _entityState.Entity.Manager.ManagerSubpulses.SystemDateChangedEvent += ManagerSubpulsesOnSystemDateChangedEvent;
 

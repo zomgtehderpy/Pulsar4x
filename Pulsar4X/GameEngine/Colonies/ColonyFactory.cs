@@ -33,7 +33,7 @@ namespace Pulsar4X.Colonies
             blobs.Add(new MiningDB());
             blobs.Add(new OrderableDB());
             blobs.Add(new MassVolumeDB());
-            blobs.Add(new VolumeStorageDB());
+            blobs.Add(new CargoStorageDB());
             blobs.Add(new PositionDB(pos, planetEntity));
             blobs.Add(new TeamsHousedDB());
             blobs.Add(new ComponentInstancesDB()); //installations get added to the componentInstancesDB

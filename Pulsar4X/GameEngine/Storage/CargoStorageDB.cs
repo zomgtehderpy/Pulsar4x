@@ -8,7 +8,7 @@ namespace Pulsar4X.Storage
 /// <summary>
 /// TODO: this needs to be made threadsafe for reading form the ui!
 /// </summary>
-    public class VolumeStorageDB : BaseDataBlob, IAbilityDescription
+    public class CargoStorageDB : BaseDataBlob, IAbilityDescription
     {
         public Dictionary<string, TypeStore> TypeStores = new Dictionary<string, TypeStore>();
 
@@ -27,17 +27,17 @@ namespace Pulsar4X.Storage
         public double TransferRangeDv_mps { get; internal set; } = 100;
 
         [JsonConstructor]
-        internal VolumeStorageDB()
+        internal CargoStorageDB()
         {
         }
 
-        public VolumeStorageDB(string type, double maxVolume)
+        public CargoStorageDB(string type, double maxVolume)
         {
             TypeStores.Add(type, new TypeStore(maxVolume));
         }
 
 
-        public VolumeStorageDB(VolumeStorageDB db)
+        public CargoStorageDB(CargoStorageDB db)
         {
             TypeStores = new Dictionary<string, TypeStore>();
             foreach (var kvp in db.TypeStores)
@@ -51,7 +51,7 @@ namespace Pulsar4X.Storage
 
         public override object Clone()
         {
-            return new VolumeStorageDB(this);
+            return new CargoStorageDB(this);
         }
 
         public string AbilityName()

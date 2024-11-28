@@ -85,7 +85,7 @@ namespace Pulsar4X.Extensions
 
         public static double GetFuelPercent(this Entity entity, CargoDefinitionsLibrary cargoLibrary)
         {
-            if(entity.TryGetDatablob<ShipInfoDB>(out var shipInfoDB) && entity.TryGetDatablob<VolumeStorageDB>(out var volumeStorageDB))
+            if(entity.TryGetDatablob<ShipInfoDB>(out var shipInfoDB) && entity.TryGetDatablob<CargoStorageDB>(out var volumeStorageDB))
             {
                 string thrusterFuel = String.Empty;
                 foreach(var component in shipInfoDB.Design.Components.ToArray())
@@ -110,7 +110,7 @@ namespace Pulsar4X.Extensions
 
         public static (ICargoable?, double) GetFuelInfo(this Entity entity, CargoDefinitionsLibrary cargoLibrary)
         {
-            if(entity.TryGetDatablob<ShipInfoDB>(out var shipInfoDB) && entity.TryGetDatablob<VolumeStorageDB>(out var volumeStorageDB))
+            if(entity.TryGetDatablob<ShipInfoDB>(out var shipInfoDB) && entity.TryGetDatablob<CargoStorageDB>(out var volumeStorageDB))
             {
                 string thrusterFuel = String.Empty;
                 foreach(var component in shipInfoDB.Design.Components.ToArray())

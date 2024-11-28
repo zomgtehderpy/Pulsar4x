@@ -173,7 +173,7 @@ public static class LogisticsCycle
                         if(tradingItems.Value.count > 0) //if it's a supply (we ship FROM)
                         {
 
-                            //var loadRate = CargoTransferProcessor.CalcTransferRate(dvDif, tbase.OwningEntity.GetDataBlob<VolumeStorageDB>(), shiperdb.OwningEntity.GetDataBlob<VolumeStorageDB>())
+                            //var loadRate = CargoTransferProcessor.CalcTransferRate(dvDif, tbase.OwningEntity.GetDataBlob<CargoStorageDB>(), shiperdb.OwningEntity.GetDataBlob<CargoStorageDB>())
                             ct.Source = tbase.OwningEntity;
                             sourceTradeItems.Add(ct);
                             ct.timeInSeconds =  travelTimeToSource;
@@ -181,7 +181,7 @@ public static class LogisticsCycle
                         }
                         else //it's a demand item. (we ship TO)
                         {
-                            //var unloadRate = CargoTransferProcessor.CalcTransferRate(dvDif, shiperdb.OwningEntity.GetDataBlob<VolumeStorageDB>(), tbase.OwningEntity.GetDataBlob<VolumeStorageDB>())
+                            //var unloadRate = CargoTransferProcessor.CalcTransferRate(dvDif, shiperdb.OwningEntity.GetDataBlob<CargoStorageDB>(), tbase.OwningEntity.GetDataBlob<CargoStorageDB>())
 
                             ct.Destination = tbase.OwningEntity;
                             demandTradeItems.Add(ct);
@@ -354,8 +354,8 @@ public static class LogisticsCycle
                     var sgp = GeneralMath.StandardGravitationalParameter(curstate.Mass + smass);
                     var sstate = MoveMath.GetRelativeFutureState(currentSOIParent,curstate.At);
                     var dvd = CargoTransferProcessor.CalcDVDifference_m(sgp, (curstate.Position, curstate.Velocity), sstate);
-                    var svs = source.GetDataBlob<VolumeStorageDB>();
-                    var mvs = ship.GetDataBlob<VolumeStorageDB>();
+                    var svs = source.GetDataBlob<CargoStorageDB>();
+                    var mvs = ship.GetDataBlob<CargoStorageDB>();
                     var ctime = CargoTransferProcessor.CalcTransferRate(dvd, svs, mvs);
                     curstate.At = curstate.At + TimeSpan.FromSeconds(ctime);
 
@@ -395,8 +395,8 @@ public static class LogisticsCycle
         if (ship.GetSOIParentEntity() == target.GetSOIParentEntity())
         {
             var dvdif = CargoTransferProcessor.CalcDVDifference_m(target, ship);
-            var cargoDBLeft = ship.GetDataBlob<VolumeStorageDB>();
-            var cargoDBRight = target.GetDataBlob<VolumeStorageDB>();
+            var cargoDBLeft = ship.GetDataBlob<CargoStorageDB>();
+            var cargoDBRight = target.GetDataBlob<CargoStorageDB>();
             var dvMaxRangeDiff_ms = Math.Max(cargoDBLeft.TransferRangeDv_mps, cargoDBRight.TransferRangeDv_mps);
 
             if (target.HasDataBlob<ColonyInfoDB>())  //if target is a colony,

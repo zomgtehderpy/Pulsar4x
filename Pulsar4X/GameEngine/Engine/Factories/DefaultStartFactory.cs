@@ -225,7 +225,7 @@ namespace Pulsar4X.Engine
             marsColony.AddComponent(LogisticsOffice(factionEntity, factionDataStore));
             ReCalcProcessor.ReCalcAbilities(marsColony);
 
-            var earthCargo = colonyEntity.GetDataBlob<VolumeStorageDB>();
+            var earthCargo = colonyEntity.GetDataBlob<CargoStorageDB>();
             var rawSorium = factionDataStore.CargoGoods["sorium"];
 
             var iron = factionDataStore.CargoGoods["iron"];

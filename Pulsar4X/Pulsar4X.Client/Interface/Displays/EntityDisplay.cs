@@ -88,7 +88,7 @@ namespace Pulsar4X.SDL2UI
             {
                 if(ImGui.CollapsingHeader("Stockpile", ImGuiTreeNodeFlags.DefaultOpen))
                 {
-                    if(entity.TryGetDatablob<VolumeStorageDB>(out var storage))
+                    if(entity.TryGetDatablob<CargoStorageDB>(out var storage))
                     {
                         var size = ImGui.GetContentRegionMax();
                         ImGui.PushStyleColor(ImGuiCol.Button, Styles.SelectedColor);
@@ -124,7 +124,7 @@ namespace Pulsar4X.SDL2UI
                             entity.GetDataBlob<ColonyInfoDB>().PlanetEntity.GetDataBlob<MineralsDB>()?.Minerals :
                             null;
             var miningRates = entity.HasDataBlob<MiningDB>() ? entity.GetDataBlob<MiningDB>().ActualMiningRate : new ();
-            var storage = entity.GetDataBlob<VolumeStorageDB>()?.TypeStores;
+            var storage = entity.GetDataBlob<CargoStorageDB>()?.TypeStores;
 
             Vector2 topSize = ImGui.GetContentRegionAvail();
             if(ImGui.BeginChild("NumberOfMines" + entity.Id, new Vector2(topSize.X, 28f), true, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
