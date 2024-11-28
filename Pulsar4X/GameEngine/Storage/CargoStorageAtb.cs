@@ -4,12 +4,12 @@ using Pulsar4X.Datablobs;
 using Pulsar4X.Components;
 
 namespace Pulsar4X.Storage;
-public class VolumeStorageAtb : IComponentDesignAttribute
+public class CargoStorageAtb : IComponentDesignAttribute
 {
     public string StoreTypeID;
     public double MaxVolume;
 
-    public VolumeStorageAtb(string storeTypeID, double maxVolume)
+    public CargoStorageAtb(string storeTypeID, double maxVolume)
     {
         StoreTypeID = storeTypeID;
         MaxVolume = maxVolume;

@@ -3,12 +3,9 @@ using System.Linq;
 
 namespace Pulsar4X.Storage
 {
-    public static class VolumeStorageDBExtensions
+    public static class CargoMath
     {
-
-
-
-
+        
         /// <summary>
         /// Add or remove cargo by volume.
         /// Ignores transfer rate. Does  not update MassVolumeDB

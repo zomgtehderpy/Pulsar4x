@@ -6,7 +6,7 @@ using Pulsar4X.Factions;
 
 namespace Pulsar4X.Storage;
 
-public class StorageTransferRateAtb : IComponentDesignAttribute
+public class CargoTransferAtb : IComponentDesignAttribute
 {
     /// <summary>
     /// Gets or sets the transfer rate.
@@ -19,7 +19,7 @@ public class StorageTransferRateAtb : IComponentDesignAttribute
     /// <value>DeltaV in m/s, Low Earth Orbit is about 10000m/s</value>
     public double TransferRange_ms { get; internal set; }
 
-    public StorageTransferRateAtb(double rate_kgs, double rangeDV_ms)
+    public CargoTransferAtb(double rate_kgs, double rangeDV_ms)
     {
         TransferRate_kgs = (int)rate_kgs;
         TransferRange_ms = rangeDV_ms;

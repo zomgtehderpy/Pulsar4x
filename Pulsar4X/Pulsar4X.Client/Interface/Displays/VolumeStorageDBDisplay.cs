@@ -54,7 +54,7 @@ namespace Pulsar4X.SDL2UI
                             var massStoredLessEscro = storage.GetMassStored(cargoType, false);
                             var itemsStored = value;
                             var itemsStoredIncEscro = storage.GetUnitsStored(cargoType, true);
-                            var itemsInEscro = VolumeStorageDBExtensions.GetUnitCountInEscro(storage, cargoType);
+                            var itemsInEscro = CargoMath.GetUnitCountInEscro(storage, cargoType);
 
                             ImGui.TableNextColumn();
                             if(ImGui.Selectable(cargoType.Name, false, ImGuiSelectableFlags.SpanAllColumns)) {}

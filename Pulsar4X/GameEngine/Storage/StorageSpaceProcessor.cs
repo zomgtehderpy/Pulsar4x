@@ -16,13 +16,13 @@ namespace Pulsar4X.Storage
             double transferRate = 0;
             double transferRange = 0;
 
-            if( instancesDB.TryGetComponentsByAttribute<VolumeStorageAtb>(out var componentInstances))
+            if( instancesDB.TryGetComponentsByAttribute<CargoStorageAtb>(out var componentInstances))
             {
 
                 foreach (var instance in componentInstances)
                 {
                     var design = instance.Design;
-                    var atbdata = design.GetAttribute<VolumeStorageAtb>();
+                    var atbdata = design.GetAttribute<CargoStorageAtb>();
 
                     if (instance.HealthPercent() > 0.75)
                     {
@@ -48,15 +48,15 @@ namespace Pulsar4X.Storage
             }
 
             int i = 0;
-            if (instancesDB.TryGetComponentsByAttribute<StorageTransferRateAtb>(out var componentTransferInstances))
+            if (instancesDB.TryGetComponentsByAttribute<CargoTransferAtb>(out var componentTransferInstances))
             {
                 foreach (var instance in componentTransferInstances)
                 {
                     var design = instance.Design;
-                    if(!design.HasAttribute<StorageTransferRateAtb>())
+                    if(!design.HasAttribute<CargoTransferAtb>())
                         continue;
 
-                    var atbdata = design.GetAttribute<StorageTransferRateAtb>();
+                    var atbdata = design.GetAttribute<CargoTransferAtb>();
                     if (instance.HealthPercent() > 0.75)
                     {
                         transferRate += atbdata.TransferRate_kgs;

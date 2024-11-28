@@ -413,13 +413,13 @@
           "Name": "DBargsStor",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs('general-storage', Ability('Storage Volume'))",
-          "AttributeType": "Pulsar4X.Storage.VolumeStorageAtb"
+          "AttributeType": "Pulsar4X.Storage.CargoStorageAtb"
         },
         {
           "Name": "DBArgsXfer",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Transfer Rate'), Ability('Transfer Range'))",
-          "AttributeType": "Pulsar4X.Storage.StorageTransferRateAtb"
+          "AttributeType": "Pulsar4X.Storage.CargoTransferAtb"
         }
       ]
     }
@@ -475,7 +475,7 @@
           "Name": "DBargs",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs('fuel-storage', Ability('Tank Volume'))",
-          "AttributeType": "Pulsar4X.Storage.VolumeStorageAtb"
+          "AttributeType": "Pulsar4X.Storage.CargoStorageAtb"
         }
       ]
     }
@@ -530,7 +530,7 @@
           "Name": "DBargs",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs('fuel-storage', Ability('Tank Volume'))",
-          "AttributeType": "Pulsar4X.Storage.VolumeStorageAtb"
+          "AttributeType": "Pulsar4X.Storage.CargoStorageAtb"
         }
       ]
     }
@@ -664,13 +664,13 @@
           "Name": "DBargsTransfer",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Cargo Transfer Rate'), Ability('Transfer Range'))",
-          "AttributeType": "Pulsar4X.Datablobs.StorageTransferRateAtbDB"
+          "AttributeType": "Pulsar4X.Datablobs.CargoTransferAtbDB"
         },
         {
           "Name": "DBargsStorage",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs('general-storage', Ability('Total Cargo Stored'))",
-          "AttributeType": "Pulsar4X.Storage.VolumeStorageAtb"
+          "AttributeType": "Pulsar4X.Storage.CargoStorageAtb"
         }
       ]
     }
@@ -718,7 +718,7 @@
           "Name": "DBargs",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(GuidString('general-storage'), Ability('Storage Amount'))",
-          "AttributeType": "Pulsar4X.Storage.VolumeStorageAtb"
+          "AttributeType": "Pulsar4X.Storage.CargoStorageAtb"
         }
       ]
     }
@@ -774,7 +774,7 @@
           "Name": "db",
           "GuiHint": "None",
           "AttributeFormula": "AtbConstrArgs(Ability('Cargo Transfer Rate'), Ability('Transfer Range'))",
-          "AttributeType": "Pulsar4X.Storage.StorageTransferRateAtb"
+          "AttributeType": "Pulsar4X.Storage.CargoTransferAtb"
         }
       ]
     }

@@ -281,10 +281,10 @@ namespace Pulsar4X.SDL2UI
                                 {
                                     foreach (var icargoable in store.Value.GetCargoables().Values)
                                     {
-                                        totalMassIncEscro += VolumeStorageDBExtensions.GetMassStored(storeDB, icargoable, true);
-                                        totalMassLesEscro += VolumeStorageDBExtensions.GetMassStored(storeDB, icargoable, false);
-                                        totalCountIncEscro += VolumeStorageDBExtensions.GetUnitsStored(storeDB, icargoable, true);
-                                        totalCountLesEscro += VolumeStorageDBExtensions.GetUnitsStored(storeDB, icargoable, false);
+                                        totalMassIncEscro += CargoMath.GetMassStored(storeDB, icargoable, true);
+                                        totalMassLesEscro += CargoMath.GetMassStored(storeDB, icargoable, false);
+                                        totalCountIncEscro += CargoMath.GetUnitsStored(storeDB, icargoable, true);
+                                        totalCountLesEscro += CargoMath.GetUnitsStored(storeDB, icargoable, false);
                                     }
                                     
                                 }
