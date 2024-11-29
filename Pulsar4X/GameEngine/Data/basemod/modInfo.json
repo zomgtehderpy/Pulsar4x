@@ -16,7 +16,6 @@
         "blueprints/installations.json",
         "blueprints/materials.json",
         "blueprints/minerals.json",
-        "blueprints/mineralsAurora.json",
         "blueprints/ordnance.json",
         "systemGenSettings.json",
         "blueprints/techCategories.json",
