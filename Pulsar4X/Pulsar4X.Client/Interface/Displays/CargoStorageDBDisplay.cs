@@ -14,7 +14,7 @@ using Pulsar4X.Weapons;
 
 namespace Pulsar4X.SDL2UI
 {
-    public static class VolumeStorageDBDisplay
+    public static class CargoStorageDBDisplay
     {
         public static void Display(this CargoStorageDB storage, EntityState entityState, GlobalUIState uiState, ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags.DefaultOpen)
         {

@@ -292,7 +292,10 @@
     <!-- writes the attribute to the customAssemblyInfo file -->
     <WriteCodeFragment Language="C#" OutputFile="$(CustomAssemblyInfoFile)" AssemblyAttributes="@(AssemblyAttributes)" />
   </Target>
-
+  <Target Name="RemoveDirectories">
+    <RemoveDir
+            Directories="$(OutputPath)\Data\" />
+  </Target>
   <Target Name="CopyJsonData" AfterTargets="Build">
     <ItemGroup>
       <JsonDataFiles Include="..\GameEngine\Data\**\*" />

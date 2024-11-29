@@ -152,6 +152,7 @@ namespace Pulsar4X.Galaxy
 
         /// <summary>
         /// Note that this does not update the density. density is dry.
+        /// This function is here so we can keep MassTotal private setter.
         /// </summary>
         /// <param name="cargo">optional CargoStorageDB, saves time looking it up</param>
         public void UpdateMassTotal(CargoStorageDB cargo)
@@ -161,6 +162,7 @@ namespace Pulsar4X.Galaxy
 
         /// <summary>
         /// Note that this does not update the density. density is dry.
+        /// This function is here so we can keep MassTotal private setter.
         /// </summary>
         public void UpdateMassTotal()
         {

@@ -287,7 +287,7 @@ namespace Pulsar4X.SDL2UI
                             CargoListRight.Display();
                             ImGui.Text("DeltaV Difference: " + Stringify.Velocity(_dvDifference_ms));
                             ImGui.Text("Max DeltaV Difference: " + Stringify.Velocity(_dvMaxRangeDiff_ms));
-                            ImGui.Text("Transfer Rate Kg/h: " + _transferRate);
+                            ImGui.Text("Transfer Rate Kg/s: " + _transferRate);
 
                         }
 

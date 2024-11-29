@@ -4,7 +4,7 @@
   "templateId": "general-cargo-hold",
   "attributes": [
     { "key": "Storage Volume", "value": 5000 },
-    { "key": "Cargo Transfer Rate", "value": 500 },
+    { "key": "Cargo Transfer Rate", "value": 10 },
     { "key": "Transfer Range", "value": 100 }
   ]
 }

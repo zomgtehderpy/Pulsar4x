@@ -2,11 +2,15 @@ using System;
 using System.Collections.Generic;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
+using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Storage;
 
-public class CargoTransferObject
+public class CargoTransferDataObject
 {
+    internal Entity PrimaryEntity { get; set; }
+    internal Entity SecondaryEntity { get; set; }
+    
     /// <summary>
     /// positive amounts move INTO this entity, negitive amounts move OUT from this entity
     /// </summary>
@@ -22,8 +26,10 @@ public class CargoTransferObject
     internal SafeList<(ICargoable item, long count, double mass)> EscroHeldInSecondary { get; private set; } = new();
 
         
-    internal CargoTransferObject(Entity primary, Entity secondary, IReadOnlyList<(ICargoable item, long amount)> itemsToTransfer)
+    internal CargoTransferDataObject(Entity primary, Entity secondary, IReadOnlyList<(ICargoable item, long amount)> itemsToTransfer)
     {
+        PrimaryEntity = primary;
+        SecondaryEntity = secondary;
         PrimaryStorageDB = primary.GetDataBlob<CargoStorageDB>();
         SecondaryStorageDB = secondary.GetDataBlob<CargoStorageDB>();
         OrderedToTransfer = itemsToTransfer;

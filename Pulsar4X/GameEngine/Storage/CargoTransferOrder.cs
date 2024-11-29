@@ -28,8 +28,8 @@ public class CargoTransferOrder : EntityCommand
     {
         get
         {
-            string entity1 = _transferData.PrimaryStorageDB.OwningEntity.GetName(RequestingFactionGuid);
-            string entity2 = _transferData.SecondaryStorageDB.OwningEntity.GetName(RequestingFactionGuid);
+            string entity1 = TransferData.PrimaryStorageDB.OwningEntity.GetName(RequestingFactionGuid);
+            string entity2 = TransferData.SecondaryStorageDB.OwningEntity.GetName(RequestingFactionGuid);
             string detailStr = "Between " + entity1 + " and " + entity2;
             return detailStr;
         }
@@ -39,21 +39,21 @@ public class CargoTransferOrder : EntityCommand
 
     internal override Entity EntityCommanding { get { return _entityCommanding; } }
 
-    private CargoTransferObject _transferData { get; }
+    private CargoTransferDataObject TransferData { get; }
 
     [JsonIgnore]
     Entity factionEntity;
     
 
-    private CargoTransferOrder(CargoTransferObject transferData)
+    private CargoTransferOrder(CargoTransferDataObject transferData)
     {
-        _transferData = transferData;
+        TransferData = transferData;
     }
     
     public static void CreateCommands(int faction, Entity primaryEntity, Entity secondaryEntity, List<(ICargoable item, long amount)> itemsToMove )
     {
         var itemsList = itemsToMove.AsReadOnly();
-        CargoTransferObject cargoData = new(primaryEntity, secondaryEntity, itemsList);
+        CargoTransferDataObject cargoData = new(primaryEntity, secondaryEntity, itemsList);
         var cmd1 = new CargoTransferOrder(cargoData)
         {
             RequestingFactionGuid = faction,
@@ -106,7 +106,7 @@ public class CargoTransferOrder : EntityCommand
     {
         if (!IsRunning)
         {
-            CargoTransferDB transferDB = new CargoTransferDB(_transferData);
+            CargoTransferDB transferDB = new CargoTransferDB(TransferData);
             transferDB.ParentStorageDB = EntityCommanding.GetDataBlob<CargoStorageDB>();
             EntityCommanding.SetDataBlob(transferDB);
              
@@ -135,11 +135,11 @@ public class CargoTransferOrder : EntityCommand
     long AmountLeftToXfer()
     {
         long amount = 0;
-        foreach (var tup in _transferData.EscroHeldInPrimary)
+        foreach (var tup in TransferData.EscroHeldInPrimary)
         {
             amount += tup.count;
         }
-        foreach (var tup in _transferData.EscroHeldInSecondary)
+        foreach (var tup in TransferData.EscroHeldInSecondary)
         {
             amount += tup.count;
         }

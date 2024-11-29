@@ -641,7 +641,7 @@
           "MaxFormula": "10000",
           "MinFormula": "1",
           "StepFormula": "10",
-          "AttributeFormula": "500"
+          "AttributeFormula": "5"
         },
         {
           "Name": "Transfer Range",
@@ -758,7 +758,7 @@
           "MaxFormula": "10000",
           "MinFormula": "1",
           "StepFormula": "10",
-          "AttributeFormula": "500"
+          "AttributeFormula": "5"
         },
         {
           "Name": "Transfer Range",

@@ -16,19 +16,20 @@ namespace Pulsar4X.Storage
     /// </summary>
     public class CargoTransferDB : BaseDataBlob
     {
-        internal string TransferJobID { get; } = Guid.NewGuid().ToString();
 
-        internal Entity PrimaryEntity { get; set; }
-        internal Entity SecondaryEntity { get; set; }
         [JsonIgnore]
         internal CargoStorageDB ParentStorageDB { get; set; }
         
         /// <summary>
         /// This object is shared between two datablobs/entites 
         /// </summary>
-        internal CargoTransferObject TransferData { get; private set; } 
+        internal CargoTransferDataObject TransferData { get; private set; } 
         
-
+        internal bool IsPrimary
+        {
+            get { return OwningEntity == TransferData.PrimaryEntity; }
+        }
+        
         /// <summary>
         /// Threadsafe gets items left to transfer. don't call this every ui frame!
         /// (or you could cause deadlock slowdowns with the processing)tr
@@ -40,27 +41,24 @@ namespace Pulsar4X.Storage
              foreach (var item in TransferData.EscroHeldInPrimary)
              {
                  var count = item.count;
-                 if (OwningEntity == PrimaryEntity)
+                 if (IsPrimary)
                      count *= -1;
                  list.Add((item.item, count));
              }
              foreach (var item in TransferData.EscroHeldInSecondary)
              {
                  var count = item.count;
-                 if (OwningEntity == SecondaryEntity)
+                 if (!IsPrimary)
                      count *= -1;
                  list.Add((item.item, count));
              }
              return list;
         }
 
-        public CargoTransferDB(CargoTransferObject transferObject)
+        public CargoTransferDB(CargoTransferDataObject transferDataObject)
         {
-            TransferData = transferObject;
-            PrimaryEntity = transferObject.PrimaryStorageDB.OwningEntity;
-            SecondaryEntity = transferObject.SecondaryStorageDB.OwningEntity;
+            TransferData = transferDataObject;
         }
-
 
         public override object Clone()
         {
