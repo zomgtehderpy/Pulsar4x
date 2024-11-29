@@ -392,7 +392,6 @@ namespace Pulsar4X.SDL2UI
                 {
                     _armor = _armorSelection[_armorIndex];
                     DesignChanged = true;
-                    ImGui.EndCombo();
                 }
 
                 ImGui.TableNextColumn();
