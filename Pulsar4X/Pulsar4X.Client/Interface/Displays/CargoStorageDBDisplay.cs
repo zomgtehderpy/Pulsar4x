@@ -48,8 +48,9 @@ namespace Pulsar4X.SDL2UI
                         foreach(var (id, value) in sortedUnitsByCargoablesName)
                         {
                             ICargoable cargoType = cargoables[id];
-                            var volumeStored = storage.GetVolumeStored(cargoType);
-                            
+                            var volumeStored = storage.GetVolumeStored(cargoType, true);
+
+                            var itemCanStore = storage.GetFreeUnitSpace(cargoType);
                             var massStored = storage.GetMassStored(cargoType, true);
                             var massStoredLessEscro = storage.GetMassStored(cargoType, false);
                             var itemsStored = value;
@@ -95,11 +96,18 @@ namespace Pulsar4X.SDL2UI
                                 ImGui.BeginTooltip();
                                 ImGui.Text("+" + Stringify.Number(itemsInEscro) + " in escro");
                                 ImGui.Text("Mass: " + Stringify.Mass(massStored) + " (" + Stringify.Mass(cargoType.MassPerUnit) + " each)");
-                                ImGui.Text("Volume: " + Stringify.Volume(volumeStored) + " (" + Stringify.Volume(cargoType.VolumePerUnit, "#.#####") + " each)");
+                                
+                                ImGui.Text("can store " + Stringify.Number(itemCanStore) + " more items");
                                 ImGui.EndTooltip();
                             }
                             ImGui.TableNextColumn();
                             ImGui.Text(Stringify.Volume(volumeStored));
+                            if (ImGui.IsItemHovered())
+                            {
+                                ImGui.BeginTooltip();
+                                ImGui.Text("Volume: " + Stringify.Volume(volumeStored) + " (" + Stringify.Volume(cargoType.VolumePerUnit, "#.#####") + " each)");
+                                ImGui.EndTooltip();
+                            }
                         }
 
                         ImGui.EndTable();

@@ -28,9 +28,20 @@ public class CargoTransferOrder : EntityCommand
     {
         get
         {
-            string entity1 = TransferData.PrimaryStorageDB.OwningEntity.GetName(RequestingFactionGuid);
-            string entity2 = TransferData.SecondaryStorageDB.OwningEntity.GetName(RequestingFactionGuid);
-            string detailStr = "Between " + entity1 + " and " + entity2;
+            string otherEntity;
+            if(_entityCommanding == TransferData.PrimaryEntity)
+                otherEntity = TransferData.SecondaryEntity.GetName(RequestingFactionGuid);
+            else
+                otherEntity = TransferData.PrimaryEntity.GetName(RequestingFactionGuid);
+            string detailStr = "With " + otherEntity + ".";
+            if (!IsRunning)
+                detailStr += " Waiting to start";
+            else
+            {
+                detailStr += " Transfering, + " + Stringify.Number(AmountLeftToXfer(), "#") + " remaining." ;
+            }
+            
+            
             return detailStr;
         }
     }
@@ -109,8 +120,6 @@ public class CargoTransferOrder : EntityCommand
             CargoTransferDB transferDB = new CargoTransferDB(TransferData);
             transferDB.ParentStorageDB = EntityCommanding.GetDataBlob<CargoStorageDB>();
             EntityCommanding.SetDataBlob(transferDB);
-             
-
             IsRunning = true;
         }
     }

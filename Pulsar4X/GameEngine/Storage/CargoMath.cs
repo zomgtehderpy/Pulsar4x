@@ -191,14 +191,17 @@ namespace Pulsar4X.Storage
         /// <param name="db"></param>
         /// <param name="cargoItem"></param>
         /// <returns></returns>
-        public static double GetVolumeStored(this CargoStorageDB db, ICargoable cargoItem)
+        public static double GetVolumeStored(this CargoStorageDB db, ICargoable cargoItem, bool includeEscro)
         {
             if (!db.TypeStores.ContainsKey(cargoItem.CargoTypeID))
                 return 0.0;
             if (!db.TypeStores[cargoItem.CargoTypeID].CurrentStoreInUnits.ContainsKey(cargoItem.ID))
                 return 0.0;
             long units = Math.Max(0, db.TypeStores[cargoItem.CargoTypeID].CurrentStoreInUnits[cargoItem.ID]);
-
+            if (includeEscro)
+            {
+                units += GetUnitCountInEscro(db, cargoItem);
+            }
             return units * cargoItem.VolumePerUnit;
         }
 
@@ -312,6 +315,14 @@ namespace Pulsar4X.Storage
             return db.TypeStores[type].FreeVolume;
         }
 
+        public static double GetMaxVolume(this CargoStorageDB db, ICargoable cargoItem)
+        {
+            var type = cargoItem.CargoTypeID;
+            if(!db.TypeStores.ContainsKey(type))
+                return 0;
+            return db.TypeStores[type].MaxVolume;
+        }
+
         /// <summary>
         /// Returns the amount of free mass for a given cargoType
         /// escro items are included in this
@@ -332,7 +343,7 @@ namespace Pulsar4X.Storage
         /// (space = freeVolume / VolumePerUnit)
         /// </summary>
         /// <param name="cargoItem"></param>
-        /// <returns></returns>
+        /// <returns>Number of items we can store</returns>
         public static int GetFreeUnitSpace(this CargoStorageDB db, ICargoable cargoItem)
         {
             var type = cargoItem.CargoTypeID;
@@ -348,7 +359,7 @@ namespace Pulsar4X.Storage
         /// </summary>
         /// <param name="typeID">cargo typeID</param>
         /// <param name="volumeChange">positive to add volume, negitive to remove volume</param>
-        public static void ChangeMaxVolume(this CargoStorageDB db, string typeID, double volumeChange, CargoDefinitionsLibrary cargoLibrary)
+        internal static void ChangeMaxVolume(this CargoStorageDB db, string typeID, double volumeChange, CargoDefinitionsLibrary cargoLibrary)
         {
             var type = db.TypeStores[typeID];
             type.MaxVolume += volumeChange;

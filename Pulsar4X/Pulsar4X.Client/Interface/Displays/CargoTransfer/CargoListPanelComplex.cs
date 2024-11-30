@@ -239,7 +239,7 @@ public class CargoListPanelComplex
                         unitsStored = storeInUnits[cargoItem.ID];
 
                     var volumePerItem = cargoItem.VolumePerUnit;
-                    var volumeStored = _volStorageDB.GetVolumeStored(cargoItem);
+                    var volumeStored = _volStorageDB.GetVolumeStored(cargoItem, true);
                     var massStored = _volStorageDB.GetMassStored(cargoItem, true);
 
                     bool isSelected = selectedCargo == cargoItem;
