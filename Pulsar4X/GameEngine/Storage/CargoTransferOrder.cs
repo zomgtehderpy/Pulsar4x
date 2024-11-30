@@ -38,7 +38,7 @@ public class CargoTransferOrder : EntityCommand
                 detailStr += " Waiting to start";
             else
             {
-                detailStr += " Transfering, + " + Stringify.Number(AmountLeftToXfer(), "#") + " remaining." ;
+                detailStr += " Transfering, " + Stringify.Quantity(AmountLeftToXfer(), "#.#") + " remaining." ;
             }
             
             

@@ -250,13 +250,13 @@ public class CargoListPanelComplex
                     }
 
                     ImGui.NextColumn();
-                    ImGui.Text(Stringify.Number(unitsStored, "0"));
+                    ImGui.Text(Stringify.Quantity(unitsStored, "0.#######"));
 
 
                     if (_cargoToMove.ContainsKey(cargoItem))
                     {
                         var unitsMoving = _cargoToMove[cargoItem];
-                        string text = Stringify.Number(unitsMoving, "0");
+                        string text = Stringify.Quantity(unitsMoving, "0");
                         ImGui.SameLine();
 
                         float blue = 0f;

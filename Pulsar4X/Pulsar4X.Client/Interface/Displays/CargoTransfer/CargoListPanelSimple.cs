@@ -100,7 +100,7 @@ public class CargoListPanelSimple : UpdateWindowState
                     }
 
                     ImGui.NextColumn();
-                    ImGui.Text(Stringify.Number(itemsStored));
+                    ImGui.Text(Stringify.Quantity(itemsStored));
                     ImGui.NextColumn();
                     ImGui.Text(Stringify.Mass(massStored));
                     ImGui.NextColumn();

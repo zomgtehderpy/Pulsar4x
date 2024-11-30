@@ -71,6 +71,7 @@ namespace Pulsar4X.Storage
                 var cargoItem = tuple.cargoItem;
                 double itemMassPerUnit = cargoItem.MassPerUnit;
                 double massToXfer = Math.Min(massTransferable, tuple.mass);
+                massToXfer = Math.Min(massToXfer, CargoMath.GetFreeMass(moveTo, cargoItem));
                 //we use Floor here to signify whole part items not fully moved yet. 
                 int countToXfer = (int)Math.Floor(massToXfer / itemMassPerUnit);
                 

@@ -411,8 +411,8 @@ namespace Pulsar4X.SDL2UI
 
                     ImGui.Text("Eccentricity: ");
                     //ImGui.SameLine();
-                    ImGui.Text("Initial: "+Stringify.Number(_endpointInitialOrbit.Eccentricity));
-                    ImGui.Text("Target: "+Stringify.Number(_endpointTargetOrbit.Eccentricity));
+                    ImGui.Text("Initial: "+Stringify.Quantity(_endpointInitialOrbit.Eccentricity));
+                    ImGui.Text("Target: "+Stringify.Quantity(_endpointTargetOrbit.Eccentricity));
 
 
                     ImGui.Text("Apoapsis: ");

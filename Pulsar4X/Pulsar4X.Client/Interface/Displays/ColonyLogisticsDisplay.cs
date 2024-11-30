@@ -292,7 +292,7 @@ namespace Pulsar4X.SDL2UI
                                 ImGui.Text(cname);
 
                                 ImGui.TableNextColumn();
-                                ImGui.Text(Stringify.Number(itemsStored, "#,###"));
+                                ImGui.Text(Stringify.Quantity(itemsStored, "#,###"));
 
                                 ImGui.TableNextColumn();
                                 if (!hasCapacityForMore)
@@ -389,7 +389,7 @@ namespace Pulsar4X.SDL2UI
                         var volumePerItem = ctype.VolumePerUnit;
                         ImGui.Text(cname);
                         ImGui.NextColumn();
-                        ImGui.Text(Stringify.Number(itemsStored, "#,###"));
+                        ImGui.Text(Stringify.Quantity(itemsStored, "#,###"));
                         ImGui.NextColumn();
                         if(ImGui.SmallButton("+##"+ctype.ID))
                         {
@@ -421,12 +421,12 @@ namespace Pulsar4X.SDL2UI
                             {
                                 total += _changes[ctype].count;
                             }
-                            ImGui.Text(Stringify.Number(total));
+                            ImGui.Text(Stringify.Quantity(total));
                         }
                         else if(_changes.ContainsKey(ctype))
                         {
                             double total = _changes[ctype].count;
-                            ImGui.Text(Stringify.Number(total));
+                            ImGui.Text(Stringify.Quantity(total));
                         }
 
                         ImGui.NextColumn();
@@ -453,7 +453,7 @@ namespace Pulsar4X.SDL2UI
                 {
                     ImGui.Text(item.Key.Name);
                     ImGui.NextColumn();
-                    ImGui.Text(Stringify.Number(item.Value.count));
+                    ImGui.Text(Stringify.Quantity(item.Value.count));
                     ImGui.NextColumn();
                 }
                 ImGui.Columns(1);

@@ -288,10 +288,10 @@ namespace Pulsar4X.SDL2UI
                                     }
                                     
                                 }
-                                ImGui.Text("Total Units Inc Escro: " + Stringify.Number(totalCountIncEscro));
-                                ImGui.Text("Total Units less Escro: " + Stringify.Number(totalCountLesEscro));
-                                ImGui.Text("Total Mass Inc Escro: " + Stringify.Number(totalMassIncEscro));
-                                ImGui.Text("Total Mass less Escro: " + Stringify.Number(totalMassIncEscro));
+                                ImGui.Text("Total Units Inc Escro: " + Stringify.Quantity(totalCountIncEscro));
+                                ImGui.Text("Total Units less Escro: " + Stringify.Quantity(totalCountLesEscro));
+                                ImGui.Text("Total Mass Inc Escro: " + Stringify.Quantity(totalMassIncEscro));
+                                ImGui.Text("Total Mass less Escro: " + Stringify.Quantity(totalMassIncEscro));
                                 ImGui.Unindent();
                             }
                         }

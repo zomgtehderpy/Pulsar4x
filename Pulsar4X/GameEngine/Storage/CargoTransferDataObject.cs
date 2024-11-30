@@ -36,7 +36,7 @@ public class CargoTransferDataObject
         
         PrimaryStorageDB.EscroItems.Add(this);
         SecondaryStorageDB.EscroItems.Add(this);
-
+        
         for (int index = 0; index < OrderedToTransfer.Count; index++)
         {
             (ICargoable item, long amount) tuple = OrderedToTransfer[index];
@@ -44,22 +44,26 @@ public class CargoTransferDataObject
             var unitAmount = tuple.amount;
             TypeStore store;
             SafeList<(ICargoable item, long count, double mass)> itemsToRemove; //reference which list.
-                
+            long unitsStorable; 
             if (unitAmount < 0) //if we're removing items
             {
                 unitAmount *= -1;
                 store = PrimaryStorageDB.TypeStores[cargoItem.CargoTypeID];
                 itemsToRemove = EscroHeldInPrimary;
+                unitsStorable = CargoMath.GetFreeUnitSpace(SecondaryStorageDB, cargoItem);
             }
             else
             {
                 store = SecondaryStorageDB.TypeStores[cargoItem.CargoTypeID];
                 itemsToRemove = EscroHeldInSecondary;
+                unitsStorable = CargoMath.GetFreeUnitSpace(PrimaryStorageDB, cargoItem);
             }
             if (store.CurrentStoreInUnits.ContainsKey(cargoItem.ID))
             {
                 long amountInStore = store.CurrentStoreInUnits[cargoItem.ID];
+                
                 long amountToRemove = Math.Min(unitAmount, amountInStore);
+                amountToRemove = Math.Min(unitsStorable, amountToRemove);
                 store.CurrentStoreInUnits[cargoItem.ID] -= amountToRemove;
                 double massToRemove = cargoItem.MassPerUnit * amountToRemove;
                 itemsToRemove.Add((cargoItem,amountToRemove, massToRemove));

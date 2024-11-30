@@ -344,12 +344,15 @@ namespace Pulsar4X.Storage
         /// </summary>
         /// <param name="cargoItem"></param>
         /// <returns>Number of items we can store</returns>
-        public static int GetFreeUnitSpace(this CargoStorageDB db, ICargoable cargoItem)
+        public static long GetFreeUnitSpace(this CargoStorageDB db, ICargoable cargoItem, bool includeEscro = true)
         {
             var type = cargoItem.CargoTypeID;
             if (!db.TypeStores.ContainsKey(type))
                 return 0;
-            return (int)(db.TypeStores[type].FreeVolume / cargoItem.VolumePerUnit);
+            long items = (int)(db.TypeStores[type].FreeVolume / cargoItem.VolumePerUnit);
+            if(includeEscro)
+                items -= GetUnitCountInEscro(db, cargoItem);
+            return items;
         }
 
         /// <summary>

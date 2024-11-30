@@ -179,7 +179,7 @@ public class SystemWindow : PulsarGuiWindow
             if(entity.TryGetDatablob<AtmosphereDB>(out var atmosphereDB))
             {
                 ImGui.TableNextColumn();
-                ImGui.Text(Stringify.Number(atmosphereDB.Pressure));
+                ImGui.Text(Stringify.Quantity(atmosphereDB.Pressure));
                 ImGui.TableNextColumn();
                 if(atmosphereDB.Composition.ContainsKey("oxygen"))
                 {

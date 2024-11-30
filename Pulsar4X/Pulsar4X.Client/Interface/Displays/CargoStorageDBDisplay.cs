@@ -90,14 +90,14 @@ namespace Pulsar4X.SDL2UI
                                 }
                             }
                             ImGui.TableNextColumn();
-                            ImGui.Text(Stringify.Number(itemsStored, "#,###,###,###,##0"));
+                            ImGui.Text(Stringify.Quantity(itemsStored, "##.##"));
                             if(ImGui.IsItemHovered())
                             {
                                 ImGui.BeginTooltip();
-                                ImGui.Text("+" + Stringify.Number(itemsInEscro) + " in escro");
+                                ImGui.Text("+" + Stringify.Quantity(itemsInEscro) + " in escro");
                                 ImGui.Text("Mass: " + Stringify.Mass(massStored) + " (" + Stringify.Mass(cargoType.MassPerUnit) + " each)");
                                 
-                                ImGui.Text("can store " + Stringify.Number(itemCanStore) + " more items");
+                                ImGui.Text("can store " + Stringify.Quantity(itemCanStore) + " more items");
                                 ImGui.EndTooltip();
                             }
                             ImGui.TableNextColumn();

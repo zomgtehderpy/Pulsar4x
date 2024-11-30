@@ -338,13 +338,13 @@ namespace Pulsar4X.SDL2UI
                             {
                                 displayStr = value.ToString();
                                 Vector2 v = (Vector2)value;
-                                tooltipStr = "Magnitude: " + Stringify.Number(v.Length());
+                                tooltipStr = "Magnitude: " + Stringify.Quantity(v.Length());
                             }
                             else if (value is Vector3)
                             {
                                 displayStr = value.ToString();
                                 Vector3 v = (Vector3)value;
-                                tooltipStr = "Magnitude: " + Stringify.Number(v.Length());
+                                tooltipStr = "Magnitude: " + Stringify.Quantity(v.Length());
                             }
                             else
                             {

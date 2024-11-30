@@ -34,13 +34,15 @@ namespace Pulsar4X.Engine
                     str = Thrust(amount * Math.Pow(10, (double)valueType.ValueSize), format);
                     break;
                 case ValueTypeStruct.ValueTypes.Number:
-                    str = Number(amount * Math.Pow(10, (double)valueType.ValueSize), format);
+                    str = Quantity(amount * Math.Pow(10, (double)valueType.ValueSize), format);
                     break;
 
             }
 
             return str;
         }
+        
+        /*
         public static string Number(double number,  string format = "0.0##")
         {
             string stringCount = "0";
@@ -66,7 +68,7 @@ namespace Pulsar4X.Engine
             {
                 cnt = number * 1.0e-3;
                 stringCount = cnt.ToString(format) + " h";
-            }*/
+            }*//*
             else if (absCnt > 1.0e-3)
             {
                 stringCount = number.ToString(format);
@@ -80,7 +82,7 @@ namespace Pulsar4X.Engine
             }
 
             return stringCount;
-        }
+        }*/
 
         public static string Quantity(double number, string format = "0.###", bool fullSuffix = false)
         {
@@ -90,27 +92,36 @@ namespace Pulsar4X.Engine
             if (absCnt > 1.0e15)
             {
                 cnt = number * 1.0e-15;
-                stringCount = cnt.ToString(format) + (fullSuffix ? " quadrillion" : "q");
+                stringCount = cnt.ToString(format) + (fullSuffix ? " quadrillion" : "Q");
             }
             else if (absCnt > 1.0e12)
             {
                 cnt = number * 1.0e-12;
-                stringCount = cnt.ToString(format) + (fullSuffix ? " trillion" : "t");  // Trillion
+                stringCount = cnt.ToString(format) + (fullSuffix ? " trillion" : "T");  // Trillion
             }
             else if (absCnt > 1.0e9)
             {
                 cnt = number * 1.0e-9;
-                stringCount = cnt.ToString(format) + (fullSuffix ? " billion" : "b");  // Billion
+                stringCount = cnt.ToString(format) + (fullSuffix ? " billion" : "B");  // Billion
             }
             else if (absCnt > 1.0e6)
             {
                 cnt = number * 1.0e-6;
-                stringCount = cnt.ToString(format) + (fullSuffix ? " million" : "m");  // Million
+                stringCount = cnt.ToString(format) + (fullSuffix ? " million" : "M");  // Million
             }
             else if (absCnt > 1.0e3)
             {
                 cnt = number * 1.0e-3;
                 stringCount = cnt.ToString(format) + (fullSuffix ? " thousand" : "k");  // Thousand
+            }
+            else if (absCnt > 0)
+            {
+                stringCount = number.ToString(format);
+            }
+            else if (absCnt > 1.0e-6)
+            {
+                cnt = number * 1.0e-3;
+                stringCount = cnt.ToString(format) +(fullSuffix? " milli" : "m");
             }
             else {
                 stringCount = number.ToString(format);

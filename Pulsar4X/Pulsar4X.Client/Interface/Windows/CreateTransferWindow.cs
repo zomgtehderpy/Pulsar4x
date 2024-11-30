@@ -141,7 +141,7 @@ public class CreateTransferWindow : PulsarGuiWindow
                         cargoables[id].ShowTooltip();
                         ImGui.SameLine();
 
-                        string amount = Stringify.Number(value);
+                        string amount = Stringify.Quantity(value);
                         var amountSize = ImGui.CalcTextSize(amount);
 
                         ImGui.SetCursorPosX(contentSize.X - amountSize.X);
