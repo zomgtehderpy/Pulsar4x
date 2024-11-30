@@ -42,48 +42,6 @@ namespace Pulsar4X.Engine
             return str;
         }
         
-        /*
-        public static string Number(double number,  string format = "0.0##")
-        {
-            string stringCount = "0";
-            double absCnt = Math.Abs(number);
-            double cnt;
-            if (absCnt > 1.0e12)
-            {
-                cnt = number * 1.0e-12;
-                stringCount = cnt.ToString(format) + " T";
-            }
-            else if (absCnt > 1.0e9)
-            {
-                cnt = number * 1.0e-9;
-                stringCount = cnt.ToString(format) + " G";
-            }
-            else if (absCnt > 1.0e6)
-            {
-                cnt = number * 1.0e-6;
-                stringCount = cnt.ToString(format) + " k";
-            }
-            /*
-            else if (absCnt > 1.0e3)
-            {
-                cnt = number * 1.0e-3;
-                stringCount = cnt.ToString(format) + " h";
-            }*//*
-            else if (absCnt > 1.0e-3)
-            {
-                stringCount = number.ToString(format);
-            }
-
-
-            else if (absCnt > 1.0e-6)
-            {
-                cnt = number * 1.0e-3;
-                stringCount = cnt.ToString(format) + " m";
-            }
-
-            return stringCount;
-        }*/
-
         public static string Quantity(double number, string format = "0.###", bool fullSuffix = false)
         {
             string stringCount = "0";
