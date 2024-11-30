@@ -50,6 +50,69 @@
   {
     "Type": "ComponentTemplate",
     "Payload": {
+      "UniqueID": "automine",
+      "Name": "MineBot",
+      "Formulas": {
+        "Description": "An unmanned resources collector",
+        "Mass": "Ability('Size') * 3000.0",
+        "Volume": "Ability('Size')",
+        "HTK": "[Mass]",
+        "CrewReq": "0",
+        "ResearchCost": "0",
+        "CreditCost": "120",
+        "BuildPointCost": "[Mass]"
+      },
+      "ResourceCost": {
+        "iron": "[Mass] * 0.75",
+        "aluminium": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.05"
+      },
+      "ComponentType": "Facility",
+      "MountType": "ShipCargo, PlanetInstallation",
+      "CargoTypeID": "general-storage",
+      "IndustryTypeID": "installation-construction",
+      "Attributes": [
+        {
+          "Name": "Size",
+          "DescriptionFormula": "'Size (volume) of this installation'",
+          "GuiHint": "GuiSelectionMaxMin",
+          "MaxFormula": "5000",
+          "MinFormula": "2",
+          "StepFormula": "1",
+          "AttributeFormula": "2"
+        },
+        {
+          "Name": "MiningAmount",
+          "DescriptionFormula": "'Mining rate'",
+          "GuiHint": "GuiTextDisplay",
+          "AttributeFormula": "Ability('Size') * 0.5"
+        },
+        {
+          "Name": "MiningAmountDict",
+          "DescriptionFormula": "''",
+          "GuiHint": "None",
+          "GuidDictionary": {
+            "hydrocarbons": "Ability('MiningAmount')",
+            "iron": "Ability('MiningAmount')",
+            "aluminium": "Ability('MiningAmount')",
+            "copper": "Ability('MiningAmount')",
+            "lithium": "Ability('MiningAmount')",
+            "chromium": "Ability('MiningAmount')",
+            "fissionables": "Ability('MiningAmount')",
+            "titanium": "Ability('MiningAmount')",
+            "tungsten": "Ability('MiningAmount')",
+            "silicon": "Ability('MiningAmount')",
+            "graphite": "Ability('MiningAmount')"
+          },
+          "AttributeFormula": "AtbConstrArgs([GuidDict])",
+          "AttributeType": "Pulsar4X.Industry.MineResourcesAtbDB"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "ComponentTemplate",
+    "Payload": {
       "UniqueID": "university",
       "Name": "University",
       "Formulas": {
@@ -133,7 +196,7 @@
           "DescriptionFormula": "'Size of this installation'",
           "GuiHint": "GuiSelectionMaxMin",
           "MaxFormula": "10000",
-          "MinFormula": "100",
+          "MinFormula": "1000",
           "StepFormula": "50",
           "AttributeFormula": "5000"
         },
@@ -186,9 +249,9 @@
           "DescriptionFormula": "'Size of the factory, larger factories produce more construction points'",
           "GuiHint": "GuiSelectionMaxMinInt",
           "MaxFormula": "TechData('tech-factory-max-size')",
-          "MinFormula": "100",
+          "MinFormula": "1000",
           "StepFormula": "50",
-          "AttributeFormula": "500"
+          "AttributeFormula": "5000"
         },
         {
           "Name": "Component Construction Points",
@@ -390,7 +453,7 @@
           "MaxFormula": "1000",
           "MinFormula": "1",
           "StepFormula": "100",
-          "AttributeFormula": "1000"
+          "AttributeFormula": "10"
         },
         {
           "Name": "Transfer Range",
