@@ -1,193 +1,159 @@
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using ImGuiNET;
 using Pulsar4X.Events;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Extensions;
 using Pulsar4X.Factions;
 
-namespace Pulsar4X.SDL2UI
-{
-
-    public class GameLogWindow : PulsarGuiWindow
-    {
+namespace Pulsar4X.SDL2UI 
+{ 
+    public class GameLogWindow : PulsarGuiWindow 
+    { 
         IEventLog _factionEventLog;
 
         public HashSet<EventType> HidenEvents = new HashSet<EventType>();
-        private GameLogWindow()
-        {
-            _factionEventLog = _uiState.Faction.GetDataBlob<FactionInfoDB>().EventLog;
-            _uiState.OnFactionChanged += OnFactionChanged;
+        
+        private GameLogWindow() 
+        { 
+            InitializeEventLog();
+            
+            // Subscribe to the event
+            _uiState.OnFactionChanged += OnFactionChanged; 
         }
-
-        private void OnFactionChanged(GlobalUIState uIState)
-        {
-            _factionEventLog = _uiState.Faction.GetDataBlob<FactionInfoDB>().EventLog;
-        }
-
-        internal static GameLogWindow GetInstance()
-        {
-            GameLogWindow instance;
-            if (!_uiState.LoadedWindows.ContainsKey(typeof(GameLogWindow)))
-                instance = new GameLogWindow();
-            else
-            {
-                instance = (GameLogWindow)_uiState.LoadedWindows[typeof(GameLogWindow)];
-
+        
+        private void InitializeEventLog() 
+        { 
+            if (_uiState.Faction == null) 
+            { 
+                Debug.WriteLine("GameLogWindow: _uiState.Faction is null. Unable to initialize event log."); 
+                _factionEventLog = null; 
+                return; 
             }
-
-            return instance;
-        }
-
-        internal override void Display()
-        {
-            if (IsActive)
-            {
-                System.Numerics.Vector2 size = new System.Numerics.Vector2(800, 600);
-                System.Numerics.Vector2 pos = new System.Numerics.Vector2(0, 0);
-                ImGui.SetNextWindowSize(size, ImGuiCond.FirstUseEver);
-                ImGui.SetNextWindowPos(pos, ImGuiCond.Appearing);
-                if (ImGui.Begin(WindowTitleHelper.GetDebugWindowTitle("GameLog"), ref IsActive))
-                {
-
-                    //ImGui.BeginChild("LogChild", new System.Numerics.Vector2(800, 300), true);
-                    ImGui.Columns(5, "Events", true);
-                    ImGui.SetColumnWidth(0, 164);
-                    ImGui.SetColumnWidth(1, 128);
-                    ImGui.SetColumnWidth(2, 128);
-                    ImGui.SetColumnWidth(3, 128);
-                    ImGui.SetColumnWidth(4, 240);
-
-                    ImGui.Text("DateTime");
-                    ImGui.NextColumn();
-                    if (ImGui.SmallButton("Type")) //ImGui.Text("Type");
-                        GameLogSettingsWindow.GetInstance().ToggleActive();
-                    ImGui.NextColumn();
-                    ImGui.Text("Faction");
-                    ImGui.NextColumn();
-                    ImGui.Text("Entity");
-                    ImGui.NextColumn();
-                    ImGui.Text("Event Message");
-                    ImGui.NextColumn();
-
-
-                    foreach(var e in _factionEventLog.GetEvents())
-                    {
-                        if (HidenEvents.Contains(e.EventType))
-                            continue;//skip this event if it's hidden.
-
-                        string entityStr = "N/A";
-                        string factionStr = "";
-                        int id = e.FactionId ?? -1;
-                        if (id != -1)
-                        {
-                            factionStr = _uiState.Game.Factions[id].GetFactionName();
-                        }
-
-                        string typStr = e.EventType.ToString();
-                        ImGui.Separator();
-                        ImGui.Text(e.StarDate.ToString());
-                        ImGui.NextColumn();
-                        ImGui.Text(typStr);
-                        ImGui.NextColumn();
-                        ImGui.Text(factionStr);
-                        ImGui.NextColumn();
-                        ImGui.Text(entityStr);
-                        ImGui.NextColumn();
-                        ImGui.TextWrapped(e.Message);
-
-                        ImGui.NextColumn();
-
-
-                    }
-                    ImGui.Separator();
-
-                }
+            
+            var factionInfo = _uiState.Faction.GetDataBlob<FactionInfoDB>(); 
+            if (factionInfo == null) 
+            { 
+                Debug.WriteLine("GameLogWindow: FactionInfoDB is null. Unable to initialize event log."); 
+                _factionEventLog = null; 
+                return; 
             }
+            
+            _factionEventLog = factionInfo.EventLog; 
+            Debug.WriteLine("GameLogWindow: Event log initialized."); 
         }
-    }
-
-
-    public class GameLogSettingsWindow : PulsarGuiWindow
-    {
-        private FactionInfoDB _facInfo;
-        private HashSet<EventType> _hidenEvents;
-        private GameLogSettingsWindow()
-        {
-            _facInfo = _uiState.Faction.GetDataBlob<FactionInfoDB>();
-            _hidenEvents = GameLogWindow.GetInstance().HidenEvents;
+        
+        private void OnFactionChanged(GlobalUIState uIState) 
+        { 
+            Debug.WriteLine("GameLogWindow: Faction changed. Reinitializing event log."); 
+            InitializeEventLog(); 
         }
-        internal static GameLogSettingsWindow GetInstance()
-        {
-            GameLogSettingsWindow instance;
-            if (!_uiState.LoadedWindows.ContainsKey(typeof(GameLogSettingsWindow)))
-                instance = new GameLogSettingsWindow();
-            else
-            {
-                instance = (GameLogSettingsWindow)_uiState.LoadedWindows[typeof(GameLogSettingsWindow)];
-
+        
+        internal static GameLogWindow GetInstance() 
+        { 
+            GameLogWindow instance; 
+            if (!_uiState.LoadedWindows.ContainsKey(typeof(GameLogWindow))) 
+            { 
+                instance = new GameLogWindow(); 
+                Debug.WriteLine("GameLogWindow: Instance created."); 
             }
-
-            return instance;
+            else 
+            { 
+                instance = (GameLogWindow)_uiState.LoadedWindows[typeof(GameLogWindow)]; 
+                Debug.WriteLine("GameLogWindow: Instance retrieved from LoadedWindows."); 
+            }
+            
+            return instance; 
         }
-
-        internal override void Display()
-        {
-            if(!IsActive) return;
-
-            System.Numerics.Vector2 size = new System.Numerics.Vector2(264, 600);
-            System.Numerics.Vector2 pos = new System.Numerics.Vector2(0, 0);
-            ImGui.SetNextWindowSize(size, ImGuiCond.Always);
+        
+        internal override void Display() 
+        { 
+            if (!IsActive) 
+            { 
+                return; 
+            }
+            
+            // Set window size and position
+            System.Numerics.Vector2 size = new System.Numerics.Vector2(800, 600); 
+            System.Numerics.Vector2 pos = new System.Numerics.Vector2(0, 0); 
+            ImGui.SetNextWindowSize(size, ImGuiCond.FirstUseEver); 
             ImGui.SetNextWindowPos(pos, ImGuiCond.Appearing);
-
-            if (ImGui.Begin("Event Settings", ref IsActive))
-            {
-                ImGui.Columns(3);
-                ImGui.SetColumnWidth(0, 164);
-                ImGui.Text("Type");
-                ImGui.NextColumn();
-                ImGui.SetColumnWidth(1, 38);
-                ImGui.Text("Halts");
-                ImGui.NextColumn();
-                ImGui.SetColumnWidth(2, 38);
-                ImGui.Text("Hide");
-                ImGui.Separator();
-                ImGui.NextColumn();
-
-                List<EventType> haltingEvents = _uiState.Game.HaltEventLog.HaltsOn;
-
-                foreach (EventType etype in EventType.GetValues(typeof(EventType)))
-                {
-                    string typestr = etype.ToString();
-
-                    bool halts = haltingEvents.Contains(etype);
-                    bool isHidden = _hidenEvents.Contains(etype);
-
-                    ImGui.Text(typestr);
-                    ImGui.NextColumn();
-
-                    if (ImGui.Checkbox("##halt" + typestr, ref halts))
-                    {
-                        _facInfo.HaltsOnEvent[etype] = halts;
-                        if (halts)
-                            _uiState.Game.HaltEventLog.AddEvent(etype);
-                        else
-                            _uiState.Game.HaltEventLog.RemoveEvent(etype);
-                    }
-                    ImGui.NextColumn();
-                    //ImGui.SameLine();
-                    if (ImGui.Checkbox("##hidden" + typestr, ref isHidden))
-                    {
-                        if (isHidden)
-                            _hidenEvents.Add(etype);
-                        else
-                            _hidenEvents.Remove(etype);
-
-
-                    }
-                    ImGui.NextColumn();
+            
+            if (ImGui.Begin(WindowTitleHelper.GetDebugWindowTitle("GameLog"), ref IsActive)) 
+            { 
+                if (_factionEventLog == null) 
+                { 
+                    ImGui.Text("Event log is null."); 
+                    ImGui.End(); 
+                    return; 
                 }
-                ImGui.Separator();
 
-            }
-        }
-    }
+                // Check for valid method or property for retrieving events
+                var events = _factionEventLog.GetEvents(); // Make sure GetEvents() is a valid method
+                if (events == null || !events.Any()) 
+                { 
+                    ImGui.Text("No events available."); 
+                    ImGui.End(); 
+                    return; 
+                }
+
+                // Display the event count
+                ImGui.Text($"Number of events: {events.Count()}");
+                
+                ImGui.Columns(5, "Events", true); 
+                ImGui.SetColumnWidth(0, 164); 
+                ImGui.SetColumnWidth(1, 128); 
+                ImGui.SetColumnWidth(2, 128); 
+                ImGui.SetColumnWidth(3, 128); 
+                ImGui.SetColumnWidth(4, 240);
+                
+                ImGui.Text("DateTime"); 
+                ImGui.NextColumn(); 
+                ImGui.Text("Type"); 
+                ImGui.NextColumn(); 
+                ImGui.Text("Faction"); 
+                ImGui.NextColumn(); 
+                ImGui.Text("Entity"); 
+                ImGui.NextColumn(); 
+                ImGui.Text("Event Message"); 
+                ImGui.NextColumn();
+                
+                foreach (var e in events) 
+                { 
+                    if (HidenEvents.Contains(e.EventType)) 
+                        continue;
+                    
+                    string entityStr = "N/A"; 
+                    int eid = e.EntityId ?? -1; 
+                    if (eid != -1 && _uiState.Game.GlobalManager.TryGetGlobalEntityById(eid, out var entity)) 
+                    { 
+                        entityStr = entity.GetName(_uiState.Faction.Id); 
+                    } 
+                    string factionStr = ""; 
+                    int id = e.FactionId ?? -1; 
+                    if (id != -1) 
+                    { 
+                        factionStr = _uiState.Game.Factions[id].GetFactionName(); 
+                    }
+                    
+                    string typStr = e.EventType.ToString(); 
+                    ImGui.Separator(); 
+                    ImGui.Text(e.StarDate.ToString()); 
+                    ImGui.NextColumn(); 
+                    ImGui.Text(typStr); 
+                    ImGui.NextColumn(); 
+                    ImGui.Text(factionStr); 
+                    ImGui.NextColumn(); 
+                    ImGui.Text(entityStr); 
+                    ImGui.NextColumn(); 
+                    ImGui.TextWrapped(e.Message); 
+                    ImGui.NextColumn(); 
+                }
+                
+                ImGui.Separator(); 
+                ImGui.End(); 
+            } 
+        } 
+    } 
 }
