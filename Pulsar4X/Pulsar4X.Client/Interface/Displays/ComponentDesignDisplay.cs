@@ -263,7 +263,7 @@ namespace Pulsar4X.SDL2UI
                     ImGui.SameLine();
                     ImGui.Text("Volume");
                     ImGui.TableNextColumn();
-                    ImGui.Text(Stringify.Volume(_componentDesigner.VolumeM3Value));
+                    ImGui.Text(Stringify.VolumeLtr(_componentDesigner.VolumeM3Value));
 
                     if(_componentDesigner.CrewReqValue > 0)
                     {
@@ -307,7 +307,7 @@ namespace Pulsar4X.SDL2UI
                                     }
                                     case "m^2":
                                     {
-                                        displayStr = Stringify.Volume(value);
+                                        displayStr = Stringify.VolumeLtr(value);
                                         break;
                                     }
                                     case "nm":

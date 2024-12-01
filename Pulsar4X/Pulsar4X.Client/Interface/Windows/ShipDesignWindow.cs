@@ -622,7 +622,7 @@ namespace Pulsar4X.SDL2UI
                 ImGui.TableNextColumn();
                 ImGui.Text(Stringify.Mass(_fuelStoreMass));
                 ImGui.SameLine();
-                ImGui.Text(Stringify.Volume(_fuelStoreVolume));
+                ImGui.Text(Stringify.VolumeLtr(_fuelStoreVolume));
 
                 ImGui.TableNextColumn();
                 ImGui.Text("Delta V");

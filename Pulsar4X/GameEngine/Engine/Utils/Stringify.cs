@@ -228,6 +228,47 @@ namespace Pulsar4X.Engine
 
             return stringVolume;
         }
+        
+        public static string VolumeLtr(double volume_m, string format = "0.###", bool fullSuffix = false)
+        {
+            string stringVolume = "0 Ltr";
+            double volLtr = volume_m * 1000;
+            if (volLtr > 1.0e18)
+            {
+                volLtr *= 1.0e-18;
+                stringVolume = volLtr.ToString(format) + (fullSuffix ? " exalitre" : "EL");
+            }
+            else if (volLtr > 1.0e15)
+            {
+                volLtr *= 1.0e-15;
+                stringVolume = volLtr.ToString(format) + (fullSuffix ? " petalitre" : "PL");
+            }
+            else if(volLtr > 1.0e12)
+            {
+                volLtr *= 1.0e-12;
+                stringVolume = volLtr.ToString(format) + (fullSuffix ? " teralitre" : "TL");
+            }
+            else if (volLtr > 1.0e9)
+            {
+                volLtr *= 1.0e-9;
+                stringVolume = volLtr.ToString(format) + (fullSuffix ? " gigalitre" : "ML");
+            }
+            else if (volLtr > 1.0e6)
+            {
+                volLtr *= 1.0e-6;
+                stringVolume = volLtr.ToString(format) + (fullSuffix ? " megalitre" : "ML");
+            }
+            else if (volLtr > 1.0e3)
+            {
+                volLtr *= 1.0e-3;
+                stringVolume = volLtr.ToString(format) + (fullSuffix ? " kilolitre" : "KL");
+            }
+            else {
+                stringVolume = volLtr.ToString(format) + " Ltr";
+            }
+
+            return stringVolume;
+        }
 
         public static string Distance(double length_m,  string format = "0.###")
         {

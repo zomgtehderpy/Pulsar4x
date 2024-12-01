@@ -193,7 +193,7 @@ public class CargoListPanelComplex
             ImGui.PushID(_entityState.Entity.Id.ToString()); //this helps the ui diferentiate between the left and right side
             //and the three ### below forces it to ignore everything before the ### wrt being an ID and the stuff after the ### is an id.
             //this stops the header closing whenever we change the headertext (ie in this case, change the volume)
-            string headerText = stype.Name + " " + Stringify.Volume(freeVolume) + " / " + Stringify.Volume(maxVolume) + " free" + "###" + stype.UniqueID;
+            string headerText = stype.Name + " " + Stringify.VolumeLtr(freeVolume) + " / " + Stringify.VolumeLtr(maxVolume) + " free" + "###" + stype.UniqueID;
             if(ImGui.CollapsingHeader(headerText, ImGuiTreeNodeFlags.CollapsingHeader ))
             {
 
@@ -275,7 +275,7 @@ public class CargoListPanelComplex
                     ImGui.NextColumn();
                     ImGui.Text(Stringify.Mass(massStored));
                     ImGui.NextColumn();
-                    ImGui.Text(Stringify.Volume(volumeStored));
+                    ImGui.Text(Stringify.VolumeLtr(volumeStored));
                     ImGui.NextColumn();
                 }
 

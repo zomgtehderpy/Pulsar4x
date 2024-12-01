@@ -30,8 +30,8 @@ namespace Pulsar4X.SDL2UI
                 if(ImGui.CollapsingHeader(header + "###" + headerId, flags))
                 {
                     ImGui.Columns(2);
-                    DisplayHelpers.PrintRow("Total Volume", Stringify.Volume(storageType.MaxVolume));
-                    DisplayHelpers.PrintRow("Available Volume", Stringify.Volume(freeVolume), null, null, false);
+                    DisplayHelpers.PrintRow("Total Volume", Stringify.VolumeLtr(storageType.MaxVolume));
+                    DisplayHelpers.PrintRow("Available Volume", Stringify.VolumeLtr(freeVolume), null, null, false);
                     ImGui.Columns(1);
 
                     if(ImGui.BeginTable(header + "table", 3, Styles.TableFlags))
@@ -101,11 +101,11 @@ namespace Pulsar4X.SDL2UI
                                 ImGui.EndTooltip();
                             }
                             ImGui.TableNextColumn();
-                            ImGui.Text(Stringify.Volume(volumeStored));
+                            ImGui.Text(Stringify.VolumeLtr(volumeStored));
                             if (ImGui.IsItemHovered())
                             {
                                 ImGui.BeginTooltip();
-                                ImGui.Text("Volume: " + Stringify.Volume(volumeStored) + " (" + Stringify.Volume(cargoType.VolumePerUnit, "#.#####") + " each)");
+                                ImGui.Text("Volume: " + Stringify.VolumeLtr(volumeStored) + " (" + Stringify.Volume(cargoType.VolumePerUnit, "#.#####") + " each)");
                                 ImGui.EndTooltip();
                             }
                         }
