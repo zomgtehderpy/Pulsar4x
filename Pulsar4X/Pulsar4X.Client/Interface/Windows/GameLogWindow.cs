@@ -4,6 +4,7 @@ using System.Linq;
 using ImGuiNET;
 using Pulsar4X.Events;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Extensions;
 using Pulsar4X.Factions;
 
 namespace Pulsar4X.SDL2UI
@@ -124,6 +125,11 @@ namespace Pulsar4X.SDL2UI
                         continue;
 
                     string entityStr = "N/A";
+                    int eid = e.EntityId ?? -1;
+                    if (eid != -1 && _uiState.Game.GlobalManager.TryGetGlobalEntityById(eid, out var entity))
+                    {
+                        entityStr = entity.GetName(_uiState.Faction.Id);
+                    }
                     string factionStr = "";
                     int id = e.FactionId ?? -1;
                     if (id != -1)

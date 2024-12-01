@@ -53,7 +53,7 @@ namespace Pulsar4X.Technology
         /// <param name="factionAbilities"></param>
         /// <param name="factionTechs"></param>
         internal void DoResearch(Entity entity)
-{
+{ 
     Entity faction = entity.Manager.Game.Factions[entity.FactionOwnerID];
     FactionAbilitiesDB factionAbilities = faction.GetDataBlob<FactionAbilitiesDB>();
     FactionTechDB factionTechs = faction.GetDataBlob<FactionTechDB>();
@@ -130,7 +130,7 @@ namespace Pulsar4X.Technology
                         $"{project.Name} research completed!",
                         entity.FactionOwnerID,
                         entity.Manager.ManagerID,
-                        project.NumericID));
+                        entity.Id));
             }
         }
     }
