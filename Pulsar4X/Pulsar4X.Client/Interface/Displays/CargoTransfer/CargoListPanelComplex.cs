@@ -6,6 +6,7 @@ using System.Numerics;
 using ImGuiNET;
 using Pulsar4X.Blueprints;
 using Pulsar4X.Datablobs;
+using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
 using Pulsar4X.Factions;
 using Pulsar4X.Storage;
@@ -17,7 +18,7 @@ public class CargoListPanelComplex
     FactionDataStore _staticData;
     EntityState _entityState;
     CargoStorageDB _volStorageDB;
-    Dictionary<string, TypeStore> _stores = new ();
+    SafeDictionary<string, TypeStore> _stores = new ();
     Dictionary<ICargoable, long> _cargoToMove = new ();
     Dictionary<ICargoable, long> _cargoToMoveUI = new ();
     Dictionary<ICargoable, long> _cargoToMoveOrders = new ();
@@ -43,20 +44,9 @@ public class CargoListPanelComplex
 
     public void Update()
     {
-        //we do a deep copy clone so as to avoid a thread collision when we loop through.
-        //TODO #THREADSAFE this should be on the engine side.
-        var newDict = new Dictionary<string, TypeStore>();
-        ICollection ic = _volStorageDB.TypeStores;
-        lock (ic.SyncRoot)
-        {
-            foreach (var kvp in _volStorageDB.TypeStores)
-            {
-                newDict.Add(kvp.Key, kvp.Value.Clone());
-            }
-        }
-        _stores = newDict;
 
-
+        _stores = _volStorageDB.TypeStores;
+        
 
         if (_entityState.Entity.TryGetDatablob<CargoTransferDB>(out var db))
         {

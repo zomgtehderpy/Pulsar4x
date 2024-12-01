@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using ImGuiNET;
 using Pulsar4X.Blueprints;
+using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
 using Pulsar4X.Factions;
 using Pulsar4X.Storage;
@@ -15,7 +16,7 @@ public class CargoListPanelSimple : UpdateWindowState
     FactionDataStore _staticData;
     EntityState _entityState;
     CargoStorageDB _volStorageDB;
-    Dictionary<string, TypeStore> _stores = new Dictionary<string, TypeStore>();
+    SafeDictionary<string, TypeStore> _stores = new();
 
     public CargoListPanelSimple(FactionDataStore staticData, EntityState entity)
     {
@@ -39,19 +40,7 @@ public class CargoListPanelSimple : UpdateWindowState
     {
         if (_volStorageDB == null) //if this colony does not have any storage.
             return;
-        //we do a deep copy clone so as to avoid a thread collision when we loop through.
-        var newDict = new Dictionary<string, TypeStore>();
-
-        ICollection ic = _volStorageDB.TypeStores;
-        lock (ic.SyncRoot)
-        {
-            foreach (var kvp in _volStorageDB.TypeStores)
-            {
-                newDict.Add(kvp.Key, kvp.Value.Clone());
-            }
-        }
-
-        _stores = newDict;
+        _stores = _volStorageDB.TypeStores;
 
     }
 

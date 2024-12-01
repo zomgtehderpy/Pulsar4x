@@ -10,7 +10,8 @@ namespace Pulsar4X.Storage
 /// </summary>
     public class CargoStorageDB : BaseDataBlob, IAbilityDescription
     {
-        public Dictionary<string, TypeStore> TypeStores = new Dictionary<string, TypeStore>();
+        internal object lockObj = new object();
+        public SafeDictionary<string, TypeStore> TypeStores = new();
 
         internal List<CargoTransferDataObject> EscroItems { get; } = new();
         
@@ -39,7 +40,6 @@ namespace Pulsar4X.Storage
 
         public CargoStorageDB(CargoStorageDB db)
         {
-            TypeStores = new Dictionary<string, TypeStore>();
             foreach (var kvp in db.TypeStores)
             {
                 TypeStores.Add(kvp.Key, kvp.Value.Clone());
@@ -84,7 +84,7 @@ namespace Pulsar4X.Storage
         /// <summary>
         /// Key is ICargoable.ID
         /// </summary>
-        internal Dictionary<int, ICargoable> Cargoables =  new ();
+        internal SafeDictionary<int, ICargoable> Cargoables =  new ();
         public TypeStore(double maxVolume)
         {
             MaxVolume = maxVolume;
@@ -106,7 +106,7 @@ namespace Pulsar4X.Storage
             TypeStore clone = new TypeStore(MaxVolume);
             clone.FreeVolume = FreeVolume;
             clone.CurrentStoreInUnits = new SafeDictionary<int, long>(CurrentStoreInUnits);
-            clone.Cargoables = new Dictionary<int, ICargoable>(Cargoables);
+            clone.Cargoables = new SafeDictionary<int, ICargoable>(Cargoables);
             return clone;
         }
 

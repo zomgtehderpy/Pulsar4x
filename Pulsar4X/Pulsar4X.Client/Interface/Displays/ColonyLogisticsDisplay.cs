@@ -5,6 +5,7 @@ using ImGuiNET;
 using Pulsar4X.Engine;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Blueprints;
+using Pulsar4X.DataStructures;
 using Pulsar4X.Factions;
 using Pulsar4X.Logistics;
 using Pulsar4X.Storage;
@@ -28,7 +29,7 @@ namespace Pulsar4X.SDL2UI
         private Entity _selectedEntity;
         private LogiBaseDB? _logisticsDB;
         private CargoStorageDB? _volStorageDB;
-        private Dictionary<string, TypeStore>? _stores;
+        private SafeDictionary<string, TypeStore>? _stores;
         private FactionDataStore _staticData;
         private bool isEnabled;
         private ColonyLogisticsDisplay(EntityState entityState)
@@ -85,18 +86,7 @@ namespace Pulsar4X.SDL2UI
             _changes = new Dictionary<ICargoable, (int count, int demandSupplyWeight)>();
             _displayedStoredResources = new Dictionary<string, Dictionary<ICargoable, (int count, int demandSupplyWeight)>>();
             _displayedUnstored = new Dictionary<string, Dictionary<ICargoable, (int count, int demandSupplyWeight)>>();
-            //we do a deep copy clone so as to avoid a thread collision when we loop through.
-            var newDict = new Dictionary<string, TypeStore>();
-
-            ICollection ic = _volStorageDB.TypeStores;
-            lock (ic.SyncRoot)
-            {
-                foreach (var kvp in _volStorageDB.TypeStores)
-                {
-                    newDict.Add(kvp.Key, kvp.Value.Clone());
-                }
-            }
-            _stores = newDict;
+            _stores = _volStorageDB.TypeStores;
             foreach (var kvp in _stores)
             {
                 var stypeID = kvp.Key;

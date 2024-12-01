@@ -259,7 +259,7 @@ namespace Pulsar4X.Storage
         /// </summary>
         /// <param name="cargoItem"></param>
         /// <returns></returns>
-        public static double GetMassMax(this CargoStorageDB db,ICargoable cargoItem)
+        internal static double GetMassMax(this CargoStorageDB db,ICargoable cargoItem)
         {
             if (!db.TypeStores.ContainsKey(cargoItem.CargoTypeID))
                 return 0.0;
