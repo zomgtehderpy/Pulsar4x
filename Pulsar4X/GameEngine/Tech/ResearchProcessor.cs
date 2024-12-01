@@ -51,87 +51,87 @@ namespace Pulsar4X.Technology
         /// <param name="factionTechs"></param>
         internal void DoResearch(Entity entity) 
         { 
-    Entity faction = entity.Manager.Game.Factions[entity.FactionOwnerID]; 
-    FactionAbilitiesDB factionAbilities = faction.GetDataBlob<FactionAbilitiesDB>(); 
-    FactionTechDB factionTechs = faction.GetDataBlob<FactionTechDB>(); 
-    EntityResearchDB entityResearch = entity.GetDataBlob<EntityResearchDB>(); 
-    FactionDataStore factionDataStore = faction.GetDataBlob<FactionInfoDB>().Data;
-    
-    List<(ComponentInstance lab, int pnts)> allLabs = new List<(ComponentInstance lab, int pnts)>(); 
-    if (entity.GetDataBlob<ComponentInstancesDB>().TryGetComponentsByAttribute<ResearchPointsAtbDB>(out var labs)) 
-    { 
-        foreach (var labInstance in labs) 
-        { 
-            var points = labInstance.Design.GetAttribute<ResearchPointsAtbDB>().PointsPerEconTick; 
-            allLabs.Add((labInstance, points)); 
-        } 
-    }
-    
-    int labIndex = 0; 
-    int maxLabs = allLabs.Count;
-    
-    foreach (Scientist scientist in entity.GetDataBlob<TeamsHousedDB>().TeamsByType[TeamTypes.Science]) 
-    { 
-        if (scientist.ProjectQueue.Count == 0) 
-        { 
-            continue; 
-        }
-        
-        string projectGuid = scientist.ProjectQueue[0].techID; 
-        bool cycleProject = scientist.ProjectQueue[0].cycle;
-        
-        if (!factionDataStore.IsResearchable(projectGuid)) 
-        { 
-            scientist.ProjectQueue.RemoveAt(0); 
-            continue;
-        }
-        
-        int assignedLabs = scientist.AssignedLabs; 
-        Tech project = factionDataStore.Techs[projectGuid]; 
-        float bonus = 1; 
-        if (scientist.Bonuses.ContainsKey(project.Category)) 
-            bonus += scientist.Bonuses[project.Category];
-        
-        int researchPoints = 0; 
-        var maxIndex = Math.Min(labIndex + assignedLabs, maxLabs);
-        
-        for (int i = labIndex; i < maxIndex; i++) 
-        { 
-            researchPoints += allLabs[i].pnts; 
-        }
-        
-        researchPoints = (int)(researchPoints * bonus);
-        
-        if (factionDataStore.IsResearchable(project.UniqueID)) 
-        { 
-            int currentLvl = project.Level; 
-            factionDataStore.AddTechPoints(project, researchPoints);
+            Entity faction = entity.Manager.Game.Factions[entity.FactionOwnerID]; 
+            FactionAbilitiesDB factionAbilities = faction.GetDataBlob<FactionAbilitiesDB>(); 
+            FactionTechDB factionTechs = faction.GetDataBlob<FactionTechDB>(); 
+            EntityResearchDB entityResearch = entity.GetDataBlob<EntityResearchDB>(); 
+            FactionDataStore factionDataStore = faction.GetDataBlob<FactionInfoDB>().Data;
             
-            if (project.Level > currentLvl) 
+            List<(ComponentInstance lab, int pnts)> allLabs = new List<(ComponentInstance lab, int pnts)>(); 
+            if (entity.GetDataBlob<ComponentInstancesDB>().TryGetComponentsByAttribute<ResearchPointsAtbDB>(out var labs)) 
             { 
-                scientist.ProjectQueue.RemoveAt(0);
-                
-                if (project.Faction != null && project.Faction.TryGetDatablob<FactionInfoDB>(out var factionInfo) && project.Design != null) 
+                foreach (var labInstance in labs) 
                 { 
-                    factionInfo.IndustryDesigns[project.UniqueID] = project.Design; 
+                    var points = labInstance.Design.GetAttribute<ResearchPointsAtbDB>().PointsPerEconTick; 
+                    allLabs.Add((labInstance, points)); 
+                } 
+            }
+            
+            int labIndex = 0; 
+            int maxLabs = allLabs.Count;
+            
+            foreach (Scientist scientist in entity.GetDataBlob<TeamsHousedDB>().TeamsByType[TeamTypes.Science]) 
+            { 
+                if (scientist.ProjectQueue.Count == 0) 
+                { 
+                    continue; 
                 }
                 
-                if (cycleProject) 
-                    scientist.ProjectQueue.Add((project.UniqueID, true));
+                string projectGuid = scientist.ProjectQueue[0].techID; 
+                bool cycleProject = scientist.ProjectQueue[0].cycle;
+                
+                if (!factionDataStore.IsResearchable(projectGuid)) 
+                { 
+                    scientist.ProjectQueue.RemoveAt(0); 
+                    continue;
+                }
+                
+                int assignedLabs = scientist.AssignedLabs; 
+                Tech project = factionDataStore.Techs[projectGuid]; 
+                float bonus = 1; 
+                if (scientist.Bonuses.ContainsKey(project.Category)) 
+                    bonus += scientist.Bonuses[project.Category];
+                
+                int researchPoints = 0; 
+                var maxIndex = Math.Min(labIndex + assignedLabs, maxLabs);
+                
+                for (int i = labIndex; i < maxIndex; i++) 
+                { 
+                    researchPoints += allLabs[i].pnts; 
+                }
+                
+                researchPoints = (int)(researchPoints * bonus);
+                
+                if (factionDataStore.IsResearchable(project.UniqueID)) 
+                { 
+                    int currentLvl = project.Level; 
+                    factionDataStore.AddTechPoints(project, researchPoints);
+                    
+                    if (project.Level > currentLvl) 
+                    { 
+                        scientist.ProjectQueue.RemoveAt(0);
+                        
+                        if (project.Faction != null && project.Faction.TryGetDatablob<FactionInfoDB>(out var factionInfo) && project.Design != null) 
+                        { 
+                            factionInfo.IndustryDesigns[project.UniqueID] = project.Design; 
+                        }
+                        
+                        if (cycleProject) 
+                            scientist.ProjectQueue.Add((project.UniqueID, true));
 
-                // Publish an event for research completion
-                EventManager.Instance.Publish(
-                    Event.Create(
-                        EventType.ResearchCompleted, 
-                        entity.StarSysDateTime, 
-                        $"{project.Name} research completed!", 
-                        entity.FactionOwnerID, 
-                        entity.Manager.ManagerID, 
-                        entity.Id));
+                        // Publish an event for research completion
+                        EventManager.Instance.Publish(
+                            Event.Create(
+                                EventType.ResearchCompleted, 
+                                entity.StarSysDateTime, 
+                                $"{project.Name} research completed!", 
+                                entity.FactionOwnerID, 
+                                entity.Manager.ManagerID, 
+                                entity.Id));
+                    }
+                }
             }
         }
-    }
-}
 
         /// <summary>
         /// assigns more labs to a given scientist
