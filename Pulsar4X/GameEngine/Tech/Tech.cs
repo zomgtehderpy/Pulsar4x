@@ -9,6 +9,9 @@ namespace Pulsar4X.Technology
     {
         public ComponentDesign Design { get; set; }
         public Entity Faction { get; set; }
+        public int NumericID { get; set; }
+        public string Name { get; set; }
+        public string UniqueID { get; set; }
         public int Level { get; set; } = 0;
         public int ResearchProgress { get; set; } = 0;
         public int ResearchCost { get; set; } = 0;
