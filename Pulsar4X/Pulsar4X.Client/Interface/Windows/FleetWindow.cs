@@ -603,14 +603,21 @@ namespace Pulsar4X.SDL2UI
                             var name = jpBody.Name;
                             if(ImGui.Button(name + "###jpsurvey-button-" + name))
                             {
-                                if(jpSurveyableDB.OwningEntity != null)
+                                if(jpSurveyableDB.OwningEntity != null && SelectedFleet.TryGetDatablob<FleetDB>(out var fleetDB))
                                 {
                                     //var order = MoveFleetTowardsTargetOrder.CreateCommand(SelectedFleet, jpSurveyableDB.OwningEntity);
                                     var order = WarpFleetTowardsTargetOrder.CreateCommand(SelectedFleet, jpSurveyableDB.OwningEntity);
                                     _uiState.Game.OrderHandler.HandleOrder(order);
 
-                                    var order2 = JPSurveyOrder.CreateCommand(_uiState.Faction.Id, SelectedFleet, jpSurveyableDB.OwningEntity);
-                                    _uiState.Game.OrderHandler.HandleOrder(order2);
+
+                                    foreach (var child in fleetDB.Children)
+                                    {
+                                        if (child.HasJPSurveyAbililty())
+                                        {
+                                            var order2 = JPSurveyOrder.CreateCommand(_uiState.Faction.Id, child, jpSurveyableDB.OwningEntity);
+                                            _uiState.Game.OrderHandler.HandleOrder(order2);
+                                        }
+                                    }
                                 }
                             }
                         }
