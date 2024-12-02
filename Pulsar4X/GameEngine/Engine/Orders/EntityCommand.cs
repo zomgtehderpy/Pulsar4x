@@ -80,7 +80,9 @@ namespace Pulsar4X.Engine.Orders
         public bool PauseOnAction = false;
 
         public bool IsRunning { get; protected set; } = false;
-        public abstract bool IsFinished();
+        internal abstract bool IsFinished();
+        protected bool _isFinished = false;
+        public bool GetIsFinished { get { return _isFinished; }}
 
         public abstract EntityCommand Clone();
     }
