@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using ImGuiSDL2CS;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace Pulsar4X.SDL2UI
             catch (Exception e)
             {
                 // Log the crash
-                await crashLogger.LogCrashAsync(e);
+                await crashLogger.LogCrashAsync(e, $"Git Hash: {AssemblyInfo.GetGitHash()}");
                 
                 // Throw again to allow the local debugger to handle the exception
                 throw;
