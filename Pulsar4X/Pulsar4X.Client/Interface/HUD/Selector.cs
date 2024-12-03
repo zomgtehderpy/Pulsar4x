@@ -110,7 +110,8 @@ namespace Pulsar4X.SDL2UI
                                 }
                             }
 
-                            var flagshipID = fleet.GetDataBlob<FleetDB>().FlagShipID;
+                            fleet.TryGetDatablob<FleetDB>(out var fleetDB);
+                            var flagshipID = fleetDB?.FlagShipID ?? -9999;
                             if(fleet.Manager?.TryGetEntityById(flagshipID, out var flagship) ?? false)
                             {
                                 var positionDB = flagship.GetDataBlob<PositionDB>();
