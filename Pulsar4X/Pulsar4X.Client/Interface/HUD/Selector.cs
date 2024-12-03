@@ -9,6 +9,7 @@ using Pulsar4X.Extensions;
 using Pulsar4X.Factions;
 using Pulsar4X.Fleets;
 using Pulsar4X.Movement;
+using Pulsar4X.Ships;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -83,6 +84,10 @@ namespace Pulsar4X.SDL2UI
 
                     foreach(var fleet in fleets)
                     {
+                        // Check if the entity is actually a ship
+                        if (fleet.HasDataBlob<ShipInfoDB>())
+                            continue;
+                        
                         bool visible = FleetWindow.GetInstance().GetActive() && FleetWindow.GetInstance().SelectedFleet?.Id == fleet.Id;
                         string display = fleet.GetName(_uiState.Faction.Id);
                         if(ImGui.Selectable(display, visible))
