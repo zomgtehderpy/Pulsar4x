@@ -293,7 +293,7 @@ namespace Pulsar4X.SDL2UI
                                 {
                                     ImGui.BeginTooltip();
                                     ImGui.Text("IsRunning: " + actions[i].IsRunning);
-                                    ImGui.Text("IsFinished: " + actions[i].IsFinished());
+                                    ImGui.Text("IsFinished: " + actions[i].GetIsFinished);
                                     ImGui.EndTooltip();
                                 }
                                 ImGui.TableNextColumn();
