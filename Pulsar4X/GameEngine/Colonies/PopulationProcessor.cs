@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
+using Pulsar4X.Events;
 using Pulsar4X.Extensions;
 using Pulsar4X.Interfaces;
 using Pulsar4X.People;
@@ -19,7 +20,8 @@ namespace Pulsar4X.Colonies
         internal void GrowPopulation(Entity colony)
         {
             // Get current population
-            var currentPopulation = colony.GetDataBlob<ColonyInfoDB>().Population;
+            var colonyInfoDB = colony.GetDataBlob<ColonyInfoDB>();
+            var currentPopulation = colonyInfoDB.Population;
             var instancesDB = colony.GetDataBlob<ComponentInstancesDB>();
             long popSupportValue = instancesDB.GetPopulationSupportValue();
 
@@ -53,7 +55,7 @@ namespace Pulsar4X.Colonies
                         newPop = (long)(value * (1.0 + growthRate));
                         if (newPop < 0)
                             newPop = 0;
-                        currentPopulation[id] = newPop;
+                        UpdatePopulation(colonyInfoDB, currentPopulation, id, newPop);
                     }
                     else
                     {
@@ -68,7 +70,7 @@ namespace Pulsar4X.Colonies
                             newPop = maxPopulation;
                         if (newPop < 0)
                             newPop = 0;
-                        currentPopulation[id] = newPop;
+                        UpdatePopulation(colonyInfoDB, currentPopulation, id, newPop);
                     }
                 }
                 else
@@ -82,7 +84,7 @@ namespace Pulsar4X.Colonies
                     newPop = (long)(value * (1.0 + growthRate));
                     if (newPop < 0)
                         newPop = 0;
-                    currentPopulation[id] = newPop;
+                    UpdatePopulation(colonyInfoDB, currentPopulation, id, newPop);
                 }
             }
         }
@@ -97,6 +99,21 @@ namespace Pulsar4X.Colonies
             long totalMaxPop = instancesDB.GetPopulationSupportValue();
 
             colonyEntity.GetDataBlob<ColonyLifeSupportDB>().MaxPopulation = totalMaxPop;
+        }
+
+        private void UpdatePopulation(ColonyInfoDB colony ,Dictionary<int, long> population, int id, long newPopulation)
+        {
+            population[id] = newPopulation;
+            
+            EventManager.Instance.Publish(
+                Event.Create(
+                    EventType.PopulationChanged,
+                    colony.OwningEntity.StarSysDateTime,
+                    $"{colony.OwningEntity.GetName(colony.OwningEntity.FactionOwnerID)} population is now {newPopulation}",
+                    colony.OwningEntity.FactionOwnerID,
+                    colony.OwningEntity.Manager.ManagerID,
+                    colony.OwningEntity.Id
+                    ));
         }
 
         public void Init(Game game)
