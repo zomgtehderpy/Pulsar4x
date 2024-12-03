@@ -72,11 +72,11 @@ namespace Pulsar4X.Storage
                 double itemMassPerUnit = cargoItem.MassPerUnit;
                 double massToXfer = Math.Min(massTransferable, tuple.mass);
                 massToXfer = Math.Min(massToXfer, CargoMath.GetFreeMass(moveTo, cargoItem));
-                //we use Floor here to signify whole part items not fully moved yet. 
-                int countToXfer = (int)Math.Floor(massToXfer / itemMassPerUnit);
                 
                 double massLeft = tuple.mass - massToXfer;
-                long itemsLeft = tuple.count - countToXfer;
+                //we use Ceaaling here to signify whole part items not fully moved yet. 
+                long itemsLeft = (int)Math.Ceiling(massLeft * itemMassPerUnit);
+                var countToXfer = tuple.count - itemsLeft;
                 escroList[index] = (cargoItem,itemsLeft, massLeft);
                 
                 //add items to cargo of seconddary entity store

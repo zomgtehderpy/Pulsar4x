@@ -221,6 +221,11 @@ public class CargoTransferOrder : EntityCommand
             default:
                 throw new ArgumentOutOfRangeException();
         }
+        if(_isFinished)
+        {
+            TransferData.PrimaryStorageDB.EscroItems.Remove(TransferData);
+            TransferData.SecondaryStorageDB.EscroItems.Remove(TransferData);
+        }
         return _isFinished;
     }
 
