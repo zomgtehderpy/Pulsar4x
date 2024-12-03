@@ -4,14 +4,19 @@ using System.Linq;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
+using Pulsar4X.Interfaces;
 using Pulsar4X.People;
 
 
 namespace Pulsar4X.Colonies
 {
-    public static class PopulationProcessor
+    public class PopulationProcessor : IHotloopProcessor
     {
-        internal static void GrowPopulation(Entity colony)
+        public TimeSpan RunFrequency { get; } = TimeSpan.FromDays(30);
+        public TimeSpan FirstRunOffset { get; } = TimeSpan.FromDays(30);
+        public Type GetParameterType { get; } = typeof(ColonyInfoDB);
+
+        internal void GrowPopulation(Entity colony)
         {
             // Get current population
             var currentPopulation = colony.GetDataBlob<ColonyInfoDB>().Population;
@@ -82,7 +87,7 @@ namespace Pulsar4X.Colonies
             }
         }
 
-        public static void ReCalcMaxPopulation(Entity colonyEntity)
+        internal void ReCalcMaxPopulation(Entity colonyEntity)
         {
             var infrastructure = new List<Entity>();
             var instancesDB = colonyEntity.GetDataBlob<ComponentInstancesDB>();
@@ -93,5 +98,28 @@ namespace Pulsar4X.Colonies
 
             colonyEntity.GetDataBlob<ColonyLifeSupportDB>().MaxPopulation = totalMaxPop;
         }
+
+        public void Init(Game game)
+        {
+        }
+
+        public void ProcessEntity(Entity entity, int deltaSeconds)
+        {
+            GrowPopulation(entity);
+        }
+
+        public int ProcessManager(EntityManager manager, int deltaSeconds)
+        {
+            var colonies = manager.GetAllDataBlobsOfType<ColonyInfoDB>();
+
+            foreach (var colony in colonies)
+            {
+                if(colony.OwningEntity != null)
+                    GrowPopulation(colony.OwningEntity);
+            }
+
+            return colonies.Count;
+        }
+
     }
 }
