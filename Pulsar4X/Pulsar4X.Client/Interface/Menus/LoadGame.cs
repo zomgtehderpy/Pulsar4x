@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
 using Pulsar4X.Factions;

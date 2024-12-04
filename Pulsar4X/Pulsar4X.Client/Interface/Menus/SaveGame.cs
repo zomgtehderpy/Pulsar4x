@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Engine;
 using Pulsar4X.SDL2UI;
 using Pulsar4X.SDL2UI.ModFileEditing;

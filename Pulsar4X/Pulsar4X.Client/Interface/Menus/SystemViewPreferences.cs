@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using ImGuiNET;
 using Microsoft.Extensions.Configuration;
+using Pulsar4X.Client.Interface.Widgets;
 using SDL2;
 
 namespace Pulsar4X.SDL2UI;
