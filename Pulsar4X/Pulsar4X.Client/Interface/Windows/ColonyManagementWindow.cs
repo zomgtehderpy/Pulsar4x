@@ -75,7 +75,11 @@ namespace Pulsar4X.SDL2UI
                     ImGui.EndChild();
                 }
 
-                if(SelectedEntity == null) return;
+                if (SelectedEntity == null)
+                {
+                    Window.End();
+                    return;
+                }
 
                 ImGui.SameLine();
 
