@@ -6,6 +6,7 @@ using Vector2 = System.Numerics.Vector2;
 using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
+using Pulsar4X.Client.Interface.Menus;
 using Pulsar4X.Extensions;
 using Pulsar4X.Datablobs;
 using Pulsar4X.SDL2UI.ModFileEditing;
@@ -51,27 +52,29 @@ namespace Pulsar4X.SDL2UI
                     }
                     if (_uiState.IsGameLoaded)
                     {
-                        if (ImGui.Button("Save Current Game", buttonSize))
+                        if (ImGui.Button("Save Game...", buttonSize))
                         {
                             _saveGame = !_saveGame;
-
-                            string gameJson = Game.Save(_uiState.Game);
-
-                            File.WriteAllText("save.json", gameJson);
+                            
+                            SaveGame.GetInstance().ToggleActive();
+                            // string gameJson = Game.Save(_uiState.Game);
+                            //
+                            // File.WriteAllText("save.json", gameJson);
 
                             // FIXME:
                             //SerializationManager.Export(_uiState.Game, "SaveGame");
                         }
-                        if (ImGui.Button("Load Last Saved Game", buttonSize))
+                        if (ImGui.Button("Load Game...", buttonSize))
                         {
-                            string contents = File.ReadAllText("save.json");
-                            var loadedGame = Game.Load(contents);
-
-                            _uiState.Game = loadedGame;
-
-                            var playerFaction = loadedGame.Factions.Where(f => f.Value.GetOwnersName().Equals("UEF")).First();
-                            _uiState.SetFaction(playerFaction.Value, true);
-                            _uiState.SetActiveSystem(playerFaction.Value.GetDataBlob<FactionInfoDB>().KnownSystems[0]);
+                            LoadGame.GetInstance().ToggleActive();
+                            // string contents = File.ReadAllText("save.json");
+                            // var loadedGame = Game.Load(contents);
+                            //
+                            // _uiState.Game = loadedGame;
+                            //
+                            // var playerFaction = loadedGame.Factions.Where(f => f.Value.GetOwnersName().Equals("UEF")).First();
+                            // _uiState.SetFaction(playerFaction.Value, true);
+                            // _uiState.SetActiveSystem(playerFaction.Value.GetDataBlob<FactionInfoDB>().KnownSystems[0]);
                         }
                         if (ImGui.Button("Options", buttonSize))
                         {
