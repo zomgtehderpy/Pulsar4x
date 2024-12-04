@@ -1,5 +1,6 @@
 ﻿using System;
 using ImGuiNET;
+using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Engine;
 using Pulsar4X.Orbital;
 using Vector3 = Pulsar4X.Orbital.Vector3;
@@ -329,7 +330,7 @@ namespace Pulsar4X.SDL2UI
             ImGui.SetNextWindowSize(size, ImGuiCond.FirstUseEver);
             ImGui.SetNextWindowPos(pos, ImGuiCond.FirstUseEver);
 
-            if (ImGui.Begin(WindowTitleHelper.GetDebugWindowTitle(_displayText), ref IsActive, _flags))
+            if (Window.Begin(_displayText, ref IsActive, _flags))
             {
                 //put calcs that needs refreshing each frame in here. (ie calculations from mouse cursor position)
                 if (_endpointTargetOrbitWidget != null)
@@ -489,7 +490,7 @@ namespace Pulsar4X.SDL2UI
                     }
                 }
 
-                ImGui.End();
+                Window.End();
             }
 
         }

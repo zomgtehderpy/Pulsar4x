@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ImGuiNET;
 using ImGuiSDL2CS;
+using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Components;
 using Pulsar4X.Engine;
 using Pulsar4X.DataStructures;
@@ -185,7 +186,7 @@ namespace Pulsar4X.SDL2UI.Combat
         {
             if (IsActive)
             {
-                if (ImGui.Begin(WindowTitleHelper.GetDebugWindowTitle("DamageViewer Testing")))
+                if (Window.Begin("DamageViewer Testing"))
                 {
 
                     if (_shipImgPtr != IntPtr.Zero)
@@ -322,7 +323,7 @@ namespace Pulsar4X.SDL2UI.Combat
 
             }
 
-            ImGui.End();
+            Window.End();
         }
 
         }

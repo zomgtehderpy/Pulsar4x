@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ImGuiNET;
+using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Events;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
@@ -80,7 +81,7 @@ namespace Pulsar4X.SDL2UI
             ImGui.SetNextWindowSize(size, ImGuiCond.FirstUseEver); 
             ImGui.SetNextWindowPos(pos, ImGuiCond.Appearing);
             
-            if (ImGui.Begin(WindowTitleHelper.GetDebugWindowTitle("GameLog"), ref IsActive)) 
+            if (Window.Begin("GameLog", ref IsActive)) 
             { 
                 if (_factionEventLog == null) 
                 { 
@@ -152,7 +153,7 @@ namespace Pulsar4X.SDL2UI
                 }
                 
                 ImGui.Separator(); 
-                ImGui.End(); 
+                Window.End(); 
             } 
         } 
     } 

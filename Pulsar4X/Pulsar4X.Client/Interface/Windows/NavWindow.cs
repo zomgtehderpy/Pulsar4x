@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using ImGuiNET;
+using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
 using Pulsar4X.Orbital;
@@ -242,7 +243,7 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
             if (!IsActive || soiParentPosition == null)
                 return;
             ImGui.SetNextWindowSize(new Vector2(600f, 400f), ImGuiCond.FirstUseEver);
-            if (ImGui.Begin(WindowTitleHelper.GetDebugWindowTitle("Nav Control: " + _orderEntityName), ref IsActive, _flags))
+            if (Window.Begin("Nav Control: " + _orderEntityName, ref IsActive, _flags))
             {
                 ImGui.Columns(2);
                 ManuverTree(_manuverLines.RootSequence);
@@ -370,6 +371,7 @@ namespace Pulsar4X.ImGuiNetUI.EntityManagement
                 ImGui.Text(fuelName + " Fuel: " + Stringify.Mass(_fuelMass));
                 var thrust = _newtonThrust?.ThrustInNewtons ?? 0;
                 ImGui.Text("Total Thrust: " + Stringify.Thrust(thrust));
+                Window.End();
             }
         }
 

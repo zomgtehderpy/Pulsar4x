@@ -3,7 +3,7 @@ using System.IO;
 using ImGuiNET;
 using ImGuiSDL2CS;
 
-namespace Pulsar4X.SDL2UI.ModFileEditing;
+namespace Pulsar4X.Client.Interface.Widgets;
 
 
 /*TODO:

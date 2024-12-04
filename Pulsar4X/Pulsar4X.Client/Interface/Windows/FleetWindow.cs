@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using ImGuiNET;
 using ImGuiSDL2CS;
+using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Colonies;
 using Pulsar4X.Engine;
 using Pulsar4X.Datablobs;
@@ -142,7 +143,7 @@ namespace Pulsar4X.SDL2UI
         {
             if(!IsActive) return;
 
-            if(ImGui.Begin(WindowTitleHelper.GetDebugWindowTitle("Fleet Management"), ref IsActive, _flags))
+            if(Window.Begin("Fleet Management", ref IsActive, _flags))
             {
                 DisplayFleetList();
 
@@ -158,7 +159,7 @@ namespace Pulsar4X.SDL2UI
 
                 DisplayTabs();
 
-                ImGui.End();
+                Window.End();
             }
         }
 

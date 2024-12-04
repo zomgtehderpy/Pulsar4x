@@ -5,6 +5,7 @@ using System.Numerics;
 using ImGuiNET;
 using Pulsar4X.Engine;
 using Pulsar4X.Blueprints;
+using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Factions;
 
@@ -47,7 +48,7 @@ namespace Pulsar4X.SDL2UI
         {
             if(!IsActive) return;
 
-            if(ImGui.Begin(WindowTitleHelper.GetDebugWindowTitle("Component Designer"), ref IsActive, _flags))
+            if(Window.Begin("Component Designer", ref IsActive, _flags))
             {
                 Vector2 windowContentSize = ImGui.GetContentRegionAvail();
 
@@ -98,7 +99,7 @@ namespace Pulsar4X.SDL2UI
                 ImGui.SetCursorPosY(27f); // FIXME: this should somehow be calculated
                 ComponentDesignDisplay.GetInstance().Display(_uiState);
 
-                ImGui.End();
+                Window.End();
             }
         }
 

@@ -7,6 +7,7 @@ using ImGuiSDL2CS;
 using Pulsar4X.Engine;
 using Pulsar4X.Components;
 using Pulsar4X.Blueprints;
+using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Extensions;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Energy;
@@ -181,7 +182,7 @@ namespace Pulsar4X.SDL2UI
 
         internal override void Display()
         {
-            if (IsActive && ImGui.Begin(WindowTitleHelper.GetDebugWindowTitle("Ship Design"), ref IsActive, _flags))
+            if (IsActive && Window.Begin("Ship Design", ref IsActive, _flags))
             {
                 if(_existingShipDesignNames.Count != _uiState.Faction.GetDataBlob<FactionInfoDB>().ShipDesigns.Values.Count)
                 {
@@ -225,6 +226,7 @@ namespace Pulsar4X.SDL2UI
                     DisplayStats();
                     ImGui.EndChild();
                 }
+                Window.End();
             }
         }
 

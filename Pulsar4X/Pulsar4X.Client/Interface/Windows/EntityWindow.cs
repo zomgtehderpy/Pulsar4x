@@ -1,6 +1,7 @@
 using System;
 using System.Numerics;
 using ImGuiNET;
+using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Engine;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Extensions;
@@ -46,13 +47,13 @@ namespace Pulsar4X.SDL2UI
             if(!IsActive) return;
 
             ImGui.SetNextWindowSize(new System.Numerics.Vector2(512, 325), ImGuiCond.Once);
-            if (ImGui.Begin(WindowTitleHelper.GetDebugWindowTitle(Title + " (" + EntityState.BodyType.ToDescription() + ")") + "###" + Entity.Id, ref IsActive, _flags))
+            if (Window.Begin(Title + " (" + EntityState.BodyType.ToDescription() + ")" + "###" + Entity.Id, ref IsActive, _flags))
             {
                 DisplayActions();
                 DisplayInfo();
                 DisplayConditional();
 
-                ImGui.End();
+                Window.End();
             }
         }
 
