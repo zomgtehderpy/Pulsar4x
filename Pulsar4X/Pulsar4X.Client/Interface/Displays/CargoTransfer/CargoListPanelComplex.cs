@@ -5,10 +5,13 @@ using System.Linq;
 using System.Numerics;
 using ImGuiNET;
 using Pulsar4X.Blueprints;
+using Pulsar4X.Colonies;
+using Pulsar4X.Components;
 using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
 using Pulsar4X.Factions;
+using Pulsar4X.Ships;
 using Pulsar4X.Storage;
 
 namespace Pulsar4X.SDL2UI;
@@ -124,6 +127,35 @@ public class CargoListPanelComplex
     {
         return _stores.ContainsKey(cargoTypeID);
 
+    }
+
+    internal bool CanInstall(ICargoable cargoItem)
+    {
+        if (_entityState.Entity.HasDataBlob<ColonyInfoDB>())
+        {
+            if (cargoItem is ComponentDesign)
+            {
+                var componentDesign = (ComponentDesign)cargoItem;
+                if ((componentDesign.ComponentMountType & ComponentMountType.PlanetInstallation) == ComponentMountType.PlanetInstallation)
+                {
+                    return true;
+                }
+            }
+            
+        }
+        if (_entityState.Entity.HasDataBlob<ShipInfoDB>())
+        {
+            if (cargoItem is ComponentDesign)
+            {
+                var componentDesign = (ComponentDesign)cargoItem;
+                if ((componentDesign.ComponentMountType & ComponentMountType.ShipComponent) == ComponentMountType.ShipComponent)
+                {
+                    return true;
+                }
+            }
+            
+        }
+        return false;
     }
 
     internal void AddUICargoIn(ICargoable cargoItem, long itemCount)

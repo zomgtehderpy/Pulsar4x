@@ -223,8 +223,10 @@ public class CargoTransferOrder : EntityCommand
         }
         if(_isFinished)
         {
-            TransferData.PrimaryStorageDB.EscroItems.Remove(TransferData);
-            TransferData.SecondaryStorageDB.EscroItems.Remove(TransferData);
+            //TransferData.PrimaryStorageDB.EscroItems.Remove(TransferData);
+            //TransferData.SecondaryStorageDB.EscroItems.Remove(TransferData);
+            _entityCommanding.GetDataBlob<CargoStorageDB>().EscroItems.Remove(TransferData);
+            _entityCommanding.RemoveDataBlob<CargoTransferDB>();
         }
         return _isFinished;
     }

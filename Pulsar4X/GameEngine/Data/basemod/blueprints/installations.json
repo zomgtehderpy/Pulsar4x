@@ -77,9 +77,9 @@
           "DescriptionFormula": "'Size (volume) of this installation'",
           "GuiHint": "GuiSelectionMaxMin",
           "MaxFormula": "5000",
-          "MinFormula": "2",
+          "MinFormula": "5",
           "StepFormula": "1",
-          "AttributeFormula": "2"
+          "AttributeFormula": "5"
         },
         {
           "Name": "MiningAmount",

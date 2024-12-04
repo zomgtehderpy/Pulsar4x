@@ -8,15 +8,11 @@ using Pulsar4X.Datablobs;
 
 namespace Pulsar4X.Storage
 {
-
-    //this object is shared between two CargoTransferDB.
-
     /// <summary>
     /// this datablob is active on an entity that is or will be transfering cargo.
     /// </summary>
     public class CargoTransferDB : BaseDataBlob
     {
-
         [JsonIgnore]
         internal CargoStorageDB ParentStorageDB { get; set; }
         

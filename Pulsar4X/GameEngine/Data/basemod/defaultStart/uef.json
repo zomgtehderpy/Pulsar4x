@@ -19,6 +19,7 @@
     "componentDesigns/laserWeapon.json",
     "componentDesigns/merlin.json",
     "componentDesigns/mine.json",
+    "componentDesigns/autoMine.json",
     "componentDesigns/passiveScanner.json",
     "componentDesigns/passiveScannerS50.json",
     "componentDesigns/raptor.json",
@@ -92,7 +93,8 @@
           "designId": "default-ship-design-freighter",
           "name": "Planet Express Ship",
           "cargo": [
-            { "id": "rp-1", "amount": 20000000 }
+            { "id": "rp-1", "amount": 20000000 },
+            { "id": "default-auto-mine", "amount": 1 }
           ]
         }
       ]

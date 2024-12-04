@@ -81,6 +81,7 @@ namespace Pulsar4X.Engine.Orders
 
         public bool IsRunning { get; protected set; } = false;
         internal abstract bool IsFinished();
+        [JsonProperty]
         protected bool _isFinished = false;
         public bool GetIsFinished { get { return _isFinished; }}
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using ImGuiNET;
+using Pulsar4X.Components;
 using Pulsar4X.Engine;
 using Pulsar4X.Factions;
 using Pulsar4X.Orbits;
@@ -274,6 +275,20 @@ namespace Pulsar4X.SDL2UI
                                 { MoveItems(1); }
                                 if (ImGui.Button("Action Order"))
                                 { ActionXferOrder(); }
+                            }
+
+                            if (UnselectedCargoPanel != null && UnselectedCargoPanel.CanInstall(SelectedCargoPanel.selectedCargo))
+                            {
+                                if (ImGui.Button("Install"))
+                                {
+                                    ComponentInstance specificComponent = new((ComponentDesign)SelectedCargoPanel.selectedCargo);
+                                    CargoInstallOrder.CreateCommand(
+                                        _uiState.Faction.Id,
+                                        _selectedEntityLeft.Entity, 
+                                        _selectedEntityRight.Entity,
+                                        specificComponent
+                                        );
+                                }
                             }
                             //else
                                 //can't transfer due to target unable to store this type
