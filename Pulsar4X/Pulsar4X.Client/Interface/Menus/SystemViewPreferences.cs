@@ -293,7 +293,7 @@ public class SystemViewPreferences : PulsarGuiWindow
         if(_selectedEditorViewNames == null)
                 throw new NullReferenceException();
 
-        if(ImGui.Begin("System View Preferences", ref IsActive))
+        if(Window.Begin("System View Preferences", ref IsActive))
         {
             if(ImGui.Combo("###view-selector", ref _selectedEditorViewIndex, _selectedEditorViewNames, _selectedEditorViewNames.Length))
             {
@@ -346,7 +346,7 @@ public class SystemViewPreferences : PulsarGuiWindow
                     SaveViewIni(Views[_selectedEditorViewIndex]);
                 }
             }
-            ImGui.End();
+            Window.End();
         }
     }
 
