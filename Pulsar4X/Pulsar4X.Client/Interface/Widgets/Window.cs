@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Reflection;
@@ -15,32 +16,73 @@ public static class Window
 {
 #if DEBUG
     private static ConcurrentDictionary<string, string> _cachedPrefixs = new();
+    
+    // Track whether we're inside a Begin/End block
+    private static int _beginCount = 0; 
+    private static string _currentWindowTitle = "";
 #endif
     
     public static bool Begin(string title, [CallerFilePath] string callerFilePath = "")
     {
+#if DEBUG
+        ValidateBeginCall(title);
+#endif
         return ImGui.Begin(GetWindowTitle(title, callerFilePath));
     }
     
     public static bool Begin(string title, ref bool isActive, [CallerFilePath] string callerFilePath = "")
     {
+#if DEBUG
+        ValidateBeginCall(title);
+#endif
         return ImGui.Begin(GetWindowTitle(title, callerFilePath), ref isActive);
     }
 
     public static bool Begin(string title, ref bool isActive, ImGuiWindowFlags flags, [CallerFilePath] string callerFilePath = "")
     {
+#if DEBUG
+        ValidateBeginCall(title);
+#endif
         return ImGui.Begin(GetWindowTitle(title, callerFilePath), ref isActive, flags);
     }
 
     public static bool Begin(string title, ImGuiWindowFlags flags, [CallerFilePath] string callerFilePath = "")
     {
+#if DEBUG
+        ValidateBeginCall(title);
+#endif
         return ImGui.Begin(GetWindowTitle(title, callerFilePath), flags);
     }
 
     public static void End()
     {
+#if DEBUG
+        if (_beginCount == 0)
+        {
+            throw new InvalidOperationException("End() called without a matching Begin()");
+        }
+        _beginCount--;
+        if (_beginCount == 0)
+        {
+            _currentWindowTitle = "";
+        }
+#endif
         ImGui.End();
     }
+    
+#if DEBUG
+    private static void ValidateBeginCall(string title)
+    {
+        if (_beginCount > 0)
+        {
+            throw new InvalidOperationException(
+                $"Begin(\"{title}\") called while already inside window \"{_currentWindowTitle}\". " +
+                "Must call End() before starting a new window.");
+        }
+        _beginCount++;
+        _currentWindowTitle = title;
+    }
+#endif
     
     /// <summary>
     /// Prepends the calling class path and name to the provided title string when in debug mode.
