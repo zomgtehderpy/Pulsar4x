@@ -13,9 +13,9 @@ namespace Pulsar4X.Client.Interface.Widgets;
 /// </summary>
 public static class Window
 {
-    #if DEBUG
+#if DEBUG
     private static ConcurrentDictionary<string, string> _cachedPrefixs = new();
-    #endif
+#endif
     
     public static bool Begin(string title, [CallerFilePath] string callerFilePath = "")
     {
@@ -32,6 +32,11 @@ public static class Window
         return ImGui.Begin(GetWindowTitle(title, callerFilePath), ref isActive, flags);
     }
 
+    public static bool Begin(string title, ImGuiWindowFlags flags, [CallerFilePath] string callerFilePath = "")
+    {
+        return ImGui.Begin(GetWindowTitle(title, callerFilePath), flags);
+    }
+
     public static void End()
     {
         ImGui.End();
@@ -45,7 +50,7 @@ public static class Window
     /// <returns>Modified title string with class path in debug mode, original string in release mode</returns>
     private static string GetWindowTitle(string title, string callerFilePath)
     {
-        #if DEBUG
+#if DEBUG
         if (!_cachedPrefixs.ContainsKey(callerFilePath))
         {
             // Get the full path and convert to project relative path
