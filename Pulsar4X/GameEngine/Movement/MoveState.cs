@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Pulsar4X.Datablobs;
 using Pulsar4X.Engine;
 using Pulsar4X.Galaxy;
@@ -73,6 +74,8 @@ public class PositionDB : TreeHierarchyDB, IPosition
 
     public double SGP { get; internal set; }
 
+    [JsonConstructor]
+    private PositionDB(): base(null) {}
 
     /// <summary>
     /// Initialized
