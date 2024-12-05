@@ -24,7 +24,9 @@ public class CargoTransferOrder : EntityCommand
         TakeAvailible
         
     }
+    [JsonProperty]
     public Conditionals Condition {get; private set;} = Conditionals.TakeAvailibleAtOrder;
+    [JsonProperty]
     public bool IsPrimaryEntity { get; private set; }
 
     public override ActionLaneTypes ActionLanes => ActionLaneTypes.Movement | ActionLaneTypes.InteractWithExternalEntity;
@@ -57,20 +59,19 @@ public class CargoTransferOrder : EntityCommand
 
     internal override Entity EntityCommanding { get { return _entityCommanding; } }
 
-    private CargoTransferDataObject TransferData { get; }
+    private CargoTransferDataDB TransferData { get; }
 
-    [JsonIgnore]
-    Entity factionEntity;
+
     
 
-    private CargoTransferOrder(CargoTransferDataObject transferData)
+    private CargoTransferOrder(CargoTransferDataDB transferData)
     {
         TransferData = transferData;
     }
     
     public static void CreateCommands(int faction, Entity primaryEntity, Entity secondaryEntity, List<(ICargoable item, long amount)> itemsToMove )
     {
-        CargoTransferDataObject cargoData = new(primaryEntity, secondaryEntity, itemsToMove);
+        CargoTransferDataDB cargoData = new(primaryEntity, secondaryEntity, itemsToMove);
         var cmd1 = new CargoTransferOrder(cargoData)
         {
             RequestingFactionGuid = faction,
@@ -109,7 +110,7 @@ public class CargoTransferOrder : EntityCommand
 
         List<(ICargoable item, long amount)> itemList = new List<(ICargoable item, long amount)>();
         itemList.Add((item, amount));
-        CargoTransferDataObject cargoData = new(primaryEntity, secondaryEntity, itemList);
+        CargoTransferDataDB cargoData = new(primaryEntity, secondaryEntity, itemList);
         
         var cmd1 = new CargoTransferOrder(cargoData)
         {
@@ -174,7 +175,7 @@ public class CargoTransferOrder : EntityCommand
 
     internal override bool IsValidCommand(Game game)
     {
-        if (CommandHelpers.IsCommandValid(game.GlobalManager, RequestingFactionGuid, EntityCommandingGuid, out factionEntity, out _entityCommanding))
+        if (CommandHelpers.IsCommandValid(game.GlobalManager, RequestingFactionGuid, EntityCommandingGuid, out var factionEntity, out _entityCommanding))
         {
             return true;
         }

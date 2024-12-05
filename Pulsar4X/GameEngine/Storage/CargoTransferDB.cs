@@ -13,13 +13,14 @@ namespace Pulsar4X.Storage
     /// </summary>
     public class CargoTransferDB : BaseDataBlob
     {
-        [JsonIgnore]
+        [JsonProperty]
         internal CargoStorageDB ParentStorageDB { get; set; }
         
         /// <summary>
         /// This object is shared between two datablobs/entites 
         /// </summary>
-        internal CargoTransferDataObject TransferData { get; private set; } 
+        [JsonProperty]
+        internal CargoTransferDataDB TransferData { get; private set; } 
         
         internal bool IsPrimary
         {
@@ -51,14 +52,14 @@ namespace Pulsar4X.Storage
              return list;
         }
 
-        public CargoTransferDB(CargoTransferDataObject transferDataObject)
+        public CargoTransferDB(CargoTransferDataDB transferDataDB)
         {
-            TransferData = transferDataObject;
+            TransferData = transferDataDB;
         }
 
         public override object Clone()
         {
-            throw new NotImplementedException();
+            return new CargoTransferDB(TransferData);
         }
     }
 

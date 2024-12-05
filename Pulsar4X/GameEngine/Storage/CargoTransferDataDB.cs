@@ -1,32 +1,43 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
 using Pulsar4X.Galaxy;
 
 namespace Pulsar4X.Storage;
 
-public class CargoTransferDataObject
+public class CargoTransferDataDB : BaseDataBlob
 {
-    internal Entity PrimaryEntity { get; set; }
-    internal Entity SecondaryEntity { get; set; }
+    [JsonProperty]
+    internal Entity PrimaryEntity { get; private set; }
+    [JsonProperty]
+    internal Entity SecondaryEntity { get; private set; }
     
     /// <summary>
     /// positive amounts move INTO this entity, negitive amounts move OUT from this entity
     /// </summary>
+    [JsonProperty]
     internal CargoStorageDB PrimaryStorageDB { get; private set; }
+    
     /// <summary>
     /// positive amounts move OUT from this entity, negitive amounts move INTO this entity.
     /// </summary>
+    [JsonProperty]
     internal CargoStorageDB SecondaryStorageDB { get; private set; }
-
+    [JsonProperty]
     internal List<(ICargoable item, long amount)> OrderedToTransfer { get; private set; }
 
+    [JsonProperty]
     internal SafeList<(ICargoable item, long count, double mass)> EscroHeldInPrimary { get; private set; } = new();
+    [JsonProperty]
     internal SafeList<(ICargoable item, long count, double mass)> EscroHeldInSecondary { get; private set; } = new();
 
+    [JsonConstructor]
+    private CargoTransferDataDB(){}
         
-    internal CargoTransferDataObject(Entity primary, Entity secondary, List<(ICargoable item, long amount)> itemsToTransfer)
+    internal CargoTransferDataDB(Entity primary, Entity secondary, List<(ICargoable item, long amount)> itemsToTransfer)
     {
         PrimaryEntity = primary;
         SecondaryEntity = secondary;
@@ -117,5 +128,10 @@ public class CargoTransferDataObject
             }
             break;
         }
+    }
+
+    public override object Clone()
+    {
+        return new CargoStorageDB();
     }
 }
