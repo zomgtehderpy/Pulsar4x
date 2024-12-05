@@ -18,7 +18,9 @@ jobs:
         dotnet-version: 8.0.x
         
     - name: Build
-      run: dotnet build -c Release
+      run: |
+        cd Pulsar4X/Benchmarks
+        dotnet build -c Release
         
     - name: Run benchmarks
       run: |
