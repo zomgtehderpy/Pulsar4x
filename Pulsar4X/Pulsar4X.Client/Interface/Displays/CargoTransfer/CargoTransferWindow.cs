@@ -71,7 +71,7 @@ namespace Pulsar4X.SDL2UI
             else
             {
                 instance = (CargoTransferWindow)_uiState.LoadedWindows[typeof(CargoTransferWindow)];
-                if (instance._selectedEntityLeft != _uiState.PrimaryEntity)
+                if (instance._selectedEntityLeft != selectedEntity1)
                 {
                     instance.HardRefresh();
                 }
@@ -156,19 +156,8 @@ namespace Pulsar4X.SDL2UI
                 throw new NullReferenceException();
 
             double? dvDif;
-            OrbitDB leftOrbit;
-            //TODO: the logic here has places where it's going to break, needs fixing.
-            //I think I'm checking if it's a colony here?
-            //but I'm not checking for NewtonMoveDB or OrbitUpdateOftenDB
-            if (!_selectedEntityLeft.Entity.HasDataBlob<OrbitDB>())
-            {
-                dvDif = _selectedEntityRight.Entity.GetDataBlob<OrbitDB>().MeanOrbitalVelocityInm();
-            }
-            else
-            {
-                leftOrbit = _selectedEntityLeft.Entity.GetDataBlob<OrbitDB>();
-                dvDif = CargoTransferProcessor.CalcDVDifference_m(_selectedEntityLeft.Entity, _selectedEntityRight.Entity);
-            }
+
+            dvDif = CargoTransferProcessor.CalcDVDifference_m(_selectedEntityLeft.Entity, _selectedEntityRight.Entity);
 
             if (dvDif == null)
             {

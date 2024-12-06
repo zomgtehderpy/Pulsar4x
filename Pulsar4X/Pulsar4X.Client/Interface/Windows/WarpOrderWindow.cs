@@ -141,10 +141,14 @@ namespace Pulsar4X.SDL2UI
                 return new WarpOrderWindow(entity, SMMode);
             }
             var instance = (WarpOrderWindow)_uiState.LoadedWindows[typeof(WarpOrderWindow)];
+            if (instance.OrderingEntityState != entity)
+            {
+                return new WarpOrderWindow(entity);
+            }
+            
             instance.OrderingEntityState = entity;
             instance.CurrentState = States.NeedsTarget;
             instance._departureDateTime = _uiState.PrimarySystemDateTime;
-
             instance.EntitySelected();
             return instance;
         }
@@ -564,6 +568,8 @@ namespace Pulsar4X.SDL2UI
 
         internal override void EntityClicked(EntityState entity, MouseButtons button)
         {
+            if (entity == OrderingEntityState)
+                return;
             ImGuiIOPtr io = ImGui.GetIO();
 
             if (button == MouseButtons.Primary && !io.KeyShift )

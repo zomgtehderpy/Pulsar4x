@@ -223,8 +223,7 @@ namespace Pulsar4X.Storage
             var hohmann = OrbitalMath.Hohmann(sgp, r1, r2);
             dvDif = hohmann[0].deltaV.Length() + hohmann[1].deltaV.Length();
             return dvDif;
-
-
+            
         }
 
 
