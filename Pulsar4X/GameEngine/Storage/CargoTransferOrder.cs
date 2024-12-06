@@ -184,6 +184,9 @@ public class CargoTransferOrder : EntityCommand
 
     internal override bool IsFinished()
     {
+        if(!IsRunning)
+            return _isFinished = false;
+        
         switch (Condition)
         {
             case Conditionals.TakeAvailibleAtOrder:
