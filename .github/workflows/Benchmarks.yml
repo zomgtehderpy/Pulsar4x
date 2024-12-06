@@ -28,7 +28,7 @@ jobs:
         dotnet run -c Release --filter '*'
         
     - name: Store benchmark results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: benchmark-results
         path: Pulsar4X/Benchmarks/BenchmarkDotNet.Artifacts/results
