@@ -249,6 +249,9 @@ namespace Pulsar4X.Factions
 
                 switch(type)
                 {
+                    case "byVolume":
+                        CargoTransferProcessor.AddRemoveCargoVolume(target, factionDataStore.CargoGoods[cargoId], amount);
+                        break;
                     case "byCount":
                         CargoTransferProcessor.AddCargoItems(target, factionDataStore.CargoGoods[cargoId], amount);
                         break;

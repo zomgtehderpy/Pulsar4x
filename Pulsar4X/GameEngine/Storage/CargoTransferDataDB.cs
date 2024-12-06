@@ -56,14 +56,14 @@ public class CargoTransferDataDB : BaseDataBlob
             TypeStore store;
             SafeList<(ICargoable item, long count, double mass)> itemsToRemove; //reference which list.
             long unitsStorable; 
-            if (unitAmount < 0) //if we're removing items
+            if (unitAmount < 0) //we're moving items from primary to secondary
             {
                 unitAmount *= -1;
                 store = PrimaryStorageDB.TypeStores[cargoItem.CargoTypeID];
                 itemsToRemove = EscroHeldInPrimary;
                 unitsStorable = CargoMath.GetFreeUnitSpace(SecondaryStorageDB, cargoItem);
             }
-            else
+            else   //we're moving items from secondary to primary
             {
                 store = SecondaryStorageDB.TypeStores[cargoItem.CargoTypeID];
                 itemsToRemove = EscroHeldInSecondary;

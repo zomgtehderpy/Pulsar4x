@@ -83,7 +83,7 @@ public class CreateTransferWindow : PulsarGuiWindow
                             var itemsToTransfer = new List<(ICargoable, long)>();
                             foreach(var item in TransferLeftGoods)
                             {
-                                itemsToTransfer.Add((item.Key, item.Value.Item1));
+                                itemsToTransfer.Add((item.Key, -item.Value.Item1));
                             }
                             CargoTransferOrder.CreateCommands(_uiState.Faction.Id, TransferLeft, TransferRight, itemsToTransfer);
                         }
