@@ -14,6 +14,7 @@
         "defaultTheme.json",
         "blueprints/industryTypes.json",
         "blueprints/installations.json",
+        "blueprints/storage.json",
         "blueprints/materials.json",
         "blueprints/minerals.json",
         "blueprints/ordnance.json",

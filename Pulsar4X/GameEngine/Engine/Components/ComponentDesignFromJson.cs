@@ -1,8 +1,10 @@
+using System;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using Pulsar4X.Blueprints;
 using Pulsar4X.Components;
 using Pulsar4X.Datablobs;
+using Pulsar4X.Events;
 using Pulsar4X.Factions;
 
 namespace Pulsar4X.Engine.Factories;
@@ -19,6 +21,14 @@ public static class ComponentDesignFromJson
         var id = rootJson["id"] == null ? null : rootJson["id"].ToString();
 
         ComponentDesign design;
+        if (!factionDataStore.ComponentTemplates.ContainsKey(templateName))
+        {
+            var factionID = faction.Id;
+            string errstr = templateName + " not found in faction data store, this  may be due to the faction data being incorrect or needs to be included in DefaultItems";
+            var e = Event.Create(EventType.DataParseError, DateTime.Now, errstr, factionID, null, factionID, null  );
+            Events.EventManager.Instance.Publish(e);
+            throw new Exception(errstr);
+        }
         var blueprint = factionDataStore.ComponentTemplates[templateName];
         var designer = new ComponentDesigner(blueprint, factionDataStore, faction.GetDataBlob<FactionTechDB>(), id){
             Name = designName

@@ -636,7 +636,7 @@ namespace Pulsar4X.Engine
         {
             if (_cargoInstallation != null)
                 return _cargoInstallation;
-            _cargoInstallation = ComponentDesignFromJson.Create(faction, factionDataStore, "Data/basemod/componentDesigns/cargoHold-general.json");
+            _cargoInstallation = ComponentDesignFromJson.Create(faction, factionDataStore, "Data/basemod/componentDesigns/warehouse-facility.json");
             return _cargoInstallation;
         }
 

@@ -1,0 +1,8 @@
+{
+  "id": "default-design-warehouse",
+  "name": "Warehouse",
+  "templateId": "warehouse-facility",
+  "attributes": [
+    { "key": "Storage Volume", "value": 1000000 }
+  ]
+}

@@ -147,6 +147,26 @@
   {
     "Type": "ProcessedMaterial",
     "Payload": {
+      "UniqueID": "electronics",
+      "Name": "Electronics",
+      "Description": "Electrical components",
+      "CargoTypeID": "general-storage",
+      "MassPerUnit": 1.0,
+      "VolumePerUnit": 0.002,
+      "ResourceCosts": {
+        "copper" : 2,
+        "plastic": 2,
+        "aluminium": 1
+      },
+      "IndustryPointCosts": 100,
+      "IndustryTypeID": "refining",
+      "WealthCost": 2,
+      "OutputAmount": 5
+    }
+  },
+  {
+    "Type": "ProcessedMaterial",
+    "Payload": {
       "UniqueID": "electricity",
       "Name": "Electricity",
       "Description": "Electrical Energy",
