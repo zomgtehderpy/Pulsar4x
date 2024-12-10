@@ -39,7 +39,8 @@
             "titanium": "10",
             "tungsten": "10",
             "silicon": "10",
-            "graphite": "10"
+            "graphite": "10",
+            "nickel": "10"
           },
           "AttributeFormula": "AtbConstrArgs([GuidDict])",
           "AttributeType": "Pulsar4X.Industry.MineResourcesAtbDB"

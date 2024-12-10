@@ -77,6 +77,7 @@
         { "id": "silicon", "amount": 5000 },
         { "id": "graphite", "amount": 5000 },
         { "id": "tungsten", "amount": 5000 },
+        { "id": "nickel", "amount": 5000 },
         { "id": "default-design-merlin", "amount": 5, "type": "byCount" },
         { "id": "rp-1", "amount": 50000000, "type": "byCount" },
         { "id": "methalox", "amount": 10000, "type": "byCount" },
