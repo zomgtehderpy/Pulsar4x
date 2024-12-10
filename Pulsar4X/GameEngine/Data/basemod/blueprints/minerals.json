@@ -229,7 +229,26 @@
         "Terrestrial": 0.5
       }
     }
+  },
+  {
+    "Type": "Mineral",
+    "Payload": {
+      "UniqueID": "nickel",
+      "Name": "Nickel",
+      "Description": "A naturally-occurring mineral in large deposits.",
+      "CargoTypeID": "general-storage",
+      "MassPerUnit": 1.0,
+      "VolumePerUnit": 0.000112259,
+      "Abundance": {
+        "Asteroid": 0.2,
+        "Comet": 0.3,
+        "DwarfPlanet": 0.3,
+        "GasDwarf": 0.0,
+        "GasGiant": 0.0,
+        "IceGiant": 0.2,
+        "Moon": 0.6,
+        "Terrestrial": 1.0
+      }
+    }
   }
-  
-  
 ]

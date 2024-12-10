@@ -1,8 +1,8 @@
 {
-  "id": "default-design-reactor-15k",
-  "name": "Reactor 15k",
-  "templateId": "reactor",
+  "id": "default-design-reactor-2t",
+  "name": "48MW Steam Turbine Reactor",
+  "templateId": "steam-turbine-reactor",
   "attributes": [
-    { "key": "Mass", "value": 1000 }
+    { "key": "Mass", "value": 2000 }
   ]
 }

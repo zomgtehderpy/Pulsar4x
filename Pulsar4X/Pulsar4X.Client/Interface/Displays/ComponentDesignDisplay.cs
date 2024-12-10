@@ -163,6 +163,8 @@ namespace Pulsar4X.SDL2UI
                     {
                         switch (attribute.GuiHint) //Either
                         {
+                            case 0:
+                                break;
                             case GuiHint.None:
                                 break;
                             case GuiHint.GuiTechSelectionList: //Let the user pick a type from a list
@@ -332,6 +334,9 @@ namespace Pulsar4X.SDL2UI
                                     }
                                     case "m/s":
                                         displayStr = Stringify.Velocity(value);
+                                        break;
+                                    case "s":
+                                        displayStr = TimeSpan.FromSeconds(value).ToString() ;
                                         break;
                                     default:
                                     {

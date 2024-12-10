@@ -10,7 +10,7 @@
     { "id": "default-design-cargo-hold-1t", "amount": 1 },
     { "id": "default-design-alcubierre-2k", "amount": 1 },
     { "id": "default-design-battery-2t", "amount": 2 },
-    { "id": "default-design-reactor-15k", "amount": 1 },
+    { "id": "default-design-reactor-2t", "amount": 1 },
     { "id": "default-design-rs-25", "amount": 1 }
   ]
 }
