@@ -89,7 +89,7 @@
     "Type": "ComponentTemplate",
     "Payload": {
       "UniqueID": "scntr-engine",
-      "Name": "Solid Core Nuclear Engine",
+      "Name": "Solid Core Nuclear Thermal Engine",
       "Formulas": {
         "Description": "A Newtonian Thruster",
         "Mass": "Ability('Mass')",
@@ -129,7 +129,7 @@
           "GuidDictionary": {
             "fuel-storage": "'ntr'"
           },
-          "AttributeFormula": "GuidString('hydrofiss')"
+          "AttributeFormula": "GuidString('ntp')"
         },
         {
           "Name": "Exhaust Velocity",

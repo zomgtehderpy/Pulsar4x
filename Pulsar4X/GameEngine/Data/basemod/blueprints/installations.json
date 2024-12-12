@@ -5,42 +5,66 @@
       "UniqueID": "mine",
       "Name": "Mine",
       "Formulas": {
-        "Description": "Mines Resources",
-        "Mass": "25000",
-        "Volume": "[Mass]",
+        "Description": "A large-scale mining operation with vehicles, structures, and extensive infrastructure for resource extraction.",
+        "Mass": "Ability('Area') * 0.05", 
+        "Volume": "Ability('Area') * 0.01", 
         "HTK": "[Mass]",
-        "CrewReq": "50000",
+        "CrewReq": "Ability('Area') * 0.005", 
         "ResearchCost": "0",
         "CreditCost": "120",
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "[Mass] * 0.75",
+        "iron": "[Mass] * 0.35",
         "aluminium": "[Mass] * 0.2",
-        "copper": "[Mass] * 0.05"
+        "copper": "[Mass] * 0.05",
+        "tungsten": "[Mass] * 0.05",
+        "silicon": "[Mass] * 0.1",
+        "graphite": "[Mass] * 0.05",
+        "nickel": "[Mass] * 0.1",
+        "stainless-steel": "[Mass] * 0.05",
+        "space-crete": "[Mass] * 0.05"
       },
       "ComponentType": "Facility",
-      "MountType": "ShipCargo, PlanetInstallation",
-      "CargoTypeID": "general-storage",
+      "MountType": "PlanetInstallation",
+      "CargoTypeID": "None",
       "IndustryTypeID": "installation-construction",
       "Attributes": [
         {
+          "Name": "Area",
+          "DescriptionFormula": "'Area covered by this mining operation in square meters'",
+          "GuiHint": "GuiSelectionMaxMinInt",
+          "MaxFormula": "100000000", 
+          "MinFormula": "10000", 
+          "StepFormula": "10000", 
+          "AttributeFormula": "1000000" 
+        },
+        {
           "Name": "MiningAmount",
+          "DescriptionFormula": "'Mining rate in units per time'",
+          "GuiHint": "GuiTextDisplay",
+          "AttributeFormula": "Ability('Area') * 0.000001"
+        },
+        {
+          "Name": "MiningAmountDict",
           "DescriptionFormula": "''",
           "GuiHint": "None",
           "GuidDictionary": {
-            "hydrocarbons": "10",
-            "iron": "10",
-            "aluminium": "10",
-            "copper": "10",
-            "lithium": "10",
-            "chromium": "10",
-            "fissionables": "10",
-            "titanium": "10",
-            "tungsten": "10",
-            "silicon": "10",
-            "graphite": "10",
-            "nickel": "10"
+            "hydrocarbons": "Ability('MiningAmount')",
+            "iron": "Ability('MiningAmount')",
+            "aluminium": "Ability('MiningAmount')",
+            "copper": "Ability('MiningAmount')",
+            "lithium": "Ability('MiningAmount')",
+            "chromium": "Ability('MiningAmount')",
+            "fissionables": "Ability('MiningAmount')",
+            "titanium": "Ability('MiningAmount')",
+            "tungsten": "Ability('MiningAmount')",
+            "silicon": "Ability('MiningAmount')",
+            "graphite": "Ability('MiningAmount')",
+            "nickel": "Ability('MiningAmount')",
+            "water": "Ability('MiningAmount')",
+            "rare-earth-elements": "Ability('MiningAmount')",
+            "regolith": "Ability('MiningAmount')"
           },
           "AttributeFormula": "AtbConstrArgs([GuidDict])",
           "AttributeType": "Pulsar4X.Industry.MineResourcesAtbDB"
@@ -52,10 +76,10 @@
     "Type": "ComponentTemplate",
     "Payload": {
       "UniqueID": "automine",
-      "Name": "MineBot",
+      "Name": "RoboMiner",
       "Formulas": {
-        "Description": "An unmanned resources collector",
-        "Mass": "Ability('Size') * 3000.0",
+        "Description": "An unmanned, transportable resources collector",
+        "Mass": "Ability('Size') * 2000.0",
         "Volume": "Ability('Size')",
         "HTK": "[Mass]",
         "CrewReq": "0",
@@ -64,9 +88,13 @@
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "iron": "[Mass] * 0.75",
-        "aluminium": "[Mass] * 0.2",
-        "copper": "[Mass] * 0.05"
+        "iron": "[Mass] * 0.2",
+        "aluminium": "[Mass] * 0.4",
+        "copper": "[Mass] * 0.05",
+        "titanium": "[Mass] * 0.2",
+        "silicon": "[Mass] * 0.1",
+        "graphite": "[Mass] * 0.05",
+        "plastic": "[Mass] * 0.05"
       },
       "ComponentType": "Facility",
       "MountType": "ShipCargo, PlanetInstallation",
@@ -86,7 +114,7 @@
           "Name": "MiningAmount",
           "DescriptionFormula": "'Mining rate'",
           "GuiHint": "GuiTextDisplay",
-          "AttributeFormula": "Ability('Size') * 0.5"
+          "AttributeFormula": "Ability('Size') * 0.005"
         },
         {
           "Name": "MiningAmountDict",
@@ -103,7 +131,11 @@
             "titanium": "Ability('MiningAmount')",
             "tungsten": "Ability('MiningAmount')",
             "silicon": "Ability('MiningAmount')",
-            "graphite": "Ability('MiningAmount')"
+            "graphite": "Ability('MiningAmount')",
+            "nickel": "Ability('MiningAmount')",
+            "water": "Ability('MiningAmount')",
+            "rare-earth-elements": "Ability('MiningAmount')",
+            "regolith": "Ability('MiningAmount')"
           },
           "AttributeFormula": "AtbConstrArgs([GuidDict])",
           "AttributeType": "Pulsar4X.Industry.MineResourcesAtbDB"

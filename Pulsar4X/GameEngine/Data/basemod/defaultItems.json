@@ -45,11 +45,10 @@
         "rp-1",
         "methalox",
         "hydrolox",
-        "hydrofiss",
+        "ntp",
         "plastic",
         "fissile-fuels",
         "electricity",
-        "sorium-fuel",
         "hydrocarbons",
         "iron",
         "aluminium",
@@ -62,6 +61,10 @@
         "graphite",
         "tungsten",
         "nickel",
+        "water",
+        "rare-earth-elements",
+        "regolith",
+        "space-crete",
         "laser-weapon"
       ]
     }
