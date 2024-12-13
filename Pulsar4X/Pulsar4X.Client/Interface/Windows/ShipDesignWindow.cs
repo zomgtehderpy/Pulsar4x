@@ -678,6 +678,33 @@ namespace Pulsar4X.SDL2UI
                 ImGui.TableNextColumn();
                 ImGui.Text(Stringify.Energy(_estor));
 
+                if (_cvol > 0)
+                {
+                    ImGui.TableNextColumn();
+                    ImGui.Text("Cargo Storage");
+                    ImGui.TableNextColumn();
+                    ImGui.Text(Stringify.VolumeLtr(_cvol));
+                    
+                    
+                    ImGui.TableNextColumn();
+                    ImGui.Text("Cargo Transfer Rate");
+                    ImGui.TableNextColumn();
+                    if(_trate == 0)
+                        ImGui.PushStyleColor(ImGuiCol.Text, Styles.MediocreColor);
+                    ImGui.Text(Stringify.Mass(_trate));
+                    if(_trate == 0)
+                        ImGui.PopStyleColor();
+                    ImGui.TableNextColumn();
+                    ImGui.Text("Cargo Transfer Range");
+                    ImGui.TableNextColumn();
+                    if(_trnge == 0)
+                        ImGui.PushStyleColor(ImGuiCol.Text, Styles.MediocreColor);
+                    ImGui.Text(Stringify.Velocity(_trnge));
+                    if(_trnge == 0)
+                        ImGui.PopStyleColor();
+                    
+                }
+
                 ImGui.EndTable();
             }
 
@@ -808,11 +835,7 @@ namespace Pulsar4X.SDL2UI
 
             cstore = StorageSpaceProcessor.CalculatedMaxStorage(_workingDesign);
             var cargoTransfer = StorageSpaceProcessor.CalcRateAndRange(_workingDesign);
-            foreach (var store in cstore)
-            {
-                if (store.Key != thrusterFuel)
-                    _cvol += store.Value;
-            }
+
             
             
 
@@ -832,7 +855,10 @@ namespace Pulsar4X.SDL2UI
             _egen = egen;
             _estor = estor;
             _trate = cargoTransfer.rate;
-            _trnge = cargoTransfer.range;
+            if(double.IsNaN(cargoTransfer.range))
+                _trnge = 0;
+            else
+                _trnge = cargoTransfer.range;
             //double fuelMass = 0;
             if (thrusterFuel.IsNotNullOrEmpty())
             {
@@ -844,6 +870,13 @@ namespace Pulsar4X.SDL2UI
                     _fuelStoreMass = _fuelStoreVolume * fuelDensity;
 
                 }
+            }
+
+            _cvol = 0;
+            foreach (var store in cstore)
+            {
+                if (_fuelType == null || store.Key != _fuelType.CargoTypeID)
+                    _cvol += store.Value;
             }
 
             _massWet = _massDry + _fuelStoreMass;
