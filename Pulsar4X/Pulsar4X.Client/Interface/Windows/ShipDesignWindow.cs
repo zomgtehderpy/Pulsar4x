@@ -50,21 +50,36 @@ namespace Pulsar4X.SDL2UI
         private int rawimagewidth;
         private int rawimageheight;
 
+        
+
+        
+        //energy
+        private double _estor;
+        private double _egen;
+
+        //mass
         private double _massDry;
         private double _massWet;
-        private double _ttwr;
-        private double _dv;
-        private double _wspd;
+        private double _grossTonnage;
+        //warp
         private double _wcc;
         private double _wsc;
         private double _wec;
+        private double _wspd;
+        //newt
         private double _tn;
-        private double _estor;
-        private double _egen;
+        private double _ttwr;
+        private double _dv;
+        //fuel
         private double _fuelStoreMass;
         private double _fuelStoreVolume;
-        private double _grossTonnage;
         private ICargoable? _fuelType;
+        //cargo
+        private double _cvol = 0;
+        private double _trnge = 0;
+        private double _trate = 0;
+        
+        
         bool displayimage = true;
         private EntityDamageProfileDB? _profile;
         private bool existingdesignsstatus = true;
@@ -773,7 +788,12 @@ namespace Pulsar4X.SDL2UI
                         cstore.Add(typeid, amount);
                     else
                         cstore[typeid] += amount;
+                }
 
+                if (component.design.HasAttribute<CargoTransferAtb>())
+                {
+                    var atb = component.design.GetAttribute<CargoTransferAtb>();
+                    //atb.TransferRange_ms
                 }
             }
 
@@ -861,6 +881,12 @@ namespace Pulsar4X.SDL2UI
 
                 ImGui.Image(_shipImgPtr, new System.Numerics.Vector2(rawimagewidth * scale, rawimageheight * scale));
             }
+        }
+
+        private List<string> _warningString = new List<string>();
+        private void Warnings()
+        {
+            //if(_workingDesign.Components.)
         }
     }
 }

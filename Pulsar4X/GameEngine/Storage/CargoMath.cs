@@ -359,9 +359,11 @@ namespace Pulsar4X.Storage
         /// Will randomly dump cargo if volume to remove is more than the free volume.
         /// TODO: should be psudorandom.
         /// TODO: should create an entity in space depending on type of cargo.
+        /// TODO: cargoLibrary should be a global library not just a faction one, or we'll have problems from captured ships.
         /// </summary>
         /// <param name="typeID">cargo typeID</param>
         /// <param name="volumeChange">positive to add volume, negitive to remove volume</param>
+        /// <param name="cargoLibrary">TODO this should be a global library not a faction library I think</param>
         internal static void ChangeMaxVolume(this CargoStorageDB db, string typeID, double volumeChange, CargoDefinitionsLibrary cargoLibrary)
         {
             var type = db.TypeStores[typeID];
