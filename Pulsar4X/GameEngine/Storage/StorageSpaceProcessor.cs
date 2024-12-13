@@ -80,12 +80,12 @@ namespace Pulsar4X.Storage
                     }
                 }
             }
-            int finalRate = (int)(rate / i);
+            int finalRate = (int)rate;
             double finalRange = range / i;
             return (finalRate, finalRange);
         }
         
-        internal static Dictionary<string, double> CalculatedMaxStorage(ShipDesign shipDesign)
+        public static Dictionary<string, double> CalculatedMaxStorage(ShipDesign shipDesign)
         {         
             Dictionary<string, double> calculatedMaxStorage = new ();
             foreach (var component in shipDesign.Components)
@@ -102,7 +102,7 @@ namespace Pulsar4X.Storage
             return calculatedMaxStorage;
         }
 
-        internal static (int rate, double range) CalcRateAndRange(ShipDesign shipDesign)
+        public static (int rate, double range) CalcRateAndRange(ShipDesign shipDesign)
         {
             double rate = 0;
             double range = 0;
@@ -112,12 +112,12 @@ namespace Pulsar4X.Storage
                 if (component.design.HasAttribute<CargoTransferAtb>())
                 {
                     var atbdata = component.design.GetAttribute<CargoTransferAtb>();
-                    rate += atbdata.TransferRate_kgs;
+                    rate += atbdata.TransferRate_kgs * component.count;
                     range += atbdata.TransferRange_ms;
                     i++;
                 }
             }
-            int finalRate = (int)(rate / i);
+            int finalRate = (int)rate;
             double finalRange = range / i;
             return (finalRate, finalRange);
         }

@@ -17,6 +17,7 @@ using Pulsar4X.Ships;
 using Pulsar4X.Storage;
 using Pulsar4X.Movement;
 using Pulsar4X.Names;
+using SDL2;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -703,6 +704,11 @@ namespace Pulsar4X.SDL2UI
                 ImGui.PopStyleColor();
             }
 
+            foreach (var warning in Warnings())
+            {
+                ImGui.Text(warning);
+            }
+
             ImGui.NewLine();
             NewShipButton();
             ImGui.SameLine();
@@ -780,6 +786,7 @@ namespace Pulsar4X.SDL2UI
                     estor += atb.MaxStore * component.count;
                 }
 
+                /*
                 if (component.design.HasAttribute<CargoStorageAtb>())
                 {
                     var atb = component.design.GetAttribute<CargoStorageAtb>();
@@ -795,8 +802,19 @@ namespace Pulsar4X.SDL2UI
                 {
                     var atb = component.design.GetAttribute<CargoTransferAtb>();
                     //atb.TransferRange_ms
-                }
+                    
+                }*/
             }
+
+            cstore = StorageSpaceProcessor.CalculatedMaxStorage(_workingDesign);
+            var cargoTransfer = StorageSpaceProcessor.CalcRateAndRange(_workingDesign);
+            foreach (var store in cstore)
+            {
+                if (store.Key != thrusterFuel)
+                    _cvol += store.Value;
+            }
+            
+            
 
             _armorMass = ShipDesign.GetArmorMass(_profile, _uiState.Faction.GetDataBlob<FactionInfoDB>().Data.CargoGoods);
             mass += (long)Math.Round(_armorMass);
@@ -813,6 +831,8 @@ namespace Pulsar4X.SDL2UI
             _wspd = WarpMath.MaxSpeedCalc(wp, mass);
             _egen = egen;
             _estor = estor;
+            _trate = cargoTransfer.rate;
+            _trnge = cargoTransfer.range;
             //double fuelMass = 0;
             if (thrusterFuel.IsNotNullOrEmpty())
             {
@@ -883,11 +903,24 @@ namespace Pulsar4X.SDL2UI
                 ImGui.Image(_shipImgPtr, new System.Numerics.Vector2(rawimagewidth * scale, rawimageheight * scale));
             }
         }
-
-        private List<string> _warningString = new List<string>();
-        private void Warnings()
+        
+        private List<string> Warnings()
         {
-            //if(_workingDesign.Components.)
+            List<string> warnings = new List<string>();
+            if (_cvol > 0 && _trate == 0 || _trnge == 0)
+            {
+                warnings.Add("This ship has cargo space but no way to transfer cargo by itself");
+            }
+            if (_wspd == 0)
+            {
+                warnings.Add("This ship has no warp ability");
+            }
+
+            if (_ttwr == 0)
+            {
+                warnings.Add("This ship has no newtonion thrust");
+            }
+            return warnings;
         }
     }
 }
