@@ -16,6 +16,7 @@ using Pulsar4X.Damage;
 using Pulsar4X.Ships;
 using Pulsar4X.Storage;
 using Pulsar4X.Movement;
+using Pulsar4X.Names;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -350,7 +351,7 @@ namespace Pulsar4X.SDL2UI
 
             if(ImGui.Button("Create New Design", new Vector2(204f, 0f)))
             {
-                string originalName = "auto-gen names pls", name = originalName;
+                string originalName = NameFactory.GetShipName(_uiState.Game), name = originalName;
                 int counter = 1;
                 while(_factionInfoDB.ShipDesigns.Values.Any(d => d.Name.Equals(name)))
                 {
