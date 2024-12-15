@@ -468,7 +468,7 @@ namespace Pulsar4X.SDL2UI
                     if (hovered)
                     {
                         selectedItem = i;
-                        DisplayHelpers.DescriptiveTooltip(SelectedComponents[i].design.Name, SelectedComponents[i].design.TypeName, SelectedComponents[i].design.Description);
+                        DisplayHelpers.DescriptiveTooltip(SelectedComponents[i].design.Name, SelectedComponents[i].design.TemplateName, SelectedComponents[i].design.Description);
                     }
 
                     ImGui.TableNextColumn();
@@ -571,7 +571,7 @@ namespace Pulsar4X.SDL2UI
                             ImGui.Text("Crew Required: " + AvailableShipComponents[i].CrewReq);
                         }
 
-                        DisplayHelpers.DescriptiveTooltip(AvailableShipComponents[i].Name, AvailableShipComponents[i].TypeName, AvailableShipComponents[i].Description, TooltipExtension);
+                        DisplayHelpers.DescriptiveTooltip(AvailableShipComponents[i].Name, AvailableShipComponents[i].TemplateName, AvailableShipComponents[i].Description, TooltipExtension);
                     }
                     ImGui.TableNextColumn();
                     ImGui.Text(design.ComponentType);

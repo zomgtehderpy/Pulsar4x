@@ -506,7 +506,7 @@ namespace Pulsar4X.SDL2UI
             {
                 ImGui.Text(component.Name);
                 ImGui.SameLine();
-                ImGui.Text(" ("+ component.Design.TypeName+")");
+                ImGui.Text(" ("+ component.Design.TemplateName+")");
                 SensorSignatureAtb emmitterAtbs = (SensorSignatureAtb)component.Design.AttributesByType[typeof(SensorSignatureAtb)];
                 DisplayValues(emmitterAtbs.PartWaveForm, emmitterAtbs.PartWaveFormMag);
             }

@@ -70,6 +70,33 @@ namespace Pulsar4X.SDL2UI
             NoTemplateState = NoTemplateState.Created;
         }
 
+        public void SetFromComponent(ComponentDesign component, GlobalUIState state)
+        {
+            
+
+            var factionData = state.Faction.GetDataBlob<FactionInfoDB>().Data;
+            var factionTech = state.Faction.GetDataBlob<FactionTechDB>();
+            Template = factionData.ComponentTemplates[component.TemplateID];
+            _componentDesigner = new ComponentDesigner(Template, factionData, factionTech);
+            
+            NoTemplateState = NoTemplateState.Created;
+            
+            var templateAttributes = component.TemplateAttributes;
+            //_componentDesigner.Name = component.Name;
+            _nameInputBuffer = ImGuiSDL2CSHelper.BytesFromString(component.Name);
+            foreach (var attb in templateAttributes)
+            {
+                if (attb.atbValue is string)
+                {
+                    _componentDesigner.ComponentDesignAttributes[attb.atbName].SetValueFromString((string)attb.atbValue);
+                }
+                else if (attb.atbValue is Int32 || attb.atbValue is float || attb.atbValue is double )
+                {
+                    _componentDesigner.ComponentDesignAttributes[attb.atbName].SetValueFromInput((double)attb.atbValue);
+                }
+            }
+        }
+
         internal void Display(GlobalUIState uiState)
         {
             if(Template == null)

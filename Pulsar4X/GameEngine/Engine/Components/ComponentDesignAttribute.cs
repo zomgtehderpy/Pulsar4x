@@ -30,12 +30,16 @@ namespace Pulsar4X.Components
             }
         }
 
+        /// <summary>
+        /// this is the IComponentDesignAttribute type
+        /// </summary>
         public Type AttributeType;
 
         public Type EnumType;
         public int ListSelection;
         //public BaseDataBlob DataBlob;
         internal ComponentDesigner ParentComponent;
+        
         public ComponentDesignAttribute(ComponentDesigner parentComponent, ComponentTemplateAttributeBlueprint templateAtb, FactionDataStore factionDataStore, FactionTechDB factionTech)
         {
             ParentComponent = parentComponent;

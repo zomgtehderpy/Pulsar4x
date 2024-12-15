@@ -19,6 +19,11 @@ namespace Pulsar4X.Components
         public string Name { get; internal set; } //player defined name. ie "5t 2kn Thruster".
         public string ComponentType { get; internal set; } = "";
 
+        public string TemplateName; //ie the name in staticData. ie "Newtonion Thruster".
+        public string TemplateID; //ie the UniqueID in staticData. ie "newtonion-thruster".
+        public List<(string atbName, Type valueType, object atbValue)> TemplateAttributes = new ();
+        
+        
         public bool IsValid {get; set; } = true;
 
         public string CargoTypeID { get; internal set; }
@@ -30,7 +35,7 @@ namespace Pulsar4X.Components
 
         public long ResearchCostValue;
         public string TechID;
-        public string TypeName; //ie the name in staticData. ie "Newtonion Thruster".
+        
         public string Description;
         //public int Volume_m3 = 1;
         public int HTK;
