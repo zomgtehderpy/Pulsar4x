@@ -97,7 +97,7 @@
           "designId": "default-ship-design-freighter",
           "name": "Planet Express Ship",
           "cargo": [
-            { "id": "rp-1", "amount": 20000000, "type": "byVolume" },
+            { "id": "methalox", "amount": 20000000, "type": "byVolume" },
             { "id": "default-auto-mine", "amount": 1, "type": "byCount" }
           ]
         }
@@ -114,14 +114,14 @@
           "designId": "default-ship-design-gunship",
           "name": "Serial Peacemaker",
           "cargo": [
-            { "id": "rp-1", "amount": 2000 }
+            { "id": "ntp", "amount": 2000 }
           ]
         },
         {
           "designId": "default-ship-design-gunship",
           "name": "Prevailing Stillness",
           "cargo": [
-            { "id": "rp-1", "amount": 2000 }
+            { "id": "ntp", "amount": 2000 }
           ]
         }
       ]

@@ -86,14 +86,18 @@ namespace Pulsar4X.SDL2UI
             _nameInputBuffer = ImGuiSDL2CSHelper.BytesFromString(component.Name);
             foreach (var ptup in templateProperties)
             {
-                
+                var tprop = _componentDesigner.ComponentDesignProperties[ptup.propName];
+                if (tprop.GuiHint == GuiHint.GuiFuelTypeSelection)
+                {
+                    //tprop.SetValueFromInput();
+                }
                 if (ptup.propValue is string)
                 {
-                    _componentDesigner.ComponentDesignProperties[ptup.propName].SetValueFromString((string)ptup.propValue);
+                    tprop.SetValueFromString((string)ptup.propValue);
                 }
                 else if (ptup.propValue is Int32 || ptup.propValue is float || ptup.propValue is double )
                 {
-                    _componentDesigner.ComponentDesignProperties[ptup.propName].SetValueFromInput((double)ptup.propValue);
+                    tprop.SetValueFromInput((double)ptup.propValue);
                 }
             }
         }
