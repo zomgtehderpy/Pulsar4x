@@ -43,15 +43,15 @@ public static class ComponentDesignFromJson
                 var valueType = prop["value"];
                 if(valueType.Type == JTokenType.Integer)
                 {
-                    designer.ComponentDesignAttributes[key].SetValueFromInput((int?)prop["value"] ?? 0);
+                    designer.ComponentDesignProperties[key].SetValueFromInput((int?)prop["value"] ?? 0);
                 }
                 else if(valueType.Type == JTokenType.Float)
                 {
-                    designer.ComponentDesignAttributes[key].SetValueFromInput((double?)prop["value"] ?? 0.0);
+                    designer.ComponentDesignProperties[key].SetValueFromInput((double?)prop["value"] ?? 0.0);
                 }
                 else
                 {
-                    designer.ComponentDesignAttributes[key].SetValueFromString(prop["value"].ToString());
+                    designer.ComponentDesignProperties[key].SetValueFromString(prop["value"].ToString());
                 }
             }
         }

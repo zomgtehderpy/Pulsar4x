@@ -86,13 +86,14 @@ namespace Pulsar4X.SDL2UI
             _nameInputBuffer = ImGuiSDL2CSHelper.BytesFromString(component.Name);
             foreach (var ptup in templateProperties)
             {
+                
                 if (ptup.propValue is string)
                 {
-                    _componentDesigner.ComponentDesignAttributes[ptup.propName].SetValueFromString((string)ptup.propValue);
+                    _componentDesigner.ComponentDesignProperties[ptup.propName].SetValueFromString((string)ptup.propValue);
                 }
                 else if (ptup.propValue is Int32 || ptup.propValue is float || ptup.propValue is double )
                 {
-                    _componentDesigner.ComponentDesignAttributes[ptup.propName].SetValueFromInput((double)ptup.propValue);
+                    _componentDesigner.ComponentDesignProperties[ptup.propName].SetValueFromInput((double)ptup.propValue);
                 }
             }
         }
@@ -182,7 +183,7 @@ namespace Pulsar4X.SDL2UI
 
             if (_componentDesigner != null) //Make sure comp is selected
             {
-                foreach (ComponentDesignProperty attribute in _componentDesigner.ComponentDesignAttributes.Values) //For each property of the comp type
+                foreach (ComponentDesignProperty attribute in _componentDesigner.ComponentDesignProperties.Values) //For each property of the comp type
                 {
                     ImGui.PushID(attribute.Name);
 
@@ -304,7 +305,7 @@ namespace Pulsar4X.SDL2UI
                         ImGui.Text(_componentDesigner.CrewReqValue.ToString(Styles.IntFormat));
                     }
 
-                    foreach (ComponentDesignProperty attribute in _componentDesigner.ComponentDesignAttributes.Values) //For each property of the comp type
+                    foreach (ComponentDesignProperty attribute in _componentDesigner.ComponentDesignProperties.Values) //For each property of the comp type
                     {
                         if(attribute.IsEnabled && attribute.GuiHint == GuiHint.GuiTextDisplay)
                         {

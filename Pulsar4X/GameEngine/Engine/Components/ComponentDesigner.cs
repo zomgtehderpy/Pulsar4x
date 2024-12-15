@@ -71,7 +71,7 @@ namespace Pulsar4X.Components
             foreach (var attrbSD in componentSD.Properties)
             {
                 ComponentDesignProperty designProperty = new ComponentDesignProperty(this, attrbSD, factionDataStore, factionTech);
-                ComponentDesignAttributes.Add(designProperty.Name, designProperty);
+                ComponentDesignProperties.Add(designProperty.Name, designProperty);
             }
 
             EvalAll();
@@ -81,7 +81,7 @@ namespace Pulsar4X.Components
         public void SetAttributes()
         {
             EvalAll();
-            foreach (var designAttribute in ComponentDesignAttributes.Values)
+            foreach (var designAttribute in ComponentDesignProperties.Values)
             {
                 if (designAttribute.AttributeType != null && designAttribute.IsEnabled)
                 {
@@ -149,7 +149,7 @@ namespace Pulsar4X.Components
 
             SetAttributes();
 
-            foreach (var designAttribute in ComponentDesignAttributes.Values)
+            foreach (var designAttribute in ComponentDesignProperties.Values)
             {
                 var type = designAttribute.AttributeType;
                 var hint = designAttribute.GuiHint;
@@ -393,7 +393,7 @@ namespace Pulsar4X.Components
             internal set { _design.ComponentType = value; }
         }
 
-        public Dictionary<string, ComponentDesignProperty> ComponentDesignAttributes = new Dictionary<string, ComponentDesignProperty>();
+        public Dictionary<string, ComponentDesignProperty> ComponentDesignProperties = new Dictionary<string, ComponentDesignProperty>();
         public Dictionary<Type, IComponentDesignAttribute> Attributes
         {
             get { return _design.AttributesByType; }

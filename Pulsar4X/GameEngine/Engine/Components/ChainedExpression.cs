@@ -406,7 +406,7 @@ namespace Pulsar4X.Components
                     {
                         key = (string)args.Parameters[0].Evaluate();
 
-                        ChainedExpression result = _designer.ComponentDesignAttributes[key].Formula;
+                        ChainedExpression result = _designer.ComponentDesignProperties[key].Formula;
                         if (result.Result == null)
                             result.Evaluate();
                         MakeThisDependant(result);
@@ -434,7 +434,7 @@ namespace Pulsar4X.Components
                     {
                         key = (string)args.Parameters[0].Evaluate();
 
-                        ChainedExpression expression = _designer.ComponentDesignAttributes[key].Formula;
+                        ChainedExpression expression = _designer.ComponentDesignProperties[key].Formula;
                         expression.SetResult = args.Parameters[1].Evaluate();
                     }
                     //TODO: maybe log this catch and throw the component out. (instead of throwing)
