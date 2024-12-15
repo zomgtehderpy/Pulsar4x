@@ -68,7 +68,7 @@ namespace Pulsar4X.Components
 
             ResourceCostFormulas = resourceCostForulas;
 
-            foreach (var attrbSD in componentSD.Attributes)
+            foreach (var attrbSD in componentSD.Properties)
             {
                 ComponentDesignAttribute designAttribute = new ComponentDesignAttribute(this, attrbSD, factionDataStore, factionTech);
                 ComponentDesignAttributes.Add(designAttribute.Name, designAttribute);
@@ -157,17 +157,17 @@ namespace Pulsar4X.Components
                 {
                     case GuiHint.GuiSelectionMaxMin:
                     {
-                        _design.TemplateAttributes.Add((designAttribute.Name, typeof(double), designAttribute.Value));
+                        _design.TemplatePropertyValues.Add((designAttribute.Name, typeof(double), designAttribute.Value));
                         break;
                     }
                     case GuiHint.GuiSelectionMaxMinInt:
                     {
-                        _design.TemplateAttributes.Add((designAttribute.Name, typeof(int), designAttribute.Value));
+                        _design.TemplatePropertyValues.Add((designAttribute.Name, typeof(int), designAttribute.Value));
                         break;
                     }
                     case GuiHint.GuiFuelTypeSelection:
                     {
-                        _design.TemplateAttributes.Add((designAttribute.Name, typeof(string), designAttribute.ValueString));
+                        _design.TemplatePropertyValues.Add((designAttribute.Name, typeof(string), designAttribute.ValueString));
                         break;
                     }
                     case GuiHint.GuiTextDisplay:
@@ -187,7 +187,7 @@ namespace Pulsar4X.Components
                     }
                     default:
                     {
-                        _design.TemplateAttributes.Add((designAttribute.Name, typeof(string), designAttribute.ValueString));
+                        _design.TemplatePropertyValues.Add((designAttribute.Name, typeof(string), designAttribute.ValueString));
                         break;
                     }
                 }

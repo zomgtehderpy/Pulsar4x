@@ -1,7 +1,7 @@
 {
   "name": "F1",
   "templateId": "conventional-engine",
-  "attributes": [
+  "Properties": [
     { "key": "Mass", "value": 8400 },
     { "key": "Fuel Type", "value": "rp-1" }
   ]

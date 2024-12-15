@@ -81,18 +81,18 @@ namespace Pulsar4X.SDL2UI
             
             NoTemplateState = NoTemplateState.Created;
             
-            var templateAttributes = component.TemplateAttributes;
+            var templateProperties = component.TemplatePropertyValues;
             //_componentDesigner.Name = component.Name;
             _nameInputBuffer = ImGuiSDL2CSHelper.BytesFromString(component.Name);
-            foreach (var attb in templateAttributes)
+            foreach (var ptup in templateProperties)
             {
-                if (attb.atbValue is string)
+                if (ptup.propValue is string)
                 {
-                    _componentDesigner.ComponentDesignAttributes[attb.atbName].SetValueFromString((string)attb.atbValue);
+                    _componentDesigner.ComponentDesignAttributes[ptup.propName].SetValueFromString((string)ptup.propValue);
                 }
-                else if (attb.atbValue is Int32 || attb.atbValue is float || attb.atbValue is double )
+                else if (ptup.propValue is Int32 || ptup.propValue is float || ptup.propValue is double )
                 {
-                    _componentDesigner.ComponentDesignAttributes[attb.atbName].SetValueFromInput((double)attb.atbValue);
+                    _componentDesigner.ComponentDesignAttributes[ptup.propName].SetValueFromInput((double)ptup.propValue);
                 }
             }
         }

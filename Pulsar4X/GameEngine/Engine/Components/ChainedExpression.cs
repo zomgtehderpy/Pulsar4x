@@ -401,7 +401,7 @@ namespace Pulsar4X.Components
 
             switch (name)
             {
-                case "Ability":
+                case "PropertyValue":
                     try
                     {
                         key = (string)args.Parameters[0].Evaluate();
@@ -415,7 +415,7 @@ namespace Pulsar4X.Components
                     catch (KeyNotFoundException e)
                     {
 
-                        throw new Exception("Cannot find an ability named " + key + ", in " + _designer.Name + " " + e);
+                        throw new Exception("Cannot find an PropertyValue named " + key + ", in " + _designer.Name + " " + e);
                     }
 
                     //TODO: the two catches below will be unnesiary once ComponentDesignAttributeList is gone.
@@ -429,7 +429,7 @@ namespace Pulsar4X.Components
                     }
                     break;
 
-                case "SetAbilityValue": //I might remove this..
+                case "SetPropertyValue": //I might remove this..
                     try
                     {
                         key = (string)args.Parameters[0].Evaluate();
@@ -440,7 +440,7 @@ namespace Pulsar4X.Components
                     //TODO: maybe log this catch and throw the component out. (instead of throwing)
                     catch (KeyNotFoundException e)
                     {
-                        throw new Exception("Cannot find an ability named " + key + ". " + e);
+                        throw new Exception("Cannot find an PropertyValue named " + key + ". " + e);
                     }
 
                     //TODO: the two catches below will be unnesiary once ComponentDesignAttributeList is gone.

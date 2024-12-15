@@ -2,7 +2,7 @@
   "id": "default-design-passive-sensor-s50",
   "name": "PassiveSensor-S50",
   "templateId": "passive-sensor",
-  "attributes": [
+  "Properties": [
     { "key": "Antenna Size", "value": 5.5 },
     { "key": "Ideal Detection Wavelength", "value": 479 },
     { "key": "Detection Bandwidth", "value": 200 },

@@ -2,7 +2,7 @@
   "id": "default-design-prox-frag-5kg",
   "name": "Prox Frag 5kg",
   "templateId": "missile-payload",
-  "attributes": [
+  "Properties": [
     { "key": "Trigger Type", "value": 2 },
     { "key": "Payload Type", "value": 0 },
     { "key": "Explosive Mass", "value": 2 },

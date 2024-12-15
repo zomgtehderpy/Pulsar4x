@@ -2,7 +2,7 @@
   "id": "default-design-fuel-farm-5000k",
   "name": "Fuel Farm 5000km^3",
   "templateId": "stainless-steel-fuel-tank",
-  "attributes": [
+  "Properties": [
     { "key": "Tank Volume", "value": 5000000 }
   ]
 }

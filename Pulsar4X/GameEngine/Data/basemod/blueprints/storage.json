@@ -6,10 +6,10 @@
       "Name": "Warehouse faciliy",
       "Formulas": {
         "Description": "Stores General Cargo on a colony",
-        "Mass": "Ability('Size Efficiency') * 1.5",
-        "Volume": "Ability('Storage Volume') + Ability('Size Efficiency')",
+        "Mass": "PropertyValue('Size Efficiency') * 1.5",
+        "Volume": "PropertyValue('Storage Volume') + PropertyValue('Size Efficiency')",
         "HTK": "[Mass]",
-        "CrewReq": "Max(1, Ability('Size Efficiency') * 0.1)",
+        "CrewReq": "Max(1, PropertyValue('Size Efficiency') * 0.1)",
         "ResearchCost": "0",
         "CreditCost": "[Mass] * 0.12",
         "BuildPointCost": "[Mass] * 4.5"
@@ -23,7 +23,7 @@
       "MountType": "ShipCargo, PlanetInstallation",
       "CargoTypeID": "general-storage",
       "IndustryTypeID": "installation-construction",
-      "Attributes": [
+      "Properties": [
         {
           "Name": "Storage Volume",
           "DescriptionFormula": "'Larger cargo holds store more goods'",
@@ -32,19 +32,19 @@
           "MaxFormula": "10000",
           "MinFormula": "10",
           "StepFormula": "100",
-          "AttributeFormula": "500"
+          "PropertyFormula": "500"
         },
         {
           "Name": "Size Efficiency",
           "DescriptionFormula": "'The amount of volume taken up by racking, office space etc.'",
           "GuiHint": "GuiTextDisplay",
           "GuidDictionary": {},
-          "AttributeFormula": "Max(1, Ability('Storage Volume') * 0.01)"
+          "PropertyFormula": "Max(1, PropertyValue('Storage Volume') * 0.01)"
         },
         {
           "Name": "DBargsStor",
           "GuiHint": "None",
-          "AttributeFormula": "AtbConstrArgs('general-storage', Ability('Storage Volume'))",
+          "PropertyFormula": "AtbConstrArgs('general-storage', PropertyValue('Storage Volume'))",
           "AttributeType": "Pulsar4X.Storage.CargoStorageAtb"
         }
       ]
@@ -57,10 +57,10 @@
       "Name": "General Cargo Hold",
       "Formulas": {
         "Description": "Stores General Cargo on ships",
-        "Mass": "Ability('Size Efficiency') * 1.0",
-        "Volume": "Ability('Storage Volume') + Ability('Size Efficiency')",
+        "Mass": "PropertyValue('Size Efficiency') * 1.0",
+        "Volume": "PropertyValue('Storage Volume') + PropertyValue('Size Efficiency')",
         "HTK": "[Mass]",
-        "CrewReq": "Max(1, Ability('Size Efficiency') * 0.1)",
+        "CrewReq": "Max(1, PropertyValue('Size Efficiency') * 0.1)",
         "ResearchCost": "0",
         "CreditCost": "[Mass] * 0.12",
         "BuildPointCost": "[Mass] * 4.5"
@@ -75,7 +75,7 @@
       "MountType": "ShipComponent, ShipCargo",
       "CargoTypeID": "general-storage",
       "IndustryTypeID": "installation-construction",
-      "Attributes": [
+      "Properties": [
         {
           "Name": "Storage Volume",
           "DescriptionFormula": "'Larger cargo holds store more goods'",
@@ -84,19 +84,19 @@
           "MaxFormula": "10000",
           "MinFormula": "10",
           "StepFormula": "100",
-          "AttributeFormula": "500"
+          "PropertyFormula": "500"
         },
         {
           "Name": "Size Efficiency",
           "DescriptionFormula": "'The amount of tonnage taken up by racking, office space etc.'",
           "GuiHint": "GuiTextDisplay",
           "GuidDictionary": {},
-          "AttributeFormula": "Max(1, Ability('Storage Volume') * 0.01)"
+          "PropertyFormula": "Max(1, PropertyValue('Storage Volume') * 0.01)"
         },
         {
           "Name": "DBargsStor",
           "GuiHint": "None",
-          "AttributeFormula": "AtbConstrArgs('general-storage', Ability('Storage Volume'))",
+          "PropertyFormula": "AtbConstrArgs('general-storage', PropertyValue('Storage Volume'))",
           "AttributeType": "Pulsar4X.Storage.CargoStorageAtb"
         }
       ]
@@ -109,10 +109,10 @@
       "Name": "Space Port",
       "Formulas": {
         "Description": "Facility for transporting cargo and fuel to ships from the surface of a planet",
-        "Mass": "Ability('Size') * 1.0",
-        "Volume": "Ability('Size')",
+        "Mass": "PropertyValue('Size') * 1.0",
+        "Volume": "PropertyValue('Size')",
         "HTK": "[Mass]",
-        "CrewReq": "Max(1, Ability('Size') * 0.1)",
+        "CrewReq": "Max(1, PropertyValue('Size') * 0.1)",
         "ResearchCost": "0",
         "CreditCost": "[Mass] * 0.12",
         "BuildPointCost": "[Mass] * 4.5"
@@ -128,7 +128,7 @@
       "MountType": "ShipCargo, PlanetInstallation",
       "CargoTypeID": "general-storage",
       "IndustryTypeID": "installation-construction",
-      "Attributes": [
+      "Properties": [
         {
           "Name": "Size",
           "DescriptionFormula": "'(Volume) - Larger facility transports more goods'",
@@ -137,7 +137,7 @@
           "MaxFormula": "2000000",
           "MinFormula": "2000",
           "StepFormula": "100",
-          "AttributeFormula": "12000"
+          "PropertyFormula": "12000"
         },
         {
           "Name": "Rate vs Range",
@@ -147,25 +147,25 @@
           "MaxFormula": "9",
           "MinFormula": "1",
           "StepFormula": "1",
-          "AttributeFormula": "5"
+          "PropertyFormula": "5"
         },
         {
           "Name": "Transfer Rate",
           "Units": "kg/s",
           "DescriptionFormula": "'The rate at which cargo can be loaded an unloaded from this facility to a target'",
           "GuiHint": "GuiTextDisplay",
-          "AttributeFormula": "0.00075 * (Ability('Size') * 0.5 + Ability('Size') * 0.5 * Ability('Rate vs Range') * 0.1)"
+          "PropertyFormula": "0.00075 * (PropertyValue('Size') * 0.5 + PropertyValue('Size') * 0.5 * PropertyValue('Rate vs Range') * 0.1)"
         },
         {
           "Name": "Transfer Range",
           "DescriptionFormula": "'How much deltaV can the shuttles housed by this facility expend to get a cargo load to a target'",
           "GuiHint": "GuiTextDisplay",
-          "AttributeFormula": "1.0 * (Ability('Size') * 0.5 - Ability('Size') * 0.5 * Ability('Rate vs Range') * 0.1)"
+          "PropertyFormula": "1.0 * (PropertyValue('Size') * 0.5 - PropertyValue('Size') * 0.5 * PropertyValue('Rate vs Range') * 0.1)"
         },
         {
           "Name": "DBArgsXfer",
           "GuiHint": "None",
-          "AttributeFormula": "AtbConstrArgs(Ability('Transfer Rate'), Ability('Transfer Range'))",
+          "PropertyFormula": "AtbConstrArgs(PropertyValue('Transfer Rate'), PropertyValue('Transfer Range'))",
           "AttributeType": "Pulsar4X.Storage.CargoTransferAtb"
         }
       ]
@@ -178,10 +178,10 @@
       "Name": "Cargo Shuttlebay",
       "Formulas": {
         "Description": "A shuttlebay on a ship dedicated to transfering cargo and fuel, comes with shuttle!",
-        "Mass": "Ability('Size') * 1.5",
-        "Volume": "Ability('Size')",
+        "Mass": "PropertyValue('Size') * 1.5",
+        "Volume": "PropertyValue('Size')",
         "HTK": "[Mass]",
-        "CrewReq": "Max(5, Ability('Size') * 0.001)",
+        "CrewReq": "Max(5, PropertyValue('Size') * 0.001)",
         "ResearchCost": "0",
         "CreditCost": "[Mass] * 0.12",
         "BuildPointCost": "[Mass] * 4.5"
@@ -196,7 +196,7 @@
       "MountType": "ShipComponent, ShipCargo",
       "CargoTypeID": "general-storage",
       "IndustryTypeID": "installation-construction",
-      "Attributes": [
+      "Properties": [
         {
           "Name": "Size",
           "DescriptionFormula": "'(Volume) - Larger bay transports more goods'",
@@ -205,7 +205,7 @@
           "MaxFormula": "200000",
           "MinFormula": "2000",
           "StepFormula": "1000",
-          "AttributeFormula": "2000"
+          "PropertyFormula": "2000"
         },
         {
           "Name": "Rate vs Range",
@@ -215,26 +215,26 @@
           "MaxFormula": "9",
           "MinFormula": "1",
           "StepFormula": "1",
-          "AttributeFormula": "5"
+          "PropertyFormula": "5"
         },
         {
           "Name": "Transfer Rate",
           "Units": "kg/s",
           "DescriptionFormula": "'The rate at which cargo can be loaded an unloaded from this facility to a target'",
           "GuiHint": "GuiTextDisplay",
-          "AttributeFormula": "0.001 * (Ability('Size') * 0.5 + Ability('Size') * 0.5 * Ability('Rate vs Range') * 0.1)"
+          "PropertyFormula": "0.001 * (PropertyValue('Size') * 0.5 + PropertyValue('Size') * 0.5 * PropertyValue('Rate vs Range') * 0.1)"
         },
         {
           "Name": "Transfer Range",
           "Units": "m/s",
           "DescriptionFormula": "'How much deltaV can the shuttles housed by this facility expend to get a cargo load to a target'",
           "GuiHint": "GuiTextDisplay",
-          "AttributeFormula": "1.5 * (Ability('Size') * 0.5 - Ability('Size') * 0.5 * Ability('Rate vs Range') * 0.1)"
+          "PropertyFormula": "1.5 * (PropertyValue('Size') * 0.5 - PropertyValue('Size') * 0.5 * PropertyValue('Rate vs Range') * 0.1)"
         },
         {
           "Name": "DBArgsXfer",
           "GuiHint": "None",
-          "AttributeFormula": "AtbConstrArgs(Ability('Transfer Rate'), Ability('Transfer Range'))",
+          "PropertyFormula": "AtbConstrArgs(PropertyValue('Transfer Rate'), PropertyValue('Transfer Range'))",
           "AttributeType": "Pulsar4X.Storage.CargoTransferAtb"
         }
       ]

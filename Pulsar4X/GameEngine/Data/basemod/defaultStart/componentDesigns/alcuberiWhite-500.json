@@ -2,7 +2,7 @@
   "id": "default-design-alcubierre-500",
   "name": "Alcuberi-White 500",
   "templateId": "alcubierre-warp-drive",
-  "attributes": [
+  "Properties": [
     { "key": "Mass", "value": 500 }
   ]
 }

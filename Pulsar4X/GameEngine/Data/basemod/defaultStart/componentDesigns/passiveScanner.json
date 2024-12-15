@@ -2,7 +2,7 @@
   "id": "default-design-passive-sensor",
   "name": "Passive Scanner",
   "templateId": "passive-sensor",
-  "attributes": [
+  "Properties": [
     { "key": "Antenna Size", "value": 5000 },
     { "key": "Ideal Detection Wavelength", "value": 470 },
     { "key": "Detection Bandwidth", "value": 250 },

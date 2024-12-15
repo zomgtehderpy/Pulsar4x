@@ -2,7 +2,7 @@
   "id": "default-design-raptor",
   "name": "Raptor-Vac",
   "templateId": "conventional-engine",
-  "attributes": [
+  "Properties": [
     { "key": "Mass", "value": 2000 },
     { "key": "Fuel Type", "value": "methalox" }
   ]

@@ -2,7 +2,7 @@
   "id": "default-design-missile-srb",
   "name": "SRB 235",
   "templateId": "missile-srb",
-  "attributes": [
+  "Properties": [
     { "key": "Engine Mass", "value": 10 }
   ]
 }

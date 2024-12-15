@@ -3,7 +3,7 @@ using Pulsar4X.DataStructures;
 
 namespace Pulsar4X.Blueprints
 {
-    public class ComponentTemplateAttributeBlueprint
+    public class ComponentTemplatePropertyBlueprint
     {
         public string Name { get; set; }
         public string DescriptionFormula { get; set; }
@@ -15,7 +15,7 @@ namespace Pulsar4X.Blueprints
         public string MaxFormula { get; set; }
         public string MinFormula { get; set; }
         public string StepFormula { get; set; }
-        public string AttributeFormula { get; set; }
+        public string PropertyFormula { get; set; }
         public string AttributeType { get; set; }
     }
 }

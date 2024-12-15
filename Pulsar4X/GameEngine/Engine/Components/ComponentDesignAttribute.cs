@@ -15,7 +15,7 @@ namespace Pulsar4X.Components
     {
         private readonly CultureInfo _toStringCulture = new CultureInfo("en-GB");
 
-        private ComponentTemplateAttributeBlueprint _templateSD;
+        private ComponentTemplatePropertyBlueprint _templateSD;
         public string Name { get { return _templateSD.Name; } }
 
         public string Unit { get { return _templateSD.Units; } }
@@ -40,14 +40,14 @@ namespace Pulsar4X.Components
         //public BaseDataBlob DataBlob;
         internal ComponentDesigner ParentComponent;
         
-        public ComponentDesignAttribute(ComponentDesigner parentComponent, ComponentTemplateAttributeBlueprint templateAtb, FactionDataStore factionDataStore, FactionTechDB factionTech)
+        public ComponentDesignAttribute(ComponentDesigner parentComponent, ComponentTemplatePropertyBlueprint templateAtb, FactionDataStore factionDataStore, FactionTechDB factionTech)
         {
             ParentComponent = parentComponent;
             _templateSD = templateAtb;
 
-            if (_templateSD.AttributeFormula != null)
+            if (_templateSD.PropertyFormula != null)
             {
-                Formula = new ChainedExpression(_templateSD.AttributeFormula, this, factionDataStore, factionTech);
+                Formula = new ChainedExpression(_templateSD.PropertyFormula, this, factionDataStore, factionTech);
             }
 
             if (!string.IsNullOrEmpty(_templateSD.DescriptionFormula ))

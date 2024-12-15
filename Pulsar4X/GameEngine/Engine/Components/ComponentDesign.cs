@@ -21,7 +21,7 @@ namespace Pulsar4X.Components
 
         public string TemplateName; //ie the name in staticData. ie "Newtonion Thruster".
         public string TemplateID; //ie the UniqueID in staticData. ie "newtonion-thruster".
-        public List<(string atbName, Type valueType, object atbValue)> TemplateAttributes = new ();
+        public List<(string propName, Type valueType, object propValue)> TemplatePropertyValues = new ();
         
         
         public bool IsValid {get; set; } = true;

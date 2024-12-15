@@ -133,7 +133,7 @@ namespace Pulsar4X.SDL2UI
             List<ComponentTemplateBlueprint> engineTemplates = new List<ComponentTemplateBlueprint>();
             foreach (var designable in allDesignables)
             {
-                foreach (var atbSD in designable.Attributes)
+                foreach (var atbSD in designable.Properties)
                 {
                     if( atbSD.AttributeType == typeof(NewtonionThrustAtb).ToString())
                     {

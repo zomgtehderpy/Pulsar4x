@@ -34,24 +34,24 @@ public static class ComponentDesignFromJson
             Name = designName
         };
 
-        var attributes = (JArray?)rootJson["attributes"];
-        if(attributes != null)
+        var properties = (JArray?)rootJson["Properties"];
+        if(properties != null)
         {
-            foreach(var attribute in attributes)
+            foreach(var prop in properties)
             {
-                var key = attribute["key"].ToString();
-                var valueType = attribute["value"];
+                var key = prop["key"].ToString();
+                var valueType = prop["value"];
                 if(valueType.Type == JTokenType.Integer)
                 {
-                    designer.ComponentDesignAttributes[key].SetValueFromInput((int?)attribute["value"] ?? 0);
+                    designer.ComponentDesignAttributes[key].SetValueFromInput((int?)prop["value"] ?? 0);
                 }
                 else if(valueType.Type == JTokenType.Float)
                 {
-                    designer.ComponentDesignAttributes[key].SetValueFromInput((double?)attribute["value"] ?? 0.0);
+                    designer.ComponentDesignAttributes[key].SetValueFromInput((double?)prop["value"] ?? 0.0);
                 }
                 else
                 {
-                    designer.ComponentDesignAttributes[key].SetValueFromString(attribute["value"].ToString());
+                    designer.ComponentDesignAttributes[key].SetValueFromString(prop["value"].ToString());
                 }
             }
         }
