@@ -11,7 +11,7 @@ namespace Pulsar4X.Components
         private FactionDataStore _factionDataStore;
         private FactionTechDB _factionTechDB;
         private ComponentDesigner _designer;
-        private ComponentDesignAttribute _designAttribute;
+        private ComponentDesignProperty _designProperty;
         private Expression _expression;
 
         // ReSharper disable once NotAccessedField.Local (Used for debuging puroposes. though maybe it could be public and shown in the UI?)
@@ -211,12 +211,12 @@ namespace Pulsar4X.Components
         /// <param name="designAbility"></param>
         /// <param name="factionTech"></param>
         /// <param name="staticDataStore"></param>
-        internal ChainedExpression(string expressionString, ComponentDesignAttribute designAbility, FactionDataStore factionTech, FactionTechDB factionTechDB)
+        internal ChainedExpression(string expressionString, ComponentDesignProperty designAbility, FactionDataStore factionTech, FactionTechDB factionTechDB)
         {
             _factionDataStore = factionTech;
             _factionTechDB = factionTechDB;
             _designer = designAbility.ParentComponent;
-            _designAttribute = designAbility;
+            _designProperty = designAbility;
             ReplaceExpression(expressionString);
         }
 
@@ -244,12 +244,12 @@ namespace Pulsar4X.Components
         /// <param name="designAbility"></param>
         /// <param name="factionTech"></param>
         /// <param name="staticDataStore"></param>
-        private ChainedExpression(Expression expression, ComponentDesignAttribute designAbility, FactionDataStore factionTech, FactionTechDB factionTechDB)
+        private ChainedExpression(Expression expression, ComponentDesignProperty designAbility, FactionDataStore factionTech, FactionTechDB factionTechDB)
         {
             _factionDataStore = factionTech;
             _factionTechDB = factionTechDB;
             _designer = designAbility.ParentComponent;
-            _designAttribute = designAbility;
+            _designProperty = designAbility;
             _expression = expression;
             SetupExpression();
         }
@@ -376,7 +376,7 @@ namespace Pulsar4X.Components
 
                 case "GuidDict":
                     var dict = new Dictionary<string, double>();
-                    foreach (var (key, expression) in _designAttribute.GuidDictionary)
+                    foreach (var (key, expression) in _designProperty.GuidDictionary)
                     {
                         dict.Add(key, expression.DResult);
                     }
@@ -473,7 +473,7 @@ namespace Pulsar4X.Components
                         enumConstants.Add(Enum.GetName(type, value), value);
                     }
 
-                    foreach (var kvp in _designAttribute.GuidDictionary)
+                    foreach (var kvp in _designProperty.GuidDictionary)
                     {
                         dynamic keyd = enumConstants[(string)kvp.Key];
                         dict.Add(keyd, kvp.Value.DResult);
@@ -511,19 +511,19 @@ namespace Pulsar4X.Components
                 //The datablob will be the one defined in designAbility.AttributeType
                 //TODO document blobs and what args they take!!
                 case "AtbConstrArgs":
-                    if (_designAttribute.AttributeType == null)
-                        throw new Exception( _designAttribute.Name +" does not have a type defined! define an AttributeType for this Attribute!");
+                    if (_designProperty.AttributeType == null)
+                        throw new Exception( _designProperty.Name +" does not have a type defined! define an AttributeType for this Attribute!");
                     //_designAbility.AtbConstrArgs = new List<double>();
                     List<object> argList = new List<object>();
                     foreach (var argParam in args.Parameters)
                     {
-                        ChainedExpression argExpression = new ChainedExpression(argParam, _designAttribute, _factionDataStore, _factionTechDB);
+                        ChainedExpression argExpression = new ChainedExpression(argParam, _designProperty, _factionDataStore, _factionTechDB);
                         _isDependant = false;
                         argExpression.Evaluate();
                         argList.Add(argExpression.Result);
                     }
 
-                    _designAttribute.AtbConstrArgs = argList.ToArray();
+                    _designProperty.AtbConstrArgs = argList.ToArray();
                     args.Result = argList;
                     break;
                 case "ExhaustVelocityLookup":

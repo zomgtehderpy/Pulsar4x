@@ -11,7 +11,7 @@ using Pulsar4X.Technology;
 
 namespace Pulsar4X.Components
 {
-    public class ComponentDesignAttribute
+    public class ComponentDesignProperty
     {
         private readonly CultureInfo _toStringCulture = new CultureInfo("en-GB");
 
@@ -40,7 +40,7 @@ namespace Pulsar4X.Components
         //public BaseDataBlob DataBlob;
         internal ComponentDesigner ParentComponent;
         
-        public ComponentDesignAttribute(ComponentDesigner parentComponent, ComponentTemplatePropertyBlueprint templateAtb, FactionDataStore factionDataStore, FactionTechDB factionTech)
+        public ComponentDesignProperty(ComponentDesigner parentComponent, ComponentTemplatePropertyBlueprint templateAtb, FactionDataStore factionDataStore, FactionTechDB factionTech)
         {
             ParentComponent = parentComponent;
             _templateSD = templateAtb;
