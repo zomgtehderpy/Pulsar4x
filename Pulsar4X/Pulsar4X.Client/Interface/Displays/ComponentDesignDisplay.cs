@@ -89,9 +89,13 @@ namespace Pulsar4X.SDL2UI
                 var tprop = _componentDesigner.ComponentDesignProperties[ptup.propName];
                 if (tprop.GuiHint == GuiHint.GuiFuelTypeSelection)
                 {
-                    //tprop.SetValueFromInput();
+                    var cargoTypesToDisplay = GetFuelTypes(tprop, state);
+                    var strfuel = (string)ptup.propValue;
+                    var index = cargoTypesToDisplay.FindIndex(item => item.UniqueID == strfuel);
+                    tprop.SetValueFromString((string)ptup.propValue);
+                    tprop.ListSelection = index;
                 }
-                if (ptup.propValue is string)
+                else if (ptup.propValue is string)
                 {
                     tprop.SetValueFromString((string)ptup.propValue);
                 }
@@ -628,31 +632,14 @@ namespace Pulsar4X.SDL2UI
 
         private void GuiHintFuelTypeSelection(ComponentDesignProperty property, GlobalUIState uiState)
         {
-            var cargoTypesToDisplay = new Dictionary<int, ICargoable>();
-            var keys = new List<int>();
+
+            var cargoTypesToDisplay = GetFuelTypes(property, uiState);
             var names = new List<string>();
-
-            foreach(string cargoType in property.GuidDictionary.Keys)
+            foreach (var cargoType in cargoTypesToDisplay)
             {
-                var fuelType = property.GuidDictionary[cargoType].StrResult;
-                string cargoTypeID = cargoType.ToString();
-                var cargos = uiState.Faction.GetDataBlob<FactionInfoDB>().Data.CargoGoods.GetAll().Where(c => c.Value.CargoTypeID.Equals(cargoTypeID));
-                foreach(var cargo in cargos)
-                {
-                    if(cargo.Value is ProcessedMaterial
-                        && ((ProcessedMaterial)cargo.Value).Formulas != null
-                        && ((ProcessedMaterial)cargo.Value).Formulas.ContainsKey("ExhaustVelocity")
-                        && ((ProcessedMaterial)cargo.Value).Formulas["ExhaustVelocity"].IsNotNullOrEmpty()
-                        && ((ProcessedMaterial)cargo.Value).Formulas.ContainsKey("FuelType")
-                        && ((ProcessedMaterial)cargo.Value).Formulas["FuelType"] == fuelType)
-                    {
-                        cargoTypesToDisplay.Add(cargo.Key, cargo.Value);
-                        keys.Add(cargo.Key);
-                        names.Add(cargo.Value.Name);
-                    }
-                }
+                names.Add(cargoType.Name);
             }
-
+            
             string[] arrayNames = names.ToArray();
 
             Title(property.Name, property.Description);
@@ -661,8 +648,33 @@ namespace Pulsar4X.SDL2UI
             ImGui.SetNextItemWidth(sizeAvailable.X);
             if(ImGui.Combo("###cargotypeselection", ref property.ListSelection, arrayNames, arrayNames.Length))
             {
-                property.SetValueFromString(cargoTypesToDisplay[keys[property.ListSelection]].UniqueID);
+                property.SetValueFromString(cargoTypesToDisplay[property.ListSelection].UniqueID);
             }
+        }
+
+        List<ICargoable> GetFuelTypes(ComponentDesignProperty property, GlobalUIState uiState)
+        {
+            var cargoTypesToDisplay = new List<ICargoable>();
+            
+            foreach(string cargoType in property.GuidDictionary.Keys)
+            {
+                var fuelType = property.GuidDictionary[cargoType].StrResult;
+                string cargoTypeID = cargoType.ToString();
+                var cargos = uiState.Faction.GetDataBlob<FactionInfoDB>().Data.CargoGoods.GetAll().Where(c => c.Value.CargoTypeID.Equals(cargoTypeID));
+                foreach(var cargo in cargos)
+                {
+                    if(cargo.Value is ProcessedMaterial
+                       && ((ProcessedMaterial)cargo.Value).Formulas != null
+                       && ((ProcessedMaterial)cargo.Value).Formulas.ContainsKey("ExhaustVelocity")
+                       && ((ProcessedMaterial)cargo.Value).Formulas["ExhaustVelocity"].IsNotNullOrEmpty()
+                       && ((ProcessedMaterial)cargo.Value).Formulas.ContainsKey("FuelType")
+                       && ((ProcessedMaterial)cargo.Value).Formulas["FuelType"] == fuelType)
+                    {
+                        cargoTypesToDisplay.Add(cargo.Value);
+                    }
+                }
+            }
+            return cargoTypesToDisplay;
         }
 
         private void GuiHintTextSelectionFormula(ComponentDesignProperty property)
