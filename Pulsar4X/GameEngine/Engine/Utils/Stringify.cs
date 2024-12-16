@@ -132,7 +132,7 @@ namespace Pulsar4X.Engine
         /// <returns></returns>
         public static string Energy(double amountInKj, string format = "0.###")
         {
-            string stringPower = "0 Kw";
+            string stringPower = "0 Kj";
             if (amountInKj > 100000000)
             {
                 amountInKj = amountInKj * 0.00000001;
@@ -140,7 +140,7 @@ namespace Pulsar4X.Engine
             }
             else if (amountInKj > 100000)
             {
-                amountInKj = amountInKj * 0.00001;
+                amountInKj = amountInKj * 0.001;
                 stringPower = amountInKj.ToString(format) + " MJ";
             }
             else if (amountInKj < 0.1)

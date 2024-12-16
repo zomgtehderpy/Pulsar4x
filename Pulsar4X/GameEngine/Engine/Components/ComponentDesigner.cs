@@ -273,7 +273,7 @@ namespace Pulsar4X.Components
         public void SetVolume()
         {
             VolumeFormula.Evaluate();
-            _design.VolumePerUnit = VolumeFormula.LongResult;
+            _design.VolumePerUnit = VolumeFormula.DResult;
             _design.Density = _design.MassPerUnit / _design.VolumePerUnit;
         }
 
