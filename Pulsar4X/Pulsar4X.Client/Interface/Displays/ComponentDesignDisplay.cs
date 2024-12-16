@@ -388,6 +388,8 @@ namespace Pulsar4X.SDL2UI
                             else
                             {
                                 ImGui.Text(attribute.Value.ToString(Styles.IntFormat));
+                                if(ImGui.IsItemHovered())
+                                    ImGui.SetTooltip(attribute.Value.ToString(Styles.DecimalFormat));
                             }
                         }
                         else if(attribute.IsEnabled && attribute.GuiHint == GuiHint.GuiFuelTypeSelection)

@@ -85,17 +85,20 @@
       "Formulas": {
         "Description": "Stores power for a ship",
         "Mass": "PropertyValue('Mass')",
-        "Volume": "PropertyValue('Mass')",
+        "Volume": "[Mass] / 2896.6",
         "HTK": "Max(1, [Mass] / 100)",
-        "CrewReq": "[Mass]",
+        "CrewReq": "0",
         "ResearchCost": "[Mass] * 0.25",
         "CreditCost": "[Mass]",
         "BuildPointCost": "[Mass]"
       },
       "ResourceCost": {
-        "plastic": "[Mass] * 0.25",
-        "copper": "[Mass] * 0.25",
-        "lithium": "[Mass] * 0.5"
+        "plastic": "[Mass] * 0.2",
+        "copper": "[Mass] * 0.2",
+        "lithium": "[Mass] * 0.4",
+        "graphite": "[Mass] * 0.1",
+        "aluminium": "[Mass] * 0.05",
+        "rare-earth-elements": "[Mass] * 0.05"
       },
       "ComponentType": "Energy Storage",
       "MountType": "ShipComponent, ShipCargo, Fighter",
@@ -106,10 +109,10 @@
           "Name": "Mass",
           "Units": "kg",
           "DescriptionFormula": "'Mass of the bank'",
-          "GuiHint": "GuiSelectionMaxMin",
+          "GuiHint": "GuiSelectionMaxMinInt",
           "MaxFormula": "25000",
           "MinFormula": "1000",
-          "StepFormula": "1",
+          "StepFormula": "250",
           "PropertyFormula": "1500"
         },
         {
@@ -117,7 +120,7 @@
           "Units": "KJ",
           "DescriptionFormula": "'Energy capacity of this part'",
           "GuiHint": "GuiTextDisplay",
-          "PropertyFormula": "PropertyValue('Mass') * 500"
+          "PropertyFormula": "PropertyValue('Mass') * 500 * TechData('tech-battery-capacity')"
         },
         {
           "Name": "DB",
