@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using ImGuiNET;
+using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Datablobs;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Engine;
@@ -38,7 +38,7 @@ namespace Pulsar4X.SDL2UI
             ImGui.SetNextWindowSize(new Vector2(256, 0));
             ImGui.SetNextWindowPos(new Vector2(ImGui.GetMainViewport().WorkSize.X - 256, 0));
             ImGui.SetNextWindowBgAlpha(0);
-            if(ImGui.Begin("###selector", _flags))
+            if(Window.Begin("###selector", _flags))
             {
                 SystemViewPreferences.GetInstance().DisplayCombo("map", selectedIndex =>
                 {
@@ -125,7 +125,7 @@ namespace Pulsar4X.SDL2UI
                         }
                     }
                 }
-                ImGui.End();
+                Window.End();
             }
         }
     }
