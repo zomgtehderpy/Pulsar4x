@@ -878,7 +878,7 @@ namespace Pulsar4X.SDL2UI
                     ImGui.NextColumn();
                     ImGui.Text("System");
                     ImGui.NextColumn();
-                    ImGui.Text(type.processorType.Name);
+                    ImGui.Text(type.Name);
                     ImGui.NextColumn();
                 }
                 ImGui.EndTabItem();
