@@ -168,7 +168,7 @@ namespace Pulsar4X.Engine
 
             long baseInitialPopulation = 9000000000;
             long variablePopulation = (long)(baseInitialPopulation * .1);
-            long initialPopulationOfEarth = game.RNG.NextInt64(baseInitialPopulation - variablePopulation, baseInitialPopulation + variablePopulation);
+            long initialPopulationOfEarth = startingSystem.RNG.NextInt64(baseInitialPopulation - variablePopulation, baseInitialPopulation + variablePopulation);
 
             Entity colonyEntity = ColonyFactory.CreateColony(factionEntity, speciesEntity, earth, initialPopulationOfEarth);
             Entity marsColony = ColonyFactory.CreateColony(factionEntity, speciesEntity, NameLookup.GetFirstEntityWithName(startingSystem, "Mars"));

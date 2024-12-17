@@ -79,31 +79,35 @@ namespace Pulsar4X.Engine
 
         [JsonProperty] private int _rngSeed = -1;
 
-        private Random _rng;
+        public Random RNG;
 
         internal int RNGNext()
         {
-            return _rng.Next();
+            return RNG.Next();
+        }
+        internal int RNGNext(int maxValue)
+        {
+            return RNG.Next(maxValue);
         }
         
         internal int RNGNext(int min, int max)
         {
-            var next = _rng.Next(min, max);
+            var next = RNG.Next(min, max);
             return next;
         }
 
         internal double RNGNextDouble()
         {
-            var next = _rng.NextDouble();
+            var next = RNG.NextDouble();
             return next;
         }
         internal bool RNGNextBool(float chance)
         {
-            return _rng.NextDouble() < chance;
+            return RNG.NextDouble() < chance;
         }
         internal bool RNGNextBool(double chance)
         {
-            return _rng.NextDouble() < chance;
+            return RNG.NextDouble() < chance;
         }
         #endregion
 
@@ -131,7 +135,7 @@ namespace Pulsar4X.Engine
                     throw new Exception("postload but seed is not set");
             }
 
-            _rng = new Random(seed);
+            RNG = new Random(seed);
             
             SetEntities();
             InitializeManagerSubPulse(game, postLoad);

@@ -95,7 +95,7 @@ namespace Pulsar4X.People
         public static Entity CreateSpeciesForPlanet(Entity faction, EntityManager systemEntityManager, Entity planetEntity)
         {
             NameDB name = new NameDB("somename"); //where should we get the name from? maybe we should pass a string here.
-            SpeciesDB speciesDB = CreateSpeciesDB_FromPlanet(planetEntity);
+            SpeciesDB speciesDB = CreateSpeciesDB_FromPlanet(planetEntity, systemEntityManager.RNG);
             var blobs = new List<BaseDataBlob> {name, speciesDB};
             Entity species = Entity.Create();
             species.FactionOwnerID = faction.Id;
@@ -104,14 +104,9 @@ namespace Pulsar4X.People
             return species;
         }
 
-        private static SpeciesDB CreateSpeciesDB_FromPlanet(Entity planetEntity, int? seed = null)
+        private static SpeciesDB CreateSpeciesDB_FromPlanet(Entity planetEntity, Random rng)
         {
-            Random rnd;
-            if (seed != null)
-                rnd = new Random((int)seed);
-            else
-                rnd = new Random();
-
+            
             MassVolumeDB masvolinfo = planetEntity.GetDataBlob<MassVolumeDB>();
             SystemBodyInfoDB sysbodyinfo = planetEntity.GetDataBlob<SystemBodyInfoDB>();
             AtmosphereDB atmoinfo = planetEntity.GetDataBlob<AtmosphereDB>();

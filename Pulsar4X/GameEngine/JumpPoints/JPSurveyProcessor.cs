@@ -100,7 +100,7 @@ public class JPSurveyProcessor : IHotloopProcessor
                                            .ToList();
 
         var chance = (double)jpRemaining.Count / (double)surveyLocationsRemaining.Count;
-        var roll = discoveredEntity.Manager.Game.RNG.NextDouble();
+        var roll = discoveredEntity.Manager.RNGNextDouble();
 
         if(chance >= roll)
         {

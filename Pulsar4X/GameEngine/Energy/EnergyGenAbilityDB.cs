@@ -77,20 +77,9 @@ namespace Pulsar4X.Energy
         {
             HistogramStartDate = gameTime - TimeSpan.FromSeconds(_histogramSize);
             dateTimeLastProcess = gameTime;// - TimeSpan.FromSeconds(_histogramSize);
-
-            Random rng = new Random();
+            
             for (int i = 0; i < _histogramSize; i++)
             {
-                /*
-                double o = rng.Next(0, 50);
-                double d = rng.Next(0, 50);
-                double s = rng.Next(0, 50);
-                int lastt = 0;
-                if(i > 0)
-                    lastt = Histogram[i - 1].seconds;
-                int t = rng.Next(lastt, lastt + 60);
-                Histogram.Add((o,d,s,t));
-                */
                 Histogram.Add((0,0,0,i));
             }
         }

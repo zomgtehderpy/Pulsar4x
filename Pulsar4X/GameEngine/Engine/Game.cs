@@ -67,10 +67,7 @@ namespace Pulsar4X.Engine
 
         [JsonProperty]
         public GameSettings Settings { get; internal set; }
-
-        [JsonProperty]
-        public Random RNG { get; } = new Random(12345689);
-
+        
         [JsonProperty]
         public ModDataStore StartingGameData { get; private set; }
 
@@ -91,6 +88,8 @@ namespace Pulsar4X.Engine
 
         internal event EventHandler PostLoad;
 
+        internal Random RNG => GlobalManager.RNG;
+        
         public Game() { }
 
         public Game(NewGameSettings settings, ModDataStore modDataStore)
