@@ -55,12 +55,12 @@ namespace Pulsar4X.Components
                 DescriptionFormula = new ChainedExpression(_templateSD.DescriptionFormula, this, factionDataStore, factionTech);
             }
 
-            if (_templateSD.GuidDictionary != null )
+            if (_templateSD.DataDict != null )
             {
                 GuidDictionary = new Dictionary<string, ChainedExpression>();
                 if (GuiHint == GuiHint.GuiTechSelectionList)
                 {
-                    foreach (var kvp in _templateSD.GuidDictionary)
+                    foreach (var kvp in _templateSD.DataDict)
                     {
                         if(factionDataStore.Techs.ContainsKey(kvp.Key))
                         {
@@ -71,7 +71,7 @@ namespace Pulsar4X.Components
                 }
                 else
                 {
-                    foreach (var kvp in _templateSD.GuidDictionary)
+                    foreach (var kvp in _templateSD.DataDict)
                     {
                         GuidDictionary.Add(kvp.Key, new ChainedExpression(kvp.Value, this, factionDataStore, factionTech));
                     }

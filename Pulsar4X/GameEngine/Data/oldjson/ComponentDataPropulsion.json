@@ -55,7 +55,7 @@
               "Name": "Fuel Type",
               "DescriptionFormula": "'The type of fuel the engine burns'",
               "GuiHint": "GuiFuelTypeSelection",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": [
                   {
                     "Key": "d8e8da2d-8dc8-4a3f-b989-5f2e67c55e77",

@@ -478,7 +478,7 @@
               "Name": "Rack Size",
               "DescriptionFormula": "''",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "1000000",
@@ -490,7 +490,7 @@
               "Name": "Size Efficency",
               "DescriptionFormula": "'The amount of tonnage taken up by racking, office space etc.'",
               "GuiHint": "GuiTextDisplay",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "PropertyFormula": "PropertyValue(0) * 0.01"
@@ -499,7 +499,7 @@
               "Name": "Cargo Transfer Rate",
               "DescriptionFormula": "'How much cargo can be transfered per hour in kg.'",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "1000000",
@@ -511,7 +511,7 @@
               "Name": "Transfer Range",
               "DescriptionFormula": "'How much Dv can be expended to transfer cargo'",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "1000000",
@@ -523,7 +523,7 @@
               "Name": "Total Cargo Stored",
               "DescriptionFormula": "'The amount of cargo this can store.'",
               "GuiHint": "GuiTextDisplay",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "PropertyFormula": "PropertyValue(0) - PropertyValue(1) - PropertyValue(2)"

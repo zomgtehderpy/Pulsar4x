@@ -148,7 +148,7 @@
           "Units": "kkm",
           "DescriptionFormula": "'in kkm'",
           "GuiHint": "GuiSelectionMaxMin",
-          "GuidDictionary": {},
+          "DataDict": {},
           "MaxFormula": "175",
           "MinFormula": "10",
           "StepFormula": "5",
@@ -159,7 +159,7 @@
           "Units": "km/s",
           "DescriptionFormula": "'in km/s'",
           "GuiHint": "GuiSelectionMaxMin",
-          "GuidDictionary": {},
+          "DataDict": {},
           "MaxFormula": "25000",
           "MinFormula": "1250",
           "StepFormula": "250",
@@ -169,7 +169,7 @@
           "Name": "Size vs Range",
           "Units": "SVR",
           "GuiHint": "GuiSelectionMaxMin",
-          "GuidDictionary": {},
+          "DataDict": {},
           "MaxFormula": "4",
           "MinFormula": "0.25",
           "StepFormula": "0.25",
@@ -179,7 +179,7 @@
           "Name": "Size vs TrackingSpeed",
           "Units": "SVTS",
           "GuiHint": "GuiSelectionMaxMin",
-          "GuidDictionary": {},
+          "DataDict": {},
           "MaxFormula": "4",
           "MinFormula": "0.25",
           "StepFormula": "0.25",
@@ -189,13 +189,13 @@
           "Name": "Mass",
           "Units": "kg",
           "GuiHint": "None",
-          "GuidDictionary": {},
+          "DataDict": {},
           "PropertyFormula": "(PropertyValue('Range') + PropertyValue('Tracking Speed') / 100) * PropertyValue('Size vs Range') *  PropertyValue('Size vs TrackingSpeed')"
         },
         {
           "Name": "DBargs",
           "GuiHint": "None",
-          "GuidDictionary": {},
+          "DataDict": {},
           "PropertyFormula": "AtbConstrArgs(PropertyValue('Range'), PropertyValue('Tracking Speed'))",
           "AttributeType": "Pulsar4X.Weapons.BeamFireControlAtbDB"
         }
@@ -233,7 +233,7 @@
           "Units": "survey per hour",
           "DescriptionFormula": "'Each point in speed provides one survey point per hour'",
           "GuiHint": "GuiSelectionMaxMinInt",
-          "GuidDictionary": {},
+          "DataDict": {},
           "MaxFormula": "10",
           "MinFormula": "1",
           "StepFormula": "1",
@@ -249,7 +249,7 @@
         {
           "Name": "DBargs",
           "GuiHint": "None",
-          "GuidDictionary": {},
+          "DataDict": {},
           "PropertyFormula": "AtbConstrArgs(PropertyValue('Survey Speed'))",
           "AttributeType": "Pulsar4X.GeoSurveys.GeoSurveyAtb"
         }
@@ -287,7 +287,7 @@
           "Units": "survey points per day",
           "DescriptionFormula": "'Each point in speed provides one survey point per day'",
           "GuiHint": "GuiSelectionMaxMinInt",
-          "GuidDictionary": {},
+          "DataDict": {},
           "MaxFormula": "10",
           "MinFormula": "1",
           "StepFormula": "1",
@@ -303,7 +303,7 @@
         {
           "Name": "DBargs",
           "GuiHint": "None",
-          "GuidDictionary": {},
+          "DataDict": {},
           "PropertyFormula": "AtbConstrArgs(PropertyValue('Survey Speed'))",
           "AttributeType": "Pulsar4X.JumpPoints.GravSurveyAtb"
         }

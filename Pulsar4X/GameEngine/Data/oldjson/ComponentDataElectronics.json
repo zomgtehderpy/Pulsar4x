@@ -163,7 +163,7 @@
               "Units": "kkm",
               "DescriptionFormula": "'in kkm'",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "175",
@@ -176,7 +176,7 @@
               "Units": "km/s",
               "DescriptionFormula": "'in km/s'",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "25000",
@@ -188,7 +188,7 @@
               "Name": "Size vs Range",
               "Units": "SVR",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "4",
@@ -200,7 +200,7 @@
               "Name": "Size vs TrackingSpeed",
               "Units": "SVTS",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "4",
@@ -212,7 +212,7 @@
               "Name": "Mass",
               "Units": "kg",
               "GuiHint": "None",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "PropertyFormula": "(PropertyValue('Range') + PropertyValue('Tracking Speed') / 100) * PropertyValue('Size vs Range') *  PropertyValue('Size vs TrackingSpeed')"
@@ -220,7 +220,7 @@
             {
               "Name": "DBargs",
               "GuiHint": "None",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "PropertyFormula": "AtbConstrArgs(PropertyValue(0), PropertyValue(1))",

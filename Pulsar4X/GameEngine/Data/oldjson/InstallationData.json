@@ -36,7 +36,7 @@
               "Name": "MiningAmount",
               "DescriptionFormula": "''",
               "GuiHint": "None",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": [
                   {
                     "Key": "5eadda1f-43aa-44be-bdb4-395441a33f14",
@@ -232,7 +232,7 @@
               "Name": "RefineAbilitys",
               "DescriptionFormula": "''",
               "GuiHint": "None",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries":
                 [
                   {
@@ -308,7 +308,7 @@
             {
               "Name": "Construction Points",
               "GuiHint": "None",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries":
                 [
                   {
@@ -382,7 +382,7 @@
             {
               "Name": "db",
               "GuiHint": "None",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries":
                 [
                   {
@@ -482,7 +482,7 @@
               "Name": "Cargo Transfer Rate",
               "DescriptionFormula": "'How much cargo can be transfered per hour in kg.'",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "1000000",
@@ -494,7 +494,7 @@
               "Name": "Transfer Range",
               "DescriptionFormula": "'How much Dv can be expended to transfer cargo'",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "1000000",
@@ -545,7 +545,7 @@
               "Name": "Logistic Capacity",
               "DescriptionFormula": "'How many different items this office can handle'",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "100",
@@ -596,7 +596,7 @@
               "Name": "Warehouse Size",
               "DescriptionFormula": "''",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "1000000",
@@ -608,7 +608,7 @@
               "Name": "Size Efficency",
               "DescriptionFormula": "'The amount of tonnage taken up by racking, office space etc.'",
               "GuiHint": "GuiTextDisplay",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "PropertyFormula": "PropertyValue('Warehouse Size') * 0.01"
@@ -617,7 +617,7 @@
               "Name": "Cargo Transfer Rate",
               "DescriptionFormula": "'How much cargo can be transfered per hour in kg.'",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "1000000",
@@ -629,7 +629,7 @@
               "Name": "Transfer Range",
               "DescriptionFormula": "'How much Dv can be expended to transfer cargo'",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "1000000",
@@ -806,7 +806,7 @@
               "Name": "Warehouse Size",
               "DescriptionFormula": "''",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "1000000",
@@ -818,7 +818,7 @@
               "Name": "Size Efficency",
               "DescriptionFormula": "'The amount of tonnage taken up by racking, office space etc.'",
               "GuiHint": "GuiTextDisplay",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "PropertyFormula": "PropertyValue(0) * 0.01"
@@ -827,7 +827,7 @@
               "Name": "Cargo Transfer Rate",
               "DescriptionFormula": "'How much cargo can be transfered per hour in kg.'",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "1000000",
@@ -839,7 +839,7 @@
               "Name": "Transfer Range",
               "DescriptionFormula": "'How much Dv can be expended to transfer cargo'",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "1000000",
@@ -851,7 +851,7 @@
               "Name": "Total Cargo Stored",
               "DescriptionFormula": "'The volume of cargo this can store.'",
               "GuiHint": "GuiTextDisplay",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "PropertyFormula": "PropertyValue(0) - PropertyValue(1) - PropertyValue(2)"

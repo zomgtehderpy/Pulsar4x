@@ -54,7 +54,7 @@
           "Name": "Fuel Type",
           "DescriptionFormula": "'The type of fuel the engine burns'",
           "GuiHint": "GuiFuelTypeSelection",
-          "GuidDictionary": {
+          "DataDict": {
             "fuel-storage": "'conventional'"
           },
           "PropertyFormula": "GuidString('rp-1')"
@@ -126,7 +126,7 @@
           "Name": "Fuel Type",
           "DescriptionFormula": "'The type of fuel the engine burns'",
           "GuiHint": "GuiFuelTypeSelection",
-          "GuidDictionary": {
+          "DataDict": {
             "fuel-storage": "'ntr'"
           },
           "PropertyFormula": "GuidString('ntp')"

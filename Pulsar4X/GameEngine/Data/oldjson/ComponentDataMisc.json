@@ -32,7 +32,7 @@
               "Units": "kg",
               "DescriptionFormula": "'The mass of the weight'",
               "GuiHint": "GuiSelectionMaxMin",
-              "GuidDictionary": {
+              "DataDict": {
                 "Entries": []
               },
               "MaxFormula": "10000",
