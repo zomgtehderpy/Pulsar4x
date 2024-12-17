@@ -74,14 +74,65 @@ namespace Pulsar4X.Engine
         /// <param name="entity"></param>
         /// <returns></returns>
         public delegate bool FilterEntities(Entity entity);
+        
+        #region PsudoRNG
 
+        [JsonProperty] private int _rngSeed = -1;
+
+        private Random _rng;
+
+        internal int RNGNext()
+        {
+            return _rng.Next();
+        }
+        
+        internal int RNGNext(int min, int max)
+        {
+            var next = _rng.Next(min, max);
+            return next;
+        }
+
+        internal double RNGNextDouble()
+        {
+            var next = _rng.NextDouble();
+            return next;
+        }
+        internal bool RNGNextBool(float chance)
+        {
+            return _rng.NextDouble() < chance;
+        }
+        internal bool RNGNextBool(double chance)
+        {
+            return _rng.NextDouble() < chance;
+        }
+        #endregion
 
         #region Constructors
         internal EntityManager() { }
 
-        internal void Initialize(Game game, bool postLoad = false)
+        internal void Initialize(Game game, int seed = -1, bool postLoad = false)
         {
             SelfInitialize(game);
+            //init PRNG
+            if (!postLoad)
+            {
+                if (seed == -1)
+                {
+                    _rngSeed = game.GlobalManager.RNGNext();
+                }
+                else
+                {
+                    _rngSeed = seed;
+                }
+            }
+            else
+            {
+                if (_rngSeed == 0)
+                    throw new Exception("postload but seed is not set");
+            }
+
+            _rng = new Random(seed);
+            
             SetEntities();
             InitializeManagerSubPulse(game, postLoad);
 

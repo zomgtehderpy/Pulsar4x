@@ -106,9 +106,9 @@ namespace Pulsar4X.Engine
             ProcessorManager = new ProcessorManager(this);
             OrderHandler = new StandAloneOrderHandler(this);
             GlobalManager = new EntityManager();
-            GlobalManager.Initialize(this);
+            GlobalManager.Initialize(this, settings.MasterSeed);
             GameMasterFaction = FactionFactory.CreateSpaceMasterFaction(this, SpaceMaster, "SpaceMaster Faction");
-            GalaxyGen = new GalaxyFactory(SystemGenSettings, Settings.MasterSeed);
+            GalaxyGen = new GalaxyFactory(SystemGenSettings);
         }
 
         public void ApplySettings(NewGameSettings settings)
@@ -171,7 +171,7 @@ namespace Pulsar4X.Engine
 
             foreach(var system in loadedGame.Systems)
             {
-                system.Initialize(loadedGame, true);
+                system.Initialize(loadedGame, -1, true);
             }
 
             // Hook up the event logs

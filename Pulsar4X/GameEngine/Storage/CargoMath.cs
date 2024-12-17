@@ -357,7 +357,6 @@ namespace Pulsar4X.Storage
 
         /// <summary>
         /// Will randomly dump cargo if volume to remove is more than the free volume.
-        /// TODO: should be psudorandom.
         /// TODO: should create an entity in space depending on type of cargo.
         /// TODO: cargoLibrary should be a global library not just a faction one, or we'll have problems from captured ships.
         /// </summary>
@@ -372,11 +371,11 @@ namespace Pulsar4X.Storage
 
             if(type.FreeVolume < 0)
             {
-                Random prng = new Random(); //todo: grab seed from parent entity (or entity manager?) system for this is not yet implemented
+                var mgr = db.OwningEntity.Manager;
                 var indexlist = type.CurrentStoreInUnits.Keys.ToList();
                 while (type.FreeVolume < 0)
                 {
-                    var prngIndex = prng.Next(0, type.CurrentStoreInUnits.Count - 1);
+                    var prngIndex = mgr.RNGNext(0, type.CurrentStoreInUnits.Count - 1);
                     var cargoID = indexlist[prngIndex];
                     ICargoable cargoItem = cargoLibrary.GetAny(cargoID);
                     var volPerUnit = cargoItem.VolumePerUnit;

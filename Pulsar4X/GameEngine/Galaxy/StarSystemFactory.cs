@@ -318,7 +318,7 @@ namespace Pulsar4X.Galaxy
             var rngSeed = (int?)rootJson["seed"] ?? -1;
 
             StarSystem system = new StarSystem();
-            system.Initialize(game, systemName, rngSeed, id);
+            system.Initialize(game, systemName, rngSeed, false, id);
 
             var stars = (JArray?)rootJson["stars"];
             Entity? rootStar = null;
