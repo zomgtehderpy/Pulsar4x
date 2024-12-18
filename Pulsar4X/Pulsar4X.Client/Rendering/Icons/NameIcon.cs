@@ -5,6 +5,7 @@ using ImGuiNET;
 using Pulsar4X.Engine;
 using SDL2;
 using System.Numerics;
+using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.JumpPoints;
 using Pulsar4X.Names;
 using Pulsar4X.Movement;
@@ -262,7 +263,7 @@ namespace Pulsar4X.SDL2UI
 
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(1, 2));
             ImGui.SetNextWindowPos(pos, ImGuiCond.Always);
-            ImGui.Begin(icon.NameString, ref icon.IsActive, icon._flags | ImGuiWindowFlags.NoDocking);
+            Window.Begin(icon.NameString, ref icon.IsActive, icon._flags | ImGuiWindowFlags.NoDocking);
             ImGui.PopStyleColor(); //have to pop the color change after pushing it.
             ImGui.PopStyleVar(3);
         }
@@ -274,7 +275,7 @@ namespace Pulsar4X.SDL2UI
 
         private static void EndNameIcon(NameIcon icon)
         {
-            ImGui.End();
+            Window.End();
         }
 
         private static void DisplayContextMenu(Camera camera, NameIcon icon)
