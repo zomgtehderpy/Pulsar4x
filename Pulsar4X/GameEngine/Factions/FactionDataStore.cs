@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using Pulsar4X.DataStructures;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Blueprints;
@@ -30,6 +31,7 @@ namespace Pulsar4X.Factions
         public SafeDictionary<string, Tech> Techs { get; private set; }
 
         public CargoDefinitionsLibrary LockedCargoGoods { get; private set; }
+        [JsonProperty]
         public CargoDefinitionsLibrary CargoGoods { get; private set; }
 
         public FactionDataStore()
