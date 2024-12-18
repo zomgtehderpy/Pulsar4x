@@ -44,6 +44,13 @@ public class LoadGame : PulsarGuiWindow
             (int id, Entity faction) = loadedGame.Factions.First(f => f.Value.GetOwnersName().Equals("UEF"));
             _uiState.SetFaction(faction, true);
             _uiState.SetActiveSystem(faction.GetDataBlob<FactionInfoDB>().KnownSystems[0]);
+            
+            DebugWindow.GetInstance().SetGameEvents();
+            IsActive = false;
+            //we initialize window instances so that they get always displayed and automatically open after new game is created.
+            TimeControl.GetInstance().SetActive();
+            ToolBarWindow.GetInstance().SetActive();
+            Selector.GetInstance().SetActive();
         }
     }
 }

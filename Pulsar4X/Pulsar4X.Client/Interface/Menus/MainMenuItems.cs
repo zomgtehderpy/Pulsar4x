@@ -64,18 +64,7 @@ namespace Pulsar4X.SDL2UI
                             // FIXME:
                             //SerializationManager.Export(_uiState.Game, "SaveGame");
                         }
-                        if (ImGui.Button("Load Game...", buttonSize))
-                        {
-                            LoadGame.GetInstance().ToggleActive();
-                            // string contents = File.ReadAllText("save.json");
-                            // var loadedGame = Game.Load(contents);
-                            //
-                            // _uiState.Game = loadedGame;
-                            //
-                            // var playerFaction = loadedGame.Factions.Where(f => f.Value.GetOwnersName().Equals("UEF")).First();
-                            // _uiState.SetFaction(playerFaction.Value, true);
-                            // _uiState.SetActiveSystem(playerFaction.Value.GetDataBlob<FactionInfoDB>().KnownSystems[0]);
-                        }
+
                         if (ImGui.Button("Options", buttonSize))
                         {
                             SettingsWindow.GetInstance().ToggleActive();
@@ -94,6 +83,18 @@ namespace Pulsar4X.SDL2UI
                         }
                     }
                     ImGui.Button("Resume a Current Game", buttonSize);
+                    if (ImGui.Button("Load Game...", buttonSize))
+                    {
+                        LoadGame.GetInstance().ToggleActive();
+                        // string contents = File.ReadAllText("save.json");
+                        // var loadedGame = Game.Load(contents);
+                        //
+                        // _uiState.Game = loadedGame;
+                        //
+                        // var playerFaction = loadedGame.Factions.Where(f => f.Value.GetOwnersName().Equals("UEF")).First();
+                        // _uiState.SetFaction(playerFaction.Value, true);
+                        // _uiState.SetActiveSystem(playerFaction.Value.GetDataBlob<FactionInfoDB>().KnownSystems[0]);
+                    }
                     ImGui.Button("Connect to a Network Game", buttonSize);
                 }
 
