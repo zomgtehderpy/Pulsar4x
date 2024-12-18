@@ -79,6 +79,7 @@ namespace Pulsar4X.Factions
         private Dictionary<Entity, uint> FactionAccessRoles { get; set; } = new ();
         internal ReadOnlyDictionary<Entity, AccessRole> AccessRoles => new (FactionAccessRoles.ToDictionary(kvp => kvp.Key, kvp => (AccessRole)kvp.Value));
 
+        [JsonProperty]
         public IEventLog EventLog { get; internal set; }
 
         public FactionInfoDB()
