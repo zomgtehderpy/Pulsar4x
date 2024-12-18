@@ -6,6 +6,7 @@ using ImGuiNET;
 using ImGuiSDL2CS;
 using SDL2;
 using Microsoft.Extensions.Configuration;
+using Pulsar4X.Client.Interface.Widgets;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -18,6 +19,9 @@ namespace Pulsar4X.SDL2UI
 
     public class PulsarMainWindow : ImGuiSDL2CSWindow
     {
+#if DEBUG
+        private ImGuiWindowFlags _gitHashFlags = ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBackground | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoSavedSettings | ImGuiWindowFlags.NoFocusOnAppearing | ImGuiWindowFlags.NoNav;
+#endif
         public const string OrgName = "Pulsar4X";
         public const string AppName = "Pulsar4X";
         public const string PreferencesFile = "preferences.ini";
@@ -258,15 +262,17 @@ namespace Pulsar4X.SDL2UI
             {
                 item.Display();
             }
-
+            
+#if DEBUG
             var dispsize = ImGui.GetIO().DisplaySize;
             var pos = new System.Numerics.Vector2(0, dispsize.Y - ImGui.GetFrameHeightWithSpacing());
             ImGui.SetNextWindowPos(pos, ImGuiCond.Always);
-            var flags = ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBackground | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoSavedSettings | ImGuiWindowFlags.NoFocusOnAppearing | ImGuiWindowFlags.NoNav;
-            if (ImGui.Begin("GitHash", flags))
+            if (Window.Begin("GitHash", _gitHashFlags))
             {
                 ImGui.Text("Version: " + AssemblyInfo.GetGitHash());
+                Window.End();
             }
+#endif
         }
     }
 }

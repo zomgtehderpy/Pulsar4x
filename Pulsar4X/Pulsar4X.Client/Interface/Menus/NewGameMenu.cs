@@ -87,10 +87,6 @@ namespace Pulsar4X.SDL2UI
 
         void CreateNewGame()
         {
-            ModLoader modLoader = new ModLoader();
-            ModDataStore modDataStore = new ModDataStore();
-            modLoader.LoadModManifest("Data/basemod/modInfo.json", modDataStore);
-
             gameSettings = new NewGameSettings
             {
                 GameName = ImGuiSDL2CSHelper.StringFromBytes(_nameInputBuffer),
@@ -103,7 +99,7 @@ namespace Pulsar4X.SDL2UI
                 MasterSeed = _masterSeed
             };
 
-            Pulsar4X.Engine.Game game = new Pulsar4X.Engine.Game(gameSettings, modDataStore);
+            Pulsar4X.Engine.Game game = GameFactory.CreateGame(new [] { "Data/basemod/modInfo.json" }, gameSettings);
 
             // TODO: need to add the implementation for a random start
             var (newGameFaction, systemId) = Pulsar4X.Engine.DefaultStartFactory.LoadFromJson(game, "Data/basemod/defaultStart.json");
