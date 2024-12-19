@@ -83,7 +83,12 @@ namespace Pulsar4X.SDL2UI
                             this.SetActive(false);
                         }
                     }
-                    ImGui.Button("Resume a Current Game", buttonSize);
+
+                    if (ImGui.Button("Resume a Current Game", buttonSize))
+                    {
+                        LoadGame.GetInstance().LoadLatest();
+                        SetActive(false);
+                    }
                     if (ImGui.Button("Load Game...", buttonSize))
                     {
                         LoadGame.GetInstance().ToggleActive();

@@ -80,7 +80,7 @@ namespace Pulsar4X.Components
             get { return Design.HTK; }
         }
 
-
+        [JsonProperty]
         private Dictionary<Type, ComponentAbilityState> _instanceAbilities = new Dictionary<Type, ComponentAbilityState>();
 
         public Dictionary<Type, ComponentAbilityState> GetAllStates()

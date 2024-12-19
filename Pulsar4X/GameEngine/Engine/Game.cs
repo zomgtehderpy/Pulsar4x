@@ -170,9 +170,10 @@ namespace Pulsar4X.Engine
             loadedGame.OrderHandler = new StandAloneOrderHandler(loadedGame);
             loadedGame.GlobalManager.Initialize(loadedGame);
 
-            foreach(var system in loadedGame.Systems)
+            foreach (var mgr in loadedGame.GlobalManagerDictionary)
             {
-                system.Initialize(loadedGame, -1, true);
+                mgr.Value.Initialize(loadedGame);
+                mgr.Value.ManagerSubpulses.Initialize(mgr.Value, loadedGame.ProcessorManager);
             }
 
             // Hook up the event logs
