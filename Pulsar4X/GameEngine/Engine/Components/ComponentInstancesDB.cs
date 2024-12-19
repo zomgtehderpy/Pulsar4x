@@ -236,7 +236,6 @@ namespace Pulsar4X.Datablobs
         }
 
         // JSON deserialization callback.
-        
         [OnDeserialized]
         private void Deserialized(StreamingContext context)
         {
@@ -244,12 +243,6 @@ namespace Pulsar4X.Datablobs
             {
                 AddComponentInstance(item.Value);
             }
-            /*
-            var game = (Game)context.Context;
-            game.PostLoad += (sender, args) =>
-            {
-
-            };*/
         }
     }
 }

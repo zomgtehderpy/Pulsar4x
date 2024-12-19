@@ -63,6 +63,7 @@ namespace Pulsar4X.SDL2UI
 
                             // FIXME:
                             //SerializationManager.Export(_uiState.Game, "SaveGame");
+                            SetActive(false);
                         }
 
                         if (ImGui.Button("Options", buttonSize))
@@ -86,6 +87,7 @@ namespace Pulsar4X.SDL2UI
                     if (ImGui.Button("Load Game...", buttonSize))
                     {
                         LoadGame.GetInstance().ToggleActive();
+                        SetActive(false);
                     }
                     ImGui.Button("Connect to a Network Game", buttonSize);
                 }

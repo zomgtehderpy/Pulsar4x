@@ -56,7 +56,7 @@ namespace Pulsar4X.Components
         public ComponentMountType ComponentMountType;
         //public List<ComponentDesignAtbData> ComponentDesignAttributes;
 
-        [JsonIgnore]
+        [JsonProperty]
         public Dictionary<Type, IComponentDesignAttribute> AttributesByType = new();
         public float AspectRatio = 1f;
 
