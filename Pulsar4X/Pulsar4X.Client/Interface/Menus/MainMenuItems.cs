@@ -86,14 +86,6 @@ namespace Pulsar4X.SDL2UI
                     if (ImGui.Button("Load Game...", buttonSize))
                     {
                         LoadGame.GetInstance().ToggleActive();
-                        // string contents = File.ReadAllText("save.json");
-                        // var loadedGame = Game.Load(contents);
-                        //
-                        // _uiState.Game = loadedGame;
-                        //
-                        // var playerFaction = loadedGame.Factions.Where(f => f.Value.GetOwnersName().Equals("UEF")).First();
-                        // _uiState.SetFaction(playerFaction.Value, true);
-                        // _uiState.SetActiveSystem(playerFaction.Value.GetDataBlob<FactionInfoDB>().KnownSystems[0]);
                     }
                     ImGui.Button("Connect to a Network Game", buttonSize);
                 }

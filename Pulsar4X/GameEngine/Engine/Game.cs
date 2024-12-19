@@ -148,7 +148,8 @@ namespace Pulsar4X.Engine
             JsonSerializerSettings settings = new JsonSerializerSettings() {
                 Formatting = Formatting.Indented,
                 PreserveReferencesHandling = PreserveReferencesHandling.All,
-                TypeNameHandling = TypeNameHandling.All
+                TypeNameHandling = TypeNameHandling.All,
+                ContractResolver = new NonPublicResolver()
             };
 
             return JsonConvert.SerializeObject(game, settings);

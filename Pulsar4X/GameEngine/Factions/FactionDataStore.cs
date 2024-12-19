@@ -31,7 +31,6 @@ namespace Pulsar4X.Factions
         public SafeDictionary<string, Tech> Techs { get; private set; }
 
         public CargoDefinitionsLibrary LockedCargoGoods { get; private set; }
-        [JsonProperty]
         public CargoDefinitionsLibrary CargoGoods { get; private set; }
 
         public FactionDataStore()

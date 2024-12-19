@@ -196,7 +196,7 @@ namespace Pulsar4X.SDL2UI.Combat
                         ImGui.Image(_shipImgPtr, new System.Numerics.Vector2(w, h));
 
                     }
-
+                    Window.End();
                 }
 
                 if (_shipImgPtr != IntPtr.Zero)
@@ -323,7 +323,7 @@ namespace Pulsar4X.SDL2UI.Combat
 
             }
 
-            Window.End();
+            
         }
 
         }

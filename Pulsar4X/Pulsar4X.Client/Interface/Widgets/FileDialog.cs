@@ -47,7 +47,7 @@ public static class FileDialog
             _pathString = _curDir;
         else
             _pathString = path;
-
+        _strInputBuffer = ImGuiSDL2CSHelper.BytesFromString(fileName);
         ImGui.Begin("File Dialog", ref IsActive);
         ImGui.Text("Name:"); 
         ImGui.SameLine();

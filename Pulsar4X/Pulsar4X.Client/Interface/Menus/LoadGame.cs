@@ -12,8 +12,8 @@ namespace Pulsar4X.Client.Interface.Menus;
 
 public class LoadGame : PulsarGuiWindow
 {
-    private string _filePath = "";
-    private string _fileName = "";
+    private string _filePath = "Saves";
+    private string _fileName = "savegame";
 
     private LoadGame() {}
     
@@ -21,6 +21,8 @@ public class LoadGame : PulsarGuiWindow
     {
         if (!_uiState.LoadedWindows.ContainsKey(typeof(LoadGame)))
         {
+            if(!Directory.Exists("Saves"))
+            {Directory.CreateDirectory("Saves");}
             return new LoadGame();
         }
         return (LoadGame)_uiState.LoadedWindows[typeof(LoadGame)];

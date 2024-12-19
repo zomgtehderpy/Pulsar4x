@@ -39,16 +39,19 @@ namespace Pulsar4X.Components
         /// This is the entity that this component  is mounted on.
         /// </summary>
         /// <value>The parent entity.</value>
-        [JsonProperty]
         public Entity ParentEntity
         {
             get { return _parentEntity; }
-            internal set { _parentEntity = value; ParentInstances = ParentEntity.GetDataBlob<ComponentInstancesDB>(); }
+            internal set
+            {
+                _parentEntity = value; 
+                ParentInstances = ParentEntity.GetDataBlob<ComponentInstancesDB>();
+            }
         }
-
+        [JsonProperty]
         private Entity _parentEntity;
 
-        [JsonIgnore]
+        [JsonProperty]
         public ComponentInstancesDB ParentInstances { get; private set; }
         /// <summary>
         /// This is the design of this component.
