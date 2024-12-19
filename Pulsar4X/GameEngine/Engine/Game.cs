@@ -161,7 +161,7 @@ namespace Pulsar4X.Engine
                 Formatting = Formatting.Indented,
                 PreserveReferencesHandling = PreserveReferencesHandling.All,
                 TypeNameHandling = TypeNameHandling.All,
-                ContractResolver = new NonPublicResolver()
+                ContractResolver = new NonPublicResolver(),
             };
             var loadedGame = JsonConvert.DeserializeObject<Game>(json, settings);
 
