@@ -9,7 +9,7 @@ namespace Pulsar4X.Client.Interface.Menus;
 
 public class SaveGame : PulsarGuiWindow
 {
-    private string _filePath = "Saves";
+    private string _filePath = Path.Combine(PulsarMainWindow.GetAppDataPath(), PulsarMainWindow.SavesPath);
     private string _fileName = "savegame";
 
     private SaveGame() {}
@@ -18,8 +18,6 @@ public class SaveGame : PulsarGuiWindow
     {
         if (!_uiState.LoadedWindows.ContainsKey(typeof(SaveGame)))
         {
-            if(!Directory.Exists("Saves"))
-            {Directory.CreateDirectory("Saves");}
             return new SaveGame();
         }
         return (SaveGame)_uiState.LoadedWindows[typeof(SaveGame)];

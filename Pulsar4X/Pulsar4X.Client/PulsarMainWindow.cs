@@ -25,6 +25,7 @@ namespace Pulsar4X.SDL2UI
         public const string OrgName = "Pulsar4X";
         public const string AppName = "Pulsar4X";
         public const string PreferencesFile = "preferences.ini";
+        public const string SavesPath = "Saves";
         private readonly GlobalUIState _state;
 
         Vector3 backColor;
@@ -43,9 +44,17 @@ namespace Pulsar4X.SDL2UI
 
             try
             {
+                string appDataDirectory = SDL.SDL_GetPrefPath(OrgName, AppName);
+                
+                // Check for Saves directory and create it if it doesn't exist
+                string savesDirectory = Path.Combine(appDataDirectory, SavesPath);
+                if (!Directory.Exists(savesDirectory))
+                {
+                    Directory.CreateDirectory(savesDirectory);
+                }
+                
                 // Read and apply any window preferences
-                string preferencesDirectory = SDL.SDL_GetPrefPath(OrgName, AppName);
-                string preferencesPath = Path.Combine(preferencesDirectory, PreferencesFile);
+                string preferencesPath = Path.Combine(appDataDirectory, PreferencesFile);
                 if(!File.Exists(preferencesPath))
                 {
                     File.Create(preferencesPath).Close();
@@ -273,6 +282,11 @@ namespace Pulsar4X.SDL2UI
                 Window.End();
             }
 #endif
+        }
+
+        public static string GetAppDataPath()
+        {
+            return SDL.SDL_GetPrefPath(OrgName, AppName);
         }
     }
 }
