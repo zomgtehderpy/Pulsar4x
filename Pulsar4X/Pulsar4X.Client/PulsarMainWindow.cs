@@ -61,6 +61,11 @@ namespace Pulsar4X.SDL2UI
                     Directory.CreateDirectory(modsDirectory);
                 }
 
+                // Make sure the base game mod is copied over to the mod directory
+                string sourceData = "Data";
+                DeleteThenCopyToDirectory(sourceData, modsDirectory);
+
+
                 // Read and apply any window preferences
                 string preferencesPath = Path.Combine(appDataDirectory, PreferencesFile);
                 if(!File.Exists(preferencesPath))
@@ -295,6 +300,34 @@ namespace Pulsar4X.SDL2UI
         public static string GetAppDataPath()
         {
             return SDL.SDL_GetPrefPath(OrgName, AppName);
+        }
+
+        public static void DeleteThenCopyToDirectory(string sourceDir, string destinationDir)
+        {
+            // Check if destination exists, if so delete it and all its contents
+            if (Directory.Exists(destinationDir))
+            {
+                Directory.Delete(destinationDir, recursive: true);
+            }
+
+            // Create the destination directory fresh
+            Directory.CreateDirectory(destinationDir);
+
+            // Get all files and copy them
+            foreach (string filePath in Directory.GetFiles(sourceDir))
+            {
+                string fileName = Path.GetFileName(filePath);
+                string destFile = Path.Combine(destinationDir, fileName);
+                File.Copy(filePath, destFile, true);
+            }
+
+            // Recursively copy all subdirectories
+            foreach (string subDir in Directory.GetDirectories(sourceDir))
+            {
+                string subDirName = Path.GetFileName(subDir);
+                string destSubDir = Path.Combine(destinationDir, subDirName);
+                DeleteThenCopyToDirectory(subDir, destSubDir);
+            }
         }
     }
 }
