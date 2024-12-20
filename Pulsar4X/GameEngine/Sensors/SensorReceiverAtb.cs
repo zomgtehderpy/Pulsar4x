@@ -7,7 +7,7 @@ using Pulsar4X.Datablobs;
 
 namespace Pulsar4X.Sensors
 {
-    public class SensorReceiverAtbDB : BaseDataBlob, IComponentDesignAttribute
+    public class SensorReceiverAtb : IComponentDesignAttribute
     {
         [JsonProperty]
         public EMWaveForm RecevingWaveformCapabilty { get; internal set; }
@@ -38,7 +38,7 @@ namespace Pulsar4X.Sensors
 
 
         [JsonConstructor]
-        public SensorReceiverAtbDB() { }
+        public SensorReceiverAtb() { }
 
         //ParserConstrutor
         /// <summary>
@@ -50,7 +50,7 @@ namespace Pulsar4X.Sensors
         /// <param name="worstSensitivity">watts</param>
         /// <param name="resolution">mp</param>
         /// <param name="scanTime">sec</param>
-        public SensorReceiverAtbDB(double peakWaveLength, double bandwidth, double bestSensitivity, double worstSensitivity, double resolution, double scanTime)
+        public SensorReceiverAtb(double peakWaveLength, double bandwidth, double bestSensitivity, double worstSensitivity, double resolution, double scanTime)
         {
             //TODO:  should make this component invalid.
             if (bestSensitivity < 0)
@@ -74,7 +74,7 @@ namespace Pulsar4X.Sensors
             ScanTime = (int)scanTime;
         }
 
-        public SensorReceiverAtbDB(SensorReceiverAtbDB db)
+        public SensorReceiverAtb(SensorReceiverAtb db)
         {
             RecevingWaveformCapabilty = db.RecevingWaveformCapabilty;
             BestSensitivity_kW = db.BestSensitivity_kW;
@@ -82,11 +82,7 @@ namespace Pulsar4X.Sensors
             Resolution = db.Resolution;
             ScanTime = db.ScanTime;
         }
-
-        public override object Clone()
-        {
-            return new SensorReceiverAtbDB(this);
-        }
+        
 
         public void OnComponentInstallation(Entity parentEntity, ComponentInstance componentInstance)
         {

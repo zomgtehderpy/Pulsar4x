@@ -16,10 +16,10 @@ namespace Pulsar4X.Datablobs
     /// </summary>
     public class ComponentInstancesDB : BaseDataBlob
     {
-
-
         [JsonProperty]
-        //internal readonly List<ComponentInstanceData> AllComponents = new List<ComponentInstanceData>();
+        internal readonly Dictionary<string, ComponentInstance> AllComponents = new ();
+        
+        //the below are JsonIgnore, we re-populate these collections useing the [OnDeserialised] Deserialized function, from AllComponents collection.
         [JsonIgnore]
         internal readonly Dictionary<string, ComponentDesign> AllDesigns = new ();
         [JsonIgnore]
@@ -28,10 +28,9 @@ namespace Pulsar4X.Datablobs
         Dictionary<Type, List<ComponentDesign>> _designsByAtbType = new ();
         [JsonIgnore]
         public Dictionary<string, List<ComponentInstance>> ComponentsByDesign = new ();
-
+        [JsonIgnore]
         public Dictionary<Type, List<ComponentInstance>> ComponentsByAttribute = new ();
-        [JsonProperty]
-        internal readonly Dictionary<string, ComponentInstance> AllComponents = new ();
+
 
         /* Maybe flat arrays would be better? need to test see the mem size difference and speed difference.
         private Guid[] _instanceIDArray = new Guid[0];
