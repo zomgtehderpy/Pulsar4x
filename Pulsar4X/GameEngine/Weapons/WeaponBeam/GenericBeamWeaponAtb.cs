@@ -11,7 +11,7 @@ using Pulsar4X.Movement;
 
 namespace Pulsar4X.Weapons
 {
-    public class GenericBeamWeaponAtbDB : IComponentDesignAttribute, IFireWeaponInstr
+    public class GenericBeamWeaponAtb : IComponentDesignAttribute, IFireWeaponInstr
     {
         [JsonProperty]
         public double MaxRange { get; internal set; }
@@ -27,16 +27,16 @@ namespace Pulsar4X.Weapons
         public double BeamSpeed { get; internal set; } = UniversalConstants.Units.SpeedOfLightInMetresPerSecond; //299792458 is speed of light.
         public float BaseHitChance { get; internal set; } = 0.95f;
 
-        public GenericBeamWeaponAtbDB() { }
+        public GenericBeamWeaponAtb() { }
 
-        public GenericBeamWeaponAtbDB(double maxRange, double waveLen, double jules)
+        public GenericBeamWeaponAtb(double maxRange, double waveLen, double jules)
         {
             MaxRange = maxRange;
             WaveLength = waveLen;
             Energy = (int)jules;
         }
 
-        public GenericBeamWeaponAtbDB(GenericBeamWeaponAtbDB db)
+        public GenericBeamWeaponAtb(GenericBeamWeaponAtb db)
         {
             MaxRange = db.MaxRange;
             WaveLength = db.WaveLength;
@@ -46,8 +46,19 @@ namespace Pulsar4X.Weapons
         /*
         public override object Clone()
         {
-            return new GenericBeamWeaponAtbDB(this);
+            return new GenericBeamWeaponAtb(this);
         }*/
+
+        public string WeaponType => "Beam";
+
+        public void SetWeaponState(WeaponState state)
+        {
+            state.WeaponType = WeaponType;
+            state.WeaponStats = new (string name, double value, ValueTypeStruct valueType)[3];
+            state.WeaponStats[0] = ("Max Range:", MaxRange, new ValueTypeStruct(ValueTypeStruct.ValueTypes.Distance, ValueTypeStruct.ValueSizes.BaseUnit));
+            state.WeaponStats[1] = ("Wavelength:", WaveLength, new ValueTypeStruct(ValueTypeStruct.ValueTypes.Distance, ValueTypeStruct.ValueSizes.BaseUnit));
+            state.WeaponStats[2] = ("Power:", Energy, new ValueTypeStruct(ValueTypeStruct.ValueTypes.Power, ValueTypeStruct.ValueSizes.BaseUnit));
+        }
 
         public bool CanLoadOrdnance(OrdnanceDesign ordnanceDesign)
         {
@@ -98,11 +109,7 @@ namespace Pulsar4X.Weapons
             if (!componentInstance.HasAblity<WeaponState>())
             {
                 var wpnState = new WeaponState(componentInstance, this);
-                wpnState.WeaponType = "Beam";
-                wpnState.WeaponStats = new (string name, double value, ValueTypeStruct valueType)[3];
-                wpnState.WeaponStats[0] = ("Max Range:", MaxRange, new ValueTypeStruct(ValueTypeStruct.ValueTypes.Distance, ValueTypeStruct.ValueSizes.BaseUnit));
-                wpnState.WeaponStats[1] = ("Wavelength:", WaveLength, new ValueTypeStruct(ValueTypeStruct.ValueTypes.Distance, ValueTypeStruct.ValueSizes.BaseUnit));
-                wpnState.WeaponStats[2] = ("Power:", Energy, new ValueTypeStruct(ValueTypeStruct.ValueTypes.Power, ValueTypeStruct.ValueSizes.BaseUnit));
+                SetWeaponState(wpnState);
                 componentInstance.SetAbilityState<WeaponState>(wpnState);
             }
         }

@@ -105,7 +105,7 @@ namespace Pulsar4X.SDL2UI
                     {
                         _payloadTypes.Add(cdes);
                     }
-                    if (cdes.AttributesByType.ContainsKey(typeof(SensorReceiverAtbDB)))
+                    if (cdes.AttributesByType.ContainsKey(typeof(SensorReceiverAtb)))
                     {
                         _eleccPackTypes.Add(cdes);
                     }
