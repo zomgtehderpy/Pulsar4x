@@ -1,4 +1,5 @@
 using ImGuiNET;
+using Pulsar4X.Client.Interface.Windows;
 using Pulsar4X.SDL2UI;
 using SDL2;
 
@@ -25,6 +26,10 @@ public class SystemMapHotKeys : IHotKeyHandler
             else if(e.key.keysym.sym == SDL.SDL_Keycode.SDLK_F3)
             {
                 GameLogWindow.GetInstance().ToggleActive();
+            }
+            else if(e.key.keysym.sym == SDL.SDL_Keycode.SDLK_F4)
+            {
+                BlueprintsWindow.GetInstance().ToggleActive();
             }
             else if(e.key.keysym.sym == SDL.SDL_Keycode.SDLK_1)
             {
