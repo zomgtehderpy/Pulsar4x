@@ -7,6 +7,7 @@ using ImGuiSDL2CS;
 using SDL2;
 using Microsoft.Extensions.Configuration;
 using Pulsar4X.Client.Interface.Widgets;
+using Pulsar4X.Client.State;
 
 namespace Pulsar4X.SDL2UI
 {
@@ -64,6 +65,9 @@ namespace Pulsar4X.SDL2UI
                 // Make sure the base game mod is copied over to the mod directory
                 string sourceData = "Data";
                 DeleteThenCopyToDirectory(sourceData, modsDirectory);
+
+                // Load the available mods
+                ModsState.RefreshModListFromModsDirectory();
 
 
                 // Read and apply any window preferences

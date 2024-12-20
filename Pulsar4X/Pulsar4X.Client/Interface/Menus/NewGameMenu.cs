@@ -1,5 +1,8 @@
-﻿using ImGuiNET;
+﻿using System.Collections.Generic;
+using ImGuiNET;
 using ImGuiSDL2CS;
+using Pulsar4X.Client.Interface.Widgets;
+using Pulsar4X.Client.State;
 using Pulsar4X.Engine;
 using Pulsar4X.Modding;
 
@@ -50,7 +53,7 @@ namespace Pulsar4X.SDL2UI
         {
             if (IsActive)
             {
-                if (ImGui.Begin("New Game Setup", ref IsActive, _flags))
+                if (Window.Begin("New Game Setup", ref IsActive, _flags))
                 {
 
                     ImGui.InputText("Game Name", _nameInputBuffer, 16);
@@ -62,6 +65,33 @@ namespace Pulsar4X.SDL2UI
 
                     ImGui.InputInt("Max Systems", ref _maxSystems);
                     ImGui.InputInt("Master Seed:", ref _masterSeed);
+
+                    if(ImGui.BeginTable("ModsList", 3))
+                    {
+                        ImGui.TableNextColumn();
+                        ImGui.TableHeader("Enable?");
+                        ImGui.TableNextColumn();
+                        ImGui.TableHeader("Mod Name");
+                        ImGui.TableNextColumn();
+                        ImGui.TableHeader("Version");
+
+                        foreach(var modMetadata in ModsState.AvailableMods)
+                        {
+                            var isEnabled = ModsState.IsModEnabled[modMetadata.Mod.ModName];
+                            ImGui.TableNextColumn();
+                            if(ImGui.Checkbox("###" + modMetadata.Mod.ModName + "-checkbox", ref isEnabled))
+                            {
+                                ModsState.IsModEnabled[modMetadata.Mod.ModName] = !ModsState.IsModEnabled[modMetadata.Mod.ModName];
+                            }
+                            ImGui.TableNextColumn();
+                            ImGui.Text(modMetadata.Mod.ModName);
+                            ImGui.TableNextColumn();
+                            ImGui.Text(modMetadata.Mod.Version);
+                        }
+
+                        ImGui.EndTable();
+                    }
+
 
                     if (ImGui.RadioButton("Host Network Game", ref _gameTypeButtonGrp, 1))
                         _selectedGameType = gameType.Nethost;
@@ -76,7 +106,7 @@ namespace Pulsar4X.SDL2UI
                     }
 
 
-                    ImGui.End();
+                    Window.End();
                 }
                 else
                     MainMenuItems.GetInstance().SetActive();
@@ -99,9 +129,24 @@ namespace Pulsar4X.SDL2UI
                 MasterSeed = _masterSeed
             };
 
-            Pulsar4X.Engine.Game game = GameFactory.CreateGame(new [] { "Data/basemod/modInfo.json" }, gameSettings);
+            List<string> enabledMods = new ();
+
+            foreach(var modMetadata in ModsState.AvailableMods)
+            {
+                if(ModsState.IsModEnabled[modMetadata.Mod.ModName])
+                {
+                    enabledMods.Add(modMetadata.Path);
+                }
+            }
+
+            // FIXME: this is show some error in the UI if no mods are selected
+            if(enabledMods.Count == 0)
+                return;
+
+            Pulsar4X.Engine.Game game = GameFactory.CreateGame(enabledMods.ToArray(), gameSettings);
 
             // TODO: need to add the implementation for a random start
+            // TODO: need to find a way to handle this via the mods instead of loading it here
             var (newGameFaction, systemId) = Pulsar4X.Engine.DefaultStartFactory.LoadFromJson(game, "Data/basemod/defaultStart.json");
 
             if(newGameFaction == null) return;
