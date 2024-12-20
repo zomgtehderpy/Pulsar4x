@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Pulsar4X.Components;
 using Pulsar4X.Engine;
 using Pulsar4X.Names;
@@ -40,7 +41,8 @@ namespace Pulsar4X.Weapons
 
         public bool IsEngaging { get; internal set; } = false;
 
-
+        [JsonConstructor]
+        private FireControlAbilityState(){}
         public FireControlAbilityState(ComponentInstance componentInstance) : base(componentInstance)
         {
             _factionOwner = componentInstance.ParentInstances.OwningEntity.FactionOwnerID;
