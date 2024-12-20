@@ -11,7 +11,9 @@ namespace Pulsar4X.Weapons
     /// </summary>
     public class FireControlAbilityState : ComponentTreeHeirarchyAbilityState
     {
+        [JsonProperty]
         public Entity Target { get; private set; }
+        [JsonProperty]
         private NameDB? _TargetNameDB;
 
         internal void SetTarget(Entity target)

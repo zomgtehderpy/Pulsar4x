@@ -29,8 +29,7 @@ public class PositionDB : TreeHierarchyDB, IPosition
     public MoveTypes MoveType { get; internal set; }
 
     public KeplerElements GetKeplerElements { get; internal set; }
-
-    //[JsonProperty]
+    
     public Vector3 RelativePosition { get; internal set; }
 
     public Vector2 RelativePosition2
