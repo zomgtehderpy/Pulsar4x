@@ -36,11 +36,26 @@ public class SerializationEquivalenceTester
                 ContractResolver = new NonPublicResolver()
             };
 
-            // Serialize the original object
-            result.SerializedJson = JsonConvert.SerializeObject(originalObject, customSettings);
+            // Serialize with detailed error information
+            try
+            {
+                result.SerializedJson = JsonConvert.SerializeObject(originalObject, customSettings);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Serialization failed: {ex.Message}\nObject type: {typeof(T).FullName}", ex);
+            }
 
-            // Deserialize back to a new object
-            var deserializedObject = JsonConvert.DeserializeObject<T>(result.SerializedJson, customSettings);
+            // Deserialize with detailed error information
+            T? deserializedObject;
+            try
+            {
+                deserializedObject = JsonConvert.DeserializeObject<T>(result.SerializedJson, customSettings);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Deserialization failed: {ex.Message}\nJSON: {result.SerializedJson}", ex);
+            }
 
             // Compare the objects
             result.AreEqual = CompareObjects(originalObject, deserializedObject, "", result.Differences);
