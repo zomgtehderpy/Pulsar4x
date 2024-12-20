@@ -23,6 +23,7 @@
         "blueprints/techCategories.json",
         "blueprints/techs.json",
         "blueprints/weapons.json",
-        "blueprints/damageResistance.json"
+        "blueprints/damageResistance.json",
+        "blueprints/species.json"
     ]
 }

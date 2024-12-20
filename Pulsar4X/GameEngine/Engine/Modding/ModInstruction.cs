@@ -24,6 +24,7 @@ namespace Pulsar4X.Modding
             TechCategory,
             Theme,
             DamageResistance,
+            Species,
         }
         public enum OperationType { Default, Remove }
         public enum CollectionOperationType { Add, Remove, Overwrite }
@@ -100,6 +101,9 @@ namespace Pulsar4X.Modding
                     break;
                 case ModInstruction.DataType.DamageResistance:
                     instruction.Data = jObject["Payload"].ToObject<DamageResistBlueprint>();
+                    break;
+                case ModInstruction.DataType.Species:
+                    instruction.Data = jObject["Payload"].ToObject<SpeciesBlueprint>();
                     break;
             }
 
