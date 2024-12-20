@@ -43,6 +43,7 @@ namespace Pulsar4X.Modding
 
                 foreach (var mod in modInstructions)
                 {
+                    mod.Data.JsonFileName =  modDataFile;
                     ApplyMod(baseData, mod, modManifest.Namespace);
                 }
             }
