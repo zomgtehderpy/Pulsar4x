@@ -10,10 +10,10 @@ namespace Pulsar4X.Client.Interface.Menus;
 public class SaveGame : PulsarGuiWindow
 {
     private string _filePath = Path.Combine(PulsarMainWindow.GetAppDataPath(), PulsarMainWindow.SavesPath);
-    private string _fileName = "savegame";
+    private string _fileName = "savegame.sav";
 
     private SaveGame() {}
-    
+
     internal static SaveGame GetInstance()
     {
         if (!_uiState.LoadedWindows.ContainsKey(typeof(SaveGame)))
@@ -22,7 +22,7 @@ public class SaveGame : PulsarGuiWindow
         }
         return (SaveGame)_uiState.LoadedWindows[typeof(SaveGame)];
     }
-    
+
     internal override void Display()
     {
         if (IsActive && FileDialog.DisplaySave(ref _filePath, ref _fileName, ref IsActive))
