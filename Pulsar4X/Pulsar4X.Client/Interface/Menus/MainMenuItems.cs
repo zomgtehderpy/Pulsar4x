@@ -55,7 +55,7 @@ namespace Pulsar4X.SDL2UI
                         if (ImGui.Button("Save Game...", buttonSize))
                         {
                             _saveGame = !_saveGame;
-                            
+
                             SaveGame.GetInstance().ToggleActive();
                             // string gameJson = Game.Save(_uiState.Game);
                             //
@@ -84,11 +84,16 @@ namespace Pulsar4X.SDL2UI
                         }
                     }
 
+                    var disabled = !DoAnySavesExist();
+                    if(disabled)
+                        ImGui.BeginDisabled();
                     if (ImGui.Button("Resume a Current Game", buttonSize))
                     {
                         LoadGame.GetInstance().LoadLatest();
                         SetActive(false);
                     }
+                    if(disabled)
+                        ImGui.EndDisabled();
                     if (ImGui.Button("Load Game...", buttonSize))
                     {
                         LoadGame.GetInstance().ToggleActive();
@@ -122,6 +127,14 @@ namespace Pulsar4X.SDL2UI
 
         public override void OnSystemTickChange(DateTime newDate)
         {
+        }
+
+        private bool DoAnySavesExist()
+        {
+            var path = Path.Combine(PulsarMainWindow.GetAppDataPath(), PulsarMainWindow.SavesPath);
+            var saveFiles = Directory.GetFiles(path, "*.sav");
+
+            return saveFiles.Length > 0;
         }
     }
 }
