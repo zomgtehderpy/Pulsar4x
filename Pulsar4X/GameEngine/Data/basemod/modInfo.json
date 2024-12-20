@@ -3,6 +3,7 @@
     "ModName": "Pulsar4x",
     "Version": "0.1",
     "Namespace": "Pulsar4x",
+    "DefaultEnabled": true,
     "DataFiles": [
         "blueprints/armor.json",
         "blueprints/atmosphereGases.json",

@@ -67,7 +67,7 @@ namespace Pulsar4X.Engine
 
         [JsonProperty]
         public GameSettings Settings { get; internal set; }
-        
+
         [JsonProperty]
         public ModDataStore StartingGameData { get; private set; }
 
@@ -89,7 +89,7 @@ namespace Pulsar4X.Engine
         internal event EventHandler PostLoad;
 
         internal Random RNG => GlobalManager.RNG;
-        
+
         public Game() { }
 
         public Game(NewGameSettings settings, ModDataStore modDataStore)
@@ -147,8 +147,8 @@ namespace Pulsar4X.Engine
         {
             JsonSerializerSettings settings = new JsonSerializerSettings() {
                 Formatting = Formatting.Indented,
-                PreserveReferencesHandling = PreserveReferencesHandling.All,
-                TypeNameHandling = TypeNameHandling.All,
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+                TypeNameHandling = TypeNameHandling.Objects,
                 ContractResolver = new NonPublicResolver()
             };
 
@@ -159,8 +159,8 @@ namespace Pulsar4X.Engine
         {
             JsonSerializerSettings settings = new JsonSerializerSettings() {
                 Formatting = Formatting.Indented,
-                PreserveReferencesHandling = PreserveReferencesHandling.All,
-                TypeNameHandling = TypeNameHandling.All,
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+                TypeNameHandling = TypeNameHandling.Objects,
                 ContractResolver = new NonPublicResolver(),
             };
             var loadedGame = JsonConvert.DeserializeObject<Game>(json, settings);
