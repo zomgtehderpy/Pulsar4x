@@ -33,7 +33,7 @@ public class ModsState
                 if(modManifest != null)
                 {
                     AvailableMods.Add(new ModMetaData() { Mod = modManifest, Path = manifestPath });
-                    IsModEnabled.Add(modManifest.ModName, false);
+                    IsModEnabled.Add(modManifest.ModName, modManifest.DefaultEnabled);
                 }
             }
         }
