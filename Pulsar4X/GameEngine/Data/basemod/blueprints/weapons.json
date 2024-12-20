@@ -222,7 +222,7 @@
           "DescriptionFormula": "'int range, double wavelength, int wattage",
           "GuiHint": "None",
           "PropertyFormula": "AtbConstrArgs(PropertyValue('Range'), PropertyValue('Target Wavelength'), PropertyValue('Pulse Energy'))",
-          "AttributeType": "Pulsar4X.Weapons.GenericBeamWeaponAtbDB"
+          "AttributeType": "Pulsar4X.Weapons.GenericBeamWeaponAtb"
         }
       ]
     }

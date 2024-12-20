@@ -40,6 +40,7 @@ namespace Pulsar4X.Weapons
             //weapon starts loaded, max value from component design.
             InternalMagCurAmount = componentInstance.Design.GetAttribute<GenericWeaponAtb>().InternalMagSize;
         }
+        
 
         public WeaponState(WeaponState db): base(db.ComponentInstance)
         {
@@ -56,7 +57,7 @@ namespace Pulsar4X.Weapons
         [OnDeserialized]
         private void Deserialized(StreamingContext context)
         {
-            
+            FireWeaponInstructions.SetWeaponState(this);
         }
 
     }
