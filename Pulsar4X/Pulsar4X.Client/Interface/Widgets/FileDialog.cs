@@ -39,7 +39,7 @@ public static class FileDialog
         DialogType = SaveOrLoad.Load;
         return Display(ref path, ref fileName, ref IsActive);
     }
-    
+
     private static bool Display(ref string path, ref string fileName, ref bool IsActive)
     {
         bool isok = false;
@@ -49,13 +49,13 @@ public static class FileDialog
             _pathString = path;
         _strInputBuffer = ImGuiSDL2CSHelper.BytesFromString(fileName);
         ImGui.Begin("File Dialog", ref IsActive);
-        ImGui.Text("Name:"); 
+        ImGui.Text("Name:");
         ImGui.SameLine();
         if (ImGui.InputText("##Name", _strInputBuffer, 128))
         {
             fileName = ImGuiSDL2CSHelper.StringFromBytes(_strInputBuffer);
         }
-        
+
         ImGui.Columns(2);
         ImGui.SetColumnWidth(0,128);
 
@@ -63,14 +63,14 @@ public static class FileDialog
         if (ImGui.Button("Docs"))
         {
             _pathString = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            
+
         }
 
         if (ImGui.Button("Desktop"))
         {
             _pathString = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         }
-        
+
         //this is Editor specific TODO: add a way to add specific dir to the LH colomn
         if (ImGui.Button("Data/basemod"))
         {
@@ -87,10 +87,10 @@ public static class FileDialog
             }
             _pathString = Path.Combine(dir.FullName, "GameEngine/Data/basemod");
         }
-        
-        
+
+
         ImGui.NextColumn();
-        
+
         ImGui.BeginTable("table", 4);
         ImGui.TableNextColumn();
         ImGui.TableHeader("Name");
@@ -109,14 +109,16 @@ public static class FileDialog
                 _pathString = Directory.GetParent(_pathString).FullName;
             }
         }
-        
+        ImGui.TableNextRow();
+
         var dirs = Directory.EnumerateDirectories(_pathString);
         _i = 0;
         foreach (var dir in dirs)
         {
             DirectoryInfo di = new DirectoryInfo(dir);
-            
+
             _b = _i == _selectedIndex;
+            ImGui.TableNextColumn();
             if (ImGui.Selectable(di.Name, _b, ImGuiSelectableFlags.SpanAllColumns | ImGuiSelectableFlags.AllowDoubleClick))
             {
                 _selectedIndex = _i;
@@ -125,33 +127,33 @@ public static class FileDialog
                     _pathString = di.FullName;
                 }
             }
-            
+
             ImGui.TableNextColumn();
-            
+
             ImGui.Text("");
             ImGui.TableNextColumn();
-            
+
             ImGui.Text(di.Extension);
             ImGui.TableNextColumn();
-            
+
             ImGui.Text(di.LastWriteTime.ToString());
-            ImGui.TableNextColumn();
             _i++;
         }
-        
+
         var files = Directory.EnumerateFiles(_pathString);
         foreach (var file in files)
         {
 
             FileInfo fi = new FileInfo(file);
-            
+
             _b = _i == _selectedIndex;
+            ImGui.TableNextColumn();
             if (ImGui.Selectable(fi.Name, _b, ImGuiSelectableFlags.SpanAllColumns | ImGuiSelectableFlags.AllowDoubleClick))
             {
                 _selectedIndex = _i;
                 _strInputBuffer = ImGuiSDL2CSHelper.BytesFromString(fi.Name);
                 fileName = fi.Name;
-                
+
                 if (ImGui.IsMouseDoubleClicked(ImGuiMouseButton.Left))
                 {
                     isok = true;
@@ -160,19 +162,17 @@ public static class FileDialog
             }
             _i++;
             ImGui.TableNextColumn();
-            
+
             ImGui.Text(fi.Length.ToString());
             ImGui.TableNextColumn();
-            
+
             ImGui.Text(fi.Extension);
             ImGui.TableNextColumn();
-            
+
             ImGui.Text(fi.LastWriteTime.ToString());
-            ImGui.TableNextColumn();
-            
         }
         ImGui.EndTable();
-        
+
         ImGui.Columns(1);
         if (DialogType == SaveOrLoad.Load)
         {
@@ -196,7 +196,7 @@ public static class FileDialog
             IsActive = false;
             isok = false;
         }
-        
+
         ImGui.End();
         path = _pathString;
         return isok;
