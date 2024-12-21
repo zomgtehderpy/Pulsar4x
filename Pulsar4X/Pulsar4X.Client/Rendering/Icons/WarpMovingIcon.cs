@@ -49,14 +49,14 @@ namespace Pulsar4X.SDL2UI
             var ang = Angle.RadiansFromVector2(spos - epos);
             var deg = Angle.ToDegrees(ang);
             var range = (spos - epos).Length();
-            var spMult = range * 0.7;
-            var epMult = range * 0.3;
+            var spMult = range * 0.75;
+            var epMult = range * 0.25;
             _bzsp = new Vector2(spos.X, spos.Y);
             _bzsp2 = spos -  Angle.PositionFromAngle(ang, spMult);
             _bzep2 = rpos +  Angle.PositionFromAngle(ang, epMult);
             _bzep = new Vector2(rpos.X, rpos.Y);
             
-            _bezierCurve = CreatePrimitiveShapes.BezierPoints(_bzsp, _bzsp2, _bzep2, _bzep, 0.05f);
+            _bezierCurve = CreatePrimitiveShapes.BezierPoints(_bzsp, _bzsp2, _bzep2, _bzep, 0.025f);
             if(_bezierDrawPoints.Length != _bezierCurve.Length)
                 _bezierDrawPoints = new SDL.SDL_Point[_bezierCurve.Length];
             
@@ -64,8 +64,9 @@ namespace Pulsar4X.SDL2UI
 
         public override void OnFrameUpdate(Matrix matrix, Camera camera)
         {
-            ViewScreenPos = camera.ViewCoordinate_m(WorldPosition_m);
             /*
+            ViewScreenPos = camera.ViewCoordinate_m(WorldPosition_m);
+            
             _drawPoints = new SDL.SDL_Point[3];
 
             var spos = camera.ViewCoordinateV2_m(_currentPosition);
@@ -94,6 +95,8 @@ namespace Pulsar4X.SDL2UI
 
 
                 SDL.SDL_RenderDrawLines(rendererPtr, _bezierDrawPoints, _bezierDrawPoints.Length );
+                int lp = _bezierDrawPoints.Length -1;
+                //SDL.SDL_RenderDrawLine(rendererPtr, _drawPoints[2].x, _drawPoints[2].y, _bezierDrawPoints[lp].x, _bezierDrawPoints[lp].y);
                 
         }
     }

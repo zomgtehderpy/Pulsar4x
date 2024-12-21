@@ -654,6 +654,7 @@ namespace Pulsar4X.SDL2UI
                 
                 _linePoints.Add(new Vector2() {X = x, Y = y});
             }
+            _linePoints.Add(p3);
             return _linePoints.ToArray();
         }
         private static double BezCalc(double t, double a0, double a1, double a2, double a3)
