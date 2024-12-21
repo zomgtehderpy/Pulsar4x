@@ -151,9 +151,11 @@ namespace Pulsar4X.SDL2UI
 
                 ImGui.SameLine();
                 ImGui.SetCursorPosY(27f);
-
+                var ysize = ImGui.GetContentRegionAvail().Y;
                 DisplayShips();
-
+                ImGui.SetCursorPosY(ysize * 0.5f);
+                DisplayOrders();
+                
                 ImGui.SameLine();
                 ImGui.SetCursorPosY(27f);
 
@@ -247,42 +249,12 @@ namespace Pulsar4X.SDL2UI
                             DisplayHelpers.PrintRow("Ships", SelectedFleet.GetDataBlob<FleetDB>().GetChildren().Where(x => !x.HasDataBlob<FleetDB>()).Count().ToString());
                         }
                         ImGui.Columns(1);
-                        if (ImGui.CollapsingHeader("Fleet Orders", ImGuiTreeNodeFlags.DefaultOpen))
-                        {
-                            var orderableDB = SelectedFleet.GetDataBlob<OrderableDB>();
+                        
+                        
 
-                            if (orderableDB.ActionList.Count == 0)
-                            {
-                                ImGui.Text("None");
-                            }
-                            else
-                            {
-                                if (ImGui.BeginTable("FleetOrdersTable", 2, Styles.TableFlags))
-                                {
-                                    ImGui.TableSetupColumn("#", ImGuiTableColumnFlags.None, 0.1f);
-                                    ImGui.TableSetupColumn("Order", ImGuiTableColumnFlags.None, 1f);
-                                    ImGui.TableHeadersRow();
-
-                                    var actions = orderableDB.ActionList.ToArray();
-                                    for (int i = 0; i < actions.Length; i++)
-                                    {
-                                        ImGui.TableNextColumn();
-                                        ImGui.Text((i + 1).ToString());
-                                        ImGui.TableNextColumn();
-                                        ImGui.Text(actions[i].Name);
-                                        if (ImGui.IsItemHovered())
-                                        {
-                                            ImGui.BeginTooltip();
-                                            ImGui.Text("IsRunning: " + actions[i].IsRunning);
-                                            ImGui.Text("IsFinished: " + actions[i].GetIsFinished);
-                                            ImGui.EndTooltip();
-                                        }
-                                    }
-
-                                    ImGui.EndTable();
-                                }
-                            }
-                        }
+                        
+                        
+                        
                         ImGui.EndChild();
                     }
                     ImGui.SameLine();
@@ -677,13 +649,58 @@ namespace Pulsar4X.SDL2UI
             }
         }
 
+        private void DisplayOrders()
+        {
+            var xPosition = ImGui.GetCursorPosX();
+            Vector2 windowContentSize = ImGui.GetContentRegionAvail();
+            
+            if (ImGui.BeginChild("Fleet Orders", new Vector2(Styles.LeftColumnWidthLg, windowContentSize.Y), true))
+            {
+                var orderableDB = SelectedFleet.GetDataBlob<OrderableDB>();
+                DisplayHelpers.Header("Fleet Orders");
+                if (orderableDB.ActionList.Count == 0)
+                {
+                    ImGui.Text("None");
+                }
+                else
+                {
+                    if (ImGui.BeginTable("FleetOrdersTable", 2, Styles.TableFlags))
+                    {
+                        ImGui.TableSetupColumn("#", ImGuiTableColumnFlags.None, 0.1f);
+                        ImGui.TableSetupColumn("Order", ImGuiTableColumnFlags.None, 1f);
+                        ImGui.TableHeadersRow();
+
+                        var actions = orderableDB.ActionList.ToArray();
+                        for (int i = 0; i < actions.Length; i++)
+                        {
+                            ImGui.TableNextColumn();
+                            ImGui.Text((i + 1).ToString());
+                            ImGui.TableNextColumn();
+                            ImGui.Text(actions[i].Name);
+                            if (ImGui.IsItemHovered())
+                            {
+                                ImGui.BeginTooltip();
+                                ImGui.Text("IsRunning: " + actions[i].IsRunning);
+                                ImGui.Text("IsFinished: " + actions[i].GetIsFinished);
+                                ImGui.EndTooltip();
+                            }
+                        }
+
+                        ImGui.EndTable();
+                    }
+                }
+                ImGui.EndChild();
+            }
+            ImGui.SetCursorPosX(xPosition);
+        }
+        
         private void DisplayShips()
         {
             if(SelectedFleet == null) return;
 
             var xPosition = ImGui.GetCursorPosX();
             Vector2 windowContentSize = ImGui.GetContentRegionAvail();
-            if (ImGui.BeginChild("FleetSummary2", new Vector2(Styles.LeftColumnWidthLg, windowContentSize.Y - 24f), true))
+            if (ImGui.BeginChild("FleetSummary2", new Vector2(Styles.LeftColumnWidthLg, windowContentSize.Y * 0.5f - 24f), true))
             {
                 DisplayHelpers.Header("Assigned Ships");
 
@@ -716,19 +733,21 @@ namespace Pulsar4X.SDL2UI
                     ImGui.EndListBox();
                 }
                 ImGui.PopStyleColor();
+                
+                
+                ImGui.SetCursorPosY(ImGui.GetCursorPosY() - Styles.ButtonVerticalOffset);
+                if(ImGui.Button("Select All/None", new Vector2(Styles.LeftColumnWidthLg, 0f)))
+                {
+                    bool selectAll = !selectedShips.Values.Any(v => v == true);
+                    foreach(var (ship, selected) in selectedShips)
+                    {
+                        selectedShips[ship] = selectAll;
+                    }
+                }
+                
                 ImGui.EndChild();
             }
-
-            ImGui.SetCursorPosY(ImGui.GetCursorPosY() - Styles.ButtonVerticalOffset);
             ImGui.SetCursorPosX(xPosition);
-            if(ImGui.Button("Select All/None", new Vector2(Styles.LeftColumnWidthLg, 0f)))
-            {
-                bool selectAll = !selectedShips.Values.Any(v => v == true);
-                foreach(var (ship, selected) in selectedShips)
-                {
-                    selectedShips[ship] = selectAll;
-                }
-            }
         }
 
         private void DisplayFleetList()
