@@ -19,6 +19,7 @@ namespace Pulsar4X.Galaxy
         /// <summary>
         /// Mass in Kg of this entity including all cargo and fuel
         /// </summary>
+        [JsonProperty]
         public double MassTotal {get; private set;}
 
         /// <summary>

@@ -25,7 +25,7 @@ public class PositionDB : TreeHierarchyDB, IPosition
         NewtonComplex,
         Warp,
     }
-
+    [JsonProperty]
     public MoveTypes MoveType { get; internal set; }
 
     public KeplerElements GetKeplerElements { get; internal set; }
