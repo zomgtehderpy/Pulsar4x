@@ -28,6 +28,7 @@ namespace Pulsar4X.Modding
             System,
             Star,
             SystemBody,
+            Colony,
         }
         public enum OperationType { Default, Remove }
         public enum CollectionOperationType { Add, Remove, Overwrite }
@@ -116,6 +117,9 @@ namespace Pulsar4X.Modding
                     break;
                 case ModInstruction.DataType.SystemBody:
                     instruction.Data = jObject["Payload"].ToObject<SystemBodyBlueprint>();
+                    break;
+                case ModInstruction.DataType.Colony:
+                    instruction.Data = jObject["Payload"].ToObject<ColonyBlueprint>();
                     break;
             }
 

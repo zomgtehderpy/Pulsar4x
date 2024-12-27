@@ -32,6 +32,7 @@ public class NewGameMenu : PulsarGuiWindow
     string _selectedThemeId = "";
     string _selectedSystemId = "";
     string _selectedBodyId = "";
+    string _selectedColonyId = "";
 
     enum gameType { Nethost, Standalone }
     int _gameTypeButtonGrp = 0;
@@ -137,6 +138,7 @@ public class NewGameMenu : PulsarGuiWindow
             _selectedSpeciesId = _modDataStore.Species.First().Key;
             _selectedThemeId = _modDataStore.Themes.First().Key;
             _selectedSystemId = _modDataStore.Systems.First().Key;
+            _selectedColonyId = _modDataStore.Colonies.First().Key;
             ResetSelectedBodyId();
 
             _currentPage = Page.SelectDetails;
@@ -176,6 +178,19 @@ public class NewGameMenu : PulsarGuiWindow
             ImGui.EndCombo();
         }
 
+        display = _modDataStore.Colonies.TryGetValue(_selectedColonyId, out var colonyBlueprint) ? colonyBlueprint.Name : "";
+        if(ImGui.BeginCombo("Starting Colony Configuration", display))
+        {
+            foreach(var (id, colony) in _modDataStore.Colonies)
+            {
+                if(ImGui.Selectable(colony.Name, _selectedColonyId.Equals(id)))
+                {
+                    _selectedColonyId = id;
+                }
+            }
+            ImGui.EndCombo();
+        }
+
         display = _modDataStore.Systems.TryGetValue(_selectedSystemId, out var systemBlueprint) ? systemBlueprint.Name : _selectedSystemId.Equals("random") ? "Randomly Generated" : "";
         if(ImGui.BeginCombo("Select Starting System", display))
         {
@@ -195,18 +210,21 @@ public class NewGameMenu : PulsarGuiWindow
             ImGui.EndCombo();
         }
 
-        display = _modDataStore.SystemBodies.TryGetValue(_selectedBodyId, out var bodyBlueprint) ? bodyBlueprint.Name : "";
-        if(ImGui.BeginCombo("Select Starting Location", display))
+        if(!_selectedSystemId.Equals("random"))
         {
-            foreach(var (id, body) in _modDataStore.SystemBodies.Where(kvp => _modDataStore.Systems[_selectedSystemId].Bodies.Contains(kvp.Key)))
+            display = _modDataStore.SystemBodies.TryGetValue(_selectedBodyId, out var bodyBlueprint) ? bodyBlueprint.Name : "";
+            if(ImGui.BeginCombo("Select Starting Location", display))
             {
-                if(!body.CanStartHere) continue;
-                if(ImGui.Selectable(body.Name, _selectedBodyId.Equals(id)))
+                foreach(var (id, body) in _modDataStore.SystemBodies.Where(kvp => _modDataStore.Systems[_selectedSystemId].Bodies.Contains(kvp.Key)))
                 {
-                    _selectedBodyId = id;
+                    if(!body.CanStartHere) continue;
+                    if(ImGui.Selectable(body.Name, _selectedBodyId.Equals(id)))
+                    {
+                        _selectedBodyId = id;
+                    }
                 }
+                ImGui.EndCombo();
             }
-            ImGui.EndCombo();
         }
 
         ImGui.Separator();

@@ -108,6 +108,9 @@ namespace Pulsar4X.Modding
                 case ModInstruction.DataType.SystemBody:
                     ApplyModGeneric<SystemBodyBlueprint>(baseData.SystemBodies, mod, modNamespace);
                     break;
+                case ModInstruction.DataType.Colony:
+                    ApplyModGeneric<ColonyBlueprint>(baseData.Colonies, mod, modNamespace);
+                    break;
             }
         }
 
