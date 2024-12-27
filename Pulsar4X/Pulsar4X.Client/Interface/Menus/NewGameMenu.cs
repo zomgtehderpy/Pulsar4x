@@ -176,7 +176,7 @@ public class NewGameMenu : PulsarGuiWindow
             ImGui.EndCombo();
         }
 
-        display = _modDataStore.Systems.TryGetValue(_selectedSystemId, out var systemBlueprint) ? systemBlueprint.Name : "";
+        display = _modDataStore.Systems.TryGetValue(_selectedSystemId, out var systemBlueprint) ? systemBlueprint.Name : _selectedSystemId.Equals("random") ? "Randomly Generated" : "";
         if(ImGui.BeginCombo("Select Starting System", display))
         {
             foreach(var (id, system) in _modDataStore.Systems)
@@ -186,6 +186,11 @@ public class NewGameMenu : PulsarGuiWindow
                     _selectedSystemId = id;
                     ResetSelectedBodyId();
                 }
+            }
+            ImGui.Separator();
+            if(ImGui.Selectable("Randomly Generated", _selectedSystemId.Equals("random")))
+            {
+                _selectedSystemId = "random";
             }
             ImGui.EndCombo();
         }
