@@ -4,6 +4,7 @@
     "Payload": {
       "UniqueID": "planet-earth",
       "Name": "Earth",
+      "CanStartHere": true,
       "Colonizable": true,
       "Info": {
         "Gravity": 9.8,

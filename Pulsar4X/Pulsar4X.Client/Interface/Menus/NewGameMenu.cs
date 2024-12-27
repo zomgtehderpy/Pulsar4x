@@ -12,8 +12,7 @@ namespace Pulsar4X.SDL2UI;
 enum Page
 {
     SelectMods,
-    SelectDetails,
-    SelectLocation
+    SelectDetails
 }
 
 static class Helper
@@ -31,6 +30,8 @@ public class NewGameMenu : PulsarGuiWindow
     ModDataStore _modDataStore = new ModDataStore();
     string _selectedSpeciesId = "";
     string _selectedThemeId = "";
+    string _selectedSystemId = "";
+    string _selectedBodyId = "";
 
     enum gameType { Nethost, Standalone }
     int _gameTypeButtonGrp = 0;
@@ -76,9 +77,6 @@ public class NewGameMenu : PulsarGuiWindow
                     break;
                 case Page.SelectDetails:
                     DisplayDetailsPage();
-                    break;
-                case Page.SelectLocation:
-                    DisplayLocationPage();
                     break;
             }
             Window.End();
@@ -138,6 +136,8 @@ public class NewGameMenu : PulsarGuiWindow
             LoadEnabledMods();
             _selectedSpeciesId = _modDataStore.Species.First().Key;
             _selectedThemeId = _modDataStore.Themes.First().Key;
+            _selectedSystemId = _modDataStore.Systems.First().Key;
+            ResetSelectedBodyId();
 
             _currentPage = Page.SelectDetails;
         }
@@ -176,26 +176,38 @@ public class NewGameMenu : PulsarGuiWindow
             ImGui.EndCombo();
         }
 
+        display = _modDataStore.Systems.TryGetValue(_selectedSystemId, out var systemBlueprint) ? systemBlueprint.Name : "";
+        if(ImGui.BeginCombo("Select Starting System", display))
+        {
+            foreach(var (id, system) in _modDataStore.Systems)
+            {
+                if(ImGui.Selectable(system.Name, _selectedSystemId.Equals(id)))
+                {
+                    _selectedSystemId = id;
+                    ResetSelectedBodyId();
+                }
+            }
+            ImGui.EndCombo();
+        }
+
+        display = _modDataStore.SystemBodies.TryGetValue(_selectedBodyId, out var bodyBlueprint) ? bodyBlueprint.Name : "";
+        if(ImGui.BeginCombo("Select Starting Location", display))
+        {
+            foreach(var (id, body) in _modDataStore.SystemBodies.Where(kvp => _modDataStore.Systems[_selectedSystemId].Bodies.Contains(kvp.Key)))
+            {
+                if(!body.CanStartHere) continue;
+                if(ImGui.Selectable(body.Name, _selectedBodyId.Equals(id)))
+                {
+                    _selectedBodyId = id;
+                }
+            }
+            ImGui.EndCombo();
+        }
 
         ImGui.Separator();
         if (ImGui.Button("Back"))
         {
             _currentPage = Page.SelectMods;
-        }
-        ImGui.SameLine();
-        if (ImGui.Button("Next"))
-        {
-            _currentPage = Page.SelectLocation;
-        }
-    }
-
-    private void DisplayLocationPage()
-    {
-        ImGui.Text("TODO: Add the options to select a starting system or generate one");
-        ImGui.Separator();
-        if (ImGui.Button("Back"))
-        {
-            _currentPage = Page.SelectDetails;
         }
         ImGui.SameLine();
         if (ImGui.Button("Create Game!"))
@@ -263,5 +275,20 @@ public class NewGameMenu : PulsarGuiWindow
         Selector.GetInstance().SetActive();
         //EntityUIWindowSelector.GetInstance().SetActive();
         //EntityInfoPanel.GetInstance().SetActive();
+    }
+
+    private void ResetSelectedBodyId()
+    {
+        if(_modDataStore.Systems.TryGetValue(_selectedSystemId, out var systemBlueprint))
+        {
+            var candidates = _modDataStore.SystemBodies.Where(kvp => kvp.Value.CanStartHere && systemBlueprint.Bodies.Contains(kvp.Key));
+            _selectedBodyId = candidates.Any() ? candidates.First().Key : "";
+        }
+        else
+        {
+            _selectedBodyId = "";
+        }
+
+
     }
 }

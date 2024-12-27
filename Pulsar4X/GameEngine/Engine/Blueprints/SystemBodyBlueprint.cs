@@ -68,6 +68,9 @@ public class SystemBodyBlueprint : Blueprint
     }
 
     public string Name { get; set; }
+
+    // Can this body be selected as a starting location
+    public bool CanStartHere { get; set; } = false;
     public string? Parent { get; set; }
     public bool? Colonizable { get; set; }
     public uint? GeoSurveyPointsRequired { get; set; }
