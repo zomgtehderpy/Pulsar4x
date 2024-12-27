@@ -11,6 +11,7 @@ public class SystemBlueprint : Blueprint
     }
 
     public string Name { get; set; }
+    public int? Seed { get; set; }
     public List<string> Stars { get; set; }
     public List<string> Bodies { get; set; }
     public List<SurveyRingValue> SurveyRings { get; set; }

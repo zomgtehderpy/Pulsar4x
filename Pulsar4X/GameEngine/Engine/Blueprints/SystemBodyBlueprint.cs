@@ -6,8 +6,8 @@ public class SystemBodyBlueprint : Blueprint
 {
     public struct SystemBodyInfoBlueprint
     {
-        public double Gravity { get; set; }
-        public string Type { get; set; }
+        public double? Gravity { get; set; }
+        public string? Type { get; set; }
         public string? Tectonics { get; set; }
         public float? Albedo { get; set; }
         public float? AxialTilt { get; set; }
@@ -58,8 +58,8 @@ public class SystemBodyBlueprint : Blueprint
 
     public struct AtmosphereBlueprint
     {
-        public float Pressure { get; set; }
-        public List<AtmosphericGasValue> Gases { get; set; }
+        public float? Pressure { get; set; }
+        public List<AtmosphericGasValue>? Gases { get; set; }
         public bool? Hydrosphere { get; set; }
         public decimal? HydroExtent { get; set; }
         public float? GreenhouseFactor { get; set; }
@@ -77,6 +77,6 @@ public class SystemBodyBlueprint : Blueprint
 
     public SystemBodyInfoBlueprint Info { get; set; }
     public OrbitBlueprint Orbit { get; set; }
-    public AtmosphereBlueprint Atmosphere { get; set; }
+    public AtmosphereBlueprint? Atmosphere { get; set; }
 
 }

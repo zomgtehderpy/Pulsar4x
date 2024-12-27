@@ -7,6 +7,7 @@ using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Client.State;
 using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
+using Pulsar4X.Galaxy;
 using Pulsar4X.Modding;
 
 namespace Pulsar4X.SDL2UI;
@@ -351,6 +352,11 @@ public class NewGameMenu : PulsarGuiWindow
 
 
         Pulsar4X.Engine.Game game = GameFactory.CreateGame(_modDataStore, gameSettings);
+
+        foreach(var id in _enabledSystems)
+        {
+            var system = StarSystemFactory.LoadFromBlueprint(game, _modDataStore.Systems[id]);
+        }
 
         // TODO: need to add the implementation for a random start
         // TODO: need to find a way to handle this via the mods instead of loading it here
