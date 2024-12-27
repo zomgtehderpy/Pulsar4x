@@ -99,6 +99,15 @@ namespace Pulsar4X.Modding
                 case ModInstruction.DataType.Species:
                     ApplyModGeneric<SpeciesBlueprint>(baseData.Species, mod, modNamespace);
                     break;
+                case ModInstruction.DataType.System:
+                    ApplyModGeneric<SystemBlueprint>(baseData.Systems, mod, modNamespace);
+                    break;
+                case ModInstruction.DataType.Star:
+                    ApplyModGeneric<StarBlueprint>(baseData.Stars, mod, modNamespace);
+                    break;
+                case ModInstruction.DataType.SystemBody:
+                    ApplyModGeneric<SystemBodyBlueprint>(baseData.SystemBodies, mod, modNamespace);
+                    break;
             }
         }
 

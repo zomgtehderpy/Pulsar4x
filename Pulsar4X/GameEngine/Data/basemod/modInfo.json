@@ -24,6 +24,8 @@
         "blueprints/techs.json",
         "blueprints/weapons.json",
         "blueprints/damageResistance.json",
-        "blueprints/species.json"
+        "blueprints/species.json",
+        "blueprints/sol.json",
+        "blueprints/earth.json"
     ]
 }

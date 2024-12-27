@@ -25,6 +25,9 @@ namespace Pulsar4X.Modding
             Theme,
             DamageResistance,
             Species,
+            System,
+            Star,
+            SystemBody,
         }
         public enum OperationType { Default, Remove }
         public enum CollectionOperationType { Add, Remove, Overwrite }
@@ -104,6 +107,15 @@ namespace Pulsar4X.Modding
                     break;
                 case ModInstruction.DataType.Species:
                     instruction.Data = jObject["Payload"].ToObject<SpeciesBlueprint>();
+                    break;
+                case ModInstruction.DataType.System:
+                    instruction.Data = jObject["Payload"].ToObject<SystemBlueprint>();
+                    break;
+                case ModInstruction.DataType.Star:
+                    instruction.Data = jObject["Payload"].ToObject<StarBlueprint>();
+                    break;
+                case ModInstruction.DataType.SystemBody:
+                    instruction.Data = jObject["Payload"].ToObject<SystemBodyBlueprint>();
                     break;
             }
 

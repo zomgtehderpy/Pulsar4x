@@ -24,5 +24,8 @@ namespace Pulsar4X.Modding
         public Dictionary<string, DamageResistBlueprint> DamageResists { get; set; } = new();
 
         public Dictionary<string, SpeciesBlueprint> Species { get; set; } = new ();
+        public Dictionary<string, SystemBlueprint> Systems { get; set; } = new ();
+        public Dictionary<string, SystemBodyBlueprint> SystemBodies { get; set; } = new ();
+        public Dictionary<string, StarBlueprint> Stars { get; set; } = new ();
     }
 }
