@@ -2,9 +2,11 @@
 using System.Linq;
 using ImGuiNET;
 using ImGuiSDL2CS;
+using Pulsar4X.Blueprints;
 using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Client.State;
 using Pulsar4X.Engine;
+using Pulsar4X.Extensions;
 using Pulsar4X.Modding;
 
 namespace Pulsar4X.SDL2UI;
@@ -12,6 +14,7 @@ namespace Pulsar4X.SDL2UI;
 enum Page
 {
     SelectMods,
+    ConfigureGalaxy,
     SelectDetails
 }
 
@@ -33,6 +36,8 @@ public class NewGameMenu : PulsarGuiWindow
     string _selectedSystemId = "";
     string _selectedBodyId = "";
     string _selectedColonyId = "";
+
+    List<string> _enabledSystems = new ();
 
     enum gameType { Nethost, Standalone }
     int _gameTypeButtonGrp = 0;
@@ -75,6 +80,9 @@ public class NewGameMenu : PulsarGuiWindow
             {
                 case Page.SelectMods:
                     DisplayModsPage();
+                    break;
+                case Page.ConfigureGalaxy:
+                    DisplayConfigureGalaxy();
                     break;
                 case Page.SelectDetails:
                     DisplayDetailsPage();
@@ -137,17 +145,64 @@ public class NewGameMenu : PulsarGuiWindow
             LoadEnabledMods();
             _selectedSpeciesId = _modDataStore.Species.First().Key;
             _selectedThemeId = _modDataStore.Themes.First().Key;
-            _selectedSystemId = _modDataStore.Systems.First().Key;
             _selectedColonyId = _modDataStore.Colonies.First().Key;
+
+            // Enable all the systems by default
+            _enabledSystems.Clear();
+            foreach(var (id, system) in _modDataStore.Systems)
+            {
+                _enabledSystems.Add(id);
+            }
+            _selectedSystemId = _enabledSystems.Any() ? _enabledSystems.First() : "";
             ResetSelectedBodyId();
 
+            _currentPage = Page.ConfigureGalaxy;
+        }
+    }
+
+    private void DisplayConfigureGalaxy()
+    {
+        DisplayHelpers.Header("Select pre-configured Systems to include");
+
+        if(ImGui.BeginTable("SystemsSelection", 2, Styles.TableFlags))
+        {
+            ImGui.TableSetupColumn("Name");
+            ImGui.TableSetupColumn("Enabled");
+            ImGui.TableHeadersRow();
+
+            foreach(var (id, system) in _modDataStore.Systems)
+            {
+                ImGui.TableNextColumn();
+                ImGui.Text(system.Name);
+                ImGui.TableNextColumn();
+                bool enabled = _enabledSystems.Contains(id);
+                if(ImGui.Checkbox("###" + id, ref enabled))
+                {
+                    if(!enabled)
+                        _enabledSystems.Remove(id);
+                    else
+                        _enabledSystems.Add(id);
+                }
+
+            }
+            ImGui.EndTable();
+        }
+
+        ImGui.Separator();
+        if (ImGui.Button("Back"))
+        {
+            _currentPage = Page.SelectMods;
+        }
+        ImGui.SameLine();
+        if (ImGui.Button("Next"))
+        {
             _currentPage = Page.SelectDetails;
         }
     }
 
     private void DisplayDetailsPage()
     {
-        ImGui.Text("Game Options:");
+        DisplayHelpers.Header("Game Setup");
         ImGui.InputText("Faction Name", _factionInputBuffer, 16);
 
         var display = _modDataStore.Species.TryGetValue(_selectedSpeciesId, out var speciesBlueprint) ? speciesBlueprint.Name : "";
@@ -194,9 +249,9 @@ public class NewGameMenu : PulsarGuiWindow
         display = _modDataStore.Systems.TryGetValue(_selectedSystemId, out var systemBlueprint) ? systemBlueprint.Name : _selectedSystemId.Equals("random") ? "Randomly Generated" : "";
         if(ImGui.BeginCombo("Select Starting System", display))
         {
-            foreach(var (id, system) in _modDataStore.Systems)
+            foreach(var id in _enabledSystems)
             {
-                if(ImGui.Selectable(system.Name, _selectedSystemId.Equals(id)))
+                if(ImGui.Selectable(_modDataStore.Systems[id].Name, _selectedSystemId.Equals(id)))
                 {
                     _selectedSystemId = id;
                     ResetSelectedBodyId();
@@ -210,7 +265,7 @@ public class NewGameMenu : PulsarGuiWindow
             ImGui.EndCombo();
         }
 
-        if(!_selectedSystemId.Equals("random"))
+        if(!_selectedSystemId.Equals("random") && _selectedSystemId.IsNotNullOrEmpty())
         {
             display = _modDataStore.SystemBodies.TryGetValue(_selectedBodyId, out var bodyBlueprint) ? bodyBlueprint.Name : "";
             if(ImGui.BeginCombo("Select Starting Location", display))
@@ -230,7 +285,7 @@ public class NewGameMenu : PulsarGuiWindow
         ImGui.Separator();
         if (ImGui.Button("Back"))
         {
-            _currentPage = Page.SelectMods;
+            _currentPage = Page.ConfigureGalaxy;
         }
         ImGui.SameLine();
         if (ImGui.Button("Create Game!"))
@@ -276,6 +331,24 @@ public class NewGameMenu : PulsarGuiWindow
             DefaultSolStart = true,
             MasterSeed = _masterSeed
         };
+
+        SpeciesBlueprint startingSpeciesBlueprint = _modDataStore.Species[_selectedSpeciesId];
+        ThemeBlueprint startingThemeBlueprint = _modDataStore.Themes[_selectedThemeId];
+        ColonyBlueprint startingColonyBlueprint = _modDataStore.Colonies[_selectedColonyId];
+        SystemBlueprint? startingSystemBlueprint;
+        SystemBodyBlueprint? startingBodyBlueprint;
+
+        if(_selectedSystemId.Equals("random"))
+        {
+            // TODO: implement random generation
+            return;
+        }
+        else
+        {
+            startingSystemBlueprint = _modDataStore.Systems[_selectedSystemId];
+            startingBodyBlueprint = _modDataStore.SystemBodies[_selectedBodyId];
+        }
+
 
         Pulsar4X.Engine.Game game = GameFactory.CreateGame(_modDataStore, gameSettings);
 
