@@ -312,6 +312,38 @@ namespace Pulsar4X.Factions
             return factionEntity;
         }
 
+        public static Entity CreateBasicFaction(Game game, string factionName)
+        {
+            var name = new NameDB(factionName);
+
+            //var facinfo = new FactionInfoDB(new List<Entity>(), new List<Guid>(), );
+            var factionInfo = new FactionInfoDB();
+            factionInfo.Data = new FactionDataStore(game.StartingGameData);
+
+            var factionTechDB = new FactionTechDB();
+
+            var blobs = new List<BaseDataBlob> {
+                name,
+                factionInfo,
+                new FactionAbilitiesDB(),
+                factionTechDB,
+                new FactionOwnerDB(),
+                new FleetDB(),
+                new OrderableDB(),
+            };
+            var factionEntity = Entity.Create();
+            game.GlobalManager.AddEntity(factionEntity, blobs);
+
+            factionInfo.EventLog = FactionEventLog.Create(factionEntity.Id, game.TimePulse);
+            factionInfo.EventLog.Subscribe();
+
+            // Add this faction to the SM's access list.
+            game.SpaceMaster.SetAccess(factionEntity.Id, AccessRole.SM);
+            name.SetName(factionEntity.Id, factionName);
+            game.Factions.Add(factionEntity.Id, factionEntity);
+            return factionEntity;
+        }
+
 
         public static Entity CreatePlayerFaction(Game game, Player owningPlayer, string factionName)
         {

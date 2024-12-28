@@ -7,8 +7,10 @@ using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Client.State;
 using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
+using Pulsar4X.Factions;
 using Pulsar4X.Galaxy;
 using Pulsar4X.Modding;
+using Pulsar4X.People;
 
 namespace Pulsar4X.SDL2UI;
 
@@ -353,10 +355,20 @@ public class NewGameMenu : PulsarGuiWindow
 
         Pulsar4X.Engine.Game game = GameFactory.CreateGame(_modDataStore, gameSettings);
 
+        // Load in the selected systems
+        StarSystem? startingSystem;
         foreach(var id in _enabledSystems)
         {
             var system = StarSystemFactory.LoadFromBlueprint(game, _modDataStore.Systems[id]);
+            if(id.Equals(_selectedSystemId))
+                startingSystem = system;
         }
+
+        // Create the players faction
+        var playerFaction = FactionFactory.CreateBasicFaction(game, gameSettings.DefaultFactionName);
+        var playerSpecies = SpeciesFactory.CreateFromBlueprint(startingSystem, _modDataStore.Species[_selectedSpeciesId]);
+        playerSpecies.FactionOwnerID = playerFaction.Id;
+        playerFaction.GetDataBlob<FactionInfoDB>().Species.Add(playerSpecies);
 
         // TODO: need to add the implementation for a random start
         // TODO: need to find a way to handle this via the mods instead of loading it here

@@ -28,5 +28,6 @@ namespace Pulsar4X.Modding
         public Dictionary<string, SystemBodyBlueprint> SystemBodies { get; set; } = new ();
         public Dictionary<string, StarBlueprint> Stars { get; set; } = new ();
         public Dictionary<string, ColonyBlueprint> Colonies { get; set; } = new ();
+        public Dictionary<string, ComponentDesignBlueprint> ComponentDesigns { get; set; } = new ();
     }
 }

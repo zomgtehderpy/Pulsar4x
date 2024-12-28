@@ -9,11 +9,62 @@ using Pulsar4X.People;
 using Pulsar4X.Storage;
 using Pulsar4X.Galaxy;
 using Pulsar4X.Movement;
+using Pulsar4X.Blueprints;
+using Pulsar4X.Interfaces;
 
 namespace Pulsar4X.Colonies
 {
     public static class ColonyFactory
     {
+        public static Entity CreateFromBlueprint(Entity faction, Entity species, Entity systemBody, ColonyBlueprint colonyBlueprint)
+        {
+            var factionInfo = faction.GetDataBlob<FactionInfoDB>();
+
+            // Unlock the starting items
+            foreach(var id in colonyBlueprint.StartingItems)
+            {
+                factionInfo.Data.Unlock(id);
+
+                // Research any tech that is listed
+                if(factionInfo.Data.Techs.ContainsKey(id))
+                {
+                    factionInfo.Data.IncrementTechLevel(id);
+                }
+
+                if(factionInfo.Data.CargoGoods.IsMaterial(id))
+                {
+                    factionInfo.IndustryDesigns[id] = (IConstructableDesign)factionInfo.Data.CargoGoods[id];
+                }
+            }
+
+            var blobs = new List<BaseDataBlob>();
+
+            string planetName = systemBody.GetDataBlob<NameDB>().GetName(faction.Id);
+            NameDB name = new NameDB(planetName + " Colony"); // TODO: Review default name.
+            name.SetName(faction.Id, name.DefaultName);
+
+            var pos = new Vector3(systemBody.GetDataBlob<MassVolumeDB>().RadiusInM, 0, 0);
+
+            blobs.Add(name);
+            blobs.Add(new ColonyInfoDB(species, (long)(colonyBlueprint.StartingPopulation ?? 1000), systemBody));
+            blobs.Add(new ColonyBonusesDB());
+            blobs.Add(new MiningDB());
+            blobs.Add(new OrderableDB());
+            blobs.Add(new MassVolumeDB());
+            blobs.Add(new CargoStorageDB());
+            blobs.Add(new PositionDB(pos, systemBody));
+            blobs.Add(new TeamsHousedDB());
+            blobs.Add(new ComponentInstancesDB()); //installations get added to the componentInstancesDB
+
+            Entity colonyEntity = Entity.Create();
+            colonyEntity.FactionOwnerID = faction.Id;
+            systemBody.Manager.AddEntity(colonyEntity, blobs);
+            factionInfo.Colonies.Add(colonyEntity);
+            faction.GetDataBlob<FactionOwnerDB>().SetOwned(colonyEntity);
+            return colonyEntity;
+        }
+
+
         /// <summary>
         /// Creates a new colony with zero population unless specified.
         /// </summary>
