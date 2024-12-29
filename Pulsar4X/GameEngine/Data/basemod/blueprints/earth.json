@@ -50,10 +50,8 @@
       "Name": "Default Earth Start",
       "StartingPopulation": 8.2E9,
       "Installations": [
-        { "Id": "default-design-passive-sensor", "Amount": 1 },
         { "Id": "default-design-mine", "Amount": 1 },
         { "Id": "default-design-warehouse", "Amount": 1 },
-        { "Id": "default-design-spaceport", "Amount": 1 },
         { "Id": "default-design-fuel-farm-5000k", "Amount": 1 },
         { "Id": "default-design-refinery", "Amount": 1 },
         { "Id": "default-design-factory", "Amount": 1 },
@@ -74,7 +72,6 @@
         { "Id": "graphite", "Amount": 5000 },
         { "Id": "tungsten", "Amount": 5000 },
         { "Id": "nickel", "Amount": 5000 },
-        { "Id": "default-design-merlin", "Amount": 5, "Type": "byCount" },
         { "Id": "rp-1", "Amount": 50000000, "Type": "byCount" },
         { "Id": "methalox", "Amount": 10000, "Type": "byCount" },
         { "Id": "hydrolox", "Amount": 10000, "Type": "byCount" }
@@ -142,6 +139,15 @@
         "regolith",
         "space-crete",
         "laser-weapon"
+      ],
+      "ComponentDesigns": [
+        "default-design-factory",
+        "default-design-fuel-farm-5000k",
+        "default-design-mine",
+        "default-design-refinery",
+        "default-design-shipyard",
+        "default-design-university",
+        "default-design-warehouse"
       ]
     }
   }

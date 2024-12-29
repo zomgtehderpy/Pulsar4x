@@ -5,6 +5,7 @@ using ImGuiSDL2CS;
 using Pulsar4X.Blueprints;
 using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Client.State;
+using Pulsar4X.Colonies;
 using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
 using Pulsar4X.Factions;
@@ -356,29 +357,48 @@ public class NewGameMenu : PulsarGuiWindow
         Pulsar4X.Engine.Game game = GameFactory.CreateGame(_modDataStore, gameSettings);
 
         // Load in the selected systems
-        StarSystem? startingSystem;
+        StarSystem? startingSystem = null;
+        Entity? startingBody = null;
         foreach(var id in _enabledSystems)
         {
             var system = StarSystemFactory.LoadFromBlueprint(game, _modDataStore.Systems[id]);
             if(id.Equals(_selectedSystemId))
+            {
                 startingSystem = system;
+                foreach(var systemBody in startingSystem.GetAllDataBlobsOfType<SystemBodyInfoDB>())
+                {
+                    if(systemBody.OwningEntity?.GetDefaultName()?.Equals(startingBodyBlueprint.Name) == true)
+                    {
+                        startingBody = systemBody.OwningEntity;
+                    }
+                }
+            }
         }
+
+        if(startingSystem == null || startingBody == null) return;
 
         // Create the players faction
         var playerFaction = FactionFactory.CreateBasicFaction(game, gameSettings.DefaultFactionName);
+
+        if(playerFaction == null) return;
+
+        playerFaction.FactionOwnerID = playerFaction.Id;
+        playerFaction.GetDataBlob<FactionInfoDB>().KnownSystems.Add(startingSystem.ID);
+
         var playerSpecies = SpeciesFactory.CreateFromBlueprint(startingSystem, _modDataStore.Species[_selectedSpeciesId]);
         playerSpecies.FactionOwnerID = playerFaction.Id;
         playerFaction.GetDataBlob<FactionInfoDB>().Species.Add(playerSpecies);
 
+        // Setup the starting colony
+        var playerColony = ColonyFactory.CreateFromBlueprint(game, playerFaction, playerSpecies, startingBody, _modDataStore.Colonies[_selectedColonyId]);
+
         // TODO: need to add the implementation for a random start
         // TODO: need to find a way to handle this via the mods instead of loading it here
-        var (newGameFaction, systemId) = Pulsar4X.Engine.DefaultStartFactory.LoadFromJson(game, "Data/basemod/defaultStart.json");
-
-        if(newGameFaction == null) return;
+        //var (newGameFaction, systemId) = Pulsar4X.Engine.DefaultStartFactory.LoadFromJson(game, "Data/basemod/defaultStart.json");
 
         _uiState.Game = game;
-        _uiState.SetFaction(newGameFaction, true);
-        _uiState.SetActiveSystem(systemId);
+        _uiState.SetFaction(playerFaction, true);
+        _uiState.SetActiveSystem(startingSystem.ManagerID);
 
         DebugWindow.GetInstance().SetGameEvents();
         IsActive = false;

@@ -11,12 +11,14 @@ using Pulsar4X.Galaxy;
 using Pulsar4X.Movement;
 using Pulsar4X.Blueprints;
 using Pulsar4X.Interfaces;
+using Pulsar4X.Engine.Factories;
+using Pulsar4X.Components;
 
 namespace Pulsar4X.Colonies
 {
     public static class ColonyFactory
     {
-        public static Entity CreateFromBlueprint(Entity faction, Entity species, Entity systemBody, ColonyBlueprint colonyBlueprint)
+        public static Entity CreateFromBlueprint(Game game, Entity faction, Entity species, Entity systemBody, ColonyBlueprint colonyBlueprint)
         {
             var factionInfo = faction.GetDataBlob<FactionInfoDB>();
 
@@ -36,6 +38,14 @@ namespace Pulsar4X.Colonies
                     factionInfo.IndustryDesigns[id] = (IConstructableDesign)factionInfo.Data.CargoGoods[id];
                 }
             }
+
+            // Add component designs
+            ComponentDesigner.StartResearched = true;
+            foreach(var id in colonyBlueprint.ComponentDesigns)
+            {
+                ComponentDesignFromJson.Create(faction, factionInfo.Data, game.StartingGameData.ComponentDesigns[id]);
+            }
+            ComponentDesigner.StartResearched = false;
 
             var blobs = new List<BaseDataBlob>();
 
@@ -61,6 +71,16 @@ namespace Pulsar4X.Colonies
             systemBody.Manager.AddEntity(colonyEntity, blobs);
             factionInfo.Colonies.Add(colonyEntity);
             faction.GetDataBlob<FactionOwnerDB>().SetOwned(colonyEntity);
+
+            // Add starting installations
+            foreach(var installation in colonyBlueprint.Installations)
+            {
+                colonyEntity.AddComponent(
+                    factionInfo.InternalComponentDesigns[installation.Id],
+                    (int)installation.Amount
+                );
+            }
+
             return colonyEntity;
         }
 

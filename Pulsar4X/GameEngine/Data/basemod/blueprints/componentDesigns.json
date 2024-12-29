@@ -1,0 +1,64 @@
+[
+  {
+    "Type": "ComponentDesign",
+    "Payload": {
+      "UniqueId": "default-design-factory",
+      "Name": "Factory",
+      "TemplateId": "factory"
+    }
+  },
+  {
+    "Type": "ComponentDesign",
+    "Payload": {
+      "UniqueId": "default-design-fuel-farm-5000k",
+      "Name": "Fuel Farm 5000km^3",
+      "TemplateId": "stainless-steel-fuel-tank",
+      "Properties": [
+        { "key": "Tank Volume", "value": 5000000 }
+      ]
+    }
+  },
+  {
+    "Type": "ComponentDesign",
+    "Payload": {
+      "UniqueId": "default-design-mine",
+      "Name": "Mine",
+      "TemplateId": "mine"
+    }
+  },
+  {
+    "Type": "ComponentDesign",
+    "Payload": {
+      "UniqueId": "default-design-refinery",
+      "Name": "Refinery",
+      "TemplateId": "refinery"
+    }
+  },
+  {
+    "Type": "ComponentDesign",
+    "Payload": {
+      "UniqueId": "default-design-shipyard",
+      "Name": "Ship Yard",
+      "TemplateId": "shipyard"
+    }
+  },
+  {
+    "Type": "ComponentDesign",
+    "Payload": {
+      "UniqueId": "default-design-university",
+      "Name": "University",
+      "TemplateId": "university"
+    }
+  },
+  {
+    "Type": "ComponentDesign",
+    "Payload": {
+      "UniqueId": "default-design-warehouse",
+      "Name": "Warehouse",
+      "TemplateId": "warehouse-facility",
+      "Properties": [
+        { "Key": "Storage Volume", "Value": 1000000 }
+      ]
+    }
+  }
+]

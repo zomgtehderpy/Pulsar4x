@@ -26,6 +26,7 @@
         "blueprints/damageResistance.json",
         "blueprints/species.json",
         "blueprints/sol.json",
-        "blueprints/earth.json"
+        "blueprints/earth.json",
+        "blueprints/componentDesigns.json"
     ]
 }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Pulsar4X.Blueprints;
@@ -26,6 +25,6 @@ public class ComponentDesignBlueprint : Blueprint
 
     public string Name { get; set; }
     public string TemplateId { get; set; }
-    public List<Property> Properties { get; set; }
+    public List<Property>? Properties { get; set; }
 
 }
