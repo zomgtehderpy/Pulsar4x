@@ -13,12 +13,15 @@ using Pulsar4X.Blueprints;
 using Pulsar4X.Interfaces;
 using Pulsar4X.Engine.Factories;
 using Pulsar4X.Components;
+using Pulsar4X.Fleets;
+using Pulsar4X.Ships;
+using System;
 
 namespace Pulsar4X.Colonies
 {
     public static class ColonyFactory
     {
-        public static Entity CreateFromBlueprint(Game game, Entity faction, Entity species, Entity systemBody, ColonyBlueprint colonyBlueprint)
+        public static Entity CreateFromBlueprint(Game game, Entity faction, Entity species, StarSystem startingSystem, Entity systemBody, ColonyBlueprint colonyBlueprint)
         {
             var factionInfo = faction.GetDataBlob<FactionInfoDB>();
 
@@ -46,6 +49,12 @@ namespace Pulsar4X.Colonies
                 ComponentDesignFromJson.Create(faction, factionInfo.Data, game.StartingGameData.ComponentDesigns[id]);
             }
             ComponentDesigner.StartResearched = false;
+
+            // Add ship designs
+            foreach(var id in colonyBlueprint.ShipDesigns)
+            {
+                ShipDesignFromJson.Create(faction, factionInfo.Data, game.StartingGameData.ShipDesigns[id]);
+            }
 
             var blobs = new List<BaseDataBlob>();
 
@@ -79,6 +88,35 @@ namespace Pulsar4X.Colonies
                     factionInfo.InternalComponentDesigns[installation.Id],
                     (int)installation.Amount
                 );
+            }
+
+            // Add starting colony cargo
+            LoadCargo(colonyEntity, factionInfo.Data, colonyBlueprint.Cargo);
+
+            // Add starting fleets
+            foreach(var fleet in colonyBlueprint.Fleets)
+            {
+                var fleetEntity = FleetFactory.Create(startingSystem, faction.Id, fleet.Name);
+                var fleetDB = fleetEntity.GetDataBlob<FleetDB>();
+                fleetDB.SetParent(faction);
+                if(fleet.Ships == null) continue;
+
+                foreach(var ship in fleet.Ships)
+                {
+                    var shipEntity = ShipFactory.CreateShip(factionInfo.ShipDesigns[ship.DesignId], faction, systemBody, ship.Name);
+                    fleetDB.AddChild(shipEntity);
+
+                    var commanderDB = CommanderFactory.CreateShipCaptain(game);
+                    commanderDB.CommissionedOn = game.TimePulse.GameGlobalDateTime - TimeSpan.FromDays(365.25 * 10);
+                    commanderDB.RankedOn = game.TimePulse.GameGlobalDateTime - TimeSpan.FromDays(365);
+                    var commander = CommanderFactory.Create(startingSystem, faction.Id, commanderDB);
+                    shipEntity.GetDataBlob<ShipInfoDB>().CommanderID = commander.Id;
+
+                    if(fleetDB.FlagShipID < 0)
+                        fleetDB.FlagShipID = shipEntity.Id;
+
+                    LoadCargo(shipEntity, factionInfo.Data, ship.Cargo);
+                }
             }
 
             return colonyEntity;
@@ -116,6 +154,29 @@ namespace Pulsar4X.Colonies
             factionInfo.Colonies.Add(colonyEntity);
             factionEntity.GetDataBlob<FactionOwnerDB>().SetOwned(colonyEntity);
             return colonyEntity;
+        }
+
+        private static void LoadCargo(Entity target, FactionDataStore factionDataStore, List<ColonyBlueprint.StartingItemBlueprint>? cargo)
+        {
+            if(cargo == null) return;
+
+            foreach(var item in cargo)
+            {
+                var type = item.Type ?? "byMass";
+
+                switch(type)
+                {
+                    case "byVolume":
+                        CargoTransferProcessor.AddRemoveCargoVolume(target, factionDataStore.CargoGoods[item.Id], item.Amount);
+                        break;
+                    case "byCount":
+                        CargoTransferProcessor.AddCargoItems(target, factionDataStore.CargoGoods[item.Id], (int)item.Amount);
+                        break;
+                    default:
+                        CargoTransferProcessor.AddRemoveCargoMass(target, factionDataStore.CargoGoods[item.Id], item.Amount);
+                        break;
+                }
+            }
         }
     }
 }

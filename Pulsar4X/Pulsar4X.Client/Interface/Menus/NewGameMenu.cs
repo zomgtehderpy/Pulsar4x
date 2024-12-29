@@ -390,7 +390,7 @@ public class NewGameMenu : PulsarGuiWindow
         playerFaction.GetDataBlob<FactionInfoDB>().Species.Add(playerSpecies);
 
         // Setup the starting colony
-        var playerColony = ColonyFactory.CreateFromBlueprint(game, playerFaction, playerSpecies, startingBody, _modDataStore.Colonies[_selectedColonyId]);
+        var playerColony = ColonyFactory.CreateFromBlueprint(game, playerFaction, playerSpecies, startingSystem, startingBody, _modDataStore.Colonies[_selectedColonyId]);
 
         // TODO: need to add the implementation for a random start
         // TODO: need to find a way to handle this via the mods instead of loading it here

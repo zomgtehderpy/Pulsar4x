@@ -27,6 +27,7 @@
         "blueprints/species.json",
         "blueprints/sol.json",
         "blueprints/earth.json",
-        "blueprints/componentDesigns.json"
+        "blueprints/componentDesigns.json",
+        "blueprints/shipDesigns.json"
     ]
 }

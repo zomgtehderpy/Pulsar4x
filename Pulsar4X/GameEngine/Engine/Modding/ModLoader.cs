@@ -114,6 +114,9 @@ namespace Pulsar4X.Modding
                 case ModInstruction.DataType.ComponentDesign:
                     ApplyModGeneric<ComponentDesignBlueprint>(baseData.ComponentDesigns, mod, modNamespace);
                     break;
+                case ModInstruction.DataType.ShipDesign:
+                    ApplyModGeneric<ShipDesignBlueprint>(baseData.ShipDesigns, mod, modNamespace);
+                    break;
             }
         }
 
