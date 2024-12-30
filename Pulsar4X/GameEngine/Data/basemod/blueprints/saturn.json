@@ -1,0 +1,78 @@
+[
+  {
+    "Type": "SystemBody",
+    "Payload": {
+      "UniqueID": "saturn",
+      "Name": "Saturn",
+      "Colonizable": false,
+      "GeoSurveyPointsRequired": 2500,
+      "Info": {
+        "Type": "gas-giant",
+        "Albedo": 0.342,
+        "Mass": 5.6834E26,
+        "Radius": 60268
+      },
+      "Orbit": {
+        "SemiMajorAxis": 1.51450E9,
+        "Eccentricity": 0.0565,
+        "EclipticInclination": 2.485,
+        "LoAN": 113.665,
+        "AoP": 339.293,
+        "MeanAnomaly": 317.02
+      },
+      "Atmosphere": {
+        "Pressure": 1.38169257,
+        "Hydrosphere": false,
+        "HyrdoExtent": 0,
+        "GreenhouseFactor": 0,
+        "GreenhousePressure": 0,
+        "SurfaceTemperature": -139,
+        "Gases": [
+          { "Symbol": "H2", "Percent": 0.963 },
+          { "Symbol": "He", "Percent": 0.0325 },
+          { "Symbol": "CH4", "Percent": 0.0045 },
+          { "Symbol": "NH3", "Percent": 0.000125 },
+          { "Symbol": "HD", "Percent": 0.00011 },
+          { "Symbol": "C2H6", "Percent": 0.000007 }
+        ]
+      }
+    }
+  },
+  {
+    "Type": "SystemBody",
+    "Payload": {
+      "UniqueID": "moon-titan",
+      "Name": "Titan",
+      "Parent": "Saturn",
+      "Colonizable": true,
+      "GeoSurveyPointsRequired": 500,
+      "Info": {
+        "Type": "moon",
+        "Albedo": 0.22,
+        "Mass": 1.3452E23,
+        "Radius": 2574.73
+      },
+      "Orbit": {
+        "SemiMajorAxis": 1221870,
+        "Eccentricity": 0.0288,
+        "EclipticInclination": 0.34854,
+        "LoAN": 0,
+        "AoP": 0,
+        "MeanAnomaly": 0
+      },
+      "Atmosphere": {
+        "Pressure": 1.45,
+        "Hydrosphere": false,
+        "HyrdoExtent": 0,
+        "GreenhouseFactor": 0,
+        "GreenhousePressure": 0,
+        "SurfaceTemperature": -179.5,
+        "Gases": [
+          { "Symbol": "N2", "Percent": 0.984 },
+          { "Symbol": "CH4", "Percent": 0.014 },
+          { "Symbol": "H2", "Percent": 0.002 }
+        ]
+      }
+    }
+  }
+]
