@@ -6,6 +6,7 @@
       "Name": "Earth",
       "CanStartHere": true,
       "Colonizable": true,
+      "GenerateMinerals": "randomHW",
       "Info": {
         "Gravity": 9.8,
         "Type": "terrestrial",

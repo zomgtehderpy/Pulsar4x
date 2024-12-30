@@ -26,7 +26,11 @@
         "blueprints/damageResistance.json",
         "blueprints/species.json",
         "blueprints/sol.json",
+        "blueprints/mercury.json",
+        "blueprints/venus.json",
         "blueprints/earth.json",
+        "blueprints/luna.json",
+        "blueprints/mars.json",
         "blueprints/componentDesigns.json",
         "blueprints/shipDesigns.json"
     ]
