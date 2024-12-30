@@ -393,7 +393,7 @@ namespace Pulsar4X.Galaxy
             }
 
             // Load bodies
-            foreach(var (id, body) in game.StartingGameData.SystemBodies)
+            foreach(var id in systemBlueprint.Bodies)
             {
                 var bodyEntity = SystemBodyFactory.CreateFromBlueprint(game, system, rootStar, galaxyGen.Settings.J2000, new SensorProfileDB(), game.StartingGameData.SystemBodies[id]);
             }

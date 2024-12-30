@@ -25,7 +25,17 @@
         "sol"
       ],
       "Bodies": [
-        "planet-earth"
+        "mercury",
+        "venus",
+        "planet-earth",
+        "moon-luna",
+        "mars",
+        "jupiter",
+        "moon-io",
+        "saturn",
+        "moon-titan",
+        "uranus",
+        "neptune"
       ],
       "SurveyRings": [
         { "RingRadiusInAU": 2, "Count": 2 }

@@ -2,7 +2,7 @@
   {
     "Type": "SystemBody",
     "Payload": {
-      "UniqueID": "luna",
+      "UniqueID": "moon-luna",
       "Name": "Luna",
       "Parent": "Earth",
       "Colonizable": true,
