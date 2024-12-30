@@ -172,6 +172,34 @@ namespace Pulsar4X.Galaxy
                 blobsToAdd.Add(atmosphereDB);
             }
 
+            if(!string.IsNullOrEmpty(systemBodyBlueprint.GenerateMinerals))
+            {
+                MineralsDB? mineralsDB = null;
+                switch(systemBodyBlueprint.GenerateMinerals)
+                {
+                    case "randomHW":
+                        mineralsDB = MineralDepositFactory.GenerateRandomHW(game.GalaxyGen.Settings, game.StartingGameData.Minerals.Values.ToList(), system, systemBodyInfoDB, massVolumeDB);
+                        break;
+                    default:
+                        mineralsDB = MineralDepositFactory.GenerateRandom(game.GalaxyGen.Settings, game.StartingGameData.Minerals.Values.ToList(), system, systemBodyInfoDB, massVolumeDB);
+                        break;
+                }
+
+                if(mineralsDB != null) blobsToAdd.Add(mineralsDB);
+            }
+            else if(systemBodyBlueprint.Minerals != null)
+            {
+                var mineralList = new List<(int, double, double)>();
+                foreach(var mineral in systemBodyBlueprint.Minerals)
+                {
+                    if(!game.StartingGameData.Minerals.ContainsKey(mineral.Id)) continue;
+
+                    var mineralBlueprint = game.StartingGameData.Minerals[mineral.Id];
+                    mineralList.Add((mineralBlueprint.ID, mineral.Abundance, mineral.Accessibility));
+                }
+                blobsToAdd.Add(MineralDepositFactory.Generate(game, mineralList, systemBodyInfoDB.BodyType));
+            }
+
             if(systemBodyBlueprint.GeoSurveyPointsRequired != null)
             {
                 var geoSurveyableDB = new GeoSurveyableDB()

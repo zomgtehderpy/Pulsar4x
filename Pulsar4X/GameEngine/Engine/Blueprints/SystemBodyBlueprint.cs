@@ -67,6 +67,13 @@ public class SystemBodyBlueprint : Blueprint
         public float? SurfaceTemperature { get; set; }
     }
 
+    public struct StartingMineralBlueprint
+    {
+        public string Id { get; set; }
+        public double Abundance { get; set; }
+        public double Accessibility { get; set; }
+    }
+
     public string Name { get; set; }
 
     // Can this body be selected as a starting location
@@ -78,5 +85,7 @@ public class SystemBodyBlueprint : Blueprint
     public SystemBodyInfoBlueprint Info { get; set; }
     public OrbitBlueprint Orbit { get; set; }
     public AtmosphereBlueprint? Atmosphere { get; set; }
+    public List<StartingMineralBlueprint>? Minerals { get; set; }
+    public string? GenerateMinerals { get; set; }
 
 }
