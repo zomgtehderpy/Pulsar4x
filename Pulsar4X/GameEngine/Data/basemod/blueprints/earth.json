@@ -177,9 +177,27 @@
         "default-design-warehouse"
       ],
       "ShipDesigns": [
-        "default-ship-design-gunship"
+        "default-ship-design-courier",
+        "default-ship-design-freighter",
+        "default-ship-design-gunship",
+        "default-ship-design-dropship",
+        "default-ship-design-starship",
+        "default-ship-design-surveyor"
       ],
       "Fleets": [
+        {
+          "Name": "Freight Fleet",
+          "Ships": [
+            {
+              "DesignId": "default-ship-design-freighter",
+              "Name": "Planet Express Ship",
+              "Cargo": [
+                { "Id": "methalox", "Amount": 20000000, "Type": "byVolume" },
+                { "Id": "default-design-auto-mine", "Amount": 1, "Type": "byCount" }
+              ]
+            }
+          ]
+        },
         {
           "Name": "Military Fleet",
           "Ships": [
@@ -195,6 +213,18 @@
               "Name": "Prevailing Stillness",
               "Cargo": [
                 { "Id": "ntp", "Amount": 2000 }
+              ]
+            }
+          ]
+        },
+        {
+          "Name": "Science Fleet",
+          "Ships": [
+            {
+              "DesignId": "default-ship-design-surveyor",
+              "Name": "Surveyor I",
+              "Cargo": [
+                { "Id": "rp-1", "Amount": 2000 }
               ]
             }
           ]
