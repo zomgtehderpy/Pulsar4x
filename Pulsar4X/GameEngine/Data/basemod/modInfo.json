@@ -36,6 +36,7 @@
         "blueprints/neptune.json",
         "blueprints/dwarfPlanets.json",
         "blueprints/comets.json",
+        "blueprints/alphaCentauri.json",
         "blueprints/componentDesigns.json",
         "blueprints/shipDesigns.json"
     ]
