@@ -19,10 +19,7 @@ namespace Pulsar4X.Modding
         public Dictionary<string, TechBlueprint> Techs { get; set; } = new ();
         public Dictionary<string, TechCategoryBlueprint> TechCategories { get; set; } = new ();
         public Dictionary<string, ThemeBlueprint> Themes { get; set; } = new ();
-        public Dictionary<string, DefaultItemsBlueprint> DefaultItems { get; set; } = new ();
-
         public Dictionary<string, DamageResistBlueprint> DamageResists { get; set; } = new();
-
         public Dictionary<string, SpeciesBlueprint> Species { get; set; } = new ();
         public Dictionary<string, SystemBlueprint> Systems { get; set; } = new ();
         public Dictionary<string, SystemBodyBlueprint> SystemBodies { get; set; } = new ();

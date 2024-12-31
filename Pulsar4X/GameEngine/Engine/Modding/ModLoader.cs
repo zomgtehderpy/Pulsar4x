@@ -66,9 +66,6 @@ namespace Pulsar4X.Modding
                 case ModInstruction.DataType.ComponentTemplate:
                     ApplyModGeneric<ComponentTemplateBlueprint>(baseData.ComponentTemplates, mod, modNamespace);
                     break;
-                case ModInstruction.DataType.DefaultItems:
-                    ApplyModGeneric<DefaultItemsBlueprint>(baseData.DefaultItems, mod, modNamespace);
-                    break;
                 case ModInstruction.DataType.Gas:
                     ApplyModGeneric<GasBlueprint>(baseData.AtmosphericGas, mod, modNamespace);
                     break;

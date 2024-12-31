@@ -289,21 +289,21 @@ namespace Pulsar4X.Factions
             factionInfo.EventLog.Subscribe();
 
             // Need to unlock the starting data in the game
-            foreach(var id in game.StartingGameData.DefaultItems["player-starting-items"].Items)
-            {
-                factionInfo.Data.Unlock(id);
+            // foreach(var id in game.StartingGameData.DefaultItems["player-starting-items"].Items)
+            // {
+            //     factionInfo.Data.Unlock(id);
 
-                // Research any tech that is listed
-                if(factionInfo.Data.Techs.ContainsKey(id))
-                {
-                    factionInfo.Data.IncrementTechLevel(id);
-                }
+            //     // Research any tech that is listed
+            //     if(factionInfo.Data.Techs.ContainsKey(id))
+            //     {
+            //         factionInfo.Data.IncrementTechLevel(id);
+            //     }
 
-                if(factionInfo.Data.CargoGoods.IsMaterial(id))
-                {
-                    factionInfo.IndustryDesigns[id] = (IConstructableDesign)factionInfo.Data.CargoGoods[id];
-                }
-            }
+            //     if(factionInfo.Data.CargoGoods.IsMaterial(id))
+            //     {
+            //         factionInfo.IndustryDesigns[id] = (IConstructableDesign)factionInfo.Data.CargoGoods[id];
+            //     }
+            // }
 
             // Add this faction to the SM's access list.
             game.SpaceMaster.SetAccess(factionEntity.Id, AccessRole.SM);

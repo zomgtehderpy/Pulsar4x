@@ -60,7 +60,6 @@ public class BlueprintsWindow : PulsarGuiWindow
                 DisplayBlueprintCategory("Armor", _uiState.Game.StartingGameData.Armor.Keys.ToList());
                 DisplayBlueprintCategory("Cargo Types", _uiState.Game.StartingGameData.CargoTypes.Keys.ToList());
                 DisplayBlueprintCategory("Component Templates", _uiState.Game.StartingGameData.ComponentTemplates.Keys.ToList());
-                DisplayBlueprintCategory("Default Items", _uiState.Game.StartingGameData.DefaultItems.Keys.ToList());
                 DisplayBlueprintCategory("Gas", _uiState.Game.StartingGameData.AtmosphericGas.Keys.ToList());
                 DisplayBlueprintCategory("Industry Types", _uiState.Game.StartingGameData.IndustryTypes.Keys.ToList());
                 DisplayBlueprintCategory("Minerals", _uiState.Game.StartingGameData.Minerals.Keys.ToList());
@@ -123,8 +122,6 @@ public class BlueprintsWindow : PulsarGuiWindow
             return _uiState.Game.StartingGameData.CargoTypes[key];
         if(_uiState.Game.StartingGameData.ComponentTemplates.ContainsKey(key))
             return _uiState.Game.StartingGameData.ComponentTemplates[key];
-        if(_uiState.Game.StartingGameData.DefaultItems.ContainsKey(key))
-            return _uiState.Game.StartingGameData.DefaultItems[key];
         if(_uiState.Game.StartingGameData.AtmosphericGas.ContainsKey(key))
             return _uiState.Game.StartingGameData.AtmosphericGas[key];
         if(_uiState.Game.StartingGameData.IndustryTypes.ContainsKey(key))
