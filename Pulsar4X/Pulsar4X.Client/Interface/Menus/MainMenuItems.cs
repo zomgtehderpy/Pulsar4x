@@ -56,13 +56,9 @@ namespace Pulsar4X.SDL2UI
                         {
                             _saveGame = !_saveGame;
 
+                            // Set the save name equal to the game name by default (player can change it in the dialog)
+                            SaveGame.GetInstance().UpdateSaveName(_uiState.Game.Name);
                             SaveGame.GetInstance().ToggleActive();
-                            // string gameJson = Game.Save(_uiState.Game);
-                            //
-                            // File.WriteAllText("save.json", gameJson);
-
-                            // FIXME:
-                            //SerializationManager.Export(_uiState.Game, "SaveGame");
                             SetActive(false);
                         }
 

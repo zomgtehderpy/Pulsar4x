@@ -51,7 +51,7 @@ public class NewGameMenu : PulsarGuiWindow
     int _maxSystems = 5;
 
 
-    byte[] _nameInputBuffer = ImGuiSDL2CSHelper.BytesFromString("Test Game", 16);
+    byte[] _nameInputBuffer = ImGuiSDL2CSHelper.BytesFromString("My Game", 32);
     byte[] _factionInputBuffer = ImGuiSDL2CSHelper.BytesFromString("UEF", 16);
     byte[] _passInputBuffer = ImGuiSDL2CSHelper.BytesFromString("", 16);
 
@@ -98,7 +98,7 @@ public class NewGameMenu : PulsarGuiWindow
 
     private void DisplayModsPage()
     {
-        ImGui.InputText("Game Name", _nameInputBuffer, 16);
+        ImGui.InputText("Game Name", _nameInputBuffer, 32);
         ImGui.InputText("SM Pass", _smPassInputbuffer, 16);
         ImGui.InputText("Password", _passInputBuffer, 16);
 

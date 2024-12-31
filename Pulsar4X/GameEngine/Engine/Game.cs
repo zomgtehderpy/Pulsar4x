@@ -25,6 +25,9 @@ namespace Pulsar4X.Engine
         public static readonly int NeutralFactionId = -99;
 
         [JsonProperty]
+        public string Name { get; set; }
+
+        [JsonProperty]
         public MasterTimePulse TimePulse { get; internal set; }
 
         [JsonProperty]
@@ -94,6 +97,8 @@ namespace Pulsar4X.Engine
 
         public Game(NewGameSettings settings, ModDataStore modDataStore)
         {
+            Name = settings.GameName;
+
             ApplyModData(modDataStore);
             ApplySettings(settings);
 

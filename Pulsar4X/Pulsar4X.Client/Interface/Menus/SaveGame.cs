@@ -36,4 +36,9 @@ public class SaveGame : PulsarGuiWindow
             File.WriteAllText(Path.Combine(_filePath, _fileName), gameJson);
         }
     }
+
+    public void UpdateSaveName(string name)
+    {
+        _fileName = name + ".sav";
+    }
 }
