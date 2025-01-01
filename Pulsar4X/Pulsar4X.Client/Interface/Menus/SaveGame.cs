@@ -32,6 +32,9 @@ public class SaveGame : PulsarGuiWindow
                 IsActive = false;
                 return;
             }
+            // Update the save git hash
+            _uiState.Game.LastSaveGitHash = AssemblyInfo.GetGitHash();
+
             string gameJson = Game.Save(_uiState.Game);
             File.WriteAllText(Path.Combine(_filePath, _fileName), gameJson);
         }

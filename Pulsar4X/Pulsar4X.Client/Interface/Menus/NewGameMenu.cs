@@ -393,6 +393,8 @@ public class NewGameMenu : PulsarGuiWindow
 
 
         Pulsar4X.Engine.Game game = GameFactory.CreateGame(_modDataStore, gameSettings);
+        game.CreatedOnGitHash = AssemblyInfo.GetGitHash(); // Save the git hash to the game
+        game.LastSaveGitHash = AssemblyInfo.GetGitHash();
 
         // Load in the selected systems
         StarSystem? startingSystem = null;

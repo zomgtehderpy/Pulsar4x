@@ -30,6 +30,12 @@ namespace Pulsar4X.Engine
         public string Name { get; set; }
 
         [JsonProperty]
+        public string CreatedOnGitHash { get; set; }
+
+        [JsonProperty]
+        public string LastSaveGitHash { get; set; }
+
+        [JsonProperty]
         public MasterTimePulse TimePulse { get; internal set; }
 
         [JsonProperty]
