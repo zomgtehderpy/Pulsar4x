@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Pulsar4X.Blueprints;
 
@@ -17,9 +18,11 @@ public class ComponentDesignBlueprint : Blueprint
         }
 
         public T? GetValue<T>() => _value.ToObject<T>();
-
+        [JsonIgnore]
         public int AsInt => _value.Value<int>();
+        [JsonIgnore]
         public double AsDouble => _value.Value<double>();
+        [JsonIgnore]
         public string? AsString => _value.Value<string>();
     }
 
