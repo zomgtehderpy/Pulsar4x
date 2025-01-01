@@ -7,6 +7,7 @@ using Pulsar4X.Blueprints;
 using Pulsar4X.Client.Interface.Widgets;
 using Pulsar4X.Client.State;
 using Pulsar4X.Colonies;
+using Pulsar4X.Energy;
 using Pulsar4X.Engine;
 using Pulsar4X.Extensions;
 using Pulsar4X.Factions;
@@ -432,6 +433,9 @@ public class NewGameMenu : PulsarGuiWindow
         // TODO: need to add the implementation for a random start
         // TODO: need to find a way to handle this via the mods instead of loading it here
         //var (newGameFaction, systemId) = Pulsar4X.Engine.DefaultStartFactory.LoadFromJson(game, "Data/basemod/defaultStart.json");
+
+        // Call the game post new game initialization
+        game.PostNewGameInitialization();
 
         _uiState.Game = game;
         _uiState.SetFaction(playerFaction, true);

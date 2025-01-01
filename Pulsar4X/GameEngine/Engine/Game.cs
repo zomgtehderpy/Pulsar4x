@@ -12,6 +12,8 @@ using System.Runtime.CompilerServices;
 using Pulsar4X.Events;
 using Pulsar4X.Factions;
 using Pulsar4X.Galaxy;
+using Pulsar4X.Energy;
+using Pulsar4X.Sensors;
 [assembly: InternalsVisibleTo("Pulsar4X.Tests")]
 
 namespace Pulsar4X.Engine
@@ -200,6 +202,25 @@ namespace Pulsar4X.Engine
             // loadedGame.OrderHandler = JsonConvert.DeserializeObject<StandAloneOrderHandler>(JObject.Parse(json)["OrderHandler"].ToString(), settings);
 
             return loadedGame;
+        }
+
+        public void PostNewGameInitialization()
+        {
+            // There are few DB's that need to run the processor when the game begins
+            foreach(var system in Systems)
+            {
+                var entitiesWithEnergyGen = system.GetAllEntitiesWithDataBlob<EnergyGenAbilityDB>();
+                foreach (var entity in entitiesWithEnergyGen)
+                {
+                    ProcessorManager.GetInstanceProcessor(nameof(EnergyGenProcessor)).ProcessEntity(entity, TimePulse.GameGlobalDateTime);
+                }
+
+                var entitiesWithSensors = system.GetAllEntitiesWithDataBlob<SensorAbilityDB>();
+                foreach (var entity in entitiesWithSensors)
+                {
+                    ProcessorManager.GetInstanceProcessor(nameof(SensorScan)).ProcessEntity(entity, TimePulse.GameGlobalDateTime);
+                }
+            }
         }
     }
 
