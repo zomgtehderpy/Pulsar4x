@@ -78,6 +78,15 @@ namespace Pulsar4X.SDL2UI
                             SystemViewPreferences.GetInstance().ToggleActive();
                             this.SetActive(false);
                         }
+
+                        if (ImGui.Button("SM Mode", buttonSize))
+                        {
+                            var pannel = SMWindow.GetInstance();
+                            _uiState.ActiveWindow = pannel;
+                            pannel.SetActive();
+                            _uiState.ToggleGameMaster();
+                            this.IsActive = false;
+                        }
                     }
 
                     var disabled = !DoAnySavesExist();
@@ -95,16 +104,7 @@ namespace Pulsar4X.SDL2UI
                         LoadGame.GetInstance().ToggleActive();
                         SetActive(false);
                     }
-                    ImGui.Button("Connect to a Network Game", buttonSize);
-                }
-
-                if (ImGui.Button("SM Mode", buttonSize))
-                {
-                    var pannel = SMWindow.GetInstance();
-                    _uiState.ActiveWindow = pannel;
-                    pannel.SetActive();
-                    _uiState.ToggleGameMaster();
-                    this.IsActive = false;
+                    //ImGui.Button("Connect to a Network Game", buttonSize);
                 }
 
                 if(ImGui.Button("Exit to Desktop", buttonSize))
