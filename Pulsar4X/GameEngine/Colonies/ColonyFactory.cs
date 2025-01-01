@@ -16,6 +16,7 @@ using Pulsar4X.Components;
 using Pulsar4X.Fleets;
 using Pulsar4X.Ships;
 using System;
+using Pulsar4X.Technology;
 
 namespace Pulsar4X.Colonies
 {
@@ -92,6 +93,11 @@ namespace Pulsar4X.Colonies
 
             // Add starting colony cargo
             LoadCargo(colonyEntity, factionInfo.Data, colonyBlueprint.Cargo);
+
+            // Add a starting scientist
+            // TODO: load people from blueprints
+            var scientistEntity = CommanderFactory.CreateScientist(faction, colonyEntity);
+            colonyEntity.GetDataBlob<TeamsHousedDB>().AddTeam(scientistEntity);
 
             // Add starting fleets
             foreach(var fleet in colonyBlueprint.Fleets)
