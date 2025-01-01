@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using ImGuiNET;
 using ImGuiSDL2CS;
 using Pulsar4X.Blueprints;
@@ -58,6 +59,13 @@ public class NewGameMenu : PulsarGuiWindow
     byte[] _smPassInputbuffer = ImGuiSDL2CSHelper.BytesFromString("", 16);
 
     int _masterSeed = 12345678;
+
+    Vector2 _contentRegion = new Vector2();
+    Vector2 _windowPos = new Vector2();
+    Vector2 _windowSize = new Vector2();
+    float _footerHeight = 0f;
+    float _contentHeight = 0f;
+    float _buttonWidth = 100f;
     private NewGameMenu()
     {
 
@@ -77,8 +85,16 @@ public class NewGameMenu : PulsarGuiWindow
     {
         if(!IsActive) return;
 
-        if (Window.Begin("New Game Setup", ref IsActive, _flags))
+        if (Window.Begin("New Game Setup", ref IsActive, _flags | ImGuiWindowFlags.NoScrollbar))
         {
+            _contentRegion = ImGui.GetContentRegionAvail();
+            // Get window dimensions
+            _windowPos = ImGui.GetWindowPos();
+            _windowSize = ImGui.GetWindowContentRegionMax();
+            _footerHeight = ImGui.GetFrameHeightWithSpacing();
+
+            // Calculate content area height (window height minus footer)
+            _contentHeight = _windowSize.Y - _footerHeight - ImGui.GetFrameHeightWithSpacing();
 
             switch(_currentPage)
             {
@@ -98,43 +114,42 @@ public class NewGameMenu : PulsarGuiWindow
 
     private void DisplayModsPage()
     {
+        ImGui.BeginChild("ScrollingRegion", new Vector2(0, _contentHeight), false);
+
+        DisplayHelpers.Header("New Game Options");
         ImGui.InputText("Game Name", _nameInputBuffer, 32);
-        ImGui.InputText("SM Pass", _smPassInputbuffer, 16);
-        ImGui.InputText("Password", _passInputBuffer, 16);
-
+        // ImGui.InputText("SM Pass", _smPassInputbuffer, 16);
+        // ImGui.InputText("Password", _passInputBuffer, 16);
         //ImGui.InputInt("Max Systems", ref _maxSystems);
-        ImGui.InputInt("Master Seed:", ref _masterSeed);
+        ImGui.InputInt("Seed", ref _masterSeed);
 
-        if(ImGui.CollapsingHeader("Mod List", ImGuiTreeNodeFlags.DefaultOpen | ImGuiTreeNodeFlags.SpanAvailWidth))
+        ImGui.NewLine();
+        DisplayHelpers.Header("Select Mods to Enable");
+        if(ImGui.BeginTable("ModsList", 3, Styles.TableFlags))
         {
-            if(ImGui.BeginTable("ModsList", 3))
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Mod Name");
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Version");
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Enable?");
+
+            foreach(var modMetadata in ModsState.AvailableMods)
             {
                 ImGui.TableNextColumn();
-                ImGui.TableHeader("Mod Name");
+                ImGui.Text(modMetadata.Mod.ModName);
                 ImGui.TableNextColumn();
-                ImGui.TableHeader("Version");
+                ImGui.Text(modMetadata.Mod.Version);
+                var isEnabled = ModsState.IsModEnabled[modMetadata.Mod.ModName];
                 ImGui.TableNextColumn();
-                ImGui.TableHeader("Enable?");
-
-                foreach(var modMetadata in ModsState.AvailableMods)
+                if(ImGui.Checkbox("###" + modMetadata.Mod.ModName + "-checkbox", ref isEnabled))
                 {
-                    ImGui.TableNextColumn();
-                    ImGui.Text(modMetadata.Mod.ModName);
-                    ImGui.TableNextColumn();
-                    ImGui.Text(modMetadata.Mod.Version);
-                    var isEnabled = ModsState.IsModEnabled[modMetadata.Mod.ModName];
-                    ImGui.TableNextColumn();
-                    if(ImGui.Checkbox("###" + modMetadata.Mod.ModName + "-checkbox", ref isEnabled))
-                    {
-                        ModsState.IsModEnabled[modMetadata.Mod.ModName] = !ModsState.IsModEnabled[modMetadata.Mod.ModName];
-                    }
+                    ModsState.IsModEnabled[modMetadata.Mod.ModName] = !ModsState.IsModEnabled[modMetadata.Mod.ModName];
                 }
-
-                ImGui.EndTable();
             }
+
+            ImGui.EndTable();
         }
-
-
 
         // if (ImGui.RadioButton("Host Network Game", ref _gameTypeButtonGrp, 1))
         //     _selectedGameType = gameType.Nethost;
@@ -142,8 +157,14 @@ public class NewGameMenu : PulsarGuiWindow
         //     _selectedGameType = gameType.Standalone;
         // if (_selectedGameType == gameType.Nethost)
         //     ImGui.InputText("Network Port", _netPortInputBuffer, 8);
-        ImGui.Separator();
-        if (ImGui.Button("Next") || _uiState.debugnewgame)
+
+        ImGui.EndChild();
+        ImGui.BeginChild("Footer", new Vector2(0, _footerHeight), false, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
+
+        // Right-align the button by calculating its position
+        float buttonX = _windowSize.X - _buttonWidth - ImGui.GetStyle().WindowPadding.X;
+        ImGui.SetCursorPosX(buttonX);
+        if (ImGui.Button("Next", new Vector2(_buttonWidth, 0)) || _uiState.debugnewgame)
         {
             _uiState.debugnewgame = false;
             LoadEnabledMods();
@@ -162,10 +183,13 @@ public class NewGameMenu : PulsarGuiWindow
 
             _currentPage = Page.ConfigureGalaxy;
         }
+        ImGui.EndChild();
     }
 
     private void DisplayConfigureGalaxy()
     {
+        ImGui.BeginChild("ScrollingRegion", new Vector2(0, _contentHeight), false);
+
         DisplayHelpers.Header("Select pre-configured Systems to include");
 
         if(ImGui.BeginTable("SystemsSelection", 2, Styles.TableFlags))
@@ -192,20 +216,27 @@ public class NewGameMenu : PulsarGuiWindow
             ImGui.EndTable();
         }
 
-        ImGui.Separator();
-        if (ImGui.Button("Back"))
+        ImGui.EndChild();
+        ImGui.BeginChild("Footer", new Vector2(0, _footerHeight), false, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
+        if (ImGui.Button("Back", new Vector2(_buttonWidth, 0)))
         {
             _currentPage = Page.SelectMods;
         }
         ImGui.SameLine();
-        if (ImGui.Button("Next"))
+        // Right-align the button by calculating its position
+        float buttonX = _windowSize.X - _buttonWidth - ImGui.GetStyle().WindowPadding.X;
+        ImGui.SetCursorPosX(buttonX);
+        if (ImGui.Button("Next", new Vector2(_buttonWidth, 0)))
         {
             _currentPage = Page.SelectDetails;
         }
+        ImGui.EndChild();
     }
 
     private void DisplayDetailsPage()
     {
+        ImGui.BeginChild("ScrollingRegion", new Vector2(0, _contentHeight), false);
+
         DisplayHelpers.Header("Game Setup");
         ImGui.InputText("Faction Name", _factionInputBuffer, 16);
 
@@ -286,16 +317,22 @@ public class NewGameMenu : PulsarGuiWindow
             }
         }
 
-        ImGui.Separator();
-        if (ImGui.Button("Back"))
+        ImGui.EndChild();
+        ImGui.BeginChild("Footer", new Vector2(0, _footerHeight), false, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
+
+        if (ImGui.Button("Back", new Vector2(_buttonWidth, 0)))
         {
             _currentPage = Page.ConfigureGalaxy;
         }
         ImGui.SameLine();
-        if (ImGui.Button("Create Game!"))
+        // Right-align the button by calculating its position
+        float buttonX = _windowSize.X - _buttonWidth - ImGui.GetStyle().WindowPadding.X;
+        ImGui.SetCursorPosX(buttonX);
+        if (ImGui.Button("Create Game!", new Vector2(_buttonWidth, 0)))
         {
             CreateNewGame();
         }
+        ImGui.EndChild();
     }
 
     private void LoadEnabledMods()
